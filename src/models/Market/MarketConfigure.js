@@ -13,6 +13,8 @@ import {
   fetchGetConfigNewUserPopUpById,
   fetchSaveConfigNewUserPopUp,
   fetchUpdateConfigNewUserPopUp,
+  fetchGetWeeklyCard,
+  fetchSetWeeklyCard,
 } from '@/services/MarketServices';
 
 export default {
@@ -26,6 +28,7 @@ export default {
     floatCityList: { list: [] },
     floatConfigureList: { list: [] },
     newUserPopUpList: { list: [] },
+    weeklyCardObj: {},
   },
 
   reducers: {
@@ -38,6 +41,34 @@ export default {
   },
 
   effects: {
+    // get 周卡配置 - 详情
+    *fetchGetWeeklyCard({ payload }, { call, put }) {
+      const response = yield call(fetchGetWeeklyCard, payload);
+      if (!response) return;
+      const { content } = response;
+      const { weeklyCard = {} } = content;
+      const { status, ...other } = weeklyCard;
+
+      yield put({
+        type: 'save',
+        payload: {
+          weeklyCardObj: {
+            status: Number(status),
+            ...other,
+          },
+        },
+      });
+    },
+    // post 周卡配置 - 编辑
+    *fetchSetWeeklyCard({ payload, callback }, { call }) {
+      const response = yield call(fetchSetWeeklyCard, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '编辑成功',
+      });
+      callback && callback();
+    },
     *fetchGlobalPopUpEditionList({ payload }, { call, put }) {
       const response = yield call(fetchGlobalPopUpList, payload);
       if (!response) return;

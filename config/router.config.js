@@ -446,6 +446,12 @@ export default [
       },
       // 店铺运营 operation
       {
+        path: '/operation/couponRulesManage',
+        name: '券规则管理',
+        component: './Operation/CouponRulesManage',
+        buttons: ['addnum', 'info', 'edit', 'down', 'save', 'up'],
+      },
+      {
         path: '/operation/spreeManage',
         name: '礼包管理',
         component: './Operation/SpreeManage',

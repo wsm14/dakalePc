@@ -291,3 +291,10 @@ export function fetchPagePreferentialActivity(params) {
     params,
   });
 }
+
+//get 券规则管理 - 标签列表
+export function fetchListConfigGoodsTag(params) {
+  return request('/admin/goodsTag/listConfigGoodsTag', {
+    params,
+  });
+}

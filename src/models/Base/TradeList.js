@@ -97,9 +97,9 @@ export default {
         type: 'save',
         payload: {
           detailList: {
-            list: content[
-              { base: 'infrastructures', special: 'specialService' }[type]
-            ].map((item) => ({ name: item, value: item })),
+            list: content[{ base: 'infrastructures', special: 'specialService' }[type]].map(
+              (item) => ({ name: item, value: item }),
+            ),
           },
         },
       });

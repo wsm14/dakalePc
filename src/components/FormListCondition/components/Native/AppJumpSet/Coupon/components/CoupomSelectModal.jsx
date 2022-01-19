@@ -8,7 +8,7 @@ const { TabPane } = Tabs;
 const { Search } = Input;
 
 /**
- * 选择特惠商品（单选）
+ * 选择有价券（单选）
  * @param {String} merchantId 商家id
  */
 const GoodsSelectModal = (props) => {

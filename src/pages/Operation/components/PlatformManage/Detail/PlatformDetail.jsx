@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-  BUSINESS_TYPE,
-  PLATFORM_TICKET_SCENE,
-  PLATFORM_TICKET_TYPE,
-  PLATFORM_COUPON_PEOPLE,
-  PLATFORM_APPLY_PORT_TYPE,
-} from '@/common/constant';
-import { getCityName } from '@/utils/utils';
+import { PLATFORM_TICKET_SCENE, PLATFORM_TICKET_TYPE, CONPON_RULES_TYPE } from '@/common/constant';
+import TableDataBlock from '@/components/TableDataBlock';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const GoodsDetail = (props) => {
@@ -16,7 +10,12 @@ const GoodsDetail = (props) => {
     {
       label: '券类型',
       name: 'useScenesType',
-      render: (val, row) => `${PLATFORM_TICKET_SCENE[val]}${PLATFORM_TICKET_TYPE[row.classType]}`,
+      render: (val, row) => `${PLATFORM_TICKET_SCENE[val]}`,
+    },
+    {
+      label: '券类型',
+      name: 'classType',
+      render: (val, row) => `${PLATFORM_TICKET_TYPE[row.useScenesType][val]}`,
     },
     {
       label: '券编号',
@@ -71,31 +70,38 @@ const GoodsDetail = (props) => {
         }[val]),
     },
     {
-      label: '使用地区限制',
-      name: 'ruleCondition',
-      render: (val, row) => {
-        return (
-          <div>
-            <div>{['全国可用', '部分地区可用', '部分地区不可用'][val]}</div>
-            {val != 0 && <div>{row.citys.map((item) => `${getCityName(item)}、`)}</div>}
-          </div>
-        );
-      },
-    },
-    {
-      label: '适用人群',
-      name: 'consortUser',
-      render: (val) => PLATFORM_COUPON_PEOPLE[val],
-    },
-    {
-      label: '适用端口',
-      name: 'consortUserOs',
+      label: '是否可膨胀',
+      name: 'increaseRule',
       render: (val, row) =>
-        val === 'all' ? '全平台' : row.apply.map((item) => `${PLATFORM_APPLY_PORT_TYPE[item]},`),
+        val == '0'
+          ? '不可膨胀'
+          : `可使用${row.increaseRuleObject.beanNum || 0}卡豆进行膨胀，最高可膨胀${
+              row.increaseRuleObject.maxValue || 0
+            }元`,
     },
     {
       label: '其他说明',
       name: 'otherDesc',
+    },
+  ];
+
+  const getColumns = [
+    {
+      title: '规则类型',
+      dataIndex: 'ruleType',
+      render: (val) => CONPON_RULES_TYPE[val],
+    },
+    {
+      title: '规则名称',
+      dataIndex: 'ruleName',
+    },
+    {
+      title: '备注',
+      dataIndex: 'remark',
+      render: (val) => {
+        const str = val.slice(2);
+        return str && `${str}可用`;
+      },
     },
   ];
 
@@ -105,6 +111,24 @@ const GoodsDetail = (props) => {
         formItems={mreFormItems}
         initialValues={detail}
       ></DescriptionsCondition>
+      <div
+        style={{
+          height: 30,
+          fontSize: 20,
+          fontWeight: 'bold',
+          margin: '10px 0',
+        }}
+      >
+        使用规则
+      </div>
+      <TableDataBlock
+        noCard={false}
+        size="small"
+        columns={getColumns}
+        pagination={false}
+        rowKey={(record) => `${record.ruleId}`}
+        list={detail.ruleList}
+      ></TableDataBlock>
     </>
   );
 };

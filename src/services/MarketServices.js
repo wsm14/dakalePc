@@ -583,3 +583,18 @@ export function fetchUpdateConfigNewUserPopUp(data) {
     data,
   });
 }
+
+// get 周卡配置 - 详情
+export function fetchGetWeeklyCard(params) {
+  return request('/admin/weeklyCard/getWeeklyCard', {
+    params,
+  });
+}
+
+// post 周卡配置 - 编辑
+export function fetchSetWeeklyCard(data) {
+  return request('/admin/weeklyCard/setWeeklyCard', {
+    method: 'POST',
+    data,
+  });
+}

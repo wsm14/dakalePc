@@ -4,6 +4,7 @@ import { Menu } from 'antd';
 import GlobalModal from './components/Configure/GlobalModal';
 import FloatModal from './components/Configure/FloatModal';
 import NewWelfareModal from './components/Configure/NewWelfareModal';
+import WeeksCard from './components/Configure/WeeksCard';
 
 import styles from './styles.less';
 
@@ -58,6 +59,11 @@ const MarkConfigure = () => {
       type: 'newWelfareModal',
       menuName: '新人福利弹窗',
       block: <NewWelfareModal></NewWelfareModal>,
+    },
+    {
+      type: 'weeksCard',
+      menuName: '周卡配置',
+      block: <WeeksCard></WeeksCard>,
     },
   ];
 

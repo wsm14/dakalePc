@@ -997,3 +997,72 @@ export function fetchListUserCouponByGift(params) {
 }
 
 // 礼包管理 end
+
+// 券规则管理
+
+// get 券规则管理 - 行业设置 - 列表
+export function fetchConponListCategory(params) {
+  return request('/admin/systemIndustry/listCategory', {
+    params,
+  });
+}
+
+// get 券规则管理 - 店铺数据 - 店铺列表
+export function fetchConponListMerchant(params) {
+  return request('/admin/merchantManagement/listMerchant', {
+    params,
+  });
+}
+
+// get 券规则管理 - 集团列表 - 列表
+export function fetchConponListMerchantGroup(params) {
+  return request('/admin/merchantGroup/listMerchantGroup', {
+    params,
+  });
+}
+
+// get 券规则管理 - 特惠商品 - 列表
+export function fetchListSpecialGoodsManagement(params) {
+  return request('/admin/specialGoodsManagement/listSpecialGoodsManagement', {
+    params,
+  });
+}
+
+// post 券规则管理 - 新增
+export function fetchCreateRule(data) {
+  return request('/admin/couponRule/createRule', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 券规则管理 - 列表
+export function fetchListRuleByPage(params) {
+  return request('/admin/couponRule/listRuleByPage', {
+    params,
+  });
+}
+
+// post 券规则管理 - 启用停用规则
+export function fetchUpdateRuleStatus(data) {
+  return request('/admin/couponRule/updateRuleStatus', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 券规则管理 - 详情 - 获取带有全部id的详情接口
+export function fetchRuleDetail(params) {
+  return request('/admin/couponRule/ruleDetail', {
+    params,
+  });
+}
+
+// get 券规则管理 - 详情 - 获取具体数据对象的详情接口
+export function fetchRuleDetailPage(params) {
+  return request('/admin/couponRule/ruleDetailPage', {
+    params,
+  });
+}
+
+// 券规则管理 end
