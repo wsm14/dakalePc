@@ -6,8 +6,6 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 const GoodsDetail = (props) => {
   const { detail = {} } = props;
 
-  console.log(detail);
-
   const mreFormItems = [
     {
       label: '券类型',
