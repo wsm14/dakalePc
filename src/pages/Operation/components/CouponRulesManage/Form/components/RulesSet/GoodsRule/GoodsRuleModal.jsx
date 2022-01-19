@@ -14,7 +14,7 @@ import {
   COMMERCEGOODS_STATUS,
 } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
-import imgUrl from './充值商品图.png';
+import imgUrl from './payImg.png';
 
 const VaneDrawer = (props) => {
   const {
