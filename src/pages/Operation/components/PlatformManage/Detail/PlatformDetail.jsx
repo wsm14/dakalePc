@@ -6,6 +6,8 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 const GoodsDetail = (props) => {
   const { detail = {} } = props;
 
+  console.log(detail);
+
   const mreFormItems = [
     {
       label: '券类型',
@@ -75,9 +77,7 @@ const GoodsDetail = (props) => {
       render: (val, row) =>
         val == '0'
           ? '不可膨胀'
-          : `可使用${row.increaseRuleObject.beanNum || 0}卡豆进行膨胀，最高可膨胀${
-              row.increaseRuleObject.maxValue || 0
-            }元`,
+          : `可使用${row.beanNum || 0}卡豆进行膨胀，最高可膨胀${row.maxValue || 0}元`,
     },
     {
       label: '其他说明',
