@@ -56,8 +56,8 @@ export default {
     <div class="drawer_close_box"></div>
     </body>
     ${footer}
-    ${nativeClick}
     <script>
+    $('body').on('click','.handleGoNative',function(){if(!$(this).attr('data-linkType')&&!$(this).attr('data-native'))return;let keyObj={};($(this).attr('data-key')?$(this).attr('data-key').split(','):[]).map((item)=>{keyObj[item]=$(this).attr('data-'+item)});const path=$(this).attr('data-path');const params={path,hideCurrent: 1,params:keyObj,linkType:$(this).attr('data-linkType'),};if($(this).attr('data-linkType')==='H5'){if(native.getPhone()==='dakaleIOS'){window.webkit.messageHandlers['finishAndPushH5'].postMessage(JSON.stringify({path}))}else if(native.getPhone()==='dakaleAndroid'){window.location.href=path;native.nativeInit('close')};return};native.nativeInit($(this).attr('data-native')||'linkTo',params)});
     $('body').on('click','.active_toast1',function(){native.nativeInit('close')});$('body').on('click','.drawer_close_box',function(){native.nativeInit('close')});
     </script>
     </html>
