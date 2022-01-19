@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form, notification } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -6,11 +6,40 @@ import CouponRulesManageDetail from './Detail/CouponRulesManageDetail';
 import CouponRulesManageSet from './Form/CouponRulesManageSet';
 
 const CouponDrawer = (props) => {
-  const { visible, dispatch, childRef, onClose, loading, loadingDetail } = props;
+  const { visible = {}, dispatch, childRef, onClose, loading, loadingDetail } = props;
 
-  const { type = 'info', ruleId, show = false, detail = {} } = visible;
+  const { type = 'add', row = {}, show = false } = visible;
 
   const [form] = Form.useForm();
+  const [detail, setDetail] = useState({});
+  const [showDrawer, setShowDrawer] = useState(true);
+
+  useEffect(() => {
+    if (show) {
+      if (type === 'add') {
+        setShowDrawer(true);
+      } else if (type === 'info') {
+        fetchCouponDetail();
+      }
+    } else {
+      setDetail({});
+      setShowDrawer(false);
+    }
+  }, [show]);
+
+  // 获取详情
+  const fetchCouponDetail = () => {
+    dispatch({
+      type: ['tagRule', 'categoryRule'].includes(row.ruleType)
+        ? 'couponRulesManage/fetchRuleDetailPage'
+        : 'couponRulesManage/fetchRuleDetail',
+      payload: { ruleId: row.ruleId },
+      callback: (res) => {
+        setDetail(res);
+        setShowDrawer(true);
+      },
+    });
+  };
 
   // 确认提交
   const handleUpAudit = () => {
@@ -58,44 +87,29 @@ const CouponDrawer = (props) => {
     });
   };
 
-  const listProp = {
-    type,
-  };
   // 统一处理弹窗
   const drawerProps = {
     info: {
       title: '查看规则',
-      children: <CouponRulesManageDetail ruleId={ruleId} detail={detail}></CouponRulesManageDetail>,
+      children: (
+        <CouponRulesManageDetail ruleId={row.ruleId} detail={detail}></CouponRulesManageDetail>
+      ),
     },
     add: {
       title: '新建规则',
       children: (
-        <CouponRulesManageSet
-          {...listProp}
-          form={form}
-          initialValues={detail}
-        ></CouponRulesManageSet>
+        <CouponRulesManageSet type={type} form={form} initialValues={detail}></CouponRulesManageSet>
       ),
     },
-    // edit: {
-    //   title: '编辑规则',
-    //   children: (
-    //     <CouponRulesManageSet
-    //       {...listProp}
-    //       form={form}
-    //       initialValues={detail}
-    //     ></CouponRulesManageSet>
-    //   ),
-    // },
   }[type];
 
   // 弹窗属性
   const modalProps = {
     title: drawerProps.title,
-    visible: show,
+    visible: showDrawer,
     onClose,
     loading: loadingDetail,
-    footer: ['add', 'edit'].includes(type) && (
+    footer: ['add'].includes(type) && (
       <Button onClick={handleUpAudit} type="primary" loading={loading}>
         确定
       </Button>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Form, Radio, Select, Input } from 'antd';
-import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { TAG_TYPE } from '@/common/constant';
 
 const FormItem = Form.Item;

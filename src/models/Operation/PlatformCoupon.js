@@ -80,27 +80,16 @@ export default {
         activeDate,
         endDate,
         getRuleObject = {},
-        ruleConditionObjects = [],
-        consortUserOs,
+        increaseRuleObject = {},
         ...other
       } = platformCouponDetail;
-      const ruleCondition = ruleConditionObjects.find((item) =>
-        ['availableAreaRule', 'unavailableAreaRule'].includes(item.ruleType),
-      );
+
       const data = {
         ...other,
         ...getRuleObject,
+        ...increaseRuleObject,
         activeDate: [moment(activeDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
-        // 地区类型
-        ruleCondition:
-          ruleCondition.ruleConditionList[0].condition === 'all'
-            ? '0'
-            : ruleCondition.ruleType === 'availableAreaRule'
-            ? '1'
-            : '2',
-        citys: ruleCondition.ruleConditionList.map((item) => item.condition),
-        consortUserOs: consortUserOs === 'all' ? 'all' : 'noAll',
-        apply: consortUserOs !== 'all' ? consortUserOs.split(',') : undefined,
+        increaseRule: Object.keys(increaseRuleObject).length === 0 ? '0' : '1',
       };
 
       callback && callback(data);

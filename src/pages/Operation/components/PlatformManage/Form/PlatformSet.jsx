@@ -8,6 +8,7 @@ import {
   PLATFORM_USERTIME_TYPE,
   PLATFORM_INCREASE_RULE,
   CONPON_RULES_TYPE,
+  PLATFORM_TICKET_SCENE,
 } from '@/common/constant';
 import { NUM_ALL, NUM_INT } from '@/common/regExp';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -28,13 +29,14 @@ const CouponSet = (props) => {
   const [ruleList, setRuleList] = useState([]); // 暂存所选规则
   const [visible, setVisible] = useState(false); // 选择规则的modal
 
-  const { useTimeRule, ruleType } = initialValues;
+  const { useTimeRule, ruleType, increaseRule } = initialValues;
 
   useEffect(() => {
     if (initialValues.platformCouponId) {
       setRadioData({
         effectTime: useTimeRule, // 券有效期
         getLimit: ruleType, // 领取上限
+        increaseType: increaseRule, //  是否可膨胀
       });
     }
   }, [initialValues]);
@@ -58,6 +60,7 @@ const CouponSet = (props) => {
         {
           type: 'del',
           auth: true,
+          show: type !== 'edit',
           click: () => handleDelect(ruleId),
         },
       ],
@@ -95,26 +98,20 @@ const CouponSet = (props) => {
             }}
             className={styles.btn_Bbox}
           >
-            <Radio.Button className={styles.btn_box} value="goodsBuy">
-              <div>商品券</div>
-              <div>特惠商品/优惠券可用</div>
-            </Radio.Button>
-            {/* <Radio.Button className={styles.btn_box} value="scan">
-              <div>扫码券</div>
-              <div>特惠商品/优惠券可用</div>
-            </Radio.Button> */}
-            <Radio.Button className={styles.btn_box} value="virtual">
-              <div>虚拟券</div>
-              <div>购买虚拟商品可用</div>
-            </Radio.Button>
-            <Radio.Button className={styles.btn_box} value="commerce">
-              <div>电商券</div>
-              <div>购买电商品可用</div>
-            </Radio.Button>
-            {/* <Radio.Button className={styles.btn_box} value="community">
-              <div>团购券</div>
-              <div>特惠商品/优惠券可用</div>
-            </Radio.Button> */}
+            {Object.keys(PLATFORM_TICKET_SCENE).map((item) => (
+              <Radio.Button key={item} className={styles.btn_box} value={item}>
+                <div>{PLATFORM_TICKET_SCENE[item]}</div>
+                <div>
+                  {
+                    {
+                      goodsBuy: '特惠商品/优惠券可用',
+                      virtual: '购买虚拟商品可用',
+                      commerce: '购买电商品可用',
+                    }[item]
+                  }
+                </div>
+              </Radio.Button>
+            ))}
           </Radio.Group>
         </>
       ),
@@ -123,7 +120,7 @@ const CouponSet = (props) => {
       label: '券类型',
       name: 'classType',
       type: 'radio',
-      select: PLATFORM_TICKET_TYPE,
+      select: PLATFORM_TICKET_TYPE[ticket],
     },
     {
       title: '基本信息',
@@ -277,10 +274,25 @@ const CouponSet = (props) => {
           <Form.Item
             name="maxValue"
             noStyle
-            rules={[{ required: true, message: '请输入膨胀金额' }]}
+            // rules={[{ required: true, message: '请输入膨胀金额' }]}
+            rules={[
+              {
+                validator: (rule, value) => {
+                  console.log(Number(value));
+                  const maxNum = form.getFieldValue('thresholdPrice');
+                  if (Number(value) > maxNum) {
+                    return Promise.reject('最高膨胀金额不可高于使用门槛');
+                  }
+                  if (Number(value) <= 0) {
+                    console.log(1111);
+                    return Promise.reject('膨胀金额需大于0,且不能为0');
+                  }
+                  return Promise.resolve();
+                },
+              },
+            ]}
           >
             <InputNumber
-              min={0}
               precision={0}
               style={{ width: 110, marginLeft: 5 }}
               addonAfter="元"
@@ -302,9 +314,11 @@ const CouponSet = (props) => {
       type: 'noForm',
       formItem: (
         <>
-          <Button type="link" onClick={() => setVisible({ show: true, useScenesType: ticket })}>
-            选择
-          </Button>
+          {type === 'add' && (
+            <Button type="link" onClick={() => setVisible({ show: true, useScenesType: ticket })}>
+              选择
+            </Button>
+          )}
           <TableDataBlock
             noCard={false}
             size="small"
@@ -319,6 +333,7 @@ const CouponSet = (props) => {
     {
       label: '规则List',
       name: 'ruleList',
+      rules: [{ required: false }],
       hidden: true,
     },
   ];

@@ -136,15 +136,39 @@ const VaneDrawer = (props) => {
         }}
         rowSelection={{
           selectedRowKeys: selectItem.map((i) => i.id),
-          onChange: (val, list) => {
-            // 先去重处理 排除重复已选数据
-            // 再对 已选的数据和最新数据进行去重处理 获得去重后结果
+          onSelect: (row, selected, list) => {
             const obj = {};
-            const newSelectList = [...selectItem, ...list].reduce((item, next) => {
-              next && obj[next['id']] ? '' : next && (obj[next['id']] = true && item.push(next));
-              return item;
-            }, []);
-            // .filter((item) => item && val.includes(item['id']));
+            /**
+             * 获取当前所有数据 且保留 list 内不为undefind的数据
+             * 当selected为true选中状态时 filter 返回true 保留数据
+             * 当selected为false取消选中 排除当前点击项目
+             */
+            const allSelectList = [...selectItem, ...list].filter((i) =>
+              selected ? i : i && i['id'] !== row['id'],
+            );
+            const allIdArr = allSelectList.map((i) => i['id']); // 获取所有id
+            // 去重数据
+            const newSelectList = allSelectList
+              .reduce((item, next) => {
+                next && obj[next['id']] ? '' : next && (obj[next['id']] = true && item.push(next));
+                return item;
+              }, [])
+              .filter((item) => item && allIdArr.includes(item['id']));
+            setSelectItem(newSelectList);
+          },
+          onSelectAll: (selected, selectedRows, changeRows) => {
+            const obj = {};
+            const allSelectList = [...selectItem, ...changeRows].filter((i) =>
+              selected ? i : i && !changeRows.map((it) => it['id']).includes(i['id']),
+            );
+            const allIdArr = allSelectList.map((i) => i['id']); // 获取所有id
+            // 去重数据
+            const newSelectList = allSelectList
+              .reduce((item, next) => {
+                next && obj[next['id']] ? '' : next && (obj[next['id']] = true && item.push(next));
+                return item;
+              }, [])
+              .filter((item) => item && allIdArr.includes(item['id']));
             setSelectItem(newSelectList);
           },
         }}

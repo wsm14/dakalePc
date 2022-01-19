@@ -1,11 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { connect } from 'umi';
-import {
-  CONPON_RULES_TYPE,
-  PLATFORM_APPLY_PORT_TYPE,
-  GOODS_CLASS_TYPE,
-  BUSINESS_TYPE,
-} from '@/common/constant';
+import { CONPON_RULES_TYPE, PLATFORM_APPLY_PORT_TYPE, GOODS_CLASS_TYPE } from '@/common/constant';
 import { Tag } from 'antd';
 import { getCityName, checkCityName } from '@/utils/utils';
 import Ellipsis from '@/components/Ellipsis';
@@ -18,17 +13,6 @@ const GoodsDetail = (props) => {
   const { subRuleType, ruleType } = detail;
 
   console.log('ruleDetailListObj', ruleDetailListObj);
-
-  // useEffect(() => {
-  //   if (ruleType === 'tagRule') {
-  //     dispath({
-  //       type: 'couponRulesManage/fetchRuleDetailPage',
-  //       payload: {
-  //         ruleId,
-  //       },
-  //     });
-  //   }
-  // }, [ruleType]);
 
   const formItems = [
     {
@@ -46,19 +30,35 @@ const GoodsDetail = (props) => {
     categoryRule: [
       {
         label: '指定行业',
-        name: 'remark',
+        name: 'ruleConditionsList',
+        render: (val) =>
+          val
+            ?.map((item) =>
+              item.categoryIdString
+                ? `${item.topCategoryName}/${item?.categoryName}`
+                : `${item.topCategoryName}`,
+            )
+            .join(';'),
       },
     ],
     merchantRule: [
       {
         label: '指定店铺',
         name: 'remark',
+        render: (val) => {
+          const str = val.slice(2);
+          return str && `${str}可用`;
+        },
       },
     ],
     goodsRule: [
       {
         label: '指定商品',
         name: 'remark',
+        render: (val) => {
+          const str = val.slice(2);
+          return str && `${str}可用`;
+        },
       },
     ],
     tagRule: [
@@ -108,10 +108,10 @@ const GoodsDetail = (props) => {
   }[ruleType];
 
   // 店铺/集团 表头
-  const merchantGetColumns = [
+  const merchantGetColumns = (id) => [
     {
       title: '店铺类型',
-      dataIndex: listProps?.id,
+      dataIndex: 'mobile',
       render: (val, row) =>
         subRuleType === 'group' ? '集团' : row.groupIdString ? '子门店' : '单店',
     },
@@ -121,7 +121,7 @@ const GoodsDetail = (props) => {
     },
     {
       title: '店铺ID',
-      dataIndex: listProps?.id,
+      dataIndex: id,
     },
     {
       title: '经营类目',
@@ -203,29 +203,24 @@ const GoodsDetail = (props) => {
 
   const listProps = {
     merchant: {
-      getColumns: merchantGetColumns,
-      id: 'userMerchantIdString',
-      list: 'userMerchantId',
+      getColumns: merchantGetColumns('userMerchantId'),
+      id: 'userMerchantId',
     },
     group: {
-      getColumns: merchantGetColumns,
+      getColumns: merchantGetColumns('merchantGroupId'),
       id: 'merchantGroupId',
-      list: 'merchantGroupList',
     },
     specialGoods: {
       getColumns: specialGoodsColumns,
       id: 'specialGoodsId',
-      list: 'specialGoodsList',
     },
     reduceCoupon: {
       getColumns: ownerCouponColumns,
       id: 'ownerCouponIdString',
-      list: 'reduceCouponList',
     },
     commerceGoods: {
       getColumns: specialGoodsColumns,
       id: 'specialGoodsId',
-      list: 'commerceGoodsList',
     },
   }[subRuleType];
 
@@ -233,13 +228,14 @@ const GoodsDetail = (props) => {
     <>
       <DescriptionsCondition
         formItems={[...formItems, ...itemsProps]}
-        initialValues={{ ...detail, ...ruleDetailListObj }}
+        initialValues={detail}
+        // initialValues={{ ...detail, ...ruleDetailListObj }}
       ></DescriptionsCondition>
       {['merchantRule', 'goodsRule'].includes(ruleType) ? (
         <TableDataBlock
           noCard={false}
-          columns={listProps?.getColumns || []}
-          rowKey={(record) => `${record[listProps?.id]}`}
+          columns={listProps.getColumns || []}
+          rowKey={(record) => `${record[listProps.id]}`}
           params={{ ruleId: ruleId }}
           dispatchType="couponRulesManage/fetchRuleDetailPage"
           list={ruleDetailListObj.ruleConditionsList}

@@ -68,8 +68,8 @@ const PlatformManage = (props) => {
         <div>
           <div style={{ display: 'flex', marginTop: 5 }}>
             <Tag style={{ borderRadius: 11 }} color="#87d068">{`${
-              PLATFORM_TICKET_SCENE[row.useScenesType]
-            }${PLATFORM_TICKET_TYPE[row.classType]}`}</Tag>
+              PLATFORM_TICKET_TYPE[row.useScenesType][row.classType]
+            }`}</Tag>
             <Ellipsis length={10} tooltip>
               {val}
             </Ellipsis>
@@ -204,7 +204,7 @@ const PlatformManage = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.platformCouponId}`}
-        // dispatchType="platformCoupon/fetchGetList"
+        dispatchType="platformCoupon/fetchGetList"
         {...platformCouponList}
       ></TableDataBlock>
       {/* 新增 编辑 详情 */}

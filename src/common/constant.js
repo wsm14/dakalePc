@@ -857,10 +857,22 @@ export const PLATFORM_TICKET_SCENE = {
 
 // 平台券管理 - 券类型
 export const PLATFORM_TICKET_TYPE = {
-  universal: '通用券',
-  // category:'行业券',
-  // merchant:'店铺券',
-  // goods:'商品券',
+  goodsBuy: {
+    universal: '商品通用券',
+    category: '行业商品券',
+    merchant: '店铺商品券',
+    goods: '指定商品券',
+  },
+  // scan: '扫码',
+  virtual: {
+    universal: '虚拟通用券',
+    goods: '指定虚拟券',
+  },
+  commerce: {
+    universal: '电商通用券',
+    goods: '指定电商券',
+  },
+  // community: '团购',
 };
 
 // 平台券管理 - 使用时间
@@ -922,8 +934,8 @@ export const CONPON_RULES_GOODS_TYPE = {
   specialGoods: '特惠商品',
   reduceCoupon: '有价券',
   commerceGoods: '电商品',
-  phoneBill: '话费',
-  member: '会员',
+  phoneBill: '话费充值',
+  member: '会员充值',
 };
 
 // 券规则管理  用户类型  适用人群

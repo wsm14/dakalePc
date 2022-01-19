@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'umi';
 import { Form, Button, Input, Tag } from 'antd';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import { GOODS_CLASS_TYPE, BUSINESS_TYPE, CONPON_RULES_GOODS_TYPE } from '@/common/constant';
-import MerchantModal from './MerchantModal';
+import { GOODS_CLASS_TYPE, CONPON_RULES_GOODS_TYPE } from '@/common/constant';
+import GoodsRuleModal from './GoodsRuleModal';
 
 const FormItem = Form.Item;
 
@@ -13,7 +12,7 @@ const FormItem = Form.Item;
  * 商品
  * @param {String} ruleShowApi 选择的规则类型
  */
-const index = ({ form, ruleShowApi, dispatch }) => {
+const index = ({ form, ruleShowApi }) => {
   const [visible, setVisible] = useState(false); // 选择店铺Modal
   const [shopData, setShopData] = useState({ subRuleType: 'specialGoods', list: [] }); // 暂存数据
 
@@ -113,7 +112,7 @@ const index = ({ form, ruleShowApi, dispatch }) => {
     setShopData({ ...shopData, list: newList });
     form.setFieldsValue({
       remark: ['phoneBill', 'member'].includes(shopData.subRuleType)
-        ? `已选${CONPON_RULES_GOODS_TYPE[shopData.subRuleType]}充值`
+        ? `已选${CONPON_RULES_GOODS_TYPE[shopData.subRuleType]}`
         : `已选${shopData.list.length}个${CONPON_RULES_GOODS_TYPE[shopData.subRuleType]}`,
       ruleConditions: newList.map((item) => ({
         condition: item[listProps.id],
@@ -145,7 +144,7 @@ const index = ({ form, ruleShowApi, dispatch }) => {
         {shopData.list.length > 0
           ? `（已选${shopData.list.length}个${CONPON_RULES_GOODS_TYPE[shopData.subRuleType]}）`
           : ['phoneBill', 'member'].includes(shopData.subRuleType)
-          ? `（已选${CONPON_RULES_GOODS_TYPE[shopData.subRuleType]}充值）`
+          ? `（已选${CONPON_RULES_GOODS_TYPE[shopData.subRuleType]}）`
           : ''}
       </FormItem>
       {['phoneBill', 'member'].includes(shopData.subRuleType) ? null : (
@@ -157,13 +156,14 @@ const index = ({ form, ruleShowApi, dispatch }) => {
           total={shopData.list.length}
         ></TableDataBlock>
       )}
-      <MerchantModal
+      {/* 选择指定商品 */}
+      <GoodsRuleModal
         form={form}
         shopData={shopData}
         setShopData={setShopData}
         visible={visible}
         onClose={() => setVisible(false)}
-      ></MerchantModal>
+      ></GoodsRuleModal>
       <FormItem label="ruleConditions" hidden name="ruleConditions">
         <Input />
       </FormItem>
@@ -177,4 +177,4 @@ const index = ({ form, ruleShowApi, dispatch }) => {
   );
 };
 
-export default connect(({}) => ({}))(index);
+export default index;

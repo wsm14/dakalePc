@@ -63,12 +63,11 @@ const PlatformManage = (props) => {
       type: 'handle',
       width: 150,
       dataIndex: 'ruleId',
-      render: (ruleId, record) => {
+      render: (ruleId, row) => {
         return [
           {
             type: 'info',
-            click: () => fetchCouponDetail(ruleId, 'info', record),
-            // click: () => setVisible({ type: 'info', show: true, ruleId }),
+            click: () => setVisible({ type: 'info', show: true, row }),
           },
           // {
           //   type: 'edit',
@@ -85,18 +84,6 @@ const PlatformManage = (props) => {
       type: 'couponRulesManage/fetchUpdateRuleStatus',
       payload,
       callback: childRef.current.fetchGetData,
-    });
-  };
-
-  // 获取详情
-  const fetchCouponDetail = (ruleId, type, record) => {
-    dispatch({
-      type:
-        record.ruleType === 'tagRule'
-          ? 'couponRulesManage/fetchRuleDetailPage'
-          : 'couponRulesManage/fetchRuleDetail',
-      payload: { ruleId },
-      callback: (detail) => setVisible({ type, show: true, detail, ruleId }),
     });
   };
 
@@ -134,6 +121,7 @@ const PlatformManage = (props) => {
 export default connect(({ couponRulesManage, loading }) => ({
   couponRuleslist: couponRulesManage.list,
   loading:
-    loading.effects['platformCoupon/fetchGetList'] ||
-    loading.effects['platformCoupon/fetchGetPlatformCouponDetail'],
+    loading.effects['couponRulesManage/fetchGetList'] ||
+    loading.effects['couponRulesManage/fetchRuleDetail'] ||
+    loading.effects['couponRulesManage/fetchRuleDetailPage'],
 }))(PlatformManage);

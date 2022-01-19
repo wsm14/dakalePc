@@ -14,12 +14,12 @@ import {
   COMMERCEGOODS_STATUS,
 } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
+import imgUrl from './充值商品图.png';
 
 const VaneDrawer = (props) => {
   const {
     visible,
     form,
-    dispatch,
     onClose,
     loading,
     shopData,
@@ -33,6 +33,10 @@ const VaneDrawer = (props) => {
 
   const [tabKey, setTabKey] = useState('specialGoods');
   const [selectItem, setSelectItem] = useState([]); // 选中项
+
+  useEffect(() => {
+    childRef?.current?.fetchGetData();
+  }, [tabKey]);
 
   useEffect(() => {
     if (visible) {
@@ -269,21 +273,21 @@ const VaneDrawer = (props) => {
     specialGoods: {
       dispatchType: 'couponRulesManage/fetchListSpecialGoodsManagement',
       totalList: specialGoodsList,
-      params: { activityType: 'specialGoods', deleteFlag: 1 },
+      params: { activityType: 'specialGoods', deleteFlag: 1, status: 1 },
       getColumns: specialGoodsColumns,
       id: 'specialGoodsId',
     },
     reduceCoupon: {
       dispatchType: 'baseData/fetchGetAllCouponSelect',
       totalList: couponList,
-      params: { buyFlag: 1 },
+      params: { buyFlag: 1, reduceCoupon: 1 },
       getColumns: ownerCouponColumns,
       id: 'ownerCouponIdString',
     },
     commerceGoods: {
       dispatchType: 'baseData/fetchGetPlatformCommerceGoodsSelect',
       totalList: platformEquityList,
-      params: { activityType: 'commerceGoods' },
+      params: { activityType: 'commerceGoods', status: 1 },
       getColumns: specialGoodsColumns,
       id: 'specialGoodsId',
     },
@@ -301,7 +305,7 @@ const VaneDrawer = (props) => {
     onOk: () => {
       form.setFieldsValue({
         remark: ['phoneBill', 'member'].includes(tabKey)
-          ? `已选${CONPON_RULES_GOODS_TYPE[tabKey]}充值`
+          ? `已选${CONPON_RULES_GOODS_TYPE[tabKey]}`
           : `已选${selectItem.length}个${CONPON_RULES_GOODS_TYPE[tabKey]}`,
         ruleConditions: ['phoneBill', 'member'].includes(tabKey)
           ? [
@@ -334,26 +338,54 @@ const VaneDrawer = (props) => {
         activeTabKey={tabKey}
         onTabChange={(key) => {
           setTabKey(key);
-          // childRef.current.fetchGetData({ type: key });
         }}
         bordered={false}
       >
         {['specialGoods', 'reduceCoupon', 'commerceGoods'].includes(tabKey) ? (
           <TableDataBlock
             noCard={false}
+            searchShowData={{ [tabKey === 'reduceCoupon' ? 'ownerCouponStatus' : 'status']: '1' }}
             rowSelection={{
               selectedRowKeys: selectItem.map((i) => i[listProps.id]),
-              onChange: (val, list) => {
-                // 先去重处理 排除重复已选数据
-                // 再对 已选的数据和最新数据进行去重处理 获得去重后结果
+              onSelect: (row, selected, list) => {
                 const obj = {};
-                const newSelectList = [...selectItem, ...list].reduce((item, next) => {
-                  next && obj[next[listProps.id]]
-                    ? ''
-                    : next && (obj[next[listProps.id]] = true && item.push(next));
-                  return item;
-                }, []);
-                // .filter((item) => item && val.includes(item['id']));
+                /**
+                 * 获取当前所有数据 且保留 list 内不为undefind的数据
+                 * 当selected为true选中状态时 filter 返回true 保留数据
+                 * 当selected为false取消选中 排除当前点击项目
+                 */
+                const allSelectList = [...selectItem, ...list].filter((i) =>
+                  selected ? i : i && i[listProps.id] !== row[listProps.id],
+                );
+                const allIdArr = allSelectList.map((i) => i[listProps.id]); // 获取所有id
+                // 去重数据
+                const newSelectList = allSelectList
+                  .reduce((item, next) => {
+                    next && obj[next[listProps.id]]
+                      ? ''
+                      : next && (obj[next[listProps.id]] = true && item.push(next));
+                    return item;
+                  }, [])
+                  .filter((item) => item && allIdArr.includes(item[listProps.id]));
+                setSelectItem(newSelectList);
+              },
+              onSelectAll: (selected, selectedRows, changeRows) => {
+                const obj = {};
+                const allSelectList = [...selectItem, ...changeRows].filter((i) =>
+                  selected
+                    ? i
+                    : i && !changeRows.map((it) => it[listProps.id]).includes(i[listProps.id]),
+                );
+                const allIdArr = allSelectList.map((i) => i[listProps.id]); // 获取所有id
+                // 去重数据
+                const newSelectList = allSelectList
+                  .reduce((item, next) => {
+                    next && obj[next[listProps.id]]
+                      ? ''
+                      : next && (obj[next[listProps.id]] = true && item.push(next));
+                    return item;
+                  }, [])
+                  .filter((item) => item && allIdArr.includes(item[listProps.id]));
                 setSelectItem(newSelectList);
               },
             }}
@@ -377,8 +409,8 @@ const VaneDrawer = (props) => {
               flexDirection: 'column',
             }}
           >
-            <div></div>
-            <div>{`选择所有${CONPON_RULES_GOODS_TYPE[tabKey]}充值商品参与`}</div>
+            <img src={imgUrl}></img>
+            <div>{`选择所有${CONPON_RULES_GOODS_TYPE[tabKey]}商品参与`}</div>
           </div>
         )}
       </Card>

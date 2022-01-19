@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'umi';
+import React, { useState } from 'react';
 import { CONPON_RULES_TYPE } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 import RulesSet from './components/RulesSet';
@@ -18,6 +17,9 @@ const CouponRulesManageSet = (props) => {
       select: CONPON_RULES_TYPE,
       onChange: (val) => {
         setRuleShowApi(val);
+        form.setFieldsValue({
+          ruleConditions: [],
+        });
       },
     },
     {
@@ -39,14 +41,8 @@ const CouponRulesManageSet = (props) => {
   ];
 
   return (
-    <>
-      <FormCondition
-        form={form}
-        formItems={formItems}
-        initialValues={initialValues}
-      ></FormCondition>
-    </>
+    <FormCondition form={form} formItems={formItems} initialValues={initialValues}></FormCondition>
   );
 };
 
-export default connect(({}) => ({}))(CouponRulesManageSet);
+export default CouponRulesManageSet;

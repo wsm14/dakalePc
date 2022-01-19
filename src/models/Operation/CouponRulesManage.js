@@ -23,7 +23,7 @@ export default {
       total: 0,
     },
     specialGoodsList: { list: [], total: 0 },
-    ruleDetailListObj: {},
+    ruleDetailListObj: { ruleConditionsList: [], total: 0 },
   },
 
   reducers: {
@@ -68,12 +68,12 @@ export default {
     *fetchGetGroupMreList({ payload }, { put, call }) {
       const { type = 'merchant', name, ...other } = payload;
       const newPayload = {
-        merchant: { merchantName: name }, // 单店
+        merchant: { merchantName: name, businessStatus: 1 }, // 单店
         group: { groupName: name }, // 集团
       }[type];
       const response = yield call(
         { merchant: fetchConponListMerchant, group: fetchConponListMerchantGroup }[type],
-        { bankStatus: 3, ...newPayload, ...other },
+        { bankStatus: 3, status: 1, ...newPayload, ...other },
       );
       if (!response) return;
       const { content } = response;
@@ -143,6 +143,7 @@ export default {
       const { content } = response;
 
       const {
+        categoryList, // 行业列表
         userMerchantList, // 店铺列表
         merchantGroupList, // 集团列表
         specialGoodsList, // 特惠
@@ -155,6 +156,7 @@ export default {
 
       const data = {
         ruleConditionsList:
+          categoryList ||
           userMerchantList ||
           merchantGroupList ||
           reduceCouponList ||

@@ -641,7 +641,10 @@ export default {
     },
     //get 券规则管理 - 标签列表
     *fetchListConfigGoodsTag({ payload }, { put, call }) {
-      const response = yield call(fetchListConfigGoodsTag, payload);
+      const response = yield call(fetchListConfigGoodsTag, {
+        status: 1,
+        ...payload,
+      });
       if (!response) return;
       const { content } = response;
 
