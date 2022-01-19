@@ -61,7 +61,7 @@ const RuleModal = (props) => {
         {
           type: 'eye',
           auth: true,
-          click: () => setVisible({ type: 'info', show: true, row }),
+          click: () => setVisibleSee({ type: 'info', show: true, row }),
         },
       ],
     },

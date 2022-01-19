@@ -449,7 +449,7 @@ export default [
         path: '/operation/couponRulesManage',
         name: '券规则管理',
         component: './Operation/CouponRulesManage',
-        buttons: ['addnum', 'info', 'edit', 'down', 'save', 'up'],
+        buttons: ['info', 'edit', 'save', 'status', 'eye'],
       },
       {
         path: '/operation/spreeManage',

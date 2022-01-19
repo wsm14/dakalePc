@@ -29,7 +29,7 @@ const CouponDrawer = (props) => {
         increaseRule,
         beanNum,
         maxValue,
-        ruleList,
+        ruleList = [],
         ...other
       } = values;
 
@@ -50,12 +50,15 @@ const CouponDrawer = (props) => {
             personLimit,
             dayMaxBuyAmount,
           },
-          increaseRuleObject: increaseRule === '1' && {
-            type: 'bean',
-            beanNum,
-            maxValue,
-          },
-          ruleList: ruleList.map((item) => ({
+          increaseRuleObject:
+            increaseRule === '1'
+              ? {
+                  type: 'bean',
+                  beanNum,
+                  maxValue,
+                }
+              : undefined,
+          ruleList: ruleList?.map((item) => ({
             ruleId: item.ruleId,
           })),
         },
