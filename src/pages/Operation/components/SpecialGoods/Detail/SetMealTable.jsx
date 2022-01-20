@@ -28,6 +28,7 @@ const SetMealTable = (props) => {
               noCard={false}
               columns={getColumns}
               rowKey={(record) => `${record.goodsName}` + (0.5 - Math.random()).toString()}
+              pagination={false}
               {...data}
             ></TableDataBlock>
           </div>

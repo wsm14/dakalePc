@@ -30,7 +30,7 @@ export default {
   state: {
     list: { list: [], total: 0 },
     UGCList: { list: [], total: 0 },
-    rewardList: { list: [], total: 0 },
+    rewardList: [],
     couponList: { list: [], total: 0 },
     infoList: { list: [], total: 0, sumRewardBean: 0 },
   },
@@ -207,10 +207,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          rewardList: {
-            list: content.tippingList,
-            total: content.total,
-          },
+          rewardList: content.tippingList,
         },
       });
     },
