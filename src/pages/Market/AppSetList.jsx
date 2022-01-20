@@ -113,7 +113,7 @@ const SysAppSet = (props) => {
       title: '活动时间',
       align: 'center',
       dataIndex: 'beginDate',
-      render: (val, row) => `${val}~${row.endDate}`,
+      render: (val, row) => `${val || ''}~${row.endDate || ''}`,
     },
     {
       title: '创建时间',
@@ -225,6 +225,7 @@ const SysAppSet = (props) => {
         dispatchType="sysAppList/fetchGetList"
         {...sysAppList}
       ></TableDataBlock>
+      {/* 新增 */}
       <SysAppSetForm
         bannerTypeObj={bannerTypeObj}
         tabKey={tabKey}

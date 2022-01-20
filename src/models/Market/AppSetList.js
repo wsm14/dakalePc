@@ -72,15 +72,21 @@ export default {
         param,
         hideTitle = false,
         provinceCityDistrictObjects: cityData = [],
+        beginDate,
+        endDate,
       } = content.bannerDTO;
-      callback({
+      const data = {
         ...content.bannerDTO,
+        beginDate,
+        endDate,
+        activityTime: [moment(beginDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
         provinceCityDistrictObjects: cityData.map(({ provinceCode, cityCode, districtCode }) => ({
           city: [provinceCode, cityCode, districtCode].filter((i) => i),
         })),
         param: JSON.parse(param || '{}'),
         hideTitle: !Number(hideTitle),
-      });
+      };
+      callback && callback(data);
     },
     *fetchBannerEdit({ payload, callback }, { call }) {
       const response = yield call(fetchBannerEdit, payload);

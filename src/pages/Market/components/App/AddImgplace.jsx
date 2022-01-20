@@ -16,6 +16,12 @@ const AddImgplace = (props) => {
       label: '中文命名',
       name: 'desc',
       maxLength: 10,
+      addRules: [
+        {
+          pattern: NO_BLOCK_PATTERN,
+          message: '请勿携带空格',
+        },
+      ],
     },
     {
       label: '英文命名',
