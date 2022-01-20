@@ -13,6 +13,7 @@ import ExtraButton from '@/components/ExtraButton';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import SysAppSetForm from './components/App/SysAppSet';
+import AddImgplace from './components/App/AddImgplace';
 
 const SysAppSet = (props) => {
   const { sysAppList, loading, dispatch } = props;
@@ -21,6 +22,7 @@ const SysAppSet = (props) => {
   const [form] = Form.useForm();
   const [visibleSet, setVisibleSet] = useState({ show: false, info: '' });
   const [tabKey, setTabKey] = useState('user');
+  const [visibleAddImg, setVisibleAddImg] = useState(false); // 新增位置
 
   useEffect(() => {
     fetchBannerRatio();
@@ -109,6 +111,12 @@ const SysAppSet = (props) => {
       },
     },
     {
+      title: '活动时间',
+      align: 'center',
+      dataIndex: 'beginDate',
+      render: (val, row) => `${val}~${row.endDate}`,
+    },
+    {
       title: '创建时间',
       align: 'center',
       dataIndex: 'createTime',
@@ -173,6 +181,11 @@ const SysAppSet = (props) => {
 
   const btnList = [
     {
+      text: '新增位置',
+      auth: 'addPlace',
+      onClick: () => setVisibleAddImg(true),
+    },
+    {
       onClick: () => {
         const type = tabKey === 'mark' ? 'markMain' : null;
         setVisibleSet({
@@ -215,6 +228,11 @@ const SysAppSet = (props) => {
         visible={visibleSet}
         onClose={() => setVisibleSet({ show: false })}
       ></SysAppSetForm>
+      <AddImgplace
+        tabKey={tabKey}
+        visible={visibleAddImg}
+        onClose={() => setVisibleAddImg(false)}
+      ></AddImgplace>
     </>
   );
 };

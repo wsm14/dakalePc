@@ -171,7 +171,7 @@ export const platformCouponsDom = (item = {}, id = '', setSelectItem, onDel) => 
           </div>
           <div className="share_title">
             <div>
-              <span className="pCoupon_tit_type">{`${PLATFORM_TICKET_SCENE[useScenesType]}${PLATFORM_TICKET_TYPE[classType]}`}</span>
+              <span className="pCoupon_tit_type">{`${PLATFORM_TICKET_TYPE[useScenesType][classType]}`}</span>
               <span className="titile">
                 <Ellipsis length={9} tooltip>
                   {couponName}

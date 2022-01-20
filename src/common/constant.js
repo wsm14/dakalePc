@@ -198,7 +198,7 @@ export const MRE_STOCK_STATUS = ['已售罄', '未售罄'];
 export const WORKER_JOB_TYPE = ['离职', '在职'];
 
 // 广告管理 - 展示状态
-export const BANNER_SHOW_STATUS = ['已下架', '展示中'];
+export const BANNER_SHOW_STATUS = ['已下架', '展示中', '即将开始'];
 
 // 广告管理 - 投放区域类型
 export const BANNER_AREA_TYPE = { all: '全平台', detail: '省市区' };
