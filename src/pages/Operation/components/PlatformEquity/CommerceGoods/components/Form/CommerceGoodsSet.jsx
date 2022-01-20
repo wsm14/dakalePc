@@ -167,7 +167,7 @@ const CommerceGoodsSet = ({
       label: '售卖价格',
       name: ['paymentModeObject', 'type'],
       type: 'radio',
-      disabled: commonDisabled,
+      disabled: editDisabled,
       select: COMMERCE_GOODSBUY_TYPE,
       onChange: (e) => {
         // form.setFieldsValue({
@@ -187,7 +187,7 @@ const CommerceGoodsSet = ({
       label: '卡豆数',
       name: ['paymentModeObject', 'bean'],
       type: 'number',
-      disabled: commonDisabled,
+      disabled: editDisabled,
       precision: 0,
       min: 0,
       max: 999999,
@@ -198,7 +198,7 @@ const CommerceGoodsSet = ({
       label: '现金',
       name: ['paymentModeObject', 'cash'],
       type: 'number',
-      disabled: commonDisabled,
+      disabled: editDisabled,
       precision: 2,
       min: 0.01,
       max: 999999.99,
@@ -210,7 +210,7 @@ const CommerceGoodsSet = ({
       label: '现金',
       name: 'realPrice',
       type: 'number',
-      disabled: commonDisabled,
+      disabled: editDisabled,
       precision: 2,
       min: 0.01,
       max: 999999.99,
@@ -264,7 +264,7 @@ const CommerceGoodsSet = ({
       max: 999999,
       visible: commissionShow === '1',
       suffix: '卡豆',
-      disabled: commonDisabled,
+      disabled: editDisabled,
       onChange: () => {
         const keyArr = manualList.map((i) => [
           'serviceDivisionDTO',

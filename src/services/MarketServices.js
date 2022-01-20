@@ -237,9 +237,9 @@ export function fetchBannerList(params) {
   });
 }
 
-// get banner管理 - 获取banner图片分辨率
+// get banner管理 - banner图片位置+banner图片分辨率 -列表
 export function fetchBannerRatio(params) {
-  return request('/admin/bannerManagement/getBannerPictureResolutionConfig', {
+  return request('/admin/configBannerType/listConfigBannerType', {
     params,
   });
 }
@@ -270,6 +270,14 @@ export function fetchBannerStatus(data) {
 // post banner管理 - 新增
 export function fetchBannerSet(data) {
   return request('/admin/bannerManagement/saveBannerMarketPlatform', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post banner管理 - banner图片位置 - 新增
+export function fetchSaveConfigBannerType(data) {
+  return request('/admin/configBannerType/saveConfigBannerType', {
     method: 'POST',
     data,
   });

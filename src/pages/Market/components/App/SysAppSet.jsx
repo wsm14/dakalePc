@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
+import moment from 'moment';
 import { Button, Form } from 'antd';
 import { BANNER_PORT_LINK, BANNER_AREA_TYPE, BANNER_LOOK_AREA } from '@/common/constant';
 import { CitySet, NativeFormSet } from '@/components/FormListCondition';
@@ -8,7 +9,7 @@ import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const SysAppSet = (props) => {
-  const { dispatch, cRef, visible, onClose, tabKey, radioType, loading } = props;
+  const { dispatch, cRef, visible, onClose, tabKey, radioType, loading, bannerTypeObj } = props;
 
   const { show = false, type = 'add', detail = { provinceCityDistrictObjects: [{}] } } = visible;
   const [form] = Form.useForm();
@@ -19,7 +20,12 @@ const SysAppSet = (props) => {
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      const { coverImg, hideTitle = false, provinceCityDistrictObjects: cityData = [] } = values;
+      const {
+        coverImg,
+        hideTitle = false,
+        provinceCityDistrictObjects: cityData = [],
+        activityTime,
+      } = values;
       // 城市数据整理
       const provinceCityDistrictObjects = cityData.map(({ city }) => ({
         provinceCode: city[0],
@@ -33,6 +39,8 @@ const SysAppSet = (props) => {
           payload: {
             bannerId: detail.bannerIdString,
             ...values,
+            beginDate: moment(activityTime[0]).format('YYYY-MM-DD'),
+            endDate: moment(activityTime[1]).format('YYYY-MM-DD'),
             userType: tabKey,
             hideTitle: Number(!hideTitle),
             provinceCityDistrictObjects,
@@ -52,7 +60,7 @@ const SysAppSet = (props) => {
       label: '图片位置',
       type: 'select',
       name: 'bannerType',
-      select: BANNER_PORT_LINK[tabKey],
+      select: bannerTypeObj,
       onChange: setShowRadio,
     },
     {
@@ -61,7 +69,13 @@ const SysAppSet = (props) => {
       name: 'coverImg',
       visible: showRadio,
       maxFile: 1,
-      imgRatio: radioType[tabKey][showRadio],
+      imgRatio: radioType[showRadio],
+    },
+    {
+      label: '活动时间',
+      type: 'rangePicker',
+      name: 'activityTime',
+      disabledDate: (current) => current && current < moment().subtract(1, 'days'),
     },
     {
       label: '图片说明',
