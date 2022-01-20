@@ -8,7 +8,7 @@ import RewardCreate from './RewardCreate';
 /**
  * 打赏设置
  */
-const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
+const RewardSet = ({ rewardList, visible, onClose, dispatch, loading }) => {
   const childRef = useRef(); // 表格ref
   const [visibleCreate, setVisibleCreate] = useState(false); // 创建打赏
 
@@ -123,7 +123,8 @@ const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
           params={{ momentId: detail.momentId }}
           rowKey={(record) => record.momentTippingId}
           dispatchType="videoPlatform/fetchNewShareRewardSetList"
-          {...list}
+          pagination={false}
+          list={rewardList}
         ></TableDataBlock>
       </Modal>
       {/* 创建打赏 */}
@@ -138,6 +139,6 @@ const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
 };
 
 export default connect(({ videoPlatform, loading }) => ({
-  list: videoPlatform.rewardList,
+  rewardList: videoPlatform.rewardList,
   loading: loading.effects['videoPlatform/fetchNewShareRewardSetList'],
 }))(RewardSet);
