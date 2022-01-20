@@ -818,6 +818,9 @@ export const STROLLAROUND_TAB_TYPE = {
 // 全局配置 - 首页tab配置
 export const TAB_INDEX_TYPE = { iOS: 'iOS', android: 'Android', weChat: '小程序' };
 
+// 全局配置 - 底部中心icon配置
+export const BOTTOM_ICON_TYPE = { iOS: 'iOS', android: 'Android' };
+
 // 全局配置 - 虚拟商品优惠比例配置
 export const VIRTUAL_CONFIG_TYPE = { phoneBill: '话费优惠', memberRecharge: '会员优惠' };
 

@@ -8,6 +8,7 @@ import RechargeShare from './components/GlobalConfig/RechargeShare';
 import UgcLabel from './components/GlobalConfig/UgcLabel';
 import TabConfigure from './components/GlobalConfig/TabConfigure';
 import VirtualRatioConfig from './components/GlobalConfig/VirtualRatioConfig';
+import BottomIconConfig from './components/GlobalConfig/BottomIconConfig';
 
 const GlobalConfig = (props) => {
   let main = undefined;
@@ -75,6 +76,11 @@ const GlobalConfig = (props) => {
       type: 'virtualRatioConfig',
       menuName: '虚拟商品优惠比例配置',
       block: <VirtualRatioConfig></VirtualRatioConfig>,
+    },
+    {
+      type: 'bottomIconConfig',
+      menuName: '底部中心icon配置',
+      block: <BottomIconConfig></BottomIconConfig>,
     },
   ];
   // 显示内容判断

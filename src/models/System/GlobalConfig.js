@@ -22,6 +22,9 @@ import {
   fetchSavePreferentialActivity,
   fetchUpdatePreferentialActivity,
   fetchGetPreferentialActivityById,
+  fetchListConfigBottomCenterIcon,
+  fetchSaveConfigBottomCenterIcon,
+  fetchUpdateConfigBottomCenterIcon,
 } from '@/services/SystemServices';
 
 export default {
@@ -40,6 +43,7 @@ export default {
       list: [],
       total: 0,
     },
+    bottomIconList: { list: [] },
   },
 
   reducers: {
@@ -404,6 +408,39 @@ export default {
       };
 
       callback && callback(data);
+    },
+
+    //底部中心icon配置 - 版本列表
+    *fetchListConfigBottomCenterIcon({ payload }, { call, put }) {
+      const response = yield call(fetchListConfigBottomCenterIcon, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          bottomIconList: { list: content.configBottomCenterIconDTOS },
+        },
+      });
+    },
+    //底部中心icon配置 - 新增版本
+    *fetchSaveConfigBottomCenterIcon({ payload, callback }, { call }) {
+      const response = yield call(fetchSaveConfigBottomCenterIcon, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增成功',
+      });
+      callback && callback();
+    },
+    //底部中心icon配置 - 编辑版本
+    *fetchUpdateConfigBottomCenterIcon({ payload, callback }, { call }) {
+      const response = yield call(fetchUpdateConfigBottomCenterIcon, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '修改成功',
+      });
+      callback && callback();
     },
   },
 };
