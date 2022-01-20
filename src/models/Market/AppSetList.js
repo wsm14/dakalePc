@@ -65,7 +65,8 @@ export default {
       });
     },
     *fetchBannerDetail({ payload, callback }, { call }) {
-      const response = yield call(fetchBannerDetail, payload);
+      const { type = 'add', ...other } = payload;
+      const response = yield call(fetchBannerDetail, { ...other });
       if (!response) return;
       const { content } = response;
       const {
@@ -79,7 +80,8 @@ export default {
         ...content.bannerDTO,
         beginDate,
         endDate,
-        activityTime: [moment(beginDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
+        activityTime:
+          type === 'edit' ? [] : [moment(beginDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
         provinceCityDistrictObjects: cityData.map(({ provinceCode, cityCode, districtCode }) => ({
           city: [provinceCode, cityCode, districtCode].filter((i) => i),
         })),

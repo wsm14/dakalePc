@@ -6,7 +6,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
 
 const AddImgplace = (props) => {
-  const { loading, visible, onClose, tabKey, dispatch } = props;
+  const { loading, visible, onClose, tabKey, dispatch, getType } = props;
 
   const [form] = Form.useForm();
 
@@ -47,6 +47,7 @@ const AddImgplace = (props) => {
     },
   ];
 
+  // 确定新增
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
       dispatch({
@@ -55,7 +56,10 @@ const AddImgplace = (props) => {
           userType: tabKey,
           ...values,
         },
-        callback: onClose,
+        callback: () => {
+          onClose();
+          getType();
+        },
       });
     });
   };

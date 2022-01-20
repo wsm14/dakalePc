@@ -142,7 +142,7 @@ const SysAppSet = (props) => {
         },
         {
           type: 'edit',
-          click: () => fetchBannerDetail({ bannerId: val }),
+          click: () => fetchBannerDetail({ bannerId: val, type: 'edit' }),
         },
         {
           type: 'del',
@@ -235,6 +235,7 @@ const SysAppSet = (props) => {
       ></SysAppSetForm>
       {/* 新增图片位置 */}
       <AddImgplace
+        getType={() => fetchBannerRatio()}
         tabKey={tabKey}
         visible={visibleAddImg}
         onClose={() => setVisibleAddImg(false)}
