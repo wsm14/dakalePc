@@ -857,10 +857,22 @@ export const PLATFORM_TICKET_SCENE = {
 
 // 平台券管理 - 券类型
 export const PLATFORM_TICKET_TYPE = {
-  universal: '通用券',
-  // category:'行业券',
-  // merchant:'店铺券',
-  // goods:'商品券',
+  goodsBuy: {
+    universal: '商品通用券',
+    category: '行业商品券',
+    merchant: '店铺商品券',
+    goods: '指定商品券',
+  },
+  // scan: '扫码',
+  virtual: {
+    universal: '虚拟通用券',
+    goods: '指定虚拟券',
+  },
+  commerce: {
+    universal: '电商通用券',
+    goods: '指定电商券',
+  },
+  // community: '团购',
 };
 
 // 平台券管理 - 使用时间
@@ -872,12 +884,63 @@ export const PLATFORM_COUPON_PEOPLE = { all: '全部', daren: '哒人' };
 // 平台券管理 - 适用端口
 export const PLATFORM_APPLY_PORT = { all: '全部', noAll: '部分平台' };
 
+// 平台券管理 - 是否可膨胀
+export const PLATFORM_INCREASE_RULE = ['不可膨胀', '可膨胀'];
+
+// 券规则管理  端口类型
 // 平台券管理 - 适用端口type
 export const PLATFORM_APPLY_PORT_TYPE = {
   app: 'APP',
   weChat: '哒卡乐小程序',
   markWechat: '哒小卡小程序',
   communityWechat: '哒小团小程序',
+};
+
+// 券规则管理 - 父规则类型
+export const CONPON_RULES_TYPE = {
+  categoryRule: '行业',
+  merchantRule: '店铺',
+  goodsRule: '商品',
+  tagRule: '标签',
+  availableAreaRule: '可用区域',
+  unavailableAreaRule: '不可用区域',
+  userRule: '用户',
+  userOsRule: '端口',
+};
+
+// 券规则管理 - 子规则类型
+export const CONPON_RULES_SON_TYPE = {
+  category: '行业',
+  merchant: '店铺',
+  group: '集团',
+  specialGoods: '特惠商品',
+  reduceCoupon: '有价券',
+  commerceGoods: '电商品',
+  phoneBill: '话费',
+  member: '会员',
+  platformGoodsTags: '平台商品标签',
+  merchantTags: '商家标签',
+  availableArea: '可用区域',
+  unavailableArea: '不可用区域',
+  user: '用户',
+  userOs: '端口',
+};
+
+// 券规则管理  店铺 类型
+export const CONPON_RULES_BUSINESS_TYPE = { merchant: '单店/子门店', group: '集团' };
+
+// 券规则管理  商品 类型
+export const CONPON_RULES_GOODS_TYPE = {
+  specialGoods: '特惠商品',
+  reduceCoupon: '有价券',
+  commerceGoods: '电商品',
+  phoneBill: '话费充值',
+  member: '会员充值',
+};
+
+// 券规则管理  用户类型  适用人群
+export const CONPON_RULES_USER_TYPE = {
+  daren: '仅限哒人',
 };
 
 // 礼包管理 - 卡券类型

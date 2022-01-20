@@ -24,6 +24,7 @@ const ExtraButton = ({ list = [], children }) => {
     dispatch, // excel
     data, // excel
     exportProps, // excel
+    typeBtn,
   }) => {
     switch (type) {
       case 'excel':
@@ -40,6 +41,7 @@ const ExtraButton = ({ list = [], children }) => {
           <AuthConsumer auth={auth} show={show} key={auth}>
             <Badge count={count}>
               <Button
+                type={typeBtn}
                 className={className}
                 disabled={disabled}
                 onClick={onClick}
