@@ -6,7 +6,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
 
 const AddImgplace = (props) => {
-  const { loading, visible, onClose, tabKey } = props;
+  const { loading, visible, onClose, tabKey, dispatch } = props;
 
   const [form] = Form.useForm();
 
@@ -28,26 +28,29 @@ const AddImgplace = (props) => {
       ],
     },
     {
-      label: '图片尺寸',
-      type: 'formItem',
-      formItem: (
-        <div style={{ display: 'flex' }}>
-          <Form.Item name="width" noStyle>
-            <InputNumber />
-          </Form.Item>
-          <div style={{ height: 32, lineHeight: '32px', margin: '0 5px' }}>*</div>
-          <Form.Item name="height" noStyle>
-            <InputNumber />
-          </Form.Item>
-          <div style={{ height: 32, lineHeight: '32px', margin: '0 5px' }}>px</div>
-        </div>
-      ),
+      label: '图片尺寸宽度',
+      name: 'width',
+      type: 'number',
+      rules: [{ required: false }],
+    },
+    {
+      label: '图片尺寸高度',
+      name: 'height',
+      type: 'number',
+      rules: [{ required: false }],
     },
   ];
 
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      console.log('values', values);
+      dispatch({
+        type: 'sysAppList/fetchSaveConfigBannerType',
+        payload: {
+          userType: tabKey,
+          ...values,
+        },
+        callback: onClose,
+      });
     });
   };
 
@@ -69,4 +72,6 @@ const AddImgplace = (props) => {
   );
 };
 
-export default connect(({ loading }) => ({}))(AddImgplace);
+export default connect(({ loading }) => ({
+  loading: loading.effects['sysAppList/fetchSaveConfigBannerType'],
+}))(AddImgplace);

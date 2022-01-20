@@ -8,7 +8,7 @@ import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const SysAppSet = (props) => {
-  const { dispatch, cRef, visible, onClose, tabKey, radioType, loading } = props;
+  const { dispatch, cRef, visible, onClose, tabKey, radioType, loading, bannerTypeObj } = props;
 
   const { show = false, type = 'add', detail = { provinceCityDistrictObjects: [{}] } } = visible;
   const [form] = Form.useForm();
@@ -52,7 +52,7 @@ const SysAppSet = (props) => {
       label: '图片位置',
       type: 'select',
       name: 'bannerType',
-      select: BANNER_PORT_LINK[tabKey],
+      select: bannerTypeObj,
       onChange: setShowRadio,
     },
     {
@@ -61,7 +61,7 @@ const SysAppSet = (props) => {
       name: 'coverImg',
       visible: showRadio,
       maxFile: 1,
-      imgRatio: radioType[tabKey][showRadio],
+      imgRatio: radioType[showRadio],
     },
     {
       label: '图片说明',

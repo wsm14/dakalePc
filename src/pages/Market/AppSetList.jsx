@@ -4,7 +4,6 @@ import { Tooltip, Form } from 'antd';
 import {
   BANNER_LOOK_AREA,
   BANNER_PORT_TYPE,
-  BANNER_PORT_LINK,
   BANNER_JUMP_TYPE,
   BANNER_AREA_TYPE,
   BANNER_SHOW_STATUS,
@@ -16,7 +15,7 @@ import SysAppSetForm from './components/App/SysAppSet';
 import AddImgplace from './components/App/AddImgplace';
 
 const SysAppSet = (props) => {
-  const { sysAppList, loading, dispatch } = props;
+  const { sysAppList, bannerTypeObj, loading, dispatch } = props;
 
   const childRef = useRef();
   const [form] = Form.useForm();
@@ -26,7 +25,7 @@ const SysAppSet = (props) => {
 
   useEffect(() => {
     fetchBannerRatio();
-  }, []);
+  }, [tabKey]);
 
   // 搜索参数
   const searchItems = [
@@ -34,7 +33,7 @@ const SysAppSet = (props) => {
       label: '位置',
       name: 'bannerType',
       type: 'select',
-      select: BANNER_PORT_LINK[tabKey],
+      select: bannerTypeObj,
     },
     {
       label: '状态',
@@ -73,7 +72,7 @@ const SysAppSet = (props) => {
       title: '位置',
       align: 'center',
       dataIndex: 'bannerType',
-      render: (val) => BANNER_PORT_LINK[tabKey][val],
+      render: (val) => bannerTypeObj[val],
     },
     {
       title: '可见范围',
@@ -158,6 +157,10 @@ const SysAppSet = (props) => {
   const fetchBannerRatio = () => {
     dispatch({
       type: 'sysAppList/fetchBannerRatio',
+      payload: {
+        userType: tabKey,
+        deleteFlag: 1,
+      },
     });
   };
 
@@ -223,11 +226,13 @@ const SysAppSet = (props) => {
         {...sysAppList}
       ></TableDataBlock>
       <SysAppSetForm
+        bannerTypeObj={bannerTypeObj}
         tabKey={tabKey}
         cRef={childRef}
         visible={visibleSet}
         onClose={() => setVisibleSet({ show: false })}
       ></SysAppSetForm>
+      {/* 新增图片位置 */}
       <AddImgplace
         tabKey={tabKey}
         visible={visibleAddImg}
@@ -238,6 +243,7 @@ const SysAppSet = (props) => {
 };
 
 export default connect(({ sysAppList, loading }) => ({
-  sysAppList,
+  sysAppList: sysAppList.list,
+  bannerTypeObj: sysAppList.bannerTypeObj,
   loading: loading.models.sysAppList,
 }))(SysAppSet);

@@ -7,15 +7,16 @@ import {
   fetchBannerSet,
   fetchBannerEdit,
   fetchBannerStatus,
+  fetchSaveConfigBannerType,
 } from '@/services/MarketServices';
 
 export default {
   namespace: 'sysAppList',
 
   state: {
-    list: [],
-    total: 0,
+    list: { list: [], total: 0 },
     radioType: { user: {}, merchant: {}, weChat: {}, markMain: {} },
+    bannerTypeObj: {},
   },
 
   reducers: {
@@ -35,26 +36,30 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.recordList,
-          total: content.total,
+          list: {
+            list: content.recordList,
+            total: content.total,
+          },
         },
       });
     },
+    // get banner管理 - banner图片位置+banner图片分辨率 -列表
     *fetchBannerRatio({ payload }, { call, put }) {
       const response = yield call(fetchBannerRatio, payload);
       if (!response) return;
       const { content } = response;
-      let dataObj = {};
-      content.banner.bannerPictureResolutionConfigs.forEach((item) => {
-        let newObj = {};
-        item.pictureResolutionConfigs.forEach((it) => {
-          newObj[it.bannerType] = it.height / it.width;
-        });
-        dataObj[item.terminalType] = newObj;
+
+      let bannerTypeObj = {}; // banner图片位置
+      let dataObj = {}; // banner图片尺寸
+      content.configBannerTypeDTOS.forEach((item) => {
+        bannerTypeObj[item.type] = item.desc;
+        dataObj[item.type] = item.width / item.height;
       });
+
       yield put({
         type: 'save',
         payload: {
+          bannerTypeObj,
           radioType: dataObj,
         },
       });
@@ -105,6 +110,16 @@ export default {
         description: '占位图新增成功',
       });
       callback();
+    },
+    // post banner管理 - banner图片位置 - 新增
+    *fetchSaveConfigBannerType({ payload, callback }, { call }) {
+      const response = yield call(fetchSaveConfigBannerType, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: 'banner图片位置新增成功',
+      });
+      callback && callback();
     },
   },
 };
