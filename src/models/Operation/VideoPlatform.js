@@ -301,7 +301,7 @@ export default {
         tagsId,
         freeOwnerCouponList = [], // 免费券
         ownerCouponList = [], // 有价券
-        activityGoodsList = [], // 特惠商品
+        activityGoodsList = [], // 特惠商品 / 电商商品
         // addressContentList = [], // 定位
         ugcAddressObject, // UGC定位
         videoContent,
@@ -344,7 +344,12 @@ export default {
         promotionList: [
           ...freeOwnerCouponList.map((item) => ({ ...item, type: 'free' })),
           ...ownerCouponList.map((item) => ({ ...item, type: 'valuable' })),
-          ...activityGoodsList.map((item) => ({ ...item, type: 'special' })),
+          ...activityGoodsList
+            .filter((it) => it.activityType === 'specialGoods')
+            .map((item) => ({ ...item, type: 'special' })),
+          ...activityGoodsList
+            .filter((it) => it.activityType === 'commerceGoods')
+            .map((item) => ({ ...item, type: 'commer' })),
         ],
         videoContent: JSON.parse(videoContent || '{}'),
         ...editData,

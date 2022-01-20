@@ -5,9 +5,10 @@
  */
 import React, { useEffect, useState } from 'react';
 import ProLayout from '@ant-design/pro-layout';
-import { Affix, BackTop, Input } from 'antd';
+import { Affix, BackTop, Input, ConfigProvider } from 'antd';
 import { PageContainer, RouteContext } from '@ant-design/pro-layout';
 import { Link, connect } from 'umi';
+import zhCN from 'antd/lib/locale/zh_CN';
 import RouteAuthority from './RouteAuthority';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import HeaderContent from '@/components/GlobalHeader/HeaderContent';
@@ -112,66 +113,68 @@ const BasicLayout = (props) => {
 
   return (
     <AliveScope>
-      <ProLayout
-        onPageChange={handleCloseTitle}
-        logo={logo}
-        onCollapse={handleMenuCollapse}
-        menuExtraRender={({ collapsed }) =>
-          !collapsed && (
-            <Input.Search
-              onSearch={(e) => {
-                setKeyWord(e);
-              }}
-            />
-          )
-        }
-        menuItemRender={(menuItemProps, defaultDom) => {
-          if (menuItemProps.isUrl || !menuItemProps.path) {
-            return defaultDom;
+      <ConfigProvider locale={zhCN}>
+        <ProLayout
+          onPageChange={handleCloseTitle}
+          logo={logo}
+          onCollapse={handleMenuCollapse}
+          menuExtraRender={({ collapsed }) =>
+            !collapsed && (
+              <Input.Search
+                onSearch={(e) => {
+                  setKeyWord(e);
+                }}
+              />
+            )
           }
-          return <Link to={menuItemProps.path}>{defaultDom}</Link>;
-        }}
-        itemRender={(route, params, routes, paths) => {
-          return false;
-        }}
-        menuDataRender={() => menuDataRender(menuList)}
-        menu={{ loading }}
-        headerRender={() => <HeaderContent />}
-        postMenuData={(menus) => filterByMenuDate(menus, keyWord)}
-        rightContentRender={() => <RightContent />}
-        {...props}
-        {...settings}
-      >
-        <RouteAuthority authority={{ path: location.pathname, routes: props.route.routes }}>
-          <RouteContext.Consumer>
-            {(value) => {
-              const { pageTitleInfo } = value;
-              if (pageTitleInfo.id) {
-                return (
-                  <PageContainer
-                    subTitle={
-                      pageTitleInfo.id &&
-                      `${pageTitleInfo.id.split('.').slice(1, 3).join(' / ')}${
-                        pageTitle.length > 0 ? ' / ' : ''
-                      }
+          menuItemRender={(menuItemProps, defaultDom) => {
+            if (menuItemProps.isUrl || !menuItemProps.path) {
+              return defaultDom;
+            }
+            return <Link to={menuItemProps.path}>{defaultDom}</Link>;
+          }}
+          itemRender={(route, params, routes, paths) => {
+            return false;
+          }}
+          menuDataRender={() => menuDataRender(menuList)}
+          menu={{ loading }}
+          headerRender={() => <HeaderContent />}
+          postMenuData={(menus) => filterByMenuDate(menus, keyWord)}
+          rightContentRender={() => <RightContent />}
+          {...props}
+          {...settings}
+        >
+          <RouteAuthority authority={{ path: location.pathname, routes: props.route.routes }}>
+            <RouteContext.Consumer>
+              {(value) => {
+                const { pageTitleInfo } = value;
+                if (pageTitleInfo.id) {
+                  return (
+                    <PageContainer
+                      subTitle={
+                        pageTitleInfo.id &&
+                        `${pageTitleInfo.id.split('.').slice(1, 3).join(' / ')}${
+                          pageTitle.length > 0 ? ' / ' : ''
+                        }
                        ${pageTitle.join(' / ')}`
-                    }
-                    title={false}
-                    extra={pageBtn.length ? <Affix offsetTop={60}>{pageBtn}</Affix> : ''}
-                  >
-                    {children}
-                  </PageContainer>
-                );
-              } else {
-                return children;
-              }
-            }}
-          </RouteContext.Consumer>
-        </RouteAuthority>
-        <BackTop visibilityHeight={100} style={{ right: 25 }} />
-        {/* 日志 */}
-        <LogDetail></LogDetail>
-      </ProLayout>
+                      }
+                      title={false}
+                      extra={pageBtn.length ? <Affix offsetTop={60}>{pageBtn}</Affix> : ''}
+                    >
+                      {children}
+                    </PageContainer>
+                  );
+                } else {
+                  return children;
+                }
+              }}
+            </RouteContext.Consumer>
+          </RouteAuthority>
+          <BackTop visibilityHeight={100} style={{ right: 25 }} />
+          {/* 日志 */}
+          <LogDetail></LogDetail>
+        </ProLayout>
+      </ConfigProvider>
     </AliveScope>
   );
 };

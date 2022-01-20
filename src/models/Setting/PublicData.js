@@ -35,6 +35,10 @@ import {
   fetchListImportSubsidyRole,
   fetchListUserByIds,
   fetchGetPlatformEquitySelect,
+  fetchGetEquityCouponSelect,
+  fetchPlatformCouponSelect,
+  fetchListHitting,
+  fetchPagePreferentialActivity,
 } from '@/services/PublicServices';
 
 export default {
@@ -61,6 +65,10 @@ export default {
     CouponListSearch: [],
     goodsList: [],
     platformEquity: { list: [], total: 0 },
+    EquityCoupon: { list: [], total: 0 },
+    PlatformCoupon: { list: [], total: 0 },
+    pointList: { list: [], total: 0 },
+    virtualList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -86,6 +94,12 @@ export default {
       return {
         ...state,
         platformEquity: { list: [], total: 0 },
+      };
+    },
+    clearVirtual(state) {
+      return {
+        ...state,
+        virtualList: { list: [], total: 0 },
       };
     },
   },
@@ -171,7 +185,7 @@ export default {
         },
       });
     },
-    *fetchGetJumpNative({ payload }, { call, put }) {
+    *fetchGetJumpNative({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetJumpNative, payload);
       if (!response) return;
       const { content } = response;
@@ -187,6 +201,7 @@ export default {
           ),
         },
       });
+      callback && callback();
     },
     *fetchGetKolLevel({ payload }, { call, put }) {
       const response = yield call(fetchGetKolLevel, payload);
@@ -324,6 +339,52 @@ export default {
         },
       });
     },
+    // 电商商品
+    *fetchGetPlatformCommerceGoodsSelect({ payload }, { call, put }) {
+      const response = yield call(fetchGetPlatformEquitySelect, {
+        activityType: 'commerceGoods',
+        ...payload,
+      });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          platformEquity: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+    // 权益券
+    *fetchGetEquityCouponSelect({ payload }, { call, put }) {
+      const response = yield call(fetchGetEquityCouponSelect, {
+        ...payload,
+        adminFlag: 1,
+      });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          EquityCoupon: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+
+    // 平台券
+    *fetchPlatformCouponSelect({ payload }, { call, put }) {
+      const response = yield call(fetchPlatformCouponSelect, {
+        ...payload,
+        adminFlag: 1,
+      });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          PlatformCoupon: { list: content.recordList, total: content.total },
+        },
+      });
+    },
     *fetchGetExpertLevel({ payload }, { call, put }) {
       const response = yield call(fetchGetExpertLevel, payload);
       if (!response) return;
@@ -421,7 +482,7 @@ export default {
       }[type];
       const response = yield call(
         { merchant: fetchMerchantList, group: fetchMerchantGroup }[type],
-        { limit: 300, page: 1, bankStatus: 3, ...newPayload, ...other },
+        { limit: 50, page: 1, bankStatus: 3, ...newPayload, ...other },
       );
       if (!response) return;
       const { content } = response;
@@ -466,7 +527,6 @@ export default {
       const response = yield call(fetchGoodsIsCommission, payload);
       if (!response) return;
       const { content } = response;
-      console.log('11', content);
       callback(content);
     },
     *fetchSkuDetailMerchantList({ payload, callback }, { call, put }) {
@@ -520,6 +580,47 @@ export default {
       if (!response) return;
       const { content } = response;
       callback && callback(content.userDTOS);
+    },
+    //get 搜索打卡点位
+    *fetchListHitting({ payload }, { put, call }) {
+      const response = yield call(fetchListHitting, { page: 1, limit: 100, ...payload });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          pointList: {
+            list: content.recordList.map((item) => ({
+              name: `${item.name}`,
+              value: item.hittingId,
+            })),
+            total: content.total,
+          },
+        },
+      });
+    },
+    //get 虚拟商品优惠比例配置-分页列表
+    *fetchPagePreferentialActivity({ payload }, { put, call }) {
+      const response = yield call(fetchPagePreferentialActivity, {
+        page: 1,
+        status: 1,
+        limit: 999,
+        ...payload,
+      });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          virtualList: {
+            list: content.recordList.map((item) => ({
+              name: `${item.activityName}`,
+              value: item.identification,
+            })),
+            total: content.total,
+          },
+        },
+      });
     },
   },
 };

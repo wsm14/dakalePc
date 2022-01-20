@@ -10,33 +10,47 @@ const FormItem = Form.Item;
  * 选择店铺
  * @param {Array} paramKey app跳转参数键值
  */
-const Merchant = ({ form, paramKey, dispatch, selectList, loading, onChange }) => {
+const Merchant = ({
+  owType = 'merchant',
+  form,
+  paramKey,
+  dispatch,
+  selectList,
+  loading,
+  onChange,
+}) => {
   useEffect(() => {
-    const merchantId = form.getFieldValue(['param', paramKey[0]]);
-    if (merchantId) {
-      fetchClassifyGetMre({ merchantId });
-    }
     return () => {
       dispatch({ type: 'baseData/clearGroupMre' });
       form.setFieldsValue({ param: { [paramKey[0]]: undefined } });
     };
   }, []);
 
+  useEffect(() => {
+    const merchantId = form.getFieldValue(['param', paramKey[0]]);
+    if (merchantId) {
+      fetchClassifyGetMre({ merchantId });
+    }
+  }, [paramKey, owType]);
+
   // 搜索店铺
   const fetchClassifyGetMre = debounce((data) => {
-    if (!data) return;
+    if (!data || !owType) return;
     dispatch({
       type: 'baseData/fetchGetGroupMreList',
-      payload: data,
+      payload: {
+        type: owType,
+        ...data,
+      },
     });
   }, 100);
 
   return (
     <FormItem
       key={`merchantIdStr`}
-      label="选择店铺"
+      label={{ merchant: '选择单店', group: '选择集团' }[owType] || '选择单店'}
       name={['param', paramKey[0]]}
-      rules={[{ required: true, message: `请选择店铺` }]}
+      rules={[{ required: true, message: `请选择${{ merchant: '单店', group: '集团' }[owType]}` }]}
       style={{ maxWidth: '100%' }}
     >
       <Select

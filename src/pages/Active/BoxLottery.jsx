@@ -16,10 +16,10 @@ const tabList = [
     key: 'gameFree',
     tab: '免费领商品游戏',
   },
-  // {
-  //   key: 'mark',
-  //   tab: '哒小卡中奖',
-  // },
+  {
+    key: 'mark',
+    tab: '哒小卡中奖',
+  },
 ];
 const BoxLottery = () => {
   const [tabkey, setTabKey] = useState('boxLotteryBean');
@@ -30,7 +30,7 @@ const BoxLottery = () => {
     boxLotteryBean: <BoxLotteryBean {...listProps}></BoxLotteryBean>,
     gameSign: <GameType {...listProps}></GameType>,
     gameFree: <GameType {...listProps}></GameType>,
-    // mark: <GameSign {...listProps}></GameSign>,
+    mark: <GameType {...listProps}></GameType>,
   };
 
   return (

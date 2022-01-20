@@ -23,6 +23,9 @@ export const BRAND_VIDEO_ADVERT = 640 / 360;
 // 风向标
 export const VANE_ICON = 80 / 80;
 
+// 风向标中卡豆教育
+export const VANE_BEAN_ICON = 335 / 160;
+
 // 商圈
 export const CIRCLE_ICON = 750 / 460;
 
@@ -55,3 +58,6 @@ export const GLOBAL_MODAL_IMG = 900 / 1077;
 
 //浮窗配置图片
 export const FLOAT_IMG = 165 / 165;
+
+//新人福利弹窗配置Banner图片
+export const NEW_POP_IMG = 560 / 760;

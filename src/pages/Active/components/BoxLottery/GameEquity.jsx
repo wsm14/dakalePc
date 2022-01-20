@@ -110,6 +110,7 @@ const GameSign = ({ gameEquityList, loading, tabkey, twoTabkey }) => {
       <TableDataBlock
         order
         firstFetch={false}
+        noCard={false}
         btnExtra={btnList}
         cRef={tableRef}
         loading={loading}

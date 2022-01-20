@@ -438,13 +438,25 @@ export default [
         component: './Market/NoviceAdvert',
         buttons: ['save', 'info', 'down', 'peasDetail', 'again', 'diary'],
       },
+      // 哒小卡 daMarkCard
       {
-        path: '/market/globalPop',
-        name: '全局弹框',
-        component: './Market/GlobalPop',
-        buttons: ['save', 'edit', 'down'],
+        path: '/daMarkCard/pointManage',
+        name: '点位管理',
+        component: './DaMarkCard/PointManage',
       },
       // 店铺运营 operation
+      {
+        path: '/operation/spreeManage',
+        name: '礼包管理',
+        component: './Operation/SpreeManage',
+        buttons: ['addnum', 'info', 'edit', 'down', 'save', 'up', 'set', 'getRecord'],
+      },
+      {
+        path: '/operation/platformTicketManage',
+        name: '平台券管理',
+        component: './Operation/PlatformTicketManage',
+        buttons: ['addnum', 'info', 'edit', 'down', 'save', 'up'],
+      },
       {
         path: '/operation/share',
         name: '视频管理',
@@ -510,7 +522,7 @@ export default [
         path: '/operation/orders',
         name: '订单列表',
         component: './Operation/OrdersList',
-        buttons: ['info', 'exportList', 'goodsView', 'goodsDeliver'],
+        buttons: ['info', 'exportList', 'goodsView', 'goodsDeliver', 'routing', 'batchRouting'],
       },
       {
         path: '/operation/verificationList',

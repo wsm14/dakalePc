@@ -201,7 +201,12 @@ const PreferentialDrawer = (props) => {
           <PreferentialRuleSet
             editActive={type}
             form={formRuleAdd}
-            initialValues={saveData || detail}
+            initialValues={{
+              needOrder: 0,
+              allowRefund: 1,
+              allowExpireRefund: 1,
+              ...(saveData || detail),
+            }}
           ></PreferentialRuleSet>
         </DrawerCondition>
       </DrawerCondition>

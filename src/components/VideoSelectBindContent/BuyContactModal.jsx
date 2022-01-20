@@ -10,8 +10,16 @@ const { Search } = Input;
  * 选择优惠内容（单选）
  */
 const FreeContactSelectModal = (props) => {
-  const { couponList, specialGoodsList, merchantId, dispatch, visible, onClose, onOk, loading } =
-    props;
+  const {
+    couponList,
+    specialGoodsList,
+    merchantId,
+    dispatch,
+    visible,
+    onClose,
+    onOk,
+    loading,
+  } = props;
 
   const [selectItem, setSelectItem] = useState({}); // 当前选择项
   const [tabKey, setTabKey] = useState('coupon'); // tab类型
@@ -120,6 +128,7 @@ const FreeContactSelectModal = (props) => {
       afterClose={() => {
         setPage(1);
         setTabKey('coupon');
+        setSelectItem({});
       }}
       maskStyle={{ background: 'none' }}
       bodyStyle={{ overflowY: 'auto', maxHeight: 500 }}

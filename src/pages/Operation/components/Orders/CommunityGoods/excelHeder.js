@@ -1,5 +1,4 @@
-import { checkCityName } from '@/utils/utils';
-import { COMMERCE_ORDERS_STATUS, ORDERS_STATUS } from '@/common/constant';
+import { ORDERS_STATUS } from '@/common/constant';
 
 // 导出表头
 export default [
@@ -63,11 +62,13 @@ export default [
   },
   {
     title: '买家姓名',
-    dataIndex: 'userName',
+    dataIndex: 'organizationGoodsOrderDescObject',
+    render: (val) => `${val?.writeContactPerson}`,
   },
   {
     title: '买家手机号',
-    dataIndex: 'userMobile',
+    dataIndex: 'organizationGoodsOrderDescObject',
+    render: (val) => `${val?.writeMobile}`,
   },
   {
     title: '订单状态',

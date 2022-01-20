@@ -229,6 +229,9 @@ export const MARKET_LOOK_AREA = {
   user: '仅用户可见',
 };
 
+// 新人福利弹窗 - 活动状态
+export const NEWUSER_STATUS_TYPE = ['即将开始', '上架中', '已结束'];
+
 // 周边特惠 - 上架状态 0-已下架 1-活动中 2-即将开始 3-审核中 4-未通过
 // export const SPECIAL_STATUS = ['已下架', '活动中', '即将开始', '审核中', '未通过'];
 export const SPECIAL_STATUS = ['已下架', '活动中'];
@@ -257,8 +260,8 @@ export const ORDERS_STATUS = [
   '已过期',
 ];
 
-// 订单状态
-export const COMMERCE_ORDERS_STATUS = ['待支付', '待发货', '已退款', '已完成', '', '', '退款中'];
+// 电商订单状态
+export const COMMERCE_ORDERS_STATUS = ['', '待发货', '已退款', '已完成', '', '', '', '', '已发货'];
 
 // 订单关闭状态 ---原来的“已关闭”状态 ORDERS_STATUS 进行了拆分：
 export const ORDER_CLOSE_TYPE = {
@@ -381,6 +384,8 @@ export const ORDERS_TYPE = {
   specialGoods: '周边特惠',
   reduceCoupon: '抵扣券订单',
   // marketCoupon: '兑换券订单',
+  rightGoods: '权益商品订单',
+  rightCoupon: '权益券订单',
 };
 
 // 平台收益订单类型
@@ -425,6 +430,7 @@ const bannerType = {
   wanderAroundRecharge: '逛逛话费充值',
   wanderAroundBean: '逛逛卡豆专区',
   markMain: '哒卡主页',
+  marketingActivities: '营销活动',
 };
 
 // Banner类型
@@ -657,8 +663,9 @@ export const COMMISSION_TYPE = {
 
 // 活动模版类型
 export const ACTIVE_TEMPLATE_TYPE = {
-  active: '活动模版',
-  rule: '规则模版',
+  active: '活动',
+  rule: '规则',
+  globalModal: '全局弹窗',
 };
 
 // 新闻分类
@@ -811,6 +818,9 @@ export const STROLLAROUND_TAB_TYPE = {
 // 全局配置 - 首页tab配置
 export const TAB_INDEX_TYPE = { iOS: 'iOS', android: 'Android', weChat: '小程序' };
 
+// 全局配置 - 虚拟商品优惠比例配置
+export const VIRTUAL_CONFIG_TYPE = { phoneBill: '话费优惠', memberRecharge: '会员优惠' };
+
 // 全局配置 - 首页tab配置 - 标签类型
 export const TABINDEX_VIDEO_TYPE = {
   all: '通用',
@@ -835,3 +845,67 @@ export const MATERIAL_JUMP_TYPE = {
   community: '哒小团小程序',
   mark: '哒小卡小程序',
 };
+
+// 平台券管理 - 券使用场景类型
+export const PLATFORM_TICKET_SCENE = {
+  goodsBuy: '商品',
+  // scan: '扫码',
+  virtual: '虚拟品',
+  commerce: '电商品',
+  // community: '团购',
+};
+
+// 平台券管理 - 券类型
+export const PLATFORM_TICKET_TYPE = {
+  universal: '通用券',
+  // category:'行业券',
+  // merchant:'店铺券',
+  // goods:'商品券',
+};
+
+// 平台券管理 - 使用时间
+export const PLATFORM_USERTIME_TYPE = { fixed: '固定时间', gain: '领取后' };
+
+// 平台券管理 - 适用人群
+export const PLATFORM_COUPON_PEOPLE = { all: '全部', daren: '哒人' };
+
+// 平台券管理 - 适用端口
+export const PLATFORM_APPLY_PORT = { all: '全部', noAll: '部分平台' };
+
+// 平台券管理 - 适用端口type
+export const PLATFORM_APPLY_PORT_TYPE = {
+  app: 'APP',
+  weChat: '哒卡乐小程序',
+  markWechat: '哒小卡小程序',
+  communityWechat: '哒小团小程序',
+};
+
+// 礼包管理 - 卡券类型
+export const SPREE_MANAGE_TYPE = {
+  platformCoupon: '平台券',
+  rightGoods: '权益商品',
+  rightCoupon: '权益券',
+};
+
+// 哒小卡 - 点位管理 - 主体类型
+export const MARK_CARD_MAIN_TYPE = {
+  school: '学校',
+  officeBuilding: '写字楼',
+  factory: '工厂',
+  enterprise: '企业',
+};
+
+// 哒小卡 - 点位管理 - 启用状态
+export const MARK_CARD_OPEN_STATE = ['停用', '启用'];
+
+// 哒小卡 - 点位管理 - 家主类型
+export const MARK_CARD_PARENT_TYPE = {
+  merchant: '店铺',
+  user: '用户',
+};
+
+// 全局配置 - 虚拟商品优惠比例配置 - 启用状态
+export const VIR_OPEN_STATE = ['禁用', '启用', '已过期'];
+
+// 全局配置 - 虚拟商品优惠比例配置 - 限优惠次数类型
+export const VIR_OPEN_TYPE = ['不限', '每人限制'];

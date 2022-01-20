@@ -1,0 +1,128 @@
+.share_Coupon {
+  display: flex;
+  align-items: center;
+  width: 350px;
+  height: 94px;
+  padding: 8px;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  user-select: none;
+  &:hover {
+    border-color: #1890ff;
+  }
+  .pCoupon_share_left {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 78px;
+    height: 100%;
+    padding: 0 9px 0 0;
+    font-size: 12px;
+    border-right: 1px dashed #ccc;
+    .pCoupon_share_left_top {
+      display: flex;
+      align-items: flex-end;
+      .pCoupon_price {
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 20px;
+      }
+    }
+    .pCoupon_share_left_bottom {
+      line-height: 12px;
+    }
+  }
+  .share_left {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 76px;
+    height: 100%;
+    padding: 9px;
+    font-size: 12px;
+    background-color: rgb(226, 226, 226);
+  }
+  .titile {
+    width: 100%;
+    padding-right: 40px;
+    overflow: hidden;
+    font-weight: 600;
+    font-size: 12px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .share_title {
+    flex: 1;
+    padding-left: 10px;
+    overflow: hidden;
+    font-weight: 600;
+    line-height: 2.1;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    .pCoupon_tit_type {
+      margin-right: 2px;
+      padding: 2px 5px;
+      color: #fff;
+      font-size: 12px;
+      background-color: #87d068;
+      border-radius: 11px;
+    }
+    .share_tip {
+      font-weight: 400;
+      font-size: 12px;
+    }
+  }
+  .share_del_icon {
+    cursor: pointer;
+  }
+}
+
+.share_Coupon.share_add {
+  justify-content: center;
+  font-size: 30px;
+  cursor: pointer;
+  & + .share_add {
+    margin-top: 6px;
+  }
+}
+
+.share_select_list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  &:after {
+    width: 350px;
+    height: 0px;
+    visibility: hidden;
+    content: '';
+  }
+
+  .share_Coupon.share_item {
+    cursor: pointer;
+    .share_select_icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border: 1px solid #b1b1b1;
+      border-radius: 50%;
+      .share_select {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+      }
+    }
+  }
+}
+.share_item.select {
+  &.share_item {
+    border: 1px solid #1890ff;
+  }
+  .share_select {
+    background-color: #1890ff;
+  }
+}

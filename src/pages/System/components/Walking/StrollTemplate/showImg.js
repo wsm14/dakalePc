@@ -15,6 +15,9 @@ import selfTourResource from './Img/selfTourResource.png';
 import newProductRecommend from './Img/newProductRecommend.png';
 import beanSpecialArea from './Img/beanSpecialArea.png';
 import commerceGoods from './Img/commerceGoods.png';
+import beanEducation from './Img/beanEducation.png';
+import specialAndSelfTourAndCommerce from './Img/specialAndSelfTourAndCommerce.png';
+import selfTourAndCommerce from './Img/selfTourAndCommerce.png';
 
 /**
  * 组件库
@@ -136,5 +139,26 @@ export default {
     moduleName: 'commerceGoods',
     drop: true,
     defaultImg: commerceGoods,
+  },
+  beanEducation: {
+    name: '卡豆教育',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    moduleName: 'beanEducation',
+    drop: true,
+    defaultImg: beanEducation,
+  },
+  specialAndSelfTourAndCommerce: {
+    name: '特惠+自我游+电商品',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    moduleName: 'specialAndSelfTourAndCommerce',
+    drop: true,
+    defaultImg: specialAndSelfTourAndCommerce,
+  },
+  selfTourAndCommerce: {
+    name: '自我游+电商品',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    moduleName: 'selfTourAndCommerce',
+    drop: true,
+    defaultImg: selfTourAndCommerce,
   },
 };

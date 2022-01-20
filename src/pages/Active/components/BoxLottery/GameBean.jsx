@@ -81,12 +81,13 @@ const GameSign = ({ gameSignList, loading, dispatch, tabkey }) => {
       render: (val) => checkCityName(val),
     },
     {
-      title: '抽奖时间',
+      title: tabkey === 'mark' ? '中奖时间' : '抽奖时间',
       dataIndex: 'createTime',
     },
     {
       title: '奖品类型',
       dataIndex: 'packageType',
+      show: tabkey !== 'mark',
       render: (val) => GAME_SIGN_PACKAGE_TYPE[val],
     },
     {
@@ -118,13 +119,15 @@ const GameSign = ({ gameSignList, loading, dispatch, tabkey }) => {
 
   // 获取详情 type：info 查看
   const fetchBoxDeatil = (id, row, type) => {
-    const { userAddressObject, userId } = row;
+    const { userAddressObject = {}, userId } = row;
     let userAddressContent = {};
     if (userAddressObject) {
       // const contentObj = JSON.parse(row.contentParam);
-      userAddressContent = `${userAddressObject.addressName || '-'},${
-        userAddressObject.mobile || '-'
-      },${checkCityName(userAddressObject.districtCode) || '-'}${userAddressObject.address || '-'}`;
+      userAddressContent = `${userAddressObject?.addressName || '-'},${
+        userAddressObject?.mobile || '-'
+      },${checkCityName(userAddressObject?.districtCode) || '-'}${
+        userAddressObject?.address || '-'
+      }`;
     }
 
     if (type === 'add') {

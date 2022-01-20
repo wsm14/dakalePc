@@ -30,6 +30,20 @@ export function fetchGetFreeCouponSelect(params) {
   });
 }
 
+// get 店铺选择权益券列表
+export function fetchGetEquityCouponSelect(params) {
+  return request('/admin/coupon/listOwnerCouponToAction', {
+    params,
+  });
+}
+
+// get 平台券列表
+export function fetchPlatformCouponSelect(params) {
+  return request('/admin/platform/coupon/pagePlatformCoupon', {
+    params,
+  });
+}
+
 // get 店铺选择有价券列表
 export function fetchGetBuyCouponSelect(params) {
   return request('/admin/coupon/listOwnerCouponNeedBuy', {
@@ -261,5 +275,19 @@ export function fetchListUserByIds(data) {
   return request('/admin/userManagement/listUserByIds', {
     method: 'POST',
     data,
+  });
+}
+
+//get 搜索打卡点位
+export function fetchListHitting(params) {
+  return request('/admin/hitting/listHitting', {
+    params,
+  });
+}
+
+//get 虚拟商品优惠比例配置-分页列表
+export function fetchPagePreferentialActivity(params) {
+  return request('/admin/preferentialActivity/pagePreferentialActivity', {
+    params,
   });
 }

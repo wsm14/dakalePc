@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { Card, Row, Col } from 'antd';
 import template1 from './components/Img/template1.png';
 import template2 from './components/Img/template2.png';
+import template3 from './components/Img/template3.png';
 import ActiveTemplateEdit from './components/template/ActiveTemplateEdit';
 import ActiveTemplateNameSet from './components/template/ActiveTemplateNameSet';
 
@@ -26,6 +27,11 @@ const ActiveTemplate = () => {
       img: template2,
       type: 'rule', // oss 上传文件夹同名
       title: '配置平台内各类活动规则、说明等模板内容',
+    },
+    {
+      img: template3,
+      type: 'globalModal', // oss 上传文件夹同名
+      title: '配置App内全局弹窗',
     },
   ];
 

@@ -1,10 +1,12 @@
 import { uuid } from '@/utils/utils';
-import commonList1 from './CommonList/CommonList_1';
-import commonList2 from './CommonList/CommonList_2';
-import commonList3 from './CommonList/CommonList_3';
 import share from './Share';
 import couponList1 from './CouponList';
 import merchantList1 from './MerchantList';
+import commonList1 from './CommonList/CommonList_1';
+import commonList2 from './CommonList/CommonList_2';
+import commonList3 from './CommonList/CommonList_3';
+import commerceGoods1 from './CommerceGoods/CommerceGoods_1';
+import commerceGoods2 from './CommerceGoods/CommerceGoods_2';
 
 let head = {}; // [key]: value[]
 let footer = {}; // [key]: value
@@ -21,6 +23,10 @@ const requestJs = [
 const scriptTag = (dom, data, id) =>
   `<script>(${dom.toString()})(${JSON.stringify(data)}, "${id}")<\/script>`;
 
+const richTextStyle = [
+  `<style>table{border-top:1px solid#ccc;border-left:1px solid#ccc}table td,table th{padding:3px 5px;border-right:1px solid#ccc;border-bottom:1px solid#ccc}table th{text-align:center;background-color:#f1f1f1;border-bottom:2px solid#ccc}blockquote{display:block;margin:10px 0;padding:5px 10px;font-size:100%;line-height:1.4;background-color:#f1f1f1;border-left:8px solid#d0e5f2}code{display:inline-block;*display:inline;margin:0 3px;padding:3px 5px;background-color:#f1f1f1;border-radius:3px;*zoom:1}pre code{display:block}ul,ol{margin:10px 0 10px 20px}hr{display:block;height:0;margin:20px 0;border:0;border-top:3px solid#ccc}</style>`,
+];
+
 const htmlDom = {
   // 分享
   share: (data, uid) => {
@@ -28,22 +34,28 @@ const htmlDom = {
   },
   // 视频
   normalVideo: (data, uid) => {
-    const dom = ({ url }, uid) => {
+    const dom = ({ url, poster }, uid) => {
+      const vw = (px) => (px / 375) * 100 + 'vw';
       document.getElementById(
         uid,
-      ).innerHTML = `<video src="${url}" preload="preload" controls="controls" style="width: 100vw;display: block;"></video>`;
+      ).innerHTML = `<video src="${url}" preload="preload" poster="${poster}" controls="controls" style="width: 100vw;display: block;height: ${vw(
+        215,
+      )};background-image: url(${poster});background-position: center center;"></video>`;
     };
 
     return `<div id="${uid}"></div>${scriptTag(dom, data, uid)}`;
   },
   // 单张图片
   solaImg: (data, uid) => {
-    const dom = ({ img, linkType, url, path }, uid) => {
+    const dom = ({ img, linkType, url, path, width, height }, uid) => {
+      const vw = (px) => (px / 375) * 100 + 'vw';
       document.getElementById(
         uid,
       ).innerHTML = `<img src="${img}" data-linkType="${linkType}" data-path="${
         url || path
-      }" style="width: 100vw;display: block;" class="handleGoNative"></img>`;
+      }" style="width: ${width ? vw(width / 2) : '100vw'};height: ${
+        height ? vw(height / 2) : 'auto'
+      };display: block;" class="handleGoNative"></img>`;
     };
 
     return `<div id="${uid}"></div>${scriptTag(dom, data, uid)}`;
@@ -61,7 +73,7 @@ const htmlDom = {
     const dom = (list, uid) => {
       document.getElementById(
         uid,
-      ).innerHTML = `<div class="swiper-container"><div class="swiper-wrapper">${list
+      ).innerHTML = `<div class="swiper-container" style="position: relative;"><div class="swiper-wrapper">${list
         .map(
           ({ img, linkType, url, path }) =>
             `<div class="swiper-slide"><img src="${img}" data-linkType="${linkType}" data-path="${
@@ -73,10 +85,19 @@ const htmlDom = {
     return `<div id="${uid}"></div>${scriptTag(dom, list, uid)}`;
   },
 
-  // 商品列表
+  // 特惠商品列表
   commonList: ({ styleIndex, list }, uid) => {
     head = { ...head, request: requestJs };
     const functionIndex = [commonList1, commonList2, commonList3][styleIndex];
+    return `<div id="${uid}"></div><script>;(${functionIndex})(${JSON.stringify(
+      list,
+    )},"${uid}")<\/script>`;
+  },
+
+  // 电商品列表
+  commerceGoods: ({ styleIndex, list }, uid) => {
+    head = { ...head, request: requestJs };
+    const functionIndex = [commerceGoods1, commerceGoods2][styleIndex];
     return `<div id="${uid}"></div><script>;(${functionIndex})(${JSON.stringify(
       list,
     )},"${uid}")<\/script>`;
@@ -97,6 +118,13 @@ const htmlDom = {
     return `<div id="${uid}"></div><script>;(${functionIndex})(${JSON.stringify(
       list,
     )},"${uid}")<\/script>`;
+  },
+
+  // 富文本
+  richText: ({ richText, padding }, uid) => {
+    head = { ...head, richTextStyle };
+    const paddingVw = (padding / 375) * 100 + 'vw';
+    return `<div id="${uid}" style="padding: ${paddingVw}">${richText}</div>`;
   },
 };
 

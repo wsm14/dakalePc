@@ -8,14 +8,15 @@
  * @children 组件选项 Editor 内定义的 控件键名
  */
 export default (type = '') => {
-  const moduleAllShow = ['active', 'rule'].includes(type); // 全都展示
+  const moduleAllShow = ['active', 'rule', 'globalModal'].includes(type); // 全都展示
   const moduleActiveShow = ['active'].includes(type); // 只有活动展示
+  const moduleRuleShow = ['rule'].includes(type); // 只有规则展示
 
   return [
     {
       header: '通用配置',
       type: 'public',
-      show: moduleAllShow,
+      show: type !== 'globalModal',
       children: [
         { type: 'backgroundColor', show: true },
         { type: 'share', show: moduleActiveShow },
@@ -38,6 +39,7 @@ export default (type = '') => {
         { type: 'commonList', show: moduleActiveShow },
         { type: 'merchantList', show: moduleActiveShow },
         { type: 'couponList', show: moduleActiveShow },
+        { type: 'commerceGoods', show: moduleActiveShow },
       ],
     },
     {
@@ -45,6 +47,12 @@ export default (type = '') => {
       type: 'video',
       show: moduleActiveShow,
       children: [{ type: 'normalVideo', show: true }],
+    },
+    {
+      header: '文字类',
+      type: 'text',
+      show: moduleRuleShow,
+      children: [{ type: 'richText', show: true }],
     },
   ];
 };

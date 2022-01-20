@@ -2,11 +2,12 @@ import { notification } from 'antd';
 import oss from 'ali-oss';
 import {
   fetchGetOss,
-  fetchCouponSelect,
-  fetchSpecialGoodsSelect,
-  fetchGetMreConfigInfo,
   fetchActiveAdd,
   fetchActiveEdit,
+  fetchCouponSelect,
+  fetchGetMreConfigInfo,
+  fetchSpecialGoodsSelect,
+  fetchCommerceGoodsSelect,
 } from '@/services/ActiveServices';
 
 export default {
@@ -14,6 +15,7 @@ export default {
 
   state: {
     specialGoods: { list: [], total: 0 },
+    commerceGoods: { list: [], total: 0 },
     coupon: [],
   },
 
@@ -53,6 +55,21 @@ export default {
         type: 'save',
         payload: {
           specialGoods: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+    // 电商商品
+    *fetchCommerceGoodsSelect({ payload }, { call, put }) {
+      const response = yield call(fetchCommerceGoodsSelect, {
+        activityType: 'commerceGoods',
+        ...payload,
+      });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          commerceGoods: { list: content.recordList, total: content.total },
         },
       });
     },

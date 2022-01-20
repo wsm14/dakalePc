@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import { getCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -79,6 +79,7 @@ const CityTable = (props) => {
       ></CityDrawerSet>
       {/* 编辑弹窗 */}
       <CityGlobalModal
+        userOs={tabKey}
         visible={visibleConfigure}
         onClose={() => setVisibleConfigure(false)}
         childRef={childRef}

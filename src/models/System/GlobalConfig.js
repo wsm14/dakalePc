@@ -18,6 +18,10 @@ import {
   fetchGetIndexTabById,
   fetchGetRechargeShareImg,
   fetchSaveRechargeShareImg,
+  fetchPagePreferentialActivity,
+  fetchSavePreferentialActivity,
+  fetchUpdatePreferentialActivity,
+  fetchGetPreferentialActivityById,
 } from '@/services/SystemServices';
 
 export default {
@@ -32,6 +36,10 @@ export default {
     IndexTabList: { list: [] },
     IndexTabModalList: { list: [] },
     TagObj: { defaultTagNames: [], tagNames: [] },
+    virList: {
+      list: [],
+      total: 0,
+    },
   },
 
   reducers: {
@@ -333,6 +341,69 @@ export default {
         description: '图片上传成功',
       });
       callback();
+    },
+    // get 虚拟商品优惠比例配置 -  分页列表
+    *fetchPagePreferentialActivity({ payload }, { call, put }) {
+      const response = yield call(fetchPagePreferentialActivity, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          virList: {
+            list: content.recordList,
+            total: content.total,
+          },
+        },
+      });
+    },
+    // post 虚拟商品优惠比例配置-新增
+    *fetchSavePreferentialActivity({ payload, callback }, { call }) {
+      const response = yield call(fetchSavePreferentialActivity, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '配置新增成功',
+      });
+      callback && callback();
+    },
+    // post 虚拟商品优惠比例配置-编辑
+    *fetchUpdatePreferentialActivity({ payload, callback }, { call }) {
+      const response = yield call(fetchUpdatePreferentialActivity, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '配置修改成功',
+      });
+      callback && callback();
+    },
+    // get 虚拟商品优惠比例配置-详情
+    *fetchGetPreferentialActivityById({ payload, callback }, { call }) {
+      const response = yield call(fetchGetPreferentialActivityById, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const { preferentialActivityDTO = {} } = content;
+      const {
+        startDate,
+        endDate,
+        preferentialActivityRuleObject = {},
+        status,
+        ...other
+      } = preferentialActivityDTO;
+      const data = {
+        ...other,
+        status: Number(status),
+        buyLimit: preferentialActivityRuleObject?.buyLimit,
+        maxBeanAndCoupon: (Number(preferentialActivityRuleObject?.maxBeanAndCoupon) * 100).toFixed(
+          0,
+        ),
+        startDate,
+        endDate,
+        ruleType: preferentialActivityRuleObject.buyLimit == 0 ? '0' : '1',
+        activityDate: [moment(startDate), moment(endDate)],
+      };
+
+      callback && callback(data);
     },
   },
 };

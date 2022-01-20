@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Form, Button, InputNumber } from 'antd';
+import { Form, Button } from 'antd';
 import moment from 'moment';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormComponents from '@/components/FormCondition';
@@ -10,15 +10,17 @@ import { GLOBAL_MODAL_IMG } from '@/common/imgRatio';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const GlobalModalDrawerSet = (props) => {
-  const { visible, onClose, dispatch, loading, childRef } = props;
+  const { visible, onClose, userOs, dispatch, loading, childRef } = props;
   const { show = false, type = 'add', detail = {} } = visible;
-  const [modalType, setModalType] = useState('');
+
+  const [modalType, setModalType] = useState('url');
   const [form] = Form.useForm();
+
   //保存
   const handleSave = () => {
     form.validateFields().then(async (values) => {
       const { popUpImage, ...ohter } = values;
-      const { userOs, version, area, cityCode, pageType, configGlobalPopUpId } = detail;
+      const { version, area, cityCode, pageType, configGlobalPopUpId } = detail;
       const detailParam = { userOs, version, area, cityCode, pageType, configGlobalPopUpId };
       // 上传图片到oss -> 提交表单
       const imgList = await aliOssUpload(popUpImage);
@@ -89,7 +91,7 @@ const GlobalModalDrawerSet = (props) => {
       label: '弹窗类型',
       name: 'popUpType',
       type: 'radio',
-      select: MARKET_MODAL_TYPE,
+      select: userOs === 'weChat' ? MARKET_MODAL_TYPE : { url: '链接' },
       onChange: (e) => {
         setModalType(e.target.value);
       },
