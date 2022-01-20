@@ -45,7 +45,7 @@ const GoodsSelectModal = (props) => {
       required: true,
     },
     {
-      label: '券名称',
+      label: '电商品名称',
       name: 'goodsName',
     },
   ];
