@@ -54,9 +54,22 @@ const index = ({ form, ruleShowApi }) => {
     {
       title: '售价',
       dataIndex: 'oriPrice',
+      show: ['specialGoods'].includes(shopData.subRuleType),
       render: (val, row) => {
         return <div>￥{Number(row.realPrice).toFixed(2)}</div>;
       },
+    },
+    {
+      title: '售价',
+      dataIndex: 'paymentModeObject',
+      show: ['commerceGoods'].includes(shopData.subRuleType),
+      render: (val = {}, row) => (
+        <div>
+          {val.type === 'self'
+            ? `${val.bean || 0} 卡豆 + ${val.cash || 0} 元`
+            : `${row.realPrice || 0} 元`}
+        </div>
+      ),
     },
     {
       type: 'handle',

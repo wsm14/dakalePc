@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'umi';
-import { Card, Modal, Tag } from 'antd';
+import { Card, Modal, Tag, Form } from 'antd';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import {
@@ -31,11 +31,23 @@ const VaneDrawer = (props) => {
 
   const childRef = useRef();
 
+  const [searchForm] = Form.useForm();
+
   const [tabKey, setTabKey] = useState('specialGoods');
   const [selectItem, setSelectItem] = useState([]); // 选中项
 
   useEffect(() => {
-    childRef?.current?.fetchGetData();
+    console.log(searchForm);
+    if (tabKey === 'reduceCoupon') {
+      searchForm?.setFieldsValue({
+        ownerCouponStatus: '1',
+      });
+    } else {
+      searchForm?.setFieldsValue({
+        status: '1',
+      });
+    }
+    childRef?.current?.fetchGetData(listProps.params);
   }, [tabKey]);
 
   useEffect(() => {
@@ -57,7 +69,11 @@ const VaneDrawer = (props) => {
     },
     {
       label: '店铺/集团名称',
-      name: 'ownerId',
+      name: {
+        specialGoods: 'ownerId',
+        reduceCoupon: 'ownerId',
+        commerceGoods: 'relateId',
+      }[tabKey],
       type: 'merchant',
     },
     {
@@ -68,7 +84,7 @@ const VaneDrawer = (props) => {
         commerceGoods: 'status',
       }[tabKey],
       type: 'select',
-      select: SPECIAL_STATUS,
+      select: tabKey === 'reduceCoupon' ? [false, '上架中', '已下架'] : SPECIAL_STATUS,
     },
   ];
 
@@ -141,6 +157,7 @@ const VaneDrawer = (props) => {
       title: '原价/售价',
       align: 'right',
       dataIndex: 'oriPrice',
+      show: ['specialGoods'].includes(tabKey),
       render: (val, row) => {
         const zhe = (Number(row.realPrice) / Number(val)) * 10;
         return (
@@ -154,6 +171,26 @@ const VaneDrawer = (props) => {
           </div>
         );
       },
+    },
+    {
+      title: '原价/售价',
+      align: 'right',
+      dataIndex: 'paymentModeObject',
+      show: ['commerceGoods'].includes(tabKey),
+      render: (val = {}, row) => (
+        <div>
+          <div style={{ textDecoration: 'line-through', color: '#999999' }}>
+            ￥{Number(row.oriPrice).toFixed(2)}
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <div>
+              {val.type === 'self'
+                ? `${val.bean || 0} 卡豆 + ${val.cash || 0} 元`
+                : `${row.realPrice || 0} 元`}
+            </div>
+          </div>
+        </div>
+      ),
     },
     {
       title: '使用有效期',
@@ -344,7 +381,8 @@ const VaneDrawer = (props) => {
         {['specialGoods', 'reduceCoupon', 'commerceGoods'].includes(tabKey) ? (
           <TableDataBlock
             noCard={false}
-            searchShowData={{ [tabKey === 'reduceCoupon' ? 'ownerCouponStatus' : 'status']: '1' }}
+            searchForm={searchForm}
+            // searchShowData={{ [tabKey === 'reduceCoupon' ? 'ownerCouponStatus' : 'status']: '1' }}
             rowSelection={{
               selectedRowKeys: selectItem.map((i) => i[listProps.id]),
               onSelect: (row, selected, list) => {
