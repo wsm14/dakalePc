@@ -17,7 +17,7 @@ const BottomIconConfigSet = (props) => {
   // 提交
   const handleSave = () => {
     form.validateFields().then(async (values) => {
-      const { icon, jumpType, ...other } = values;
+      const { icon, ...other } = values;
       const { configBottomCenterIconId } = detail;
 
       // 上传图片到oss -> 提交表单
@@ -30,7 +30,6 @@ const BottomIconConfigSet = (props) => {
           configBottomCenterIconId,
           flag: 'updateConfig',
           icon: iconImg.toString(),
-          jumpUrlType: jumpType,
         },
         callback: () => {
           onClose();

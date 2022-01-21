@@ -21,15 +21,7 @@ const ShareDrawer = (props) => {
   // 确认发布
   const handleVideoPush = () => {
     form.validateFields().then((values) => {
-      const {
-        jumpUrlType,
-        videoId,
-        url,
-        frontImage,
-        relateId,
-        categoryId = [],
-        ...other
-      } = dataStorage;
+      const { videoId, url, frontImage, relateId, categoryId = [], ...other } = dataStorage;
       const { age, tagsId = [], ageData, cityList = [], area, areaType, ...otherValus } = values;
       const { free = {}, contact = [] } = couponData;
       let goodsList = {};
@@ -76,7 +68,6 @@ const ShareDrawer = (props) => {
                 payload: {
                   ...other,
                   ...otherValus,
-                  jumpUrlType: { '': '', H5: 'h5', inside: 'native' }[jumpUrlType],
                   momentTags: values.momentTags.join(','),
                   scope: 'all',
                   relateId,

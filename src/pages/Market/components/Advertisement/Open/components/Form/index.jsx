@@ -4,7 +4,7 @@ import moment from 'moment';
 import debounce from 'lodash/debounce';
 import { OPEN_ADVERT } from '@/common/imgRatio';
 import { OPEN_ADVERT_TYPE } from '@/common/constant';
-import { NativeFormSet } from '@/components/FormListCondition';
+import { NewNativeFormSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 
 const OpenAdForm = (props) => {
@@ -80,7 +80,7 @@ const OpenAdForm = (props) => {
     },
     {
       type: 'noForm',
-      formItem: <NativeFormSet form={form} detail={detail} port={tabKey}></NativeFormSet>,
+      formItem: <NewNativeFormSet form={form} detail={detail} port={tabKey}></NewNativeFormSet>,
     },
   ];
 
