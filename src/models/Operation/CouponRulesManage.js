@@ -33,6 +33,12 @@ export default {
         ...payload,
       };
     },
+    clearRuleDetailListObj(state) {
+      return {
+        ...state,
+        ruleDetailListObj: {},
+      };
+    },
   },
 
   effects: {
@@ -138,6 +144,9 @@ export default {
     },
     // get 券规则管理 - 详情 - 获取具体数据对象的详情接口
     *fetchRuleDetailPage({ payload, callback }, { call, put }) {
+      yield put({
+        type: 'clearRuleDetailListObj',
+      });
       const response = yield call(fetchRuleDetailPage, payload);
       if (!response) return;
       const { content } = response;

@@ -231,7 +231,9 @@ const GoodsDetail = (props) => {
         initialValues={detail}
         // initialValues={{ ...detail, ...ruleDetailListObj }}
       ></DescriptionsCondition>
-      {['merchantRule', 'goodsRule'].includes(ruleType) ? (
+      {['merchant', 'group', 'specialGoods', 'reduceCoupon', 'commerceGoods'].includes(
+        subRuleType,
+      ) ? (
         <TableDataBlock
           noCard={false}
           columns={listProps.getColumns || []}
