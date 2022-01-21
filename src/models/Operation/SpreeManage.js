@@ -144,7 +144,8 @@ export default {
         buyFlagType: paymentModeObject.type === 'self' ? '2' : buyFlag == '0' ? '0' : '1',
         bean: paymentModeObject.type === 'self' && paymentModeObject.bean,
         buyPrice,
-        buyPriceCash: (paymentModeObject.type === 'self' && paymentModeObject.cash) || buyPrice,
+        buyPriceCash:
+          (paymentModeObject.type === 'self' && Number(paymentModeObject.cash)) || buyPrice,
         platformGiftPackRelateList: platformGiftPackRelateList.map((item) => ({
           tagType: item.relateType,
           ...(item.platformCoupon || item.activityGoods || item.ownerCoupon || {}),

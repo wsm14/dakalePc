@@ -168,9 +168,22 @@ const GoodsDetail = (props) => {
       title: '售价',
       fixed: 'center',
       dataIndex: 'oriPrice',
+      show: ['specialGoods'].includes(subRuleType),
       render: (val, row) => {
         return <div>￥{Number(row.realPrice).toFixed(2)}</div>;
       },
+    },
+    {
+      title: '售价',
+      dataIndex: 'paymentModeObject',
+      show: ['commerceGoods'].includes(subRuleType),
+      render: (val = {}, row) => (
+        <div>
+          {val.type === 'self'
+            ? `${val.bean || 0} 卡豆 + ${val.cash || 0} 元`
+            : `${row.realPrice || 0} 元`}
+        </div>
+      ),
     },
   ];
 
