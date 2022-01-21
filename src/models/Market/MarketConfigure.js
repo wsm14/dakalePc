@@ -225,11 +225,10 @@ export default {
       if (!response) return;
       const { content = {} } = response;
       const { configNewUserPopUpDTO = {} } = content;
-      const { activityBeginTime, activityEndTime, jumpUrlType, ...other } = configNewUserPopUpDTO;
+      const { activityBeginTime, activityEndTime, ...other } = configNewUserPopUpDTO;
 
       const data = {
         ...other,
-        jumpType: jumpUrlType,
         activityBeginTime: [
           moment(activityBeginTime, 'YYYY-MM-DD HH:mm'),
           moment(activityEndTime, 'YYYY-MM-DD HH:mm'),
