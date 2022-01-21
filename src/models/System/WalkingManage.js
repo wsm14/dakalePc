@@ -137,7 +137,7 @@ export default {
         ...configWindVaneDTO,
         jumpUrlType: {
           native: nativeJumpType === 'windVaneCategory' ? 'trade' : 'native',
-          url: jumpUrlType,
+          h5: jumpUrlType,
         }[jumpUrlType],
         param: JSON.parse(param || '{}'),
         windVaneParamObject: JSON.parse(param || '{}'),

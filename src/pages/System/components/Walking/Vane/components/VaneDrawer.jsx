@@ -151,12 +151,12 @@ const VaneDrawer = (props) => {
       ),
       render: (val) => VANE_URL_TYPE[val],
     },
-    {
-      label: '链接',
-      name: 'jumpUrl',
-      visible: showUrl === 'url',
-      show: showUrl === 'url',
-    },
+    // {
+    //   label: '链接',
+    //   name: 'jumpUrl',
+    //   visible: showUrl === 'h5',
+    //   show: showUrl === 'h5',
+    // },
     {
       label: '一级行业类目',
       name: 'topCategoryId',
