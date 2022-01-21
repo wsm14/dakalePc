@@ -55,7 +55,13 @@ const NewNativeFormSet = ({
 
   return (
     <>
-      <FormItem key={`jumpType`} label="跳转类型" name={'jumpType'} style={{ maxWidth: '100%' }}>
+      <FormItem
+        required
+        key={`jumpType`}
+        label="跳转类型"
+        name={'jumpType'}
+        style={{ maxWidth: '100%' }}
+      >
         <Radio
           select={
             jumpTypeSelect ||

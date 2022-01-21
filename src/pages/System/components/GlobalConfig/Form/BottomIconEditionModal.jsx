@@ -6,19 +6,19 @@ import FormCondition from '@/components/FormCondition';
 const EditionModal = (props) => {
   const { visible = {}, onClose, dispatch, loading, childRef, tabKey } = props;
   const { show = false, type, detail = {} } = visible;
-  const { configIndexTabId } = detail;
+  const { configBottomCenterIconId } = detail;
   const [form] = Form.useForm();
 
   const handleOk = () => {
     form.validateFields().then((values) => {
       dispatch({
         type: {
-          add: 'globalConfig/fetchIndexTabAdd',
-          edit: 'globalConfig/fetchIndexTabEdit',
+          add: 'globalConfig/fetchSaveConfigBottomCenterIcon',
+          edit: 'globalConfig/fetchUpdateConfigBottomCenterIcon',
         }[type],
         payload: {
+          configBottomCenterIconId,
           userOs: tabKey,
-          configIndexTabId,
           flag: {
             add: 'addVersion',
             edit: 'updateVersion',
@@ -55,5 +55,7 @@ const EditionModal = (props) => {
   );
 };
 export default connect(({ loading }) => ({
-  loading: loading.effects['globalConfig/fetchIndexTabAdd'],
+  loading:
+    loading.effects['globalConfig/fetchSaveConfigBottomCenterIcon'] ||
+    loading.effects['globalConfig/fetchUpdateConfigBottomCenterIcon'],
 }))(EditionModal);

@@ -4,7 +4,7 @@ import { Card } from 'antd';
 import { BOTTOM_ICON_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import BottomIconEditionModal from './Form/BottomIconEditionModal';
-import TabModal from './TabComponents/TabModal';
+import BottomIconConfigSet from './Form/BottomIconConfigSet';
 
 const TabConfigure = (props) => {
   const { dispatch, loading, bottomIconList } = props;
@@ -28,13 +28,7 @@ const TabConfigure = (props) => {
         {
           type: 'edit',
           title: '编辑详情',
-          click: () => {
-            setVisible({
-              show: true,
-              type: 'edit',
-              detail: row,
-            });
-          },
+          click: () => handleDetail(val),
           auth: true,
         },
         {
@@ -53,6 +47,18 @@ const TabConfigure = (props) => {
     },
   ];
 
+  const handleDetail = (configBottomCenterIconId) => {
+    dispatch({
+      type: 'globalConfig/fetchGetConfigBottomCenterIconById',
+      payload: {
+        configBottomCenterIconId,
+      },
+      callback: (detail) => {
+        setVisible({ show: true, detail });
+      },
+    });
+  };
+
   const cardBtnList = [
     {
       auth: 'save',
@@ -66,18 +72,16 @@ const TabConfigure = (props) => {
     },
   ];
 
-  const handleTabChange = (key) => {
-    setTabKey(key);
-    childRef?.current?.fetchGetData({ userOs: key, area: 'all' });
-  };
-
   return (
     <>
       <Card
-        title="视频标签配置"
+        title="底部中心icon配置"
         tabList={Object.keys(BOTTOM_ICON_TYPE).map((i) => ({ key: i, tab: BOTTOM_ICON_TYPE[i] }))}
         activeTabKey={tabKey}
-        onTabChange={handleTabChange}
+        onTabChange={(key) => {
+          setTabKey(key);
+          childRef?.current?.fetchGetData({ userOs: key });
+        }}
       >
         <TableDataBlock
           order
@@ -88,12 +92,12 @@ const TabConfigure = (props) => {
           btnExtra={cardBtnList}
           pagination={false}
           rowKey={(record) => `${record.configBottomCenterIconId}`}
-          params={{ userOs: tabKey, isAutomatic: 1, deleteFlag: 1 }}
+          params={{ userOs: tabKey, deleteFlag: 1 }}
           dispatchType="globalConfig/fetchListConfigBottomCenterIcon"
           {...bottomIconList}
         />
       </Card>
-      {/* 弹窗-新增版本 */}
+      {/* 弹窗-新增版本、修改 */}
       <BottomIconEditionModal
         childRef={childRef}
         visible={visibleEdition}
@@ -101,12 +105,12 @@ const TabConfigure = (props) => {
         onClose={() => setVisibleEdition(false)}
       ></BottomIconEditionModal>
       {/* 编辑详情-弹窗 */}
-      <TabModal
+      <BottomIconConfigSet
         childRef={childRef}
         visible={visible}
         tabKey={tabKey}
         onClose={() => setVisible(false)}
-      ></TabModal>
+      ></BottomIconConfigSet>
     </>
   );
 };

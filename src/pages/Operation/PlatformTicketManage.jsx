@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
 import { Tag } from 'antd';
-import { COUPON_STATUS, PLATFORM_TICKET_SCENE, PLATFORM_TICKET_TYPE } from '@/common/constant';
+import { COUPON_STATUS, PLATFORM_TICKET_TYPE, PLATFORM_TICKET_SCENE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import PlatformDrawer from './components/PlatformManage/PlatformDrawer';
@@ -32,13 +32,7 @@ const PlatformManage = (props) => {
       label: '券类型',
       type: 'select',
       name: 'useScenesType',
-      select: {
-        goodsBuy: '商品券',
-        // scan: '扫码',
-        virtual: '虚拟品券',
-        commerce: '电商品券',
-        // community: '团购',
-      },
+      select: PLATFORM_TICKET_SCENE,
     },
     {
       label: '状态',

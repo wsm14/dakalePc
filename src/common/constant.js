@@ -851,10 +851,10 @@ export const MATERIAL_JUMP_TYPE = {
 
 // 平台券管理 - 券使用场景类型
 export const PLATFORM_TICKET_SCENE = {
-  goodsBuy: '商品',
+  goodsBuy: '商品券',
   // scan: '扫码',
-  virtual: '虚拟品',
-  commerce: '电商品',
+  virtual: '虚拟品券',
+  commerce: '电商品券',
   // community: '团购',
 };
 

@@ -25,6 +25,7 @@ import {
   fetchListConfigBottomCenterIcon,
   fetchSaveConfigBottomCenterIcon,
   fetchUpdateConfigBottomCenterIcon,
+  fetchGetConfigBottomCenterIconById,
 } from '@/services/SystemServices';
 
 export default {
@@ -438,9 +439,17 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '修改成功',
+        description: '编辑成功',
       });
       callback && callback();
+    },
+    //底部中心icon配置 - 编辑获取详情
+    *fetchGetConfigBottomCenterIconById({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetConfigBottomCenterIconById, payload);
+      if (!response) return;
+      const { content = {} } = response;
+
+      callback && callback(content.configBottomCenterIconDTO);
     },
   },
 };

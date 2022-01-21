@@ -600,11 +600,18 @@ export function fetchSaveConfigBottomCenterIcon(data) {
   });
 }
 
-//底部中心icon配置 - 编辑版本
+//底部中心icon配置 - 编辑版本 / 编辑配置
 export function fetchUpdateConfigBottomCenterIcon(data) {
   return request('/admin/configBottomCenterIcon/updateConfigBottomCenterIcon', {
     method: 'POST',
     data,
+  });
+}
+
+//底部中心icon配置 - 编辑获取详情
+export function fetchGetConfigBottomCenterIconById(params) {
+  return request('/admin/configBottomCenterIcon/getConfigBottomCenterIconById', {
+    params,
   });
 }
 
