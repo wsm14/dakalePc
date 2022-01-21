@@ -279,8 +279,9 @@ const CouponSet = (props) => {
               {
                 validator: (rule, value) => {
                   console.log(Number(value));
-                  const maxNum = form.getFieldValue('thresholdPrice');
-                  if (Number(value) > maxNum) {
+                  const maxNum = form.getFieldValue('thresholdPrice'); // 使用门槛
+                  const nowNum = form.getFieldValue('couponValue'); // 券价值
+                  if (Number(value) + nowNum > maxNum) {
                     return Promise.reject('最高膨胀金额不可高于使用门槛');
                   }
                   if (Number(value) <= 0) {

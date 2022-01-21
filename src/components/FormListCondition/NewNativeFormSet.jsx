@@ -29,7 +29,6 @@ const NewNativeFormSet = ({
   const [showApi, setShowApi] = useState(false); // 打开的页面类型
   const [paramKey, setParamKey] = useState(['paramName', 'paramValue']); // app 跳转需要的参数键
 
-  console.log(detail);
   useEffect(() => {
     fetchGetJumpNative(); // 获取后端配置的 app打开的页面类型 和 参数键值对
     fetchWalkManageNavigation(); // 获取风向标
