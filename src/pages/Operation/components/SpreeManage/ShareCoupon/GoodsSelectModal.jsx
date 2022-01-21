@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Modal, Empty, Spin, Tabs } from 'antd';
 import { goodsDom, couponsDom, platformCouponsDom } from './CouponFreeDom';
+import { PLATFORM_TICKET_SCENE } from '@/common/constant';
 import SearchCondition from '@/components/SearchCondition';
 import './index.less';
 
@@ -38,12 +39,22 @@ const GoodsSelectModal = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '商品名称',
+      label: '券名称',
       name: {
         platformCoupon: 'couponName',
         rightGoods: 'goodsName',
         rightCoupon: 'couponName',
       }[tabKey],
+    },
+    {
+      label: '券编号',
+      name: 'platformCouponId',
+    },
+    {
+      label: '券类型',
+      type: 'select',
+      name: 'useScenesType',
+      select: PLATFORM_TICKET_SCENE,
     },
   ];
 
