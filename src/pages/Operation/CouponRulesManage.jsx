@@ -123,5 +123,6 @@ export default connect(({ couponRulesManage, loading }) => ({
   loading:
     loading.effects['couponRulesManage/fetchGetList'] ||
     loading.effects['couponRulesManage/fetchRuleDetail'] ||
-    loading.effects['couponRulesManage/fetchRuleDetailPage'],
+    loading.effects['couponRulesManage/fetchRuleDetailPage'] ||
+    loading.effects['couponRulesManage/fetchUpdateRuleStatus'],
 }))(PlatformManage);

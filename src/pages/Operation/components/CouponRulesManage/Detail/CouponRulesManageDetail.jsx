@@ -12,8 +12,6 @@ const GoodsDetail = (props) => {
   const { ruleId, detail = {}, dispath, ruleDetailListObj = {} } = props;
   const { subRuleType, ruleType } = detail;
 
-  console.log('ruleDetailListObj', ruleDetailListObj);
-
   const formItems = [
     {
       label: '规则类型',
