@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import debounce from 'lodash/debounce';
 import { VIDEO_ADVERT_TYPE } from '@/common/constant';
 import { VIDEO_ADVERT } from '@/common/imgRatio';
-import { NativeFormSet } from '@/components/FormListCondition';
+import { NewNativeFormSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 import ShareCoupon from '@/components/VideoSelectBindContent';
 
@@ -145,12 +145,12 @@ const VideoContentSet = (props) => {
     {
       type: 'noForm',
       formItem: (
-        <NativeFormSet
+        <NewNativeFormSet
           form={form}
           detail={detail}
           // port={tabKey}
           getJumpType={setShowTitle}
-        ></NativeFormSet>
+        ></NewNativeFormSet>
       ),
     },
     // {

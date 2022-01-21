@@ -32,7 +32,7 @@ const MessageDrawer = (props) => {
           pushObjectIds: pushObjectIds.toString(),
           userType,
           link: jumpUrl,
-          linkType: { '': '', H5: 'h5', inside: 'native' }[jumpUrlType],
+          linkType: jumpUrlType,
           pushTime: pushTime ? pushTime.format('YYYY-MM-DD HH:mm') : null,
           id: detail.messagePushId,
         },
