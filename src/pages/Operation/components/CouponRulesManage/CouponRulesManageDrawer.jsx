@@ -109,6 +109,11 @@ const CouponDrawer = (props) => {
     visible: showDrawer,
     onClose,
     loading: loadingDetail,
+    closeCallBack: () => {
+      dispatch({
+        type: 'couponRulesManage/clearRuleDetailListObj',
+      });
+    },
     footer: ['add'].includes(type) && (
       <Button onClick={handleUpAudit} type="primary" loading={loading}>
         确定
