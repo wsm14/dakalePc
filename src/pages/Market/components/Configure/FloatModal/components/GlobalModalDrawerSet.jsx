@@ -16,7 +16,6 @@ const GlobalModalDrawerSet = (props) => {
   //保存
   const handleSave = () => {
     form.validateFields().then(async (values) => {
-      console.log(values);
       const { windowImage, ...ohter } = values;
       const { userOs, version, area, cityCode, windowType, configFloatingWindowId } = detail;
       const detailParam = { userOs, version, area, cityCode, windowType, configFloatingWindowId };

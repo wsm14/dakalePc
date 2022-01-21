@@ -4,11 +4,10 @@ import { Form, Button, InputNumber } from 'antd';
 import { PAGE_STATUS, BANNER_AREA_TYPE } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
-import { CitySet, NativeFormSet } from '@/components/FormListCondition';
 import ConditionsForm from './ConditionsForm';
 const GatherSet = (props) => {
   const { visible = {}, onClose, cRef, dispatch, loading } = props;
-  const { show = false, type, detail = {areaType:'all'} } = visible;
+  const { show = false, type, detail = { areaType: 'all' } } = visible;
   const { provinceCityDistrictObjects: cityArr = [], areaType } = detail;
   const [form] = Form.useForm();
   const [showArea, setShowArea] = useState(false); // 区域

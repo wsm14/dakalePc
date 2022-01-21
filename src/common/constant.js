@@ -446,7 +446,7 @@ export const BANNER_PORT_LINK = {
 };
 
 // Banner跳转类型
-export const BANNER_JUMP_TYPE = { '': '无', H5: 'H5', inside: '原生页面' };
+export const BANNER_JUMP_TYPE = { '': '无', h5: 'H5', native: '原生页面' };
 
 // 用户类型
 export const MASTER_TYPE = { user: '用户', merchant: '店铺' };
@@ -455,7 +455,7 @@ export const MASTER_TYPE = { user: '用户', merchant: '店铺' };
 export const GOODS_CLASS_TYPE = { single: '单品', package: '套餐' };
 
 // 风向标跳转类型
-export const VANE_URL_TYPE = { url: '跳转至URL', trade: '按行业显示', native: '原生页面' };
+export const VANE_URL_TYPE = { h5: '跳转至URL', trade: '按行业显示', native: '原生页面' };
 
 // 分享设置 - 区域类型
 export const SHARE_AREA_TYPE = {

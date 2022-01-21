@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Space, Button } from 'antd';
 import { connect } from 'umi';
 import { MSG_PSUH_TYPE, MSG_PSUH_OBJECT } from '@/common/constant';
-import { NativeFormSet } from '@/components/FormListCondition';
+import { NewNativeFormSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 import { UserSelectShow } from '@/components/MerUserSelectTable';
 import ImportDataModal from './ImportDataModal';
@@ -17,7 +17,7 @@ const MessagePushSet = (props) => {
   const newDetail = {
     ...ohter,
     jumpUrl: link,
-    jumpUrlType: { '': '', h5: 'H5', native: 'inside' }[linkType],
+    jumpUrlType: linkType,
   };
 
   useEffect(() => {
@@ -80,7 +80,7 @@ const MessagePushSet = (props) => {
     },
     {
       type: 'noForm',
-      formItem: <NativeFormSet form={form} detail={newDetail}></NativeFormSet>,
+      formItem: <NewNativeFormSet form={form} detail={newDetail}></NewNativeFormSet>,
     },
     {
       label: '消息类型',

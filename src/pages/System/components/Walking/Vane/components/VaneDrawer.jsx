@@ -47,7 +47,7 @@ const VaneDrawer = (props) => {
         categoryId = '',
         windVaneParamObject = {},
         param,
-        jumpType,
+        jumpUrlType,
         nativeJumpType,
       } = values;
       const { bannerImage, ...other } = windVaneParamObject;
@@ -71,12 +71,12 @@ const VaneDrawer = (props) => {
             areaCode: type === 'edit' ? detail.areaCode : cityCode,
             configWindVaneId: detail.configWindVaneId,
             ...values,
-            jumpType: jumpType === 'trade' ? 'native' : jumpType,
-            nativeJumpType: { trade: 'windVaneCategory', native: nativeJumpType }[jumpType],
+            jumpUrlType: jumpUrlType === 'trade' ? 'native' : jumpUrlType,
+            nativeJumpType: { trade: 'windVaneCategory', native: nativeJumpType }[jumpUrlType],
             bubbleFlag: Number(bubbleFlag),
             image: res[0],
             windVaneParamObject:
-              jumpType === 'trade'
+              jumpUrlType === 'trade'
                 ? { ...windVaneParam, bannerImage: res.slice(1).toString() }
                 : param,
           },
@@ -139,7 +139,7 @@ const VaneDrawer = (props) => {
     },
     {
       label: '跳转类型',
-      name: 'jumpType',
+      name: 'jumpUrlType',
       type: 'noForm',
       formItem: (
         <NewNativeFormSet
@@ -151,12 +151,12 @@ const VaneDrawer = (props) => {
       ),
       render: (val) => VANE_URL_TYPE[val],
     },
-    {
-      label: '链接',
-      name: 'jumpUrl',
-      visible: showUrl === 'url',
-      show: showUrl === 'url',
-    },
+    // {
+    //   label: '链接',
+    //   name: 'jumpUrl',
+    //   visible: showUrl === 'h5',
+    //   show: showUrl === 'h5',
+    // },
     {
       label: '一级行业类目',
       name: 'topCategoryId',
@@ -237,7 +237,7 @@ const VaneDrawer = (props) => {
     onClose,
     afterCallBack: () => {
       setShowPop(Boolean(detail.bubbleFlag));
-      setShowUrl(detail.jumpType || false);
+      setShowUrl(detail.jumpUrlType || false);
       fetchTradeList();
     },
     closeCallBack: () => {
