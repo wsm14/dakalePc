@@ -74,19 +74,6 @@ const JumpTypeBlock = ({
             console.log(val, item);
             setParamKey(item.option.paramKey);
             setShowApi(val);
-            const paramKeyObj = {
-              beanSelection: '0', // 选择小豆精选
-              commerceGoodsPackage: 'ecGoods', // 选择电商品券包
-              platformGeneralCouponPackage: 'beanWelfare', // 选择平台通用券包
-              telephoneFeeDeductionCouponPackage: 'telephoneCharges', // 选择话费抵扣券包
-            };
-            if (Object.keys(paramKeyObj).includes(val)) {
-              form.setFieldsValue({
-                param: {
-                  [item.option.paramKey[0]]: paramKeyObj[val],
-                },
-              });
-            }
           }}
         ></Select>
       </FormItem>
