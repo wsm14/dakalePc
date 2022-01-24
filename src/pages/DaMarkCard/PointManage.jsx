@@ -75,15 +75,15 @@ const PointManage = (props) => {
       render: (hittingMainId, record) => {
         return [
           {
-            type: 'point',
+            type: 'point', // 点位
             click: () => setVisibleModalDrawer({ show: true, detail: record, type: 'point' }),
           },
           {
-            type: 'award',
+            type: 'award', // 奖励
             click: () => fetchCouponDetail(hittingMainId, 'award'),
           },
           {
-            type: 'advert',
+            type: 'advert', // 广告
             click: () => fetchCouponDetail(hittingMainId, 'advert'),
             // click: () => setVisible({ type: 'advert', show: true, detail: record }),
           },
@@ -124,7 +124,7 @@ const PointManage = (props) => {
         hittingMainId,
       },
       callback: (detail) => {
-        setVisible({ type, show: true, detail });
+        setVisible({ type, show: true, detail, hittingMainId });
       },
     });
   };

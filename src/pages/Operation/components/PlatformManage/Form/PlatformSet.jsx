@@ -29,10 +29,11 @@ const CouponSet = (props) => {
   const [ruleList, setRuleList] = useState([]); // 暂存所选规则
   const [visible, setVisible] = useState(false); // 选择规则的modal
 
-  const { useTimeRule, ruleType, increaseRule } = initialValues;
+  const { useTimeRule, ruleType, increaseRule, ruleList: ruleLists } = initialValues;
 
   useEffect(() => {
     if (initialValues.platformCouponId) {
+      setRuleList(ruleLists);
       setRadioData({
         effectTime: useTimeRule, // 券有效期
         getLimit: ruleType, // 领取上限
@@ -56,11 +57,11 @@ const CouponSet = (props) => {
     {
       type: 'handle',
       dataIndex: 'ruleId',
+      show: type === 'add',
       render: (ruleId, record) => [
         {
           type: 'del',
           auth: true,
-          show: type !== 'edit',
           click: () => handleDelect(ruleId),
         },
       ],
@@ -279,13 +280,12 @@ const CouponSet = (props) => {
               {
                 validator: (rule, value) => {
                   console.log(Number(value));
-                  const maxNum = form.getFieldValue('thresholdPrice'); // 使用门槛
-                  const nowNum = form.getFieldValue('couponValue'); // 券价值
+                  const maxNum = Number(form.getFieldValue('thresholdPrice')); // 使用门槛
+                  const nowNum = Number(form.getFieldValue('couponValue')); // 券价值
                   if (Number(value) + nowNum > maxNum) {
                     return Promise.reject('最高膨胀金额不可高于使用门槛');
                   }
                   if (Number(value) <= 0) {
-                    console.log(1111);
                     return Promise.reject('膨胀金额需大于0,且不能为0');
                   }
                   return Promise.resolve();

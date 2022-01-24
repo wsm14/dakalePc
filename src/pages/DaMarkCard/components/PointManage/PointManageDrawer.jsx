@@ -10,8 +10,7 @@ import PlatformAwardSet from './Form/PlatformAwardSet';
 const PointManageDrawer = (props) => {
   const { visible, dispatch, childRef, onClose, loading, loadingDetail } = props;
 
-  const { type = 'info', show = false, detail = {} } = visible;
-  const { hittingMainId } = detail;
+  const { type = 'info', show = false, detail = {}, hittingMainId } = visible;
   const [form] = Form.useForm();
 
   // 确认提交

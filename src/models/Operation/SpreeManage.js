@@ -148,6 +148,7 @@ export default {
           (paymentModeObject.type === 'self' && Number(paymentModeObject.cash)) || buyPrice,
         platformGiftPackRelateList: platformGiftPackRelateList.map((item) => ({
           tagType: item.relateType,
+          platformGiftRelateId: item.platformGiftRelateId,
           ...(item.platformCoupon || item.activityGoods || item.ownerCoupon || {}),
         })),
       };

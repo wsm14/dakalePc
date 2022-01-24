@@ -9,20 +9,19 @@ const FormList = (props) => {
 
   return (
     <Space key={field.key} className={styles.ifame_carouseal} align="baseline">
-      {handleType !== 'edit' && (
-        <div className={styles.ifame_btnArr}>
-          <UpSquareOutlined
-            onClick={() => {
-              move(field.name, field.name - 1);
-            }}
-          />
-          <DownSquareOutlined
-            onClick={() => {
-              move(field.name, field.name + 1);
-            }}
-          />
-        </div>
-      )}
+      <div className={styles.ifame_btnArr}>
+        <UpSquareOutlined
+          onClick={() => {
+            move(field.name, field.name - 1);
+          }}
+        />
+        <DownSquareOutlined
+          onClick={() => {
+            move(field.name, field.name + 1);
+          }}
+        />
+      </div>
+
       {(() => {
         const goodsItem = form.getFieldValue(type)[field.name];
         return {

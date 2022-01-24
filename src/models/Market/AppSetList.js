@@ -81,7 +81,7 @@ export default {
         beginDate,
         endDate,
         activityTime:
-          type === 'edit' ? [] : [moment(beginDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
+          type === 'up' ? [] : [moment(beginDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
         provinceCityDistrictObjects: cityData.map(({ provinceCode, cityCode, districtCode }) => ({
           city: [provinceCode, cityCode, districtCode].filter((i) => i),
         })),

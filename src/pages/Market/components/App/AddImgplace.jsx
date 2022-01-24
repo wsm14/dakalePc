@@ -38,12 +38,14 @@ const AddImgplace = (props) => {
       name: 'width',
       type: 'number',
       rules: [{ required: false }],
+      placeholder: '请输入图片尺寸宽度（px）',
     },
     {
       label: '图片尺寸高度',
       name: 'height',
       type: 'number',
       rules: [{ required: false }],
+      placeholder: '请输入图片尺寸高度（px）',
     },
   ];
 

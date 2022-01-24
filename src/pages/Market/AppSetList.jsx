@@ -138,7 +138,8 @@ const SysAppSet = (props) => {
         {
           type: 'up',
           visible: record.bannerStatus === '0',
-          click: () => fetchBannerStatus({ bannerId: val, bannerStatus: 1 }),
+          // click: () => fetchBannerStatus({ bannerId: val, bannerStatus: 1 }),
+          click: () => fetchBannerDetail({ bannerId: val, type: 'up' }),
         },
         {
           type: 'edit',

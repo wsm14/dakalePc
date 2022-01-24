@@ -35,9 +35,30 @@ const CouponDrawer = (props) => {
         ruleType,
         personLimit,
         dayMaxBuyAmount,
-        platformGiftPackRelateList,
+        platformGiftPackRelateList: giftList = [],
         ...other
       } = values;
+      console.log('123', giftList);
+
+      // 礼包数据重组
+      const newGiftList = giftList.map((item, index) => {
+        const { platformGiftRelateId, tagType: relateType } = item;
+        let obj = {};
+        if (type === 'edit') {
+          obj = { platformGiftRelateId }; // 修改进入返回 platformGiftRelateId
+        }
+        if (type === 'add') {
+          obj = {
+            relateId: {
+              platformCoupon: item.platformCouponId,
+              rightGoods: item.specialGoodsId,
+              rightCoupon: item.ownerCouponIdString,
+            }[relateType],
+            relateType,
+          };
+        }
+        return { ...obj, sort: giftList.length - index };
+      });
 
       dispatch({
         type: {
@@ -69,15 +90,7 @@ const CouponDrawer = (props) => {
             personLimit,
             dayMaxBuyAmount,
           },
-          platformGiftPackRelateList: platformGiftPackRelateList.map((item) => ({
-            relateType: item.tagType,
-            relateId:
-              item.tagType === 'platformCoupon'
-                ? item.platformCouponId
-                : item.tagType === 'rightGoods'
-                ? item.specialGoodsId
-                : item.ownerCouponIdString,
-          })),
+          platformGiftPackRelateList: newGiftList,
         },
         callback: () => {
           onClose();

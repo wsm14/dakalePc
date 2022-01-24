@@ -6,6 +6,7 @@ import coupon from './Coupon';
 import phoneBill from './PhoneBill'; // 话费
 import memberRecharge from './MemberRecharge'; // 会员充值
 import giftType from './GiftType'; // 固定写死携带默认值，选择类型时赋值
+import beanSelection from './BeanSelection'; // 小豆精选
 
 export default (props) => {
   const { showApi } = props;
@@ -17,7 +18,7 @@ export default (props) => {
     merchantGroup: merchant,
     specialGoods,
     coupon,
-    beanSelection: giftType,
+    beanSelection,
     telephoneFeeDeductionCouponPackage: giftType,
     platformGeneralCouponPackage: giftType,
     commerceGoodsPackage: giftType,
