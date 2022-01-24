@@ -448,8 +448,13 @@ export default {
       const response = yield call(fetchGetConfigBottomCenterIconById, payload);
       if (!response) return;
       const { content = {} } = response;
+      const { param } = content.configBottomCenterIconDTO;
 
-      callback && callback(content.configBottomCenterIconDTO);
+      callback &&
+        callback({
+          ...content.configBottomCenterIconDTO,
+          param: JSON.parse(param || '{}'),
+        });
     },
   },
 };

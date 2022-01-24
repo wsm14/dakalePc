@@ -424,7 +424,7 @@ export default [
         path: '/market/appset',
         name: 'Banner管理',
         component: './Market/AppSetList',
-        buttons: ['save', 'del', 'edit', 'up', 'down'],
+        buttons: ['save', 'del', 'edit', 'up', 'down', 'addPlace'],
       },
       {
         path: '/market/markConfigure',

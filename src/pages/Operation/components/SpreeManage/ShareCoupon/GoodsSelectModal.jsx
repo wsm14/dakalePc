@@ -33,6 +33,12 @@ const GoodsSelectModal = (props) => {
   // }, [visible]);
 
   useEffect(() => {
+    if (visible) {
+      fetchSpecialGoodsList();
+    }
+  }, [visible]);
+
+  useEffect(() => {
     fetchSpecialGoodsList();
   }, [tabKey]);
 

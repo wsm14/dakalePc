@@ -10,7 +10,7 @@ const PointDrawer = (props) => {
   const { visible, dispatch, childRef, onClose, loading, loadingDetail } = props;
 
   const { type = 'add', hittingId, show = false, detail = {} } = visible;
-
+  console.log(detail);
   const [form] = Form.useForm();
 
   // 确认提交
@@ -24,7 +24,7 @@ const PointDrawer = (props) => {
           edit: 'pointManage/fetchUpdateHitting',
         }[type],
         payload: {
-          mainId: detail.mainId,
+          mainId: detail.mainId || detail.hittingMainId,
           hittingId,
           ...other,
           provinceCode: districtCode.slice(0, 2),
