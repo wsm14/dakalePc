@@ -66,7 +66,7 @@ const GoodsDetail = (props) => {
         render: (val) =>
           ({
             platformGoodsTags: '平台商品标签',
-            merchantTags: '商家标签',
+            merchantGoodsTags: '商家商品标签',
           }[val]),
       },
       {

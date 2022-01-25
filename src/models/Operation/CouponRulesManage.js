@@ -156,7 +156,7 @@ export default {
         reduceCouponList, // 有价券
         commerceGoodsList, // 电商品
         platformGoodsTagsList, // 平台商品标签
-        merchantTagsList, // 商家标签
+        merchantGoodsTagsList, // 商家商品标签
         subRuleType, // 子规则
       } = content.ruleDetail;
 
@@ -168,7 +168,7 @@ export default {
           reduceCouponList ||
           commerceGoodsList ||
           platformGoodsTagsList ||
-          merchantTagsList ||
+          merchantGoodsTagsList ||
           specialGoodsList,
       };
 

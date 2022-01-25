@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Form, Input, Button, Row, Col, InputNumber } from 'antd';
 
@@ -23,61 +23,60 @@ const MarkAwardSet = ({ name }) => {
             <Form.ErrorList errors={errors} />
             {fields.map((field, name) => (
               <React.Fragment key={field.key}>
-                {console.log('field', field)}
-                <Input.Group size="small">
-                  <Form.Item
-                    label={`每次打卡领取卡豆数池${name + 1}`}
-                    // {...field}
-                    // validateTrigger={['onChange', 'onBlur']}
-                  >
-                    <Row gutter={8}>
-                      <Col span={5}>
-                        <Form.Item
-                          rules={[{ required: true, message: '请输入卡豆数' }]}
-                          name={[name, 'minBean']}
-                          noStyle
-                        >
-                          <InputNumber placeholder="请输入卡豆数"></InputNumber>
-                        </Form.Item>
-                      </Col>
-                      <Col style={{ lineHeight: '32px' }} span={1}>
-                        至
-                      </Col>
-                      <Col span={8}>
-                        <Form.Item
-                          rules={[{ required: true, message: '请输入卡豆数' }]}
-                          name={[name, 'maxBean']}
-                          noStyle
-                        >
-                          <InputNumber placeholder="请输入卡豆数" addonAfter={'卡豆'}></InputNumber>
-                        </Form.Item>
-                      </Col>
-                      <Col style={{ lineHeight: '32px' }} span={2}>
-                        概率
-                      </Col>
-                      <Col span={6}>
-                        <Form.Item
-                          rules={[{ required: true, message: '请输入概率' }]}
-                          name={[name, 'countRate']}
-                          noStyle
-                        >
-                          <InputNumber placeholder="请输入比例" addonAfter={'%'}></InputNumber>
-                        </Form.Item>
-                      </Col>
-                      <Col span={2}>
-                        {fields.length > 1 ? (
-                          <MinusCircleOutlined
-                            style={{ fontSize: 20, marginLeft: 5, lineHeight: '32px' }}
-                            onClick={() => {
-                              setTextArr(textArr.filter((ci, i) => i !== index));
-                              remove(field.name);
-                            }}
-                          />
-                        ) : null}
-                      </Col>
-                    </Row>
-                  </Form.Item>
-                </Input.Group>
+                <Form.Item required label={`每次打卡领取卡豆数池${name + 1}`}>
+                  <Input.Group size="small" compact>
+                    <Form.Item
+                      rules={[{ required: true, message: '请输入卡豆数' }]}
+                      name={[name, 'minBean']}
+                      noStyle
+                    >
+                      <InputNumber
+                        min={0}
+                        precision={0}
+                        style={{ width: 100 }}
+                        placeholder="请输入卡豆数"
+                      ></InputNumber>
+                    </Form.Item>
+                    <div style={{ margin: '0 10px', lineHeight: '32px' }}>至</div>
+                    <Form.Item
+                      rules={[{ required: true, message: '请输入卡豆数' }]}
+                      name={[name, 'maxBean']}
+                      noStyle
+                    >
+                      <InputNumber
+                        min={0}
+                        precision={0}
+                        style={{ width: 160 }}
+                        placeholder="请输入卡豆数"
+                        addonAfter={'卡豆'}
+                      ></InputNumber>
+                    </Form.Item>
+                    <div style={{ marginLeft: 10, marginRight: 3, lineHeight: '32px' }}>概率</div>
+                    <Form.Item
+                      rules={[{ required: true, message: '请输入概率' }]}
+                      name={[name, 'countRate']}
+                      noStyle
+                    >
+                      <InputNumber
+                        min={0.1}
+                        max={100}
+                        precision={1}
+                        style={{ width: 140 }}
+                        placeholder="请输入比例"
+                        addonAfter={'%'}
+                      ></InputNumber>
+                    </Form.Item>
+                    {fields.length > 1 ? (
+                      <MinusCircleOutlined
+                        style={{ fontSize: 20, marginLeft: 15, lineHeight: '32px' }}
+                        onClick={() => {
+                          setTextArr(textArr.filter((ci, i) => i !== index));
+                          remove(field.name);
+                        }}
+                      />
+                    ) : null}
+                  </Input.Group>
+                </Form.Item>
               </React.Fragment>
             ))}
           </>

@@ -19,7 +19,7 @@ const index = ({ configGoodsTagList, dispatch, form }) => {
       ruleConditions: [],
       subRuleType: {
         platform: 'platformGoodsTags',
-        merchant: 'merchantTags',
+        merchant: 'merchantGoodsTags',
       }[sonType],
     });
     dispatch({

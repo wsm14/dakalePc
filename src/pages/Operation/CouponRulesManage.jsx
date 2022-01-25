@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
+import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import { CONPON_RULES_TYPE } from '@/common/constant';
 import CouponRulesManageDrawer from './components/CouponRulesManage/CouponRulesManageDrawer';
@@ -37,6 +38,11 @@ const PlatformManage = (props) => {
       title: '规则名称',
       fixed: 'left',
       dataIndex: 'ruleName',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
       title: '最后修改人',
