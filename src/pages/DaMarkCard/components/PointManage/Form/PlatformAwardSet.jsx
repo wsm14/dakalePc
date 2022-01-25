@@ -45,6 +45,7 @@ const PlatformSet = (props) => {
     {
       label: '固定时间',
       type: 'formItem',
+      visible: specialTimes === 'fixedTime',
       formItem: (
         <Input.Group size="small" compact>
           <Form.Item
@@ -54,7 +55,7 @@ const PlatformSet = (props) => {
           >
             <InputNumber max={24} min={0} precision={0} />
           </Form.Item>
-          <div style={{ lineHeight: '32px', margin: '0 10px' }}>-</div>
+          <div style={{ lineHeight: '32px', margin: '0 10px' }}>至</div>
           <Form.Item
             noStyle
             name="timeRangeEnd"

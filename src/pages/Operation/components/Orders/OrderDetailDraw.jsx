@@ -429,12 +429,27 @@ const OrderDetailDraw = (props) => {
               <span onClick={() => handleShow('sale')}>
                 优惠合计 <DownOutlined />
               </span>
-              <span>{detail.reduceFee ? `￥${detail.reduceFee}` : 0}</span>
+              {/* <span>{detail.reduceFee ? `￥${detail.reduceFee}` : 0}</span> */}
+              {detail.orderType === 'scan' ? (
+                <span>{`￥${detail.reduceFee}`}</span>
+              ) : (
+                <span>
+                  {detail.deductFeeObject ? `￥${detail.deductFeeObject[0].reduceFee}` : `￥0`}
+                </span>
+              )}
             </div>
             {isShow && (
-              <div className={styles.detail_last_div}>
-                <span>抵扣券</span>
-                <span>{detail.reduceFee ? `￥${detail.reduceFee}` : 0}</span>
+              <div>
+                <div className={styles.detail_last_div}>
+                  <span>抵扣券</span>
+                  <span>{detail.reduceFee ? `￥${detail.reduceFee}` : 0}</span>
+                </div>
+                <div className={styles.detail_last_div}>
+                  <span>平台券</span>
+                  <span>
+                    {detail.deductFeeObject ? `￥${detail.deductFeeObject[0].reduceFee}` : `￥0`}
+                  </span>
+                </div>
               </div>
             )}
             <div className={styles.detail_last_div} style={{ color: '#333' }}>

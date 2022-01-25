@@ -144,6 +144,17 @@ const VirtualOrders = (props) => {
       },
     },
     {
+      title: '平台券',
+      align: 'center',
+      dataIndex: 'deductFeeObject',
+      render: (val = []) => (
+        <>
+          <div>{`${val[0]?.reduceFee || 0}元${val[0]?.deductTypeName || ''}`}</div>
+          <div>{val[0]?.couponCode || ''}</div>
+        </>
+      ),
+    },
+    {
       title: '下单时间',
       dataIndex: 'createTime',
       align: 'center',
