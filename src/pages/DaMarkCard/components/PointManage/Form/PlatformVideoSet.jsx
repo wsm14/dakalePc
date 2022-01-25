@@ -12,7 +12,7 @@ const PlatformVideoSet = (props) => {
       name: 'url',
       type: 'videoUpload',
       maxFile: 1,
-      rules: [{ required: false }],
+      // rules: [{ required: false }],
       onChange: ({ file }) => {
         const fileurl = URL.createObjectURL(file);
         // 获取视频的时长 长宽高

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Button, Form, InputNumber } from 'antd';
-import { NO_BLOCK_PATTERN } from '@/common/regExp';
+import { NO_BLOCK_PATTERN, ONLY_ENGLISH_PATTERN } from '@/common/regExp';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
 
@@ -30,6 +30,10 @@ const AddImgplace = (props) => {
         {
           pattern: NO_BLOCK_PATTERN,
           message: '请勿携带空格',
+        },
+        {
+          pattern: ONLY_ENGLISH_PATTERN,
+          message: '仅支持输入英文',
         },
       ],
     },

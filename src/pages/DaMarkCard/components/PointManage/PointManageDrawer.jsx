@@ -104,6 +104,7 @@ const PointManageDrawer = (props) => {
   const modalProps = {
     title: drawerProps.title,
     visible: show,
+    width: 780,
     onClose,
     loading: loadingDetail,
     footer: ['add', 'edit'].includes(type) ? (
