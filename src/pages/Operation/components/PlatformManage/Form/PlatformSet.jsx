@@ -326,7 +326,7 @@ const CouponSet = (props) => {
             columns={getColumns}
             rowKey={(record) => `${record.ruleId}`}
             list={ruleList}
-            total={ruleList.length}
+            total={ruleList?.length || 0}
           ></TableDataBlock>
         </>
       ),

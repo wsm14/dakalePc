@@ -13,8 +13,8 @@ const MarkAwardSet = ({ name }) => {
           {
             validator: async (rule, names) => {
               console.log('11', rule, names);
-              const isOk = names.filter((item) => Object.keys(item).length === 3);
-              if (isOk.length !== names.length) {
+              const isOk = names.every((item) => Object.keys(item).length === 3);
+              if (isOk) {
                 console.log(1111);
                 return Promise.reject(new Error('请至少选择1个商品'));
               }
