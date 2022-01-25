@@ -68,7 +68,7 @@ const PlatformManage = (props) => {
               {val}
             </Ellipsis>
           </div>
-          <div>{row.platformCouponId}</div>
+          <div style={{ color: '#ccc' }}>{row.platformCouponId}</div>
         </div>
       ),
     },

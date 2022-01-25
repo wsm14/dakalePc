@@ -7,24 +7,10 @@ const MarkAwardSet = ({ name }) => {
 
   return (
     <div style={{ marginBottom: 24 }}>
-      <Form.List
-        name={name}
-        rules={[
-          {
-            validator: async (rule, names) => {
-              console.log('11', rule, names);
-              const isOk = names.every((item) => Object.keys(item).length === 3);
-              if (isOk) {
-                console.log(1111);
-                return Promise.reject(new Error('请至少选择1个商品'));
-              }
-            },
-          },
-        ]}
-      >
+      <Form.List name={name}>
         {(fields, { add, remove }, { errors }) => (
           <>
-            <Form.Item label={'添加卡豆奖池'}>
+            <Form.Item label={'添加卡豆奖池'} required>
               <Button
                 type="dashed"
                 onClick={() => add()}
@@ -54,7 +40,9 @@ const MarkAwardSet = ({ name }) => {
                           <InputNumber placeholder="请输入卡豆数"></InputNumber>
                         </Form.Item>
                       </Col>
-                      <Col span={1}>至</Col>
+                      <Col style={{ lineHeight: '32px' }} span={1}>
+                        至
+                      </Col>
                       <Col span={8}>
                         <Form.Item
                           rules={[{ required: true, message: '请输入卡豆数' }]}
@@ -64,7 +52,9 @@ const MarkAwardSet = ({ name }) => {
                           <InputNumber placeholder="请输入卡豆数" addonAfter={'卡豆'}></InputNumber>
                         </Form.Item>
                       </Col>
-                      <Col span={2}>概率</Col>
+                      <Col style={{ lineHeight: '32px' }} span={2}>
+                        概率
+                      </Col>
                       <Col span={6}>
                         <Form.Item
                           rules={[{ required: true, message: '请输入概率' }]}
@@ -77,7 +67,7 @@ const MarkAwardSet = ({ name }) => {
                       <Col span={2}>
                         {fields.length > 1 ? (
                           <MinusCircleOutlined
-                            style={{ fontSize: 20, marginLeft: 5 }}
+                            style={{ fontSize: 20, marginLeft: 5, lineHeight: '32px' }}
                             onClick={() => {
                               setTextArr(textArr.filter((ci, i) => i !== index));
                               remove(field.name);

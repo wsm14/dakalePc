@@ -29,10 +29,11 @@ const CouponSet = (props) => {
   const [ruleList, setRuleList] = useState([]); // 暂存所选规则
   const [visible, setVisible] = useState(false); // 选择规则的modal
 
-  const { useTimeRule, ruleType, increaseRule, ruleList: ruleLists } = initialValues;
+  const { useScenesType, useTimeRule, ruleType, increaseRule, ruleList: ruleLists } = initialValues;
 
   useEffect(() => {
     if (initialValues.platformCouponId) {
+      setTicket(useScenesType);
       setRuleList(ruleLists);
       setRadioData({
         effectTime: useTimeRule, // 券有效期

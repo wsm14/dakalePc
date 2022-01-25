@@ -970,6 +970,12 @@ export const MARK_CARD_PARENT_TYPE = {
   user: '用户',
 };
 
+// 哒小卡 - 点位管理 - 特殊时间段类型 special
+export const SPECIAL_TIME_TYPE = {
+  all: '不限',
+  fixedTime: '固定时间',
+};
+
 // 全局配置 - 虚拟商品优惠比例配置 - 启用状态
 export const VIR_OPEN_STATE = ['禁用', '启用', '已过期'];
 
