@@ -11,6 +11,7 @@ import {
   PLATFORM_TICKET_SCENE,
 } from '@/common/constant';
 import { NUM_ALL, NUM_INT } from '@/common/regExp';
+import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import FormCondition from '@/components/FormCondition';
 import RuleModal from './RuleModal';
@@ -96,6 +97,7 @@ const CouponSet = (props) => {
               setTicket(e.target.value);
               form.setFieldsValue({
                 useScenesType: e.target.value,
+                classType: 'universal',
               });
               saveSelectData({ areaFlag: '0' });
             }}
@@ -120,13 +122,14 @@ const CouponSet = (props) => {
       ),
     },
     {
-      label: '券类型',
+      label: '券标签',
       name: 'classType',
       type: 'radio',
       select: PLATFORM_TICKET_TYPE[ticket],
       extra: (
         <div className={styles.lookTypeRuleImg}>
-          选择标签后请选择对应的规则，选择错误将影响用户使用 <a>查看对应规则</a>
+          选择标签后请选择对应的规则，选择错误将影响用户使用
+          <PopImgShow type="previewImg" url={typeRuleImg} previewDom={<a>查看对应规则</a>} />
         </div>
       ),
     },

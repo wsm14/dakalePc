@@ -151,7 +151,7 @@ const VirtualOrders = (props) => {
         val ? (
           <>
             <div>{`${val[0]?.reduceFee || 0}元${val[0]?.deductTypeName || ''}`}</div>
-            <div>{val[0]?.identifyIdString || ''}</div>
+            <div>{val[0]?.platformCouponId || ''}</div>
           </>
         ) : (
           '-'
