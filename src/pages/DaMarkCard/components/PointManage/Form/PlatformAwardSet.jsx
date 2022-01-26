@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Form, Input, Button, Checkbox, InputNumber } from 'antd';
-import { SPECIAL_TIME_TYPE } from '@/common/constant';
+import { SPECIAL_TIME_TYPE, OTHER_PRIZE_TYPE } from '@/common/constant';
 import { MarkAwardSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 
@@ -9,6 +9,12 @@ const PlatformSet = (props) => {
   const { form, initialValues } = props;
 
   const [specialTimes, setSpecialTime] = useState('all'); // 特殊时间段类型
+  const [goodsType, setGoodsType] = useState([]); // 选择的其他奖品类型
+
+  // 改变选择的其他奖品类型
+  const handleChange = (val) => {
+    setGoodsType(val);
+  };
 
   // 信息
   const formItems = [
@@ -67,6 +73,7 @@ const PlatformSet = (props) => {
     },
     {
       type: 'noForm',
+      visible: specialTimes === 'fixedTime',
       formItem: (
         <Form.Item
           required
@@ -78,28 +85,45 @@ const PlatformSet = (props) => {
           }}
         >
           {() => {
-            console.log(form.getFieldsValue('beanPoolList'));
             return (
-              <Form.Item name="beanPoolRange" rules={[{ required: true, message: '请输入时间' }]}>
-                <div>{JSON.stringify(form.getFieldsValue('beanPoolList'))}</div>;
+              <Form.Item name="beanPoolRange" rules={[{ required: true, message: '请选择奖池' }]}>
+                <Checkbox.Group>
+                  {form.getFieldValue('beanPoolList')?.map((item, index) => (
+                    <div key={index}>
+                      <Checkbox value={index}>
+                        {`每次打卡领取卡豆数池${index + 1}  ${item?.minBean || 0}~${
+                          item?.maxBean || 0
+                        } 卡豆`}
+                      </Checkbox>
+                    </div>
+                  ))}
+                </Checkbox.Group>
               </Form.Item>
             );
           }}
         </Form.Item>
       ),
-      // <Checkbox.Group>
-      //   {console.log(form.getFieldValue('beanPoolList'))}
-      //   {/* {form.getFieldValue('beanPoolList').map((item, index) => (
-      //     <Checkbox value={index}>{`每次打卡领取卡豆数池${index + 1}  ${item.minBean}~${
-      //       item.maxBean
-      //     } 卡豆`}</Checkbox>
-      //   ))} */}
-      // </Checkbox.Group>
     },
     {
       label: '其他奖品',
-      name: 'hittingRewardRightGoodsObject',
-      rules: [{ required: false }],
+      name: 'goodsObject',
+      type: 'formItem',
+      formItem: (
+        <Checkbox.Group onChange={handleChange}>
+          {Object.keys(OTHER_PRIZE_TYPE).map((item) => (
+            <div key={item}>
+              <Checkbox value={item}>
+                <span>{OTHER_PRIZE_TYPE[item]}</span>
+                {goodsType.includes(item) && (
+                  <Button type="link">
+                    {item === 'hittingRewardRightGoodsObject' ? '+选择' : '+新增'}
+                  </Button>
+                )}
+              </Checkbox>
+            </div>
+          ))}
+        </Checkbox.Group>
+      ),
     },
   ];
 

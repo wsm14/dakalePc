@@ -931,7 +931,7 @@ export const CONPON_RULES_SON_TYPE = {
 };
 
 // 券规则管理  店铺 类型
-export const CONPON_RULES_BUSINESS_TYPE = { merchant: '单店/子门店', group: '集团' };
+export const CONPON_RULES_BUSINESS_TYPE = { merchant: '单店', group: '集团' };
 
 // 券规则管理  商品 类型
 export const CONPON_RULES_GOODS_TYPE = {
@@ -971,10 +971,17 @@ export const MARK_CARD_PARENT_TYPE = {
   user: '用户',
 };
 
-// 哒小卡 - 点位管理 - 特殊时间段类型 special
+// 哒小卡 - 点位管理 - 特殊时间段类型
 export const SPECIAL_TIME_TYPE = {
   all: '不限',
   fixedTime: '固定时间',
+};
+
+// 哒小卡 - 点位管理 - 其他奖品类型
+export const OTHER_PRIZE_TYPE = {
+  hittingRewardRightGoodsObject: '平台权益商品',
+  hittingRewardOnlineGoodsObject: '电商品',
+  hittingRewardActualGoodsObject: '自提商品',
 };
 
 // 全局配置 - 虚拟商品优惠比例配置 - 启用状态

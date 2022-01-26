@@ -32,12 +32,12 @@ const VaneDrawer = (props) => {
   const childRef = useRef();
 
   const [searchForm] = Form.useForm();
-
   const [tabKey, setTabKey] = useState('specialGoods');
   const [selectItem, setSelectItem] = useState([]); // 选中项
 
   useEffect(() => {
-    console.log(searchForm);
+    console.log(visible);
+    if (!visible || (!childRef.current && !searchForm)) return;
     if (tabKey === 'reduceCoupon') {
       searchForm?.setFieldsValue({
         ownerCouponStatus: '1',
@@ -47,8 +47,8 @@ const VaneDrawer = (props) => {
         status: '1',
       });
     }
-    childRef?.current?.fetchGetData(listProps.params);
-  }, [tabKey]);
+    childRef?.current?.fetchGetData(listProps.searchShowData);
+  }, [tabKey, visible]);
 
   useEffect(() => {
     if (visible) {
@@ -84,6 +84,7 @@ const VaneDrawer = (props) => {
         commerceGoods: 'status',
       }[tabKey],
       type: 'select',
+      allItem: false,
       select: tabKey === 'reduceCoupon' ? [false, '上架中', '已下架'] : SPECIAL_STATUS,
     },
   ];
@@ -310,21 +311,24 @@ const VaneDrawer = (props) => {
     specialGoods: {
       dispatchType: 'couponRulesManage/fetchListSpecialGoodsManagement',
       totalList: specialGoodsList,
-      params: { activityType: 'specialGoods', deleteFlag: 1, status: 1 },
+      searchShowData: { status: '1' },
+      params: { activityType: 'specialGoods', deleteFlag: '1' },
       getColumns: specialGoodsColumns,
       id: 'specialGoodsId',
     },
     reduceCoupon: {
       dispatchType: 'baseData/fetchGetAllCouponSelect',
       totalList: couponList,
-      params: { buyFlag: 1, reduceCoupon: 1 },
+      searchShowData: { ownerCouponStatus: '1' },
+      params: { buyFlag: '1', reduceCoupon: '1' },
       getColumns: ownerCouponColumns,
       id: 'ownerCouponIdString',
     },
     commerceGoods: {
       dispatchType: 'baseData/fetchGetPlatformCommerceGoodsSelect',
       totalList: platformEquityList,
-      params: { activityType: 'commerceGoods', status: 1 },
+      searchShowData: { status: '1' },
+      params: { activityType: 'commerceGoods' },
       getColumns: specialGoodsColumns,
       id: 'specialGoodsId',
     },
@@ -332,7 +336,7 @@ const VaneDrawer = (props) => {
 
   const modalProps = {
     title: '选择指定商品',
-    destroyOnClose: true,
+    forceRender: true,
     width: 1000,
     visible,
     okText: ['phoneBill', 'member'].includes(tabKey)
@@ -361,6 +365,22 @@ const VaneDrawer = (props) => {
     onCancel: onClose,
   };
 
+  // 选择数据去重数据
+  const handleSelectRow = (list) => {
+    const obj = {};
+    const allIdArr = list.map((i) => i[listProps.id]); // 获取所有id
+    // 去重数据
+    const newSelectList = list
+      .reduce((item, next) => {
+        next && obj[next[listProps.id]]
+          ? ''
+          : next && (obj[next[listProps.id]] = true && item.push(next));
+        return item;
+      }, [])
+      .filter((item) => item && allIdArr.includes(item[listProps.id]));
+    setSelectItem(newSelectList);
+  };
+
   return (
     <Modal {...modalProps}>
       <Card
@@ -380,13 +400,21 @@ const VaneDrawer = (props) => {
       >
         {['specialGoods', 'reduceCoupon', 'commerceGoods'].includes(tabKey) ? (
           <TableDataBlock
+            cRef={childRef}
             noCard={false}
+            firstFetch={false}
+            loading={loading}
             searchForm={searchForm}
-            // searchShowData={{ [tabKey === 'reduceCoupon' ? 'ownerCouponStatus' : 'status']: '1' }}
+            searchItems={searchItems}
+            searchShowData={listProps.searchShowData}
+            params={listProps.params}
+            columns={listProps.getColumns}
+            dispatchType={listProps.dispatchType}
+            rowKey={(record) => `${record[listProps.id]}`}
+            {...listProps.totalList}
             rowSelection={{
               selectedRowKeys: selectItem.map((i) => i[listProps.id]),
               onSelect: (row, selected, list) => {
-                const obj = {};
                 /**
                  * 获取当前所有数据 且保留 list 内不为undefind的数据
                  * 当selected为true选中状态时 filter 返回true 保留数据
@@ -395,46 +423,17 @@ const VaneDrawer = (props) => {
                 const allSelectList = [...selectItem, ...list].filter((i) =>
                   selected ? i : i && i[listProps.id] !== row[listProps.id],
                 );
-                const allIdArr = allSelectList.map((i) => i[listProps.id]); // 获取所有id
-                // 去重数据
-                const newSelectList = allSelectList
-                  .reduce((item, next) => {
-                    next && obj[next[listProps.id]]
-                      ? ''
-                      : next && (obj[next[listProps.id]] = true && item.push(next));
-                    return item;
-                  }, [])
-                  .filter((item) => item && allIdArr.includes(item[listProps.id]));
-                setSelectItem(newSelectList);
+                handleSelectRow(allSelectList);
               },
               onSelectAll: (selected, selectedRows, changeRows) => {
-                const obj = {};
                 const allSelectList = [...selectItem, ...changeRows].filter((i) =>
                   selected
                     ? i
                     : i && !changeRows.map((it) => it[listProps.id]).includes(i[listProps.id]),
                 );
-                const allIdArr = allSelectList.map((i) => i[listProps.id]); // 获取所有id
-                // 去重数据
-                const newSelectList = allSelectList
-                  .reduce((item, next) => {
-                    next && obj[next[listProps.id]]
-                      ? ''
-                      : next && (obj[next[listProps.id]] = true && item.push(next));
-                    return item;
-                  }, [])
-                  .filter((item) => item && allIdArr.includes(item[listProps.id]));
-                setSelectItem(newSelectList);
+                handleSelectRow(allSelectList);
               },
             }}
-            cRef={childRef}
-            loading={loading}
-            searchItems={searchItems}
-            columns={listProps.getColumns}
-            rowKey={(record) => `${record[listProps.id]}`}
-            params={listProps.params}
-            dispatchType={listProps.dispatchType}
-            {...listProps.totalList}
           ></TableDataBlock>
         ) : (
           <div

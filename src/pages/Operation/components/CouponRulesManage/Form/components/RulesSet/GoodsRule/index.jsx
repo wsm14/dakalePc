@@ -126,7 +126,7 @@ const index = ({ form, ruleShowApi }) => {
     form.setFieldsValue({
       remark: ['phoneBill', 'member'].includes(shopData.subRuleType)
         ? `已选${CONPON_RULES_GOODS_TYPE[shopData.subRuleType]}`
-        : `已选${shopData.list.length}个${CONPON_RULES_GOODS_TYPE[shopData.subRuleType]}`,
+        : `已选${newList.list.length}个${CONPON_RULES_GOODS_TYPE[shopData.subRuleType]}`,
       ruleConditions: newList.map((item) => ({
         condition: item[listProps.id],
       })),

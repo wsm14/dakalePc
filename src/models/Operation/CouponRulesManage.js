@@ -70,11 +70,11 @@ export default {
         },
       });
     },
-    // get 券规则管理 - 店铺（单店、子门店）/集团列表 - 列表
+    // get 券规则管理 - 店铺（单店）/集团列表 - 列表
     *fetchGetGroupMreList({ payload }, { put, call }) {
       const { type = 'merchant', name, ...other } = payload;
       const newPayload = {
-        merchant: { merchantName: name, businessStatus: 1 }, // 单店
+        merchant: { merchantName: name, businessStatus: 1, groupFlag: 0 }, // 单店
         group: { groupName: name }, // 集团
       }[type];
       const response = yield call(
