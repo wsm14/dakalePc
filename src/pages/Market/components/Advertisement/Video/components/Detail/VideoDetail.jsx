@@ -29,11 +29,7 @@ const VideoDetail = (props) => {
 
   const { index, show = false, type = 'info', detail = {} } = visible;
 
-  const { platformMomentId, relateId: ownerId, jumpUrlType } = detail;
-  const newDetail = {
-    ...detail,
-    jumpUrlType: { '': '', h5: 'H5', native: 'inside' }[jumpUrlType],
-  };
+  const { platformMomentId, relateId: ownerId } = detail;
 
   const [form] = Form.useForm();
   const [couponData, setCouponData] = useState({ free: {}, contact: [] }); // 选择券的信息
@@ -169,7 +165,7 @@ const VideoDetail = (props) => {
 
   const handleUpdataSava = () => {
     form.validateFields().then((values) => {
-      const { jumpUrlType, frontImage, url, title, videoId, ...other } = values;
+      const { frontImage, url, title, videoId, ...other } = values;
       const { free = {}, contact = [] } = couponData;
       // if (!values.jumpUrl && !contact.length && !free.goodsName) {
       //   notification.info({
@@ -227,7 +223,6 @@ const VideoDetail = (props) => {
                 type: 'videoAdvert/fetchVideoAdvertEdit',
                 payload: {
                   ...other,
-                  jumpUrlType: { '': '', H5: 'h5', inside: 'native' }[jumpUrlType],
                   platformMomentId,
                   title,
                   frontImageWidth: 544, // 封面宽
@@ -259,7 +254,7 @@ const VideoDetail = (props) => {
       onChange: (size) => getDetail(size, 'info'),
     },
     afterCallBack: () => {
-      setShowTitle(newDetail.jumpUrlType);
+      setShowTitle(detail.jumpUrlType);
     },
     footer: (
       <>
@@ -294,7 +289,7 @@ const VideoDetail = (props) => {
           edit: (
             <GoodsEdit
               form={form}
-              detail={newDetail}
+              detail={detail}
               couponData={couponData}
               setCouponData={setCouponData}
               showTitle={showTitle}

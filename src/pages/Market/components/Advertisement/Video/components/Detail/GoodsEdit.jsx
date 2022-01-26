@@ -78,7 +78,7 @@ const GoodsEdit = (props) => {
           form={form}
           detail={detail}
           // port={tabKey}
-          getJumpType={setShowTitle}
+          // getJumpType={setShowTitle}
         ></NewNativeFormSet>
       ),
     },
