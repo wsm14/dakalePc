@@ -11,6 +11,7 @@ export default (type = '') => {
   const moduleAllShow = ['active', 'rule', 'globalModal'].includes(type); // 全都展示
   const moduleActiveShow = ['active'].includes(type); // 只有活动展示
   const moduleRuleShow = ['rule'].includes(type); // 只有规则展示
+  const moduleGlobalModalShow = ['globalModal'].includes(type); // 只有弹窗展示
 
   return [
     {
@@ -34,12 +35,13 @@ export default (type = '') => {
     {
       header: '列表类',
       type: 'list',
-      show: moduleActiveShow,
+      show: moduleActiveShow || moduleGlobalModalShow,
       children: [
         { type: 'commonList', show: moduleActiveShow },
         { type: 'merchantList', show: moduleActiveShow },
         { type: 'couponList', show: moduleActiveShow },
         { type: 'commerceGoods', show: moduleActiveShow },
+        { type: 'commerceGoods', show: moduleGlobalModalShow },
       ],
     },
     {
