@@ -3,9 +3,9 @@ import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import uploadLive from '@/utils/uploadLive';
 import DrawerCondition from '@/components/DrawerCondition';
-import PointManageSet from './Form/PlatformSet';
-import PlatformVideoSet from './Form/PlatformVideoSet';
-import PlatformAwardSet from './Form/PlatformAwardSet';
+import PointManageSet from './Form/PointManageSet';
+import PointManageVideoSet from './Form/PointManageVideoSet';
+import PointManageAwardSet from './Form/PointManageAwardSet';
 
 const PointManageDrawer = (props) => {
   const { visible, dispatch, childRef, onClose, loading, loadingDetail } = props;
@@ -92,11 +92,11 @@ const PointManageDrawer = (props) => {
     },
     advert: {
       title: '打卡广告设置',
-      children: <PlatformVideoSet form={form} initialValues={detail}></PlatformVideoSet>,
+      children: <PointManageVideoSet form={form} initialValues={detail}></PointManageVideoSet>,
     },
     award: {
       title: '打卡奖励设置',
-      children: <PlatformAwardSet form={form} initialValues={detail}></PlatformAwardSet>,
+      children: <PointManageAwardSet form={form} initialValues={detail}></PointManageAwardSet>,
     },
   }[type];
 

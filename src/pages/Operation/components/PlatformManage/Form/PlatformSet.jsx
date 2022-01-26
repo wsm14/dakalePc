@@ -14,6 +14,7 @@ import { NUM_ALL, NUM_INT } from '@/common/regExp';
 import TableDataBlock from '@/components/TableDataBlock';
 import FormCondition from '@/components/FormCondition';
 import RuleModal from './RuleModal';
+import typeRuleImg from './typeRule.png';
 import styles from './index.less';
 
 const { Option } = Select;
@@ -123,6 +124,11 @@ const CouponSet = (props) => {
       name: 'classType',
       type: 'radio',
       select: PLATFORM_TICKET_TYPE[ticket],
+      extra: (
+        <div className={styles.lookTypeRuleImg}>
+          选择标签后请选择对应的规则，选择错误将影响用户使用 <a>查看对应规则</a>
+        </div>
+      ),
     },
     {
       title: '基本信息',
