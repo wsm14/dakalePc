@@ -10,7 +10,7 @@ const FormList = (props) => {
   return (
     <Space key={field.key} className={styles.ifame_carouseal} align="baseline">
       {(() => {
-        const goodsItem = form.getFieldValue(type)[field.name];
+        const goodsItem = form.getFieldValue('hittingRewardRightGoodsObject')[type][field.name];
         return goodsDom(goodsItem, goodsItem?.specialGoodsId);
 
         // return (
@@ -30,7 +30,7 @@ const FormList = (props) => {
       })()}
       {handleType !== 'edit' && <DeleteOutlined onClick={() => remove(field.name)} />}
       <Form.Item
-        name={['subRewardList', 'total']}
+        name={['hittingRewardRightGoodsObject', 'subRewardList', 'total']}
         rules={[{ required: true, message: '请输入每月奖品总量' }]}
         noStyle
       >

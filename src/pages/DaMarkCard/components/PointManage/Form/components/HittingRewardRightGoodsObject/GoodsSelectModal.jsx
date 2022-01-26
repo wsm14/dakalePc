@@ -16,7 +16,7 @@ const GoodsSelectModal = (props) => {
     visible,
     onClose,
     loading,
-    typeGoods = 'hittingRewardRightGoodsObject',
+    typeGoods = 'subRewardList',
   } = props;
 
   const [selectItem, setSelectItem] = useState([]); // 当前选择项

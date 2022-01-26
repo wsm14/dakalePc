@@ -22,26 +22,38 @@ const OtherPrizeSelect = (props) => {
 
   const listProps = {
     hittingRewardRightGoodsObject: (
-      <Form.List name="hittingRewardRightGoodsObject">
-        {(fields, { remove, move }, { errors }) => {
-          return (
-            <>
-              <Form.ErrorList errors={errors} />
-              {fields.map((field, i) => (
-                <FormList
-                  type="hittingRewardRightGoodsObject"
-                  key={field.fieldKey}
-                  form={form}
-                  fields={fields}
-                  field={field}
-                  remove={remove}
-                  move={move}
-                ></FormList>
-              ))}
-            </>
-          );
-        }}
-      </Form.List>
+      <>
+        <Form.List name={['hittingRewardRightGoodsObject', 'subRewardList']}>
+          {(fields, { remove, move }, { errors }) => {
+            return (
+              <>
+                <Form.ErrorList errors={errors} />
+                {fields.map((field, name) => (
+                  <FormList
+                    type="subRewardList"
+                    key={field.fieldKey}
+                    form={form}
+                    fields={fields}
+                    field={field}
+                    remove={remove}
+                    move={move}
+                  ></FormList>
+                ))}
+                {fields.length !== 0 && (
+                  <Form.Item label="概率" name={['hittingRewardRightGoodsObject', 'rate']}>
+                    <InputNumber
+                      min={0}
+                      max={100}
+                      placeholder="请输入比例"
+                      addonAfter="%"
+                    ></InputNumber>
+                  </Form.Item>
+                )}
+              </>
+            );
+          }}
+        </Form.List>
+      </>
     ),
     hittingRewardOnlineGoodsObject: <></>,
     hittingRewardActualGoodsObject: <></>,
@@ -68,7 +80,7 @@ const OtherPrizeSelect = (props) => {
       </Form.Item>
       {/* 选择平台权益商品 */}
       <GoodsSelectModal
-        typeGoods="hittingRewardRightGoodsObject"
+        typeGoods="subRewardList"
         form={form}
         visible={visible}
         onClose={() => setVisible(false)}
