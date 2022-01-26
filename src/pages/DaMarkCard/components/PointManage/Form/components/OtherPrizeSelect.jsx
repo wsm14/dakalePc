@@ -3,19 +3,21 @@ import { Form, Input, Button, Checkbox, InputNumber } from 'antd';
 import { OTHER_PRIZE_TYPE } from '@/common/constant';
 import FormList from './HittingRewardRightGoodsObject/FormList';
 import GoodsSelectModal from './HittingRewardRightGoodsObject/GoodsSelectModal';
-import {
-  platformCouponsDom,
-  couponsDom,
-  goodsDom,
-} from './HittingRewardRightGoodsObject/CouponFreeDom';
 
 const OtherPrizeSelect = (props) => {
+  const { form } = props;
   const [goodsType, setGoodsType] = useState([]); // 选择的其他奖品类型
   const [visible, setVisible] = useState(false); // 权益商品 弹窗
 
   // 改变选择的其他奖品类型
   const handleChange = (val) => {
     setGoodsType(val);
+  };
+
+  const handleVisible = (type) => {
+    if (type === 'hittingRewardRightGoodsObject') {
+      setVisible(true);
+    }
   };
 
   const listProps = {
@@ -27,8 +29,7 @@ const OtherPrizeSelect = (props) => {
               <Form.ErrorList errors={errors} />
               {fields.map((field, i) => (
                 <FormList
-                  type={type}
-                  handleType={handleType}
+                  type="hittingRewardRightGoodsObject"
                   key={field.fieldKey}
                   form={form}
                   fields={fields}
@@ -55,7 +56,7 @@ const OtherPrizeSelect = (props) => {
               <Checkbox value={item}>
                 <span>{OTHER_PRIZE_TYPE[item]}</span>
                 {goodsType.includes(item) && (
-                  <Button type="link">
+                  <Button type="link" onClick={() => handleVisible(item)}>
                     {item === 'hittingRewardRightGoodsObject' ? '+选择' : '+新增'}
                   </Button>
                 )}
@@ -67,7 +68,7 @@ const OtherPrizeSelect = (props) => {
       </Form.Item>
       {/* 选择平台权益商品 */}
       <GoodsSelectModal
-        typeGoods={type}
+        typeGoods="hittingRewardRightGoodsObject"
         form={form}
         visible={visible}
         onClose={() => setVisible(false)}

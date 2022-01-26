@@ -25,6 +25,7 @@ const ShareWeightSet = ({ detail, onSubmit, loading }) => {
           momentId,
           ownerId,
           weight,
+          flag: 'updateWeight',
         },
         setEdit,
       );

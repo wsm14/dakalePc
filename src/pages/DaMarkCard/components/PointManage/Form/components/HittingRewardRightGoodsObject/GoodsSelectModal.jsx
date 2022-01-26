@@ -1,36 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Modal, Empty, Spin, Tabs } from 'antd';
-import { goodsDom, couponsDom, platformCouponsDom } from './CouponFreeDom';
-import { PLATFORM_TICKET_SCENE } from '@/common/constant';
+import { goodsDom } from './CouponFreeDom';
 import SearchCondition from '@/components/SearchCondition';
 import './index.less';
 
-const { TabPane } = Tabs;
 /**
- * 选择平台券/权益商品/权益券（多选）
+ * 选择权益商品（多选）
  */
 const GoodsSelectModal = (props) => {
   const {
-    PlatformCouponList = {},
     platformEquityList = {},
-    EquityCouponList = {},
     form,
     dispatch,
     visible,
     onClose,
     loading,
-    typeGoods = 'platformCoupon',
+    typeGoods = 'hittingRewardRightGoodsObject',
   } = props;
 
   const [selectItem, setSelectItem] = useState([]); // 当前选择项
-  const [tabKey, setTabKey] = useState('platformCoupon'); // tab类型
-
-  // useEffect(() => {
-  //   if (visible) {
-  //     dispatch({ type: 'baseData/clearPlatformEquity' });
-  //   }
-  // }, [visible]);
 
   useEffect(() => {
     if (visible) {
@@ -38,74 +27,28 @@ const GoodsSelectModal = (props) => {
     }
   }, [visible]);
 
-  useEffect(() => {
-    fetchSpecialGoodsList();
-  }, [tabKey]);
-
   // 搜索参数
   const searchItems = [
     {
-      label: '券名称',
-      name: {
-        platformCoupon: 'couponName',
-        rightGoods: 'goodsName',
-        rightCoupon: 'couponName',
-      }[tabKey],
-    },
-    {
-      label: '券编号',
-      name: 'platformCouponId',
-    },
-    {
-      label: '券类型',
-      type: 'select',
-      name: 'useScenesType',
-      select: PLATFORM_TICKET_SCENE,
+      label: '商品名称',
+      name: 'goodsName',
     },
   ];
 
   const listProps = {
-    platformCoupon: {
-      list: PlatformCouponList.list,
-      total: PlatformCouponList.total,
-      key: 'platformCouponId',
-      loading: loading.effects['baseData/fetchPlatformCouponSelect'],
-    },
-    rightGoods: {
-      list: platformEquityList.list,
-      total: platformEquityList.total,
-      key: 'specialGoodsId',
-      loading: loading.effects['baseData/fetchGetPlatformEquitySelect'],
-    },
-    rightCoupon: {
-      list: EquityCouponList.list,
-      total: EquityCouponList.total,
-      key: 'ownerCouponIdString',
-      loading: loading.effects['baseData/fetchGetEquityCouponSelect'],
-    },
-  }[tabKey];
+    list: platformEquityList.list,
+    total: platformEquityList.total,
+    key: 'specialGoodsId',
+    loading: loading.effects['baseData/fetchGetPlatformEquitySelect'],
+  };
 
-  // 获取特惠活动
+  // 获取权益商品
   const fetchSpecialGoodsList = (data) => {
-    const payload = {
-      platformCoupon: {
-        type: 'baseData/fetchPlatformCouponSelect',
-        data: { couponStatus: 1 },
-      },
-      rightGoods: {
-        type: 'baseData/fetchGetPlatformEquitySelect',
-        data: { buyFlag: 0 },
-      },
-      rightCoupon: {
-        type: 'baseData/fetchGetEquityCouponSelect',
-        data: { buyFlag: 0 },
-      },
-    }[tabKey];
     dispatch({
-      type: payload.type,
+      type: 'baseData/fetchGetPlatformEquitySelect',
       payload: {
-        ...payload.data,
         ...data,
+        buyFlag: 0,
         page: 1,
         limit: 999,
       },
@@ -124,25 +67,12 @@ const GoodsSelectModal = (props) => {
     <Spin spinning={!!listProps.loading}>
       {listProps?.list?.length ? (
         <div className="share_select_list">
-          {listProps?.list.map(
-            (item) =>
-              ({
-                platformCoupon: platformCouponsDom(
-                  { tagType: 'platformCoupon', ...item },
-                  selectItem.map((item) => item.platformCouponId),
-                  handleSelect,
-                ),
-                rightGoods: goodsDom(
-                  { tagType: 'rightGoods', ...item },
-                  selectItem.map((item) => item.specialGoodsId),
-                  handleSelect,
-                ),
-                rightCoupon: couponsDom(
-                  { tagType: 'rightCoupon', ...item },
-                  selectItem.map((item) => item.ownerCouponIdString),
-                  handleSelect,
-                ),
-              }[tabKey]),
+          {listProps?.list.map((item) =>
+            goodsDom(
+              item,
+              selectItem.map((item) => item.specialGoodsId),
+              handleSelect,
+            ),
           )}
         </div>
       ) : (
@@ -153,10 +83,10 @@ const GoodsSelectModal = (props) => {
 
   return (
     <Modal
-      title={`选择券`}
+      title={`选择奖品（多选）`}
       width={1125}
       visible={visible}
-      afterClose={() => (setTabKey('platformCoupon'), setSelectItem([]))}
+      afterClose={() => setSelectItem([])}
       bodyStyle={{ overflowY: 'auto', maxHeight: 500 }}
       destroyOnClose
       okButtonProps={{
@@ -174,17 +104,7 @@ const GoodsSelectModal = (props) => {
         searchItems={searchItems}
         handleSearch={fetchSpecialGoodsList}
       ></SearchCondition>
-      <Tabs type="card" onChange={setTabKey} style={{ overflow: 'initial' }}>
-        <TabPane tab="平台券" key="platformCoupon">
-          {listDom}
-        </TabPane>
-        {/* <TabPane tab="权益商品" key="rightGoods">
-          {listDom}
-        </TabPane>
-        <TabPane tab="权益券" key="rightCoupon">
-          {listDom}
-        </TabPane> */}
-      </Tabs>
+      {listDom}
     </Modal>
   );
 };

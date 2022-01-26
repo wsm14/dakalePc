@@ -101,7 +101,7 @@ const PlatformSet = (props) => {
     },
     {
       type: 'noForm',
-      formItem: <OtherPrizeSelect></OtherPrizeSelect>,
+      formItem: <OtherPrizeSelect form={form}></OtherPrizeSelect>,
     },
   ];
 
