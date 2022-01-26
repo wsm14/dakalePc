@@ -4,17 +4,12 @@ import { Form, Input, Button, Checkbox, InputNumber } from 'antd';
 import { SPECIAL_TIME_TYPE, OTHER_PRIZE_TYPE } from '@/common/constant';
 import { MarkAwardSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
+import OtherPrizeSelect from './components/OtherPrizeSelect';
 
 const PlatformSet = (props) => {
   const { form, initialValues } = props;
 
   const [specialTimes, setSpecialTime] = useState('all'); // 特殊时间段类型
-  const [goodsType, setGoodsType] = useState([]); // 选择的其他奖品类型
-
-  // 改变选择的其他奖品类型
-  const handleChange = (val) => {
-    setGoodsType(val);
-  };
 
   // 信息
   const formItems = [
@@ -105,25 +100,8 @@ const PlatformSet = (props) => {
       ),
     },
     {
-      label: '其他奖品',
-      name: 'goodsObject',
-      type: 'formItem',
-      formItem: (
-        <Checkbox.Group onChange={handleChange}>
-          {Object.keys(OTHER_PRIZE_TYPE).map((item) => (
-            <div key={item}>
-              <Checkbox value={item}>
-                <span>{OTHER_PRIZE_TYPE[item]}</span>
-                {goodsType.includes(item) && (
-                  <Button type="link">
-                    {item === 'hittingRewardRightGoodsObject' ? '+选择' : '+新增'}
-                  </Button>
-                )}
-              </Checkbox>
-            </div>
-          ))}
-        </Checkbox.Group>
-      ),
+      type: 'noForm',
+      formItem: <OtherPrizeSelect></OtherPrizeSelect>,
     },
   ];
 

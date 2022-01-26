@@ -171,12 +171,15 @@ const GoodsOrders = (props) => {
       title: '平台券',
       align: 'center',
       dataIndex: 'deductFeeObject',
-      render: (val = []) => (
-        <>
-          <div>{`${val[0]?.reduceFee || 0}元${val[0]?.deductTypeName || ''}`}</div>
-          <div>{val[0]?.couponCode || ''}</div>
-        </>
-      ),
+      render: (val) =>
+        val ? (
+          <>
+            <div>{`${val[0]?.reduceFee || 0}元${val[0]?.deductTypeName || ''}`}</div>
+            <div>{val[0]?.identifyIdString || ''}</div>
+          </>
+        ) : (
+          '-'
+        ),
     },
     {
       title: '商户实收',
