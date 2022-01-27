@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import update from 'immutability-helper';
 import { Space, Form, InputNumber, Input, Radio } from 'antd';
 import { UpSquareOutlined, DownSquareOutlined, DeleteOutlined } from '@ant-design/icons';
 import { goodsDom } from './CouponFreeDom';
@@ -10,21 +11,31 @@ const FormList = (props) => {
   const { name, form, field, remove, move, handleType } = props;
   const [videoType, setVideoType] = useState('1'); // 视频类型
 
-  const uploadVideo = async (val) => {
-    let imgUrl = await aliOssUpload(val);
+  const uploadVideo = async (index, val) => {
+    const dataList = form.getFieldValue('subRewardList');
+    const newData = update(dataList, {
+      $splice: [[index, 1, { ...dataList[index], length: 1112345 }]],
+    });
+    console.log(newData);
+    return;
+    let videoUrl = await aliOssUpload(val);
     // 获取视频的时长 长宽高
     const videoElement = document.createElement('video');
     videoElement.addEventListener('loadedmetadata', function (_event) {
       const duration = videoElement.duration; // 单位：秒
+      // const dataList = form.get('subRewardList')
+      const newData = update(dataList, {
+        $splice: [[index, 1, { ...dataList[index], length: duration }]],
+      });
+      console.log(newData);
+      return;
       form.setFieldsValue({
         hittingRewardRightGoodsObject: {
-          // [`${subRewardList[field.name]}`]: {
-          //   length: parseInt(duration),
-          // },
+          subRewardList: newData,
         },
       });
     });
-    videoElement.src = imgUrl.toString();
+    videoElement.src = videoUrl.toString();
     videoElement.load();
   };
 
@@ -47,7 +58,7 @@ const FormList = (props) => {
       >
         <InputNumber style={{ width: 250 }} min={0} placeholder="每月奖品总量" />
       </Form.Item>
-      <Form.Item label="奖品视频" name={[name, 'isThirdVideo']}>
+      <Form.Item label="奖品视频" name={[field.name, 'isThirdVideo']}>
         <Radio.Group onChange={(e) => setVideoType(e.target.value)} value={videoType}>
           <Radio value="0">哒卡乐视频</Radio>
           <Radio value="1">第三方视频</Radio>
@@ -55,10 +66,13 @@ const FormList = (props) => {
       </Form.Item>
       {videoType === '0' && (
         <>
-          <Form.Item name={[name, 'videoUrl']} rules={[{ required: true, message: '请选择视频' }]}>
-            <Video form={form} onChange={uploadVideo}></Video>
+          <Form.Item
+            name={[field.name, 'videoUrl']}
+            rules={[{ required: true, message: '请选择视频' }]}
+          >
+            <Video form={form} onChange={() => uploadVideo()}></Video>
           </Form.Item>
-          <Form.Item hidden={true} name={[name, 'length']}>
+          <Form.Item hidden={true} name={[field.name, 'length']}>
             <Input />
           </Form.Item>
         </>

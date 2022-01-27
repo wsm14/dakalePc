@@ -16,17 +16,8 @@ const OtherPrizeSelect = (props) => {
     setGoodsType(val);
   };
 
-  const handleVisible = (type) => {
-    if (type === 'hittingRewardRightGoodsObject') {
-      setVisible(true);
-    }
-    if (type === 'hittingRewardRightGoodsObject') {
-    }
-    if (type === 'hittingRewardActualGoodsObject') {
-    }
-  };
-
   const listProps = {
+    // 平台权益商品
     hittingRewardRightGoodsObject: (
       <>
         <Form.List name={['hittingRewardRightGoodsObject', 'subRewardList']}>
@@ -34,7 +25,7 @@ const OtherPrizeSelect = (props) => {
             return (
               <>
                 {goodsType.includes('hittingRewardRightGoodsObject') && (
-                  <Button type="link" onClick={() => add()}>
+                  <Button type="link" onClick={() => setVisible(true)}>
                     +选择
                   </Button>
                 )}
@@ -73,6 +64,7 @@ const OtherPrizeSelect = (props) => {
         </Form.Item>
       </>
     ),
+    // 电商品
     hittingRewardOnlineGoodsObject: (
       <>
         <Form.List name={['hittingRewardOnlineGoodsObject', 'subRewardList']}>
@@ -120,6 +112,7 @@ const OtherPrizeSelect = (props) => {
         </Form.Item>
       </>
     ),
+    // 自提商品
     hittingRewardActualGoodsObject: (
       <>
         <Form.List name={['hittingRewardActualGoodsObject', 'subRewardList']}>
@@ -149,10 +142,10 @@ const OtherPrizeSelect = (props) => {
         </Form.List>
         <Form.Item noStyle shouldUpdate={(pre, cur) => pre.path !== cur.path}>
           {({ getFieldValue }) =>
-            getFieldValue(['hittingRewardOnlineGoodsObject', 'subRewardList'])?.length > 0 && (
+            getFieldValue(['hittingRewardActualGoodsObject', 'subRewardList'])?.length > 0 && (
               <Form.Item
                 label="概率"
-                name={['hittingRewardOnlineGoodsObject', 'rate']}
+                name={['hittingRewardActualGoodsObject', 'rate']}
                 rules={[{ required: true, message: '请输入概率' }]}
               >
                 <InputNumber
@@ -194,6 +187,7 @@ const OtherPrizeSelect = (props) => {
         form={form}
         visible={visible}
         onSumbit={(list) => {
+          console.log(list);
           // subRewardList.map(({ goodInfo, ...other }) => other);
           form.setFieldsValue({
             hittingRewardRightGoodsObject: {
