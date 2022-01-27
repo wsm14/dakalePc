@@ -11,6 +11,8 @@ import {
   fetchGetHittingById,
   fetchGetStrapContent,
   fetchSetStrapContent,
+  fetchSetHittingReward,
+  fetchGetHittingRewardByMainId,
 } from '@/services/DaMarkCardServices';
 
 export default {
@@ -159,6 +161,24 @@ export default {
         description: '设置视频成功',
       });
       callback && callback();
+    },
+    // get 哒小卡点位主体 - 奖励 - 设置
+    *fetchSetHittingReward({ payload, callback }, { call }) {
+      const response = yield call(fetchSetHittingReward, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '设置奖励成功',
+      });
+      callback && callback();
+    },
+    // get 哒小卡点位主体 - 奖励 - 详情
+    *fetchGetHittingRewardByMainId({ payload, callback }, { call }) {
+      const response = yield call(fetchGetHittingRewardByMainId, payload);
+      if (!response) return;
+      const { content } = response;
+
+      callback && callback(content.hittingRewardDTO || {});
     },
   },
 };

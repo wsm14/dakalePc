@@ -122,6 +122,12 @@ const PointManageDrawer = (props) => {
           hittingRewardActualGoodsObject,
         };
       }
+
+      dispatch({
+        type: 'pointManage/fetchSetHittingReward',
+        payload: data,
+        callback: onClose,
+      });
     });
   };
 

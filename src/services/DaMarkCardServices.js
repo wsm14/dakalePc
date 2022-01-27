@@ -84,4 +84,19 @@ export function fetchSetStrapContent(data) {
   });
 }
 
+// get 哒小卡点位主体 - 奖励 - 详情
+export async function fetchGetHittingRewardByMainId(params) {
+  return request('/admin/hittingMain/getHittingRewardByMainId', {
+    params,
+  });
+}
+
+// get 哒小卡点位主体 - 奖励 - 设置
+export function fetchSetHittingReward(data) {
+  return request('/admin/hittingMain/setHittingReward', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 哒小卡点位管理 end

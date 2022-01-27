@@ -119,6 +119,8 @@ const PointManage = (props) => {
       type:
         type === 'advert'
           ? 'pointManage/fetchGetStrapContent'
+          : type === 'award'
+          ? 'pointManage/fetchGetHittingRewardByMainId'
           : 'pointManage/fetchGetHittingMainById',
       payload: {
         hittingMainId,
