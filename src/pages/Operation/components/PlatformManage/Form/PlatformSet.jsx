@@ -293,7 +293,7 @@ const CouponSet = (props) => {
                   const maxNum = Number(form.getFieldValue('thresholdPrice')); // 使用门槛
                   const nowNum = Number(form.getFieldValue('couponValue')); // 券价值
                   if (Number(value) + nowNum > maxNum) {
-                    return Promise.reject('最高膨胀金额不可高于使用门槛');
+                    return Promise.reject('券价值+最高膨胀金额不可高于使用门槛');
                   }
                   if (Number(value) <= 0) {
                     return Promise.reject('膨胀金额需大于0,且不能为0');
