@@ -70,6 +70,20 @@ const PointManageDrawer = (props) => {
   const handleAwardUpAudit = () => {
     form.validateFields().then(async (values) => {
       console.log('award', values);
+      const { beanPoolList, beanPoolRange, dayCount, remain, timeRangeStart, timeRangeEnd, total } =
+        values;
+
+      const data = {
+        hittingMainId,
+        hittingRewardObject: {
+          beanPoolList,
+          beanPoolRange,
+          dayCount,
+          remain,
+          timeRange: `${timeRangeStart}-${timeRangeEnd}`,
+          total,
+        },
+      };
     });
   };
 
@@ -96,7 +110,12 @@ const PointManageDrawer = (props) => {
     },
     award: {
       title: '打卡奖励设置',
-      children: <PointManageAwardSet form={form} initialValues={detail}></PointManageAwardSet>,
+      children: (
+        <PointManageAwardSet
+          form={form}
+          initialValues={{ specialTime: 'all', ...detail }}
+        ></PointManageAwardSet>
+      ),
     },
   }[type];
 

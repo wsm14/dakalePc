@@ -14,7 +14,6 @@ const GoodsSelectModal = (props) => {
     form,
     dispatch,
     visible,
-    onSumbit,
     onClose,
     loading,
     typeGoods = 'rightGoodsList',
@@ -87,13 +86,16 @@ const GoodsSelectModal = (props) => {
       title={`选择奖品（多选）`}
       width={1125}
       visible={visible}
+      afterClose={() => setSelectItem([])}
       bodyStyle={{ overflowY: 'auto', maxHeight: 500 }}
       destroyOnClose
       okButtonProps={{
         disabled: !selectItem.length,
       }}
       onOk={() => {
-        onSumbit(selectItem);
+        form.setFieldsValue({
+          [typeGoods]: (form.getFieldValue(typeGoods) || []).concat(selectItem),
+        });
         onClose();
       }}
       onCancel={onClose}

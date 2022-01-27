@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Checkbox, InputNumber } from 'antd';
 import { OTHER_PRIZE_TYPE } from '@/common/constant';
 import FormList from './HittingRewardRightGoodsObject/FormList';
+import FormListOnline from './HittingRewardOnlineGoodsObject/FormList';
+import FormListActual from './HittingRewardActualGoodsObject/FormList';
 import GoodsSelectModal from './HittingRewardRightGoodsObject/GoodsSelectModal';
 
 const OtherPrizeSelect = (props) => {
@@ -14,9 +16,17 @@ const OtherPrizeSelect = (props) => {
     setGoodsType(val);
   };
 
+  const addClick = (callback) => {
+    callback && callback();
+  };
+
   const handleVisible = (type) => {
     if (type === 'hittingRewardRightGoodsObject') {
       setVisible(true);
+    }
+    if (type === 'hittingRewardRightGoodsObject') {
+    }
+    if (type === 'hittingRewardActualGoodsObject') {
     }
   };
 
@@ -28,35 +38,126 @@ const OtherPrizeSelect = (props) => {
             return (
               <>
                 <Form.ErrorList errors={errors} />
-                {fields.map((field, name) => (
+                {fields.map((field) => (
                   <FormList
-                    type="subRewardList"
+                    name={['hittingRewardRightGoodsObject', 'subRewardList']}
                     key={field.fieldKey}
                     form={form}
                     fields={fields}
                     field={field}
                     remove={remove}
-                    move={move}
                   ></FormList>
                 ))}
-                {fields.length !== 0 && (
-                  <Form.Item label="概率" name={['hittingRewardRightGoodsObject', 'rate']}>
-                    <InputNumber
-                      min={0}
-                      max={100}
-                      placeholder="请输入比例"
-                      addonAfter="%"
-                    ></InputNumber>
-                  </Form.Item>
-                )}
               </>
             );
           }}
         </Form.List>
+        <Form.Item noStyle shouldUpdate={(pre, cur) => pre.path !== cur.path}>
+          {({ getFieldValue }) =>
+            getFieldValue(['hittingRewardRightGoodsObject', 'subRewardList'])?.length > 0 && (
+              <Form.Item
+                label="概率"
+                name={['hittingRewardRightGoodsObject', 'rate']}
+                rules={[{ required: true, message: '请输入概率' }]}
+              >
+                <InputNumber
+                  min={0}
+                  max={100}
+                  placeholder="请输入比例"
+                  addonAfter="%"
+                ></InputNumber>
+              </Form.Item>
+            )
+          }
+        </Form.Item>
       </>
     ),
-    hittingRewardOnlineGoodsObject: <></>,
-    hittingRewardActualGoodsObject: <></>,
+    hittingRewardOnlineGoodsObject: (
+      <>
+        <Form.List name={['hittingRewardOnlineGoodsObject', 'subRewardList']}>
+          {(fields, { add, remove, move }, { errors }) => {
+            return (
+              <>
+                <Button onClick={() => add()}>xin</Button>
+                <Form.ErrorList errors={errors} />
+                {fields.map((field) => (
+                  <FormListOnline
+                    name={['hittingRewardOnlineGoodsObject', 'subRewardList']}
+                    key={field.fieldKey}
+                    form={form}
+                    fields={fields}
+                    field={field}
+                    remove={remove}
+                    add={add}
+                  ></FormListOnline>
+                ))}
+              </>
+            );
+          }}
+        </Form.List>
+        <Form.Item noStyle shouldUpdate={(pre, cur) => pre.path !== cur.path}>
+          {({ getFieldValue }) =>
+            getFieldValue(['hittingRewardOnlineGoodsObject', 'subRewardList'])?.length > 0 && (
+              <Form.Item
+                label="概率"
+                name={['hittingRewardOnlineGoodsObject', 'rate']}
+                rules={[{ required: true, message: '请输入概率' }]}
+              >
+                <InputNumber
+                  min={0}
+                  max={100}
+                  placeholder="请输入比例"
+                  addonAfter="%"
+                ></InputNumber>
+              </Form.Item>
+            )
+          }
+        </Form.Item>
+      </>
+    ),
+    hittingRewardActualGoodsObject: (
+      <>
+        <Form.List name={['hittingRewardActualGoodsObject', 'subRewardList']}>
+          {(fields, { add, remove, move }, { errors }) => {
+            return (
+              <>
+                <Button onClick={() => add()}>xin</Button>
+                <Form.ErrorList errors={errors} />
+                {fields.map((field) => (
+                  <FormListActual
+                    name={['hittingRewardActualGoodsObject', 'subRewardList']}
+                    key={field.fieldKey}
+                    form={form}
+                    fields={fields}
+                    field={field}
+                    remove={remove}
+                    add={add}
+                  ></FormListActual>
+                ))}
+              </>
+            );
+          }}
+        </Form.List>
+        <Form.Item noStyle shouldUpdate={(pre, cur) => pre.path !== cur.path}>
+          {({ getFieldValue }) =>
+            getFieldValue(['hittingRewardOnlineGoodsObject', 'subRewardList'])?.length > 0 && (
+              <Form.Item
+                label="概率"
+                name={['hittingRewardOnlineGoodsObject', 'rate']}
+                rules={[{ required: true, message: '请输入概率' }]}
+              >
+                <InputNumber
+                  min={0}
+                  max={100}
+                  placeholder="请输入比例"
+                  addonAfter="%"
+                ></InputNumber>
+              </Form.Item>
+            )
+          }
+        </Form.Item>
+      </>
+    ),
   };
 
   return (
@@ -83,6 +184,17 @@ const OtherPrizeSelect = (props) => {
         typeGoods="subRewardList"
         form={form}
         visible={visible}
+        onSumbit={(list) => {
+          // subRewardList.map(({ goodInfo, ...other }) => other);
+          form.setFieldsValue({
+            hittingRewardRightGoodsObject: {
+              subRewardList: list.map((item) => ({
+                rightGoodsObject: item,
+                rewardId: item.activityGoodsId,
+              })),
+            },
+          });
+        }}
         onClose={() => setVisible(false)}
       ></GoodsSelectModal>
     </>

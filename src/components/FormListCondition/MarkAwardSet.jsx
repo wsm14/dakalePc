@@ -7,7 +7,22 @@ const MarkAwardSet = ({ name }) => {
 
   return (
     <div style={{ marginBottom: 24 }}>
-      <Form.List name={name}>
+      <Form.List
+        name={name}
+        rules={[
+          {
+            validator: async (_, names) => {
+              const sum = names.reduce(
+                (preValue, curValue) => preValue + Number(curValue?.countRate || 0),
+                0,
+              );
+              if (sum !== 100) {
+                return Promise.reject(new Error('各卡豆池概率相加不等于100%，请修改'));
+              }
+            },
+          },
+        ]}
+      >
         {(fields, { add, remove }, { errors }) => (
           <>
             <Form.Item label={'添加卡豆奖池'} required>
