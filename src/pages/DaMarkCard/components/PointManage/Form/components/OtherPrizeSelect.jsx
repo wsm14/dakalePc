@@ -16,10 +16,6 @@ const OtherPrizeSelect = (props) => {
     setGoodsType(val);
   };
 
-  const addClick = (callback) => {
-    callback && callback();
-  };
-
   const handleVisible = (type) => {
     if (type === 'hittingRewardRightGoodsObject') {
       setVisible(true);
@@ -34,9 +30,14 @@ const OtherPrizeSelect = (props) => {
     hittingRewardRightGoodsObject: (
       <>
         <Form.List name={['hittingRewardRightGoodsObject', 'subRewardList']}>
-          {(fields, { remove, move }, { errors }) => {
+          {(fields, { add, remove, move }, { errors }) => {
             return (
               <>
+                {goodsType.includes('hittingRewardRightGoodsObject') && (
+                  <Button type="link" onClick={() => add()}>
+                    +选择
+                  </Button>
+                )}
                 <Form.ErrorList errors={errors} />
                 {fields.map((field) => (
                   <FormList
@@ -78,7 +79,11 @@ const OtherPrizeSelect = (props) => {
           {(fields, { add, remove, move }, { errors }) => {
             return (
               <>
-                <Button onClick={() => add()}>xin</Button>
+                {goodsType.includes('hittingRewardOnlineGoodsObject') && (
+                  <Button type="link" onClick={() => add()}>
+                    +新增
+                  </Button>
+                )}
                 <Form.ErrorList errors={errors} />
                 {fields.map((field) => (
                   <FormListOnline
@@ -121,7 +126,11 @@ const OtherPrizeSelect = (props) => {
           {(fields, { add, remove, move }, { errors }) => {
             return (
               <>
-                <Button onClick={() => add()}>xin</Button>
+                {goodsType.includes('hittingRewardActualGoodsObject') && (
+                  <Button type="link" onClick={() => add()}>
+                    +新增
+                  </Button>
+                )}
                 <Form.ErrorList errors={errors} />
                 {fields.map((field) => (
                   <FormListActual
@@ -168,11 +177,11 @@ const OtherPrizeSelect = (props) => {
             <div key={item}>
               <Checkbox value={item}>
                 <span>{OTHER_PRIZE_TYPE[item]}</span>
-                {goodsType.includes(item) && (
+                {/* {goodsType.includes(item) && (
                   <Button type="link" onClick={() => handleVisible(item)}>
                     {item === 'hittingRewardRightGoodsObject' ? '+选择' : '+新增'}
                   </Button>
-                )}
+                )} */}
               </Checkbox>
               {listProps[item]}
             </div>
