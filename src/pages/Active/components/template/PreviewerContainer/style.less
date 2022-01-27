@@ -28,6 +28,32 @@
       align-items: center;
       justify-content: center;
     }
+    .globalModal_coupon {
+      position: relative;
+      width: 270px;
+      // max-height: 324px;
+      background: linear-gradient(180deg, #fffced 0%, #ffebd6 100%);
+      border-radius: 20px;
+      .globalModal_coupon_head {
+        position: absolute;
+        top: -35px;
+      }
+      .globalModal_coupon_title {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 6px;
+      }
+      .globalModal_coupon_group {
+        // max-height: 192px;
+        padding: 0 16px;
+        // overflow-y: auto;
+      }
+      .globalModal_coupon_footer {
+        display: flex;
+        justify-content: center;
+        padding: 12px 0;
+      }
+    }
     .previewer_cell {
       position: relative;
       width: auto;
@@ -37,54 +63,54 @@
         z-index: 1;
         box-shadow: #32323233 0px 0px 24px 0px;
       }
-      .previewer_active_warp {
-        position: absolute;
-        z-index: 1;
-        border-radius: 4px;
-        inset: 0px;
-        &.show {
-          border: 2px solid rgb(61, 127, 255);
-        }
+    }
+    .previewer_active_warp {
+      position: absolute;
+      z-index: 1;
+      border-radius: 4px;
+      inset: 0px;
+      &.show {
+        border: 2px solid rgb(61, 127, 255);
       }
-      .previewer_title {
-        position: absolute;
-        top: 0px;
-        left: -45px;
-        z-index: 1;
-        display: block;
-        width: 36px;
-        padding: 12px;
+    }
+    .previewer_title {
+      position: absolute;
+      top: 0px;
+      left: -45px;
+      z-index: 1;
+      display: block;
+      width: 36px;
+      padding: 12px;
+      overflow: hidden;
+      color: rgb(153, 153, 153);
+      font-size: 14px;
+      line-height: 16px;
+      text-align: center;
+      overflow-wrap: break-word;
+      background: rgb(255, 255, 255);
+      border-radius: 4px;
+      opacity: 0.7;
+    }
+    .previewer_active_tool {
+      position: absolute;
+      top: 0;
+      right: -45px;
+      z-index: 3;
+      .tool_group {
+        margin-bottom: 8px;
         overflow: hidden;
-        color: rgb(153, 153, 153);
-        font-size: 14px;
-        line-height: 16px;
-        text-align: center;
-        overflow-wrap: break-word;
-        background: rgb(255, 255, 255);
-        border-radius: 4px;
-        opacity: 0.7;
-      }
-      .previewer_active_tool {
-        position: absolute;
-        top: 0;
-        right: -45px;
-        z-index: 3;
-        .tool_group {
-          margin-bottom: 8px;
-          overflow: hidden;
-          border-radius: 3px;
-          box-shadow: #0000004d 0px 0px 12px 0px;
-          .tool_cell {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 30px;
-            height: 30px;
-            color: rgb(153, 153, 153);
-            background: rgb(255, 255, 255);
-            &:hover {
-              color: rgb(61, 127, 255);
-            }
+        border-radius: 3px;
+        box-shadow: #0000004d 0px 0px 12px 0px;
+        .tool_cell {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 30px;
+          height: 30px;
+          color: rgb(153, 153, 153);
+          background: rgb(255, 255, 255);
+          &:hover {
+            color: rgb(61, 127, 255);
           }
         }
       }

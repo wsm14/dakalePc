@@ -28,7 +28,8 @@ export default (type = '') => {
       type: 'img',
       show: moduleAllShow,
       children: [
-        { type: 'solaImg', show: true },
+        { type: 'solaImg', show: moduleActiveShow || moduleRuleShow },
+        { type: 'globalModalSolaImg', show: moduleGlobalModalShow },
         { type: 'carouseal', show: moduleActiveShow },
       ],
     },
@@ -41,7 +42,7 @@ export default (type = '') => {
         { type: 'merchantList', show: moduleActiveShow },
         { type: 'couponList', show: moduleActiveShow },
         { type: 'commerceGoods', show: moduleActiveShow },
-        { type: 'commerceGoods', show: moduleGlobalModalShow },
+        { type: 'globalModalPlatformCoupon', show: moduleGlobalModalShow },
       ],
     },
     {

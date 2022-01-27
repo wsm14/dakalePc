@@ -7,6 +7,7 @@ import commonList2 from './CommonList/CommonList_2';
 import commonList3 from './CommonList/CommonList_3';
 import commerceGoods1 from './CommerceGoods/CommerceGoods_1';
 import commerceGoods2 from './CommerceGoods/CommerceGoods_2';
+import GlobalModalPlatformCoupon, { couponStyle, userGetCoupon } from './GlobalModalPlatformCoupon';
 
 let head = {}; // [key]: value[]
 let footer = {}; // [key]: value
@@ -125,6 +126,64 @@ const htmlDom = {
     head = { ...head, richTextStyle };
     const paddingVw = (padding / 375) * 100 + 'vw';
     return `<div id="${uid}" style="padding: ${paddingVw}">${richText}</div>`;
+  },
+
+  // 全局弹窗单图
+  globalModalSolaImg: (data, uid) => {
+    const dom = ({ img, linkType, url, path, width, height }, uid) => {
+      const vw = (px) => (px / 375) * 100 + 'vw';
+      document.getElementById(
+        uid,
+      ).innerHTML = `<img src="${img}" data-linkType="${linkType}" data-path="${
+        url || path
+      }" style="width: ${width ? vw(width / 2) : '100vw'};height: ${
+        height ? vw(height / 2) : 'auto'
+      };display: block;" class="handleGoNative"></img>`;
+    };
+
+    return `<div id="${uid}"></div>${scriptTag(dom, data, uid)}`;
+  },
+
+  // 全局弹窗商品券
+  globalModalPlatformCoupon: (
+    {
+      box_head,
+      box_bag1,
+      box_bag2,
+      coupon_bag,
+      box_title,
+      title_width,
+      coupon_get,
+      coupon_end,
+      btn_width,
+      btn_height,
+      list,
+    },
+    uid,
+  ) => {
+    head = { ...head, request: requestJs, couponStyle: couponStyle() };
+    footer = { ...footer, couponGet: userGetCoupon };
+    const vw = (px) => (px / 375) * 100 + 'vw';
+    return `
+    <div class="globalModal_coupon" style="background: linear-gradient(180deg, ${box_bag1} 0%, ${box_bag2} 100%)">
+    <div class="globalModal_coupon_head">
+      <img src="${box_head}" style="width: ${vw(270)}; height: ${vw(35)}" />
+    </div>
+    <div class="globalModal_coupon_title">
+      <img src="${box_title}" style="width: ${vw(title_width / 2)}" />
+    </div>
+    <div class="globalModal_coupon_group">
+    <div id="${uid}"></div>
+    </div>
+    <div class="globalModal_coupon_footer">
+      <img id="btnGetCoupon" src="${coupon_get}" style="width: ${vw(btn_width / 2)}; height: ${vw(
+      btn_height / 2,
+    )}" />
+    </div>
+    </div>
+    <script>;(${GlobalModalPlatformCoupon})(${JSON.stringify(
+      list.map((item) => item.platformCouponId),
+    )},"${uid}", "${coupon_end}","${coupon_bag}")<\/script>`;
   },
 };
 

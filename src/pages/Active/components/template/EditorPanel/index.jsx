@@ -10,7 +10,7 @@ const EditorPanel = ({ context }) => {
   const { dispatchData, showEditor, showPanel, moduleData } = useContext(context);
 
   const { dataList } = moduleData;
-  const { id, editorType, name, drop, data } = showEditor;
+  const { id, editorType, name, drop, only = false, data } = showEditor;
 
   const [form] = Form.useForm();
   // 关闭编辑框
@@ -32,11 +32,11 @@ const EditorPanel = ({ context }) => {
       .then((content) => {
         if (!content) return false;
         let payload = {};
-        if (!drop) {
+        if (!drop && !only) {
           payload = content;
         } else {
           const newData = update(dataList, {
-            $splice: [[showPanel, 1, { ...showEditor, data: content }]],
+            $splice: [[only ? 0 : showPanel, 1, { ...showEditor, data: content }]],
           });
           payload = { dataList: newData };
         }

@@ -28,6 +28,13 @@ export async function fetchCouponSelect(params) {
   });
 }
 
+// get 获取平台券选择列表
+export function fetchPlatformCouponSelect(params) {
+  return request('/admin/platform/coupon/pagePlatformCoupon', {
+    params,
+  });
+}
+
 // get 获取商家详细数量 - 券/打卡豆数/券数量
 export async function fetchGetMreConfigInfo(params) {
   return request('/admin/merchantManagement/getSomeInfoByOwnerId', {

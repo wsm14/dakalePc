@@ -11,6 +11,7 @@ import {
 } from '@ant-design/icons';
 import BackgroundColor from './BackgroundColor';
 import SolaImg from './SolaImg';
+import GlobalModalSolaImg from './GlobalModalSolaImg';
 import Carouseal from './Carouseal';
 import Share from './Share';
 import CommonList from './CommonList';
@@ -18,6 +19,7 @@ import CommerceGoods from './CommerceGoods';
 import NormalVideo from './NormalVideo';
 import MerchantList from './MerchantList';
 import CouponList from './CouponList';
+import GlobalModalPlatformCoupon from './GlobalModalPlatformCoupon';
 import RichText from './RichText';
 import img from './Img/img.png';
 import list from './Img/list.png';
@@ -124,5 +126,37 @@ export default {
     defaultImg: img,
     editorDom: (props) => <RichText {...props}></RichText>,
     dom: (props) => RichText.dom(props),
+  },
+  globalModalPlatformCoupon: {
+    icon: <MoneyCollectOutlined style={{ fontSize: 24 }} />,
+    name: '平台券', // 全局弹窗使用
+    editorType: 'globalModalPlatformCoupon',
+    drop: false,
+    only: true,
+    defaultData: {
+      coupon_bag: 'https://resource-new.dakale.net/admin/image/globalModal/coupon_bag.png',
+      box_head:
+        'https://resource-new.dakale.net/admin/image/globalModal/globalModal_coupon_head.png',
+      box_bag1: '#fffced',
+      box_bag2: '#ffebd6',
+      box_title: 'https://resource-new.dakale.net/admin/image/globalModal/coupon_title.png',
+      title_width: '540',
+      coupon_get: 'https://resource-new.dakale.net/admin/image/globalModal/coupon_btn.png',
+      coupon_end: 'https://resource-new.dakale.net/admin/image/globalModal/coupon_btnend.png',
+      btn_width: '400',
+      btn_height: '80',
+      list: [],
+    },
+    editorDom: (props) => <GlobalModalPlatformCoupon {...props}></GlobalModalPlatformCoupon>,
+    dom: (props) => GlobalModalPlatformCoupon.dom(props),
+  },
+  globalModalSolaImg: {
+    name: '单张图片', // 全局弹窗使用
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    editorType: 'globalModalSolaImg',
+    drop: false,
+    only: true,
+    editorDom: (props) => <GlobalModalSolaImg {...props}></GlobalModalSolaImg>,
+    dom: (props) => GlobalModalSolaImg.dom(props),
   },
 };
