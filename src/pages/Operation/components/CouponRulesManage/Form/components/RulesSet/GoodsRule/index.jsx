@@ -123,10 +123,11 @@ const index = ({ form, ruleShowApi }) => {
   const handleDelect = (id) => {
     const newList = shopData.list.filter((item) => item[listProps.id] !== id);
     setShopData({ ...shopData, list: newList });
+
     form.setFieldsValue({
       remark: ['phoneBill', 'member'].includes(shopData.subRuleType)
         ? `已选${CONPON_RULES_GOODS_TYPE[shopData.subRuleType]}`
-        : `已选${newList.list.length}个${CONPON_RULES_GOODS_TYPE[shopData.subRuleType]}`,
+        : `已选${newList.length}个${CONPON_RULES_GOODS_TYPE[shopData.subRuleType]}`,
       ruleConditions: newList.map((item) => ({
         condition: item[listProps.id],
       })),
