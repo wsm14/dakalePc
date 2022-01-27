@@ -12,6 +12,9 @@ const MarkAwardSet = ({ name }) => {
         rules={[
           {
             validator: async (_, names) => {
+              if (!names) {
+                return Promise.reject(new Error('请添加卡豆池'));
+              }
               const sum = names.reduce(
                 (preValue, curValue) => preValue + Number(curValue?.countRate || 0),
                 0,
@@ -35,7 +38,9 @@ const MarkAwardSet = ({ name }) => {
                 添加
               </Button>
             </Form.Item>
-            <Form.ErrorList errors={errors} />
+            <div style={{ marginLeft: 200 }}>
+              <Form.ErrorList errors={errors} />
+            </div>
             {fields.map((field, name) => (
               <React.Fragment key={field.key}>
                 <Form.Item required label={`每次打卡领取卡豆数池${name + 1}`}>

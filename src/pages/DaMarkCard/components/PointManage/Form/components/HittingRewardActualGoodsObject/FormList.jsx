@@ -1,22 +1,43 @@
-import React, { useState } from 'react';
+import React from 'react';
+import update from 'immutability-helper';
 import { Space, Form, InputNumber, Input, Radio } from 'antd';
-import { UpSquareOutlined, DownSquareOutlined, DeleteOutlined } from '@ant-design/icons';
-import { goodsDom } from './CouponFreeDom';
 import { MinusCircleOutlined } from '@ant-design/icons';
+import aliOssUpload from '@/utils/aliOssUpload';
 import Upload from '@/components/FormCondition/Upload/Img';
-import Video from '@/components/FormCondition/Upload/Video';
 import styles from './index.less';
 
 const FormList = (props) => {
-  const { name, form, field, remove, move, handleType } = props;
-  const [videoType, setVideoType] = useState('1'); // 视频类型
+  const { name, form, field, remove, move } = props;
 
-  const uploadVideo = () => {};
+  const uploadImg = async (index, val) => {
+    let imgUrl = await aliOssUpload(val);
+    // 获取数据数组
+    const dataList = form.getFieldValue(name);
+    // 更新数据数组
+    const newData = update(dataList, {
+      $splice: [
+        [
+          index,
+          1,
+          {
+            ...dataList[index],
+            onlineGoodsDTO: { ...dataList.onlineGoodsDTO, goodsImg: imgUrl.toString() },
+          },
+        ],
+      ],
+    });
+    form.setFieldsValue({
+      hittingRewardActualGoodsObject: {
+        subRewardList: newData,
+      },
+    });
+  };
+
   return (
     <div key={field.key}>
       <Space className={styles.ifame_carouseal} align="baseline">
         <Form.Item name={[name, 'actualGoodsDTO', 'goodsImg']} noStyle>
-          <Upload maxFile={1} form={form} onChange={uploadVideo}></Upload>
+          <Upload maxFile={1} form={form} onChange={(val) => uploadImg(field.name, val)}></Upload>
         </Form.Item>
         <div>
           <Form.Item name={[name, 'actualGoodsDTO', 'goodsName']} noStyle>

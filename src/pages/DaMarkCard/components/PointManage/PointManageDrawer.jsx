@@ -70,8 +70,22 @@ const PointManageDrawer = (props) => {
   const handleAwardUpAudit = () => {
     form.validateFields().then(async (values) => {
       console.log('award', values);
-      const { beanPoolList, beanPoolRange, dayCount, remain, timeRangeStart, timeRangeEnd, total } =
-        values;
+      const {
+        beanPoolList,
+        beanPoolRange,
+        dayCount,
+        remain,
+        timeRangeStart,
+        timeRangeEnd,
+        total,
+        specialTime,
+        // 以上是卡豆奖励配置
+        goodsObject,
+        hittingRewardRightGoodsObject, // 平台权益商品
+        hittingRewardOnlineGoodsObject, // 电商品
+        hittingRewardActualGoodsObject, // 自提商品
+        // 以上是奖品配置及关联视频
+      } = values;
 
       const data = {
         hittingMainId,
@@ -84,6 +98,30 @@ const PointManageDrawer = (props) => {
           total,
         },
       };
+      if (goodsObject.includes('hittingRewardRightGoodsObject')) {
+        data = {
+          ...data,
+          hittingRewardRightGoodsObject: {
+            ...hittingRewardRightGoodsObject,
+            // 筛去权益商品数据对象
+            subRewardList: hittingRewardRightGoodsObject.subRewardList.map(
+              ({ rightGoodsObject, ...other }) => other,
+            ),
+          },
+        };
+      }
+      if (goodsObject.includes('hittingRewardOnlineGoodsObject')) {
+        data = {
+          ...data,
+          hittingRewardOnlineGoodsObject,
+        };
+      }
+      if (goodsObject.includes('hittingRewardActualGoodsObject')) {
+        data = {
+          ...data,
+          hittingRewardActualGoodsObject,
+        };
+      }
     });
   };
 

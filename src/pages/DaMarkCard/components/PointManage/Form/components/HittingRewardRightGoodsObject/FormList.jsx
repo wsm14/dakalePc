@@ -8,27 +8,25 @@ import Video from '@/components/FormCondition/Upload/Video';
 import styles from './index.less';
 
 const FormList = (props) => {
-  const { name, form, field, remove, move, handleType } = props;
+  const { name, form, field, remove, move } = props;
   const [videoType, setVideoType] = useState('1'); // 视频类型
 
   const uploadVideo = async (index, val) => {
-    const dataList = form.getFieldValue('subRewardList');
-    const newData = update(dataList, {
-      $splice: [[index, 1, { ...dataList[index], length: 1112345 }]],
-    });
-    console.log(newData);
-    return;
+    // const dataList = form.getFieldValue(name);
+    // const newData = update(dataList, {
+    //   $splice: [[index, 1, { ...dataList[index], length: 1112345 }]],
+    // });
     let videoUrl = await aliOssUpload(val);
     // 获取视频的时长 长宽高
     const videoElement = document.createElement('video');
     videoElement.addEventListener('loadedmetadata', function (_event) {
       const duration = videoElement.duration; // 单位：秒
-      // const dataList = form.get('subRewardList')
+      const dataList = form.getFieldValue(name);
       const newData = update(dataList, {
-        $splice: [[index, 1, { ...dataList[index], length: duration }]],
+        $splice: [
+          [index, 1, { ...dataList[index], length: duration, videoUrl: videoUrl.toString() }],
+        ],
       });
-      console.log(newData);
-      return;
       form.setFieldsValue({
         hittingRewardRightGoodsObject: {
           subRewardList: newData,
@@ -46,7 +44,7 @@ const FormList = (props) => {
           const goodsItem = form.getFieldValue(name)[field.name]['rightGoodsObject'];
           return goodsDom(goodsItem, goodsItem?.specialGoodsId);
         })()}
-        {handleType !== 'edit' && <DeleteOutlined onClick={() => remove(field.name)} />}
+        <DeleteOutlined onClick={() => remove(field.name)} />
       </Space>
       <Form.Item label="权益商品Id" name={[field.name, 'rewardId']} hidden={true}>
         <Input />
@@ -59,7 +57,7 @@ const FormList = (props) => {
         <InputNumber style={{ width: 250 }} min={0} placeholder="每月奖品总量" />
       </Form.Item>
       <Form.Item label="奖品视频" name={[field.name, 'isThirdVideo']}>
-        <Radio.Group onChange={(e) => setVideoType(e.target.value)} value={videoType}>
+        <Radio.Group onChange={(e) => setVideoType(e.target.value)}>
           <Radio value="0">哒卡乐视频</Radio>
           <Radio value="1">第三方视频</Radio>
         </Radio.Group>
@@ -67,19 +65,17 @@ const FormList = (props) => {
       {videoType === '0' && (
         <>
           <Form.Item
+            preserve={false}
             name={[field.name, 'videoUrl']}
             rules={[{ required: true, message: '请选择视频' }]}
           >
-            <Video form={form} onChange={() => uploadVideo()}></Video>
+            <Video maxFile={1} form={form} onChange={(val) => uploadVideo(field.name, val)}></Video>
           </Form.Item>
-          <Form.Item hidden={true} name={[field.name, 'length']}>
+          <Form.Item preserve={false} hidden={true} name={[field.name, 'length']}>
             <Input />
           </Form.Item>
         </>
       )}
-      {/* <Form.Item hidden={true} name={[name, 'videoUrl']} >
-        <Input />
-      </Form.Item> */}
     </div>
   );
 };

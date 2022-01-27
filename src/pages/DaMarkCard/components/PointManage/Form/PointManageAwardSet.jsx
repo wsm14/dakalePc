@@ -32,16 +32,6 @@ const PlatformSet = (props) => {
       formItem: <MarkAwardSet name={'beanPoolList'} form={form}></MarkAwardSet>,
     },
     {
-      label: '特殊时间段打卡次数',
-      name: 'total',
-      addonAfter: '次',
-    },
-    {
-      label: '特殊时间段剩余打卡次数',
-      name: 'remain',
-      addonAfter: '次',
-    },
-    {
       label: '特殊时间段',
       name: 'specialTime',
       type: 'radio',
@@ -51,16 +41,29 @@ const PlatformSet = (props) => {
       },
     },
     {
+      label: '特殊时间段打卡次数',
+      name: 'total',
+      visible: specialTimes === 'fixedTime',
+      addonAfter: '次',
+    },
+    {
+      label: '特殊时间段剩余打卡次数',
+      name: 'remain',
+      visible: specialTimes === 'fixedTime',
+      addonAfter: '次',
+    },
+    {
       label: '固定时间',
       type: 'formItem',
       visible: specialTimes === 'fixedTime',
       required: true,
+      rules: [{ required: false }],
       formItem: (
         <Input.Group size="small" compact>
           <Form.Item
             noStyle
             name="timeRangeStart"
-            rules={[{ required: true, message: '请输入时间' }]}
+            rules={[{ required: true, message: '请输入开始时间' }]}
           >
             <InputNumber max={24} min={0} precision={0} />
           </Form.Item>
@@ -68,7 +71,7 @@ const PlatformSet = (props) => {
           <Form.Item
             noStyle
             name="timeRangeEnd"
-            rules={[{ required: true, message: '请输入时间' }]}
+            rules={[{ required: true, message: '请输入结束时间' }]}
           >
             <InputNumber max={24} min={0} precision={0} />
           </Form.Item>
