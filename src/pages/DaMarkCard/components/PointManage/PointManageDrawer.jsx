@@ -80,21 +80,21 @@ const PointManageDrawer = (props) => {
         total,
         specialTime,
         // 以上是卡豆奖励配置
-        goodsObject,
+        goodsObject = [],
         hittingRewardRightGoodsObject, // 平台权益商品
         hittingRewardOnlineGoodsObject, // 电商品
         hittingRewardActualGoodsObject, // 自提商品
         // 以上是奖品配置及关联视频
       } = values;
 
-      const data = {
+      let data = {
         hittingMainId,
         hittingRewardObject: {
           beanPoolList,
           beanPoolRange,
           dayCount,
           remain,
-          timeRange: `${timeRangeStart}-${timeRangeEnd}`,
+          timeRange: specialTime === 'all' ? undefined : `${timeRangeStart}-${timeRangeEnd}`,
           total,
         },
       };
@@ -105,7 +105,12 @@ const PointManageDrawer = (props) => {
             ...hittingRewardRightGoodsObject,
             // 筛去权益商品数据对象
             subRewardList: hittingRewardRightGoodsObject.subRewardList.map(
-              ({ rightGoodsObject, ...other }) => other,
+              ({ rightGoodsObject, total, ...other }) => ({
+                ...other,
+                shardingKey: rightGoodsObject.relateIdString,
+                total,
+                weight: total,
+              }),
             ),
           },
         };
@@ -113,16 +118,27 @@ const PointManageDrawer = (props) => {
       if (goodsObject.includes('hittingRewardOnlineGoodsObject')) {
         data = {
           ...data,
-          hittingRewardOnlineGoodsObject,
+          hittingRewardOnlineGoodsObject: {
+            ...hittingRewardOnlineGoodsObject,
+            subRewardList: hittingRewardOnlineGoodsObject.subRewardList.map(
+              ({ total, ...other }) => ({ ...other, total, weight: total }),
+            ),
+          },
         };
       }
       if (goodsObject.includes('hittingRewardActualGoodsObject')) {
         data = {
           ...data,
-          hittingRewardActualGoodsObject,
+          hittingRewardActualGoodsObject: {
+            ...hittingRewardActualGoodsObject,
+            subRewardList: hittingRewardActualGoodsObject.subRewardList.map(
+              ({ total, ...other }) => ({ ...other, total, weight: total }),
+            ),
+          },
         };
       }
-
+      console.log(data);
+      return;
       dispatch({
         type: 'pointManage/fetchSetHittingReward',
         payload: data,

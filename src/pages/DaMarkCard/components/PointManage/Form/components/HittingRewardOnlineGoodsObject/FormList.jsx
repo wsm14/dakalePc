@@ -74,7 +74,7 @@ const FormList = (props) => {
               <InputNumber style={{ width: 180, marginRight: 10 }} addonBefore="售价￥" />
             </Form.Item>
             <Form.Item name={[field.name, 'total']} noStyle>
-              <InputNumber style={{ width: 160 }} placeholder="每月奖金总量" />
+              <InputNumber style={{ width: 160 }} placeholder="每月奖品总量" />
             </Form.Item>
           </div>
         </div>

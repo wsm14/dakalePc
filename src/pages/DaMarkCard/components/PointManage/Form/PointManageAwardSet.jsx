@@ -65,7 +65,7 @@ const PlatformSet = (props) => {
             name="timeRangeStart"
             rules={[{ required: true, message: '请输入开始时间' }]}
           >
-            <InputNumber max={24} min={0} precision={0} />
+            <InputNumber addonAfter="时" max={24} min={0} precision={0} />
           </Form.Item>
           <div style={{ lineHeight: '32px', margin: '0 10px' }}>至</div>
           <Form.Item
@@ -73,7 +73,7 @@ const PlatformSet = (props) => {
             name="timeRangeEnd"
             rules={[{ required: true, message: '请输入结束时间' }]}
           >
-            <InputNumber max={24} min={0} precision={0} />
+            <InputNumber addonAfter="时" max={24} min={0} precision={0} />
           </Form.Item>
         </Input.Group>
       ),

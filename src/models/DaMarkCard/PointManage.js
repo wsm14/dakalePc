@@ -177,8 +177,33 @@ export default {
       const response = yield call(fetchGetHittingRewardByMainId, payload);
       if (!response) return;
       const { content } = response;
+      const { hittingRewardDTO = {} } = content;
+      const {
+        hittingRewardObject = {}, // 卡豆配置
+        hittingRewardRightGoodsObject = {}, // 平台权益商品
+        hittingRewardOnlineGoodsObject = {}, // 电商品
+        hittingRewardActualGoodsObject = {}, // 自提商品
+      } = hittingRewardDTO;
+      const { timeRange = '' } = hittingRewardObject;
 
-      callback && callback(content.hittingRewardDTO || {});
+      const isNoObj = (obj) => Object.keys(obj).length;
+
+      const data = {
+        ...hittingRewardObject,
+        hittingRewardRightGoodsObject,
+        hittingRewardOnlineGoodsObject,
+        hittingRewardActualGoodsObject,
+        goodsObject: [
+          isNoObj(hittingRewardRightGoodsObject) && 'hittingRewardRightGoodsObject',
+          isNoObj(hittingRewardOnlineGoodsObject) && 'hittingRewardOnlineGoodsObject',
+          isNoObj(hittingRewardActualGoodsObject) && 'hittingRewardActualGoodsObject',
+        ],
+        specialTime: timeRange ? 'fixedTime' : 'all',
+        timeRangeStart: Number(timeRange.split('-')[0]),
+        timeRangeEnd: Number(timeRange.split('-')[1]),
+      };
+
+      callback && callback(data || {});
     },
   },
 };

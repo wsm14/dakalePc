@@ -21,7 +21,7 @@ const FormList = (props) => {
           1,
           {
             ...dataList[index],
-            onlineGoodsDTO: { ...dataList.onlineGoodsDTO, goodsImg: imgUrl.toString() },
+            actualGoodsDTO: { ...dataList.actualGoodsDTO, goodsImg: imgUrl.toString() },
           },
         ],
       ],
@@ -36,11 +36,11 @@ const FormList = (props) => {
   return (
     <div key={field.key}>
       <Space className={styles.ifame_carouseal} align="baseline">
-        <Form.Item name={[name, 'actualGoodsDTO', 'goodsImg']} noStyle>
+        <Form.Item name={[field.name, 'actualGoodsDTO', 'goodsImg']} noStyle>
           <Upload maxFile={1} form={form} onChange={(val) => uploadImg(field.name, val)}></Upload>
         </Form.Item>
         <div>
-          <Form.Item name={[name, 'actualGoodsDTO', 'goodsName']} noStyle>
+          <Form.Item name={[field.name, 'actualGoodsDTO', 'goodsName']} noStyle>
             <Input
               style={{ width: 300, marginBottom: 24 }}
               placeholder="请输入商品名称"
@@ -48,8 +48,8 @@ const FormList = (props) => {
             />
           </Form.Item>
           <div>
-            <Form.Item name={[name, 'total']} noStyle>
-              <InputNumber style={{ width: 160 }} placeholder="每月奖金总量" />
+            <Form.Item name={[field.name, 'total']} noStyle>
+              <InputNumber style={{ width: 160 }} placeholder="每月奖品总量" />
             </Form.Item>
           </div>
         </div>
