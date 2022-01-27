@@ -24,8 +24,12 @@ const JumpTypeBlock = ({
 
   useEffect(() => {
     // 跳转app 修改回显
-    const { nativeJumpType, jumpType } = detail; // 获取详情类型
-    if ((showUrl === 'native' || showUrl === 'inside') && jumpType !== 'h5' && jumpType !== '') {
+    const { nativeJumpType, jumpUrlType } = detail; // 获取详情类型
+    if (
+      (showUrl === 'native' || showUrl === 'inside') &&
+      jumpUrlType !== 'h5' &&
+      jumpUrlType !== ''
+    ) {
       const nativeIndex = nativeList.findIndex((i) => i.value === nativeJumpType);
       setParamKey(() => {
         setShowApi(nativeJumpType); // 表单回填参数 app打开的页面类型
@@ -70,19 +74,6 @@ const JumpTypeBlock = ({
             console.log(val, item);
             setParamKey(item.option.paramKey);
             setShowApi(val);
-            const paramKeyObj = {
-              beanSelection: '0', // 选择小豆精选
-              commerceGoodsPackage: 'ecGoods', // 选择电商品券包
-              platformGeneralCouponPackage: 'beanWelfare', // 选择平台通用券包
-              telephoneFeeDeductionCouponPackage: 'telephoneCharges', // 选择话费抵扣券包
-            };
-            if (Object.keys(paramKeyObj).includes(val)) {
-              form.setFieldsValue({
-                param: {
-                  [item.option.paramKey[0]]: paramKeyObj[val],
-                },
-              });
-            }
           }}
         ></Select>
       </FormItem>

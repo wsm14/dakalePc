@@ -162,11 +162,22 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
             <div className={styles.detail_item}>商品佣金：￥{detail.totalCommission || 0}</div>
           </>
         )}
+        {type === 'scan' && (
+          <>
+            <div className={styles.detail_item}>用户实付：￥{detail.payFee || 0}</div>
+            <div className={styles.detail_item}>店铺实收：￥{detail.totalFee || 0}</div>
+            <div className={styles.detail_item}>服务费比例：{detail.commissionRatio || 0}%</div>
+            <div className={styles.detail_item}>
+              店铺服务费：{detail.merchantServiceBean || 0}卡豆
+            </div>
+          </>
+        )}
         {type !== 'kolGoods' &&
           type !== 'reduceCoupon' &&
           type !== 'specialGoods' &&
           type !== 'writeOff' &&
-          type !== 'expiredOrder' && (
+          type !== 'expiredOrder' &&
+          type !== 'scan' && (
             <>
               <div className={styles.detail_item}>店铺实收：￥{detail.totalFee || 0}</div>
               <div className={styles.detail_item}>服务费比例：{detail.commissionRatio || 0}%</div>

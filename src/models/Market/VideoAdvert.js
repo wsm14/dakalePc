@@ -161,6 +161,7 @@ export default {
         ownerCouponList = [], // 有价券
         activityGoodsList = [], // 特惠商品
         videoContent,
+        param,
         ...ohter
       } = content?.momentDetail || {};
       const editData =
@@ -175,6 +176,7 @@ export default {
       const newObj = {
         ...ohter,
         ...content2,
+        param: JSON.parse(param || '{}'),
         age,
         area,
         areaType,

@@ -1,7 +1,7 @@
 import { Badge } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import Ellipsis from '@/components/Ellipsis';
-import { PLATFORM_TICKET_SCENE, PLATFORM_TICKET_TYPE } from '@/common/constant';
+import { PLATFORM_TICKET_TYPE } from '@/common/constant';
 
 // 权益商品样式
 export const goodsDom = (item = {}, id = '', setSelectItem, onDel) => {
@@ -171,7 +171,7 @@ export const platformCouponsDom = (item = {}, id = '', setSelectItem, onDel) => 
           </div>
           <div className="share_title">
             <div>
-              <span className="pCoupon_tit_type">{`${PLATFORM_TICKET_SCENE[useScenesType]}${PLATFORM_TICKET_TYPE[classType]}`}</span>
+              <span className="pCoupon_tit_type">{`${PLATFORM_TICKET_TYPE[useScenesType][classType]}`}</span>
               <span className="titile">
                 <Ellipsis length={9} tooltip>
                   {couponName}

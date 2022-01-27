@@ -3,6 +3,12 @@
  */
 // 不能写 safari不支持 ?<=、?<!、?!、?=
 
+// 输入时只能输入英文
+export const ONLY_ENGLISH_PATTERN = /^[a-zA-Z]+$/;
+
+// 输入时不能携带空格
+export const NO_BLOCK_PATTERN = /^[^\s]*$/;
+
 // 以字母数字下划线组成,6-24位
 export const WORD_NUM_PATTERN = /^[A-Za-z0-9_]{6,24}$/;
 

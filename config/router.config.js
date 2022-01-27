@@ -424,7 +424,7 @@ export default [
         path: '/market/appset',
         name: 'Banner管理',
         component: './Market/AppSetList',
-        buttons: ['save', 'del', 'edit', 'up', 'down'],
+        buttons: ['save', 'del', 'edit', 'up', 'down', 'addPlace'],
       },
       {
         path: '/market/markConfigure',
@@ -445,6 +445,12 @@ export default [
         component: './DaMarkCard/PointManage',
       },
       // 店铺运营 operation
+      {
+        path: '/operation/couponRulesManage',
+        name: '券规则管理',
+        component: './Operation/CouponRulesManage',
+        buttons: ['info', 'save', 'status', 'eye'],
+      },
       {
         path: '/operation/spreeManage',
         name: '礼包管理',

@@ -4,7 +4,6 @@ import { Tooltip, Form } from 'antd';
 import {
   BANNER_LOOK_AREA,
   BANNER_PORT_TYPE,
-  BANNER_PORT_LINK,
   BANNER_JUMP_TYPE,
   BANNER_AREA_TYPE,
   BANNER_SHOW_STATUS,
@@ -13,18 +12,20 @@ import ExtraButton from '@/components/ExtraButton';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import SysAppSetForm from './components/App/SysAppSet';
+import AddImgplace from './components/App/AddImgplace';
 
 const SysAppSet = (props) => {
-  const { sysAppList, loading, dispatch } = props;
+  const { sysAppList, bannerTypeObj, loading, dispatch } = props;
 
   const childRef = useRef();
   const [form] = Form.useForm();
   const [visibleSet, setVisibleSet] = useState({ show: false, info: '' });
   const [tabKey, setTabKey] = useState('user');
+  const [visibleAddImg, setVisibleAddImg] = useState(false); // 新增位置
 
   useEffect(() => {
     fetchBannerRatio();
-  }, []);
+  }, [tabKey]);
 
   // 搜索参数
   const searchItems = [
@@ -32,7 +33,7 @@ const SysAppSet = (props) => {
       label: '位置',
       name: 'bannerType',
       type: 'select',
-      select: BANNER_PORT_LINK[tabKey],
+      select: bannerTypeObj,
     },
     {
       label: '状态',
@@ -71,7 +72,7 @@ const SysAppSet = (props) => {
       title: '位置',
       align: 'center',
       dataIndex: 'bannerType',
-      render: (val) => BANNER_PORT_LINK[tabKey][val],
+      render: (val) => bannerTypeObj[val],
     },
     {
       title: '可见范围',
@@ -109,6 +110,12 @@ const SysAppSet = (props) => {
       },
     },
     {
+      title: '活动时间',
+      align: 'center',
+      dataIndex: 'beginDate',
+      render: (val, row) => `${val || ''}~${row.endDate || ''}`,
+    },
+    {
       title: '创建时间',
       align: 'center',
       dataIndex: 'createTime',
@@ -131,11 +138,12 @@ const SysAppSet = (props) => {
         {
           type: 'up',
           visible: record.bannerStatus === '0',
-          click: () => fetchBannerStatus({ bannerId: val, bannerStatus: 1 }),
+          // click: () => fetchBannerStatus({ bannerId: val, bannerStatus: 1 }),
+          click: () => fetchBannerDetail({ bannerId: val, type: 'up' }),
         },
         {
           type: 'edit',
-          click: () => fetchBannerDetail({ bannerId: val }),
+          click: () => fetchBannerDetail({ bannerId: val, type: 'edit' }),
         },
         {
           type: 'del',
@@ -150,6 +158,10 @@ const SysAppSet = (props) => {
   const fetchBannerRatio = () => {
     dispatch({
       type: 'sysAppList/fetchBannerRatio',
+      payload: {
+        userType: tabKey,
+        deleteFlag: 1,
+      },
     });
   };
 
@@ -172,6 +184,11 @@ const SysAppSet = (props) => {
   };
 
   const btnList = [
+    {
+      text: '新增位置',
+      auth: 'addPlace',
+      onClick: () => setVisibleAddImg(true),
+    },
     {
       onClick: () => {
         const type = tabKey === 'mark' ? 'markMain' : null;
@@ -209,17 +226,27 @@ const SysAppSet = (props) => {
         dispatchType="sysAppList/fetchGetList"
         {...sysAppList}
       ></TableDataBlock>
+      {/* 新增 */}
       <SysAppSetForm
+        bannerTypeObj={bannerTypeObj}
         tabKey={tabKey}
         cRef={childRef}
         visible={visibleSet}
         onClose={() => setVisibleSet({ show: false })}
       ></SysAppSetForm>
+      {/* 新增图片位置 */}
+      <AddImgplace
+        getType={() => fetchBannerRatio()}
+        tabKey={tabKey}
+        visible={visibleAddImg}
+        onClose={() => setVisibleAddImg(false)}
+      ></AddImgplace>
     </>
   );
 };
 
 export default connect(({ sysAppList, loading }) => ({
-  sysAppList,
+  sysAppList: sysAppList.list,
+  bannerTypeObj: sysAppList.bannerTypeObj,
   loading: loading.models.sysAppList,
 }))(SysAppSet);

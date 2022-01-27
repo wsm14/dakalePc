@@ -1,7 +1,7 @@
 import React from 'react';
 import { VIDEO_ADVERT } from '@/common/imgRatio';
 import FormCondition from '@/components/FormCondition';
-import { NativeFormSet } from '@/components/FormListCondition';
+import { NewNativeFormSet } from '@/components/FormListCondition';
 import ShareCoupon from '@/components/VideoSelectBindContent';
 
 /**
@@ -74,12 +74,12 @@ const GoodsEdit = (props) => {
     {
       type: 'noForm',
       formItem: (
-        <NativeFormSet
+        <NewNativeFormSet
           form={form}
           detail={detail}
           // port={tabKey}
-          getJumpType={setShowTitle}
-        ></NativeFormSet>
+          // getJumpType={setShowTitle}
+        ></NewNativeFormSet>
       ),
     },
     // {

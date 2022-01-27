@@ -8,7 +8,7 @@ import {
   BANNER_JUMP_TYPE,
   COUPON_ACTIVE_TYPE,
 } from '@/common/constant';
-import { CitySet, NativeFormSet } from '@/components/FormListCondition';
+import { CitySet, NewNativeFormSet } from '@/components/FormListCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -29,12 +29,7 @@ const PuzzleAdSet = (props) => {
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
       const { activeDate } = info;
-      const {
-        activeDate: time,
-        provinceCityDistrictObjects: cityData = [],
-        jumpUrlType,
-        timeRuleData,
-      } = values;
+      const { activeDate: time, provinceCityDistrictObjects: cityData = [], timeRuleData } = values;
       // 城市数据整理
       const provinceCityDistrictObjects = cityData.map(({ city }) => ({
         provinceCode: city[0],
@@ -153,7 +148,7 @@ const PuzzleAdSet = (props) => {
     {
       type: 'noForm',
       show: false,
-      formItem: <NativeFormSet form={form} detail={info}></NativeFormSet>,
+      formItem: <NewNativeFormSet form={form} detail={info}></NewNativeFormSet>,
     },
     {
       label: '跳转事件',

@@ -10,7 +10,6 @@ const CouponDrawer = (props) => {
 
   const { type = 'info', platformCouponId, show = false, detail = {} } = visible;
   const [ticket, setTicket] = useState('goodsBuy'); // 券使用场景类型
-  const [citys, setCitys] = useState([]); // 暂存选择的所有城市
 
   const [form] = Form.useForm();
 
@@ -18,16 +17,19 @@ const CouponDrawer = (props) => {
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
       // console.log('values', values);
+      // return;
 
       const {
         activeDate,
         ruleType,
         personLimit,
         dayMaxBuyAmount,
-        ruleCondition,
-        consortUserOs,
         apply = [],
         cityCode,
+        increaseRule,
+        beanNum,
+        maxValue,
+        ruleList = [],
         ...other
       } = values;
 
@@ -48,21 +50,17 @@ const CouponDrawer = (props) => {
             personLimit,
             dayMaxBuyAmount,
           },
-          ruleConditionObjects: [
-            {
-              ruleType:
-                ruleCondition == '0' || ruleCondition == '1'
-                  ? 'availableAreaRule'
-                  : 'unavailableAreaRule',
-              ruleConditionList:
-                ruleCondition == '0'
-                  ? { condition: 'all' }
-                  : citys.map((item) => ({
-                      condition: item,
-                    })),
-            },
-          ],
-          consortUserOs: apply.join(',') || consortUserOs,
+          increaseRuleObject:
+            increaseRule === '1'
+              ? {
+                  type: 'bean',
+                  beanNum,
+                  maxValue,
+                }
+              : undefined,
+          ruleList: ruleList?.map((item) => ({
+            ruleId: item.ruleId,
+          })),
         },
         callback: () => {
           onClose();
@@ -76,8 +74,6 @@ const CouponDrawer = (props) => {
     type,
     ticket,
     setTicket,
-    citys,
-    setCitys,
   };
   // 统一处理弹窗
   const drawerProps = {
@@ -103,7 +99,6 @@ const CouponDrawer = (props) => {
     loading: loadingDetail,
     closeCallBack: () => {
       setTicket('goodsBuy');
-      setCitys([]);
     },
     footer: ['add', 'edit'].includes(type) && (
       <Button onClick={handleUpAudit} type="primary" loading={loading}>

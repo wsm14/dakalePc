@@ -5,7 +5,7 @@ import specialGoods from './SpecialGoods';
 import coupon from './Coupon';
 import phoneBill from './PhoneBill'; // 话费
 import memberRecharge from './MemberRecharge'; // 会员充值
-import giftType from './GiftType'; // 固定写死携带默认值，选择类型时赋值
+import defaultData from './DefaultData'; // 固定写死携带默认值
 
 export default (props) => {
   const { showApi } = props;
@@ -17,12 +17,13 @@ export default (props) => {
     merchantGroup: merchant,
     specialGoods,
     coupon,
-    beanSelection: giftType,
-    telephoneFeeDeductionCouponPackage: giftType,
-    platformGeneralCouponPackage: giftType,
-    commerceGoodsPackage: giftType,
+    beanSelection: defaultData,
+    telephoneFeeDeductionCouponPackage: defaultData,
+    platformGeneralCouponPackage: defaultData,
+    commerceGoodsPackage: defaultData,
     phoneBill, // 话费
     memberRecharge, // 会员充值
+    newToday: defaultData,
   }[showApi];
   if (!ShowDom) return null;
 

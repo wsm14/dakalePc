@@ -22,6 +22,10 @@ import {
   fetchSavePreferentialActivity,
   fetchUpdatePreferentialActivity,
   fetchGetPreferentialActivityById,
+  fetchListConfigBottomCenterIcon,
+  fetchSaveConfigBottomCenterIcon,
+  fetchUpdateConfigBottomCenterIcon,
+  fetchGetConfigBottomCenterIconById,
 } from '@/services/SystemServices';
 
 export default {
@@ -40,6 +44,7 @@ export default {
       list: [],
       total: 0,
     },
+    bottomIconList: { list: [] },
   },
 
   reducers: {
@@ -404,6 +409,52 @@ export default {
       };
 
       callback && callback(data);
+    },
+
+    //底部中心icon配置 - 版本列表
+    *fetchListConfigBottomCenterIcon({ payload }, { call, put }) {
+      const response = yield call(fetchListConfigBottomCenterIcon, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          bottomIconList: { list: content.configBottomCenterIconDTOS },
+        },
+      });
+    },
+    //底部中心icon配置 - 新增版本
+    *fetchSaveConfigBottomCenterIcon({ payload, callback }, { call }) {
+      const response = yield call(fetchSaveConfigBottomCenterIcon, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增成功',
+      });
+      callback && callback();
+    },
+    //底部中心icon配置 - 编辑版本
+    *fetchUpdateConfigBottomCenterIcon({ payload, callback }, { call }) {
+      const response = yield call(fetchUpdateConfigBottomCenterIcon, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '编辑成功',
+      });
+      callback && callback();
+    },
+    //底部中心icon配置 - 编辑获取详情
+    *fetchGetConfigBottomCenterIconById({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetConfigBottomCenterIconById, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const { param } = content.configBottomCenterIconDTO;
+
+      callback &&
+        callback({
+          ...content.configBottomCenterIconDTO,
+          param: JSON.parse(param || '{}'),
+        });
     },
   },
 };

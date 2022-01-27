@@ -61,3 +61,6 @@ export const FLOAT_IMG = 165 / 165;
 
 //新人福利弹窗配置Banner图片
 export const NEW_POP_IMG = 560 / 760;
+
+//底部中心icon配置
+export const BOTTOM_ICON_IMG = 132 / 88;

@@ -585,4 +585,34 @@ export function fetchSavePreferentialActivity(data) {
   });
 }
 
+//底部中心icon配置 - 版本列表
+export function fetchListConfigBottomCenterIcon(params) {
+  return request('/admin/configBottomCenterIcon/listConfigBottomCenterIcon', {
+    params,
+  });
+}
+
+//底部中心icon配置 - 新增版本
+export function fetchSaveConfigBottomCenterIcon(data) {
+  return request('/admin/configBottomCenterIcon/saveConfigBottomCenterIcon', {
+    method: 'POST',
+    data,
+  });
+}
+
+//底部中心icon配置 - 编辑版本 / 编辑配置
+export function fetchUpdateConfigBottomCenterIcon(data) {
+  return request('/admin/configBottomCenterIcon/updateConfigBottomCenterIcon', {
+    method: 'POST',
+    data,
+  });
+}
+
+//底部中心icon配置 - 编辑获取详情
+export function fetchGetConfigBottomCenterIconById(params) {
+  return request('/admin/configBottomCenterIcon/getConfigBottomCenterIconById', {
+    params,
+  });
+}
+
 // 全局配置 end

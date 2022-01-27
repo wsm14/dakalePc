@@ -3,15 +3,14 @@ import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import uploadLive from '@/utils/uploadLive';
 import DrawerCondition from '@/components/DrawerCondition';
-import PointManageSet from './Form/PlatformSet';
-import PlatformVideoSet from './Form/PlatformVideoSet';
-import PlatformAwardSet from './Form/PlatformAwardSet';
+import PointManageSet from './Form/PointManageSet';
+import PointManageVideoSet from './Form/PointManageVideoSet';
+import PointManageAwardSet from './Form/PointManageAwardSet';
 
 const PointManageDrawer = (props) => {
   const { visible, dispatch, childRef, onClose, loading, loadingDetail } = props;
 
-  const { type = 'info', show = false, detail = {} } = visible;
-  const { hittingMainId } = detail;
+  const { type = 'info', show = false, detail = {}, hittingMainId } = visible;
   const [form] = Form.useForm();
 
   // 确认提交
@@ -71,6 +70,20 @@ const PointManageDrawer = (props) => {
   const handleAwardUpAudit = () => {
     form.validateFields().then(async (values) => {
       console.log('award', values);
+      const { beanPoolList, beanPoolRange, dayCount, remain, timeRangeStart, timeRangeEnd, total } =
+        values;
+
+      const data = {
+        hittingMainId,
+        hittingRewardObject: {
+          beanPoolList,
+          beanPoolRange,
+          dayCount,
+          remain,
+          timeRange: `${timeRangeStart}-${timeRangeEnd}`,
+          total,
+        },
+      };
     });
   };
 
@@ -93,11 +106,16 @@ const PointManageDrawer = (props) => {
     },
     advert: {
       title: '打卡广告设置',
-      children: <PlatformVideoSet form={form} initialValues={detail}></PlatformVideoSet>,
+      children: <PointManageVideoSet form={form} initialValues={detail}></PointManageVideoSet>,
     },
     award: {
       title: '打卡奖励设置',
-      children: <PlatformAwardSet form={form} initialValues={detail}></PlatformAwardSet>,
+      children: (
+        <PointManageAwardSet
+          form={form}
+          initialValues={{ specialTime: 'all', ...detail }}
+        ></PointManageAwardSet>
+      ),
     },
   }[type];
 
@@ -105,6 +123,7 @@ const PointManageDrawer = (props) => {
   const modalProps = {
     title: drawerProps.title,
     visible: show,
+    width: 780,
     onClose,
     loading: loadingDetail,
     footer: ['add', 'edit'].includes(type) ? (

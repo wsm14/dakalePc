@@ -198,7 +198,7 @@ export const MRE_STOCK_STATUS = ['已售罄', '未售罄'];
 export const WORKER_JOB_TYPE = ['离职', '在职'];
 
 // 广告管理 - 展示状态
-export const BANNER_SHOW_STATUS = ['已下架', '展示中'];
+export const BANNER_SHOW_STATUS = ['已下架', '展示中', '即将开始'];
 
 // 广告管理 - 投放区域类型
 export const BANNER_AREA_TYPE = { all: '全平台', detail: '省市区' };
@@ -446,7 +446,7 @@ export const BANNER_PORT_LINK = {
 };
 
 // Banner跳转类型
-export const BANNER_JUMP_TYPE = { '': '无', H5: 'H5', inside: '原生页面' };
+export const BANNER_JUMP_TYPE = { '': '无', h5: 'H5', native: '原生页面' };
 
 // 用户类型
 export const MASTER_TYPE = { user: '用户', merchant: '店铺' };
@@ -455,7 +455,7 @@ export const MASTER_TYPE = { user: '用户', merchant: '店铺' };
 export const GOODS_CLASS_TYPE = { single: '单品', package: '套餐' };
 
 // 风向标跳转类型
-export const VANE_URL_TYPE = { url: '跳转至URL', trade: '按行业显示', native: '原生页面' };
+export const VANE_URL_TYPE = { h5: '跳转至URL', trade: '按行业显示', native: '原生页面' };
 
 // 分享设置 - 区域类型
 export const SHARE_AREA_TYPE = {
@@ -818,6 +818,9 @@ export const STROLLAROUND_TAB_TYPE = {
 // 全局配置 - 首页tab配置
 export const TAB_INDEX_TYPE = { iOS: 'iOS', android: 'Android', weChat: '小程序' };
 
+// 全局配置 - 底部中心icon配置
+export const BOTTOM_ICON_TYPE = { iOS: 'iOS', android: 'Android' };
+
 // 全局配置 - 虚拟商品优惠比例配置
 export const VIRTUAL_CONFIG_TYPE = { phoneBill: '话费优惠', memberRecharge: '会员优惠' };
 
@@ -848,19 +851,31 @@ export const MATERIAL_JUMP_TYPE = {
 
 // 平台券管理 - 券使用场景类型
 export const PLATFORM_TICKET_SCENE = {
-  goodsBuy: '商品',
+  goodsBuy: '商品券',
   // scan: '扫码',
-  virtual: '虚拟品',
-  commerce: '电商品',
+  virtual: '虚拟品券',
+  commerce: '电商品券',
   // community: '团购',
 };
 
 // 平台券管理 - 券类型
 export const PLATFORM_TICKET_TYPE = {
-  universal: '通用券',
-  // category:'行业券',
-  // merchant:'店铺券',
-  // goods:'商品券',
+  goodsBuy: {
+    universal: '商品通用券',
+    category: '行业商品券',
+    merchant: '店铺商品券',
+    goods: '指定商品券',
+  },
+  // scan: '扫码',
+  virtual: {
+    universal: '虚拟通用券',
+    goods: '指定虚拟券',
+  },
+  commerce: {
+    universal: '电商通用券',
+    goods: '指定电商券',
+  },
+  // community: '团购',
 };
 
 // 平台券管理 - 使用时间
@@ -872,12 +887,64 @@ export const PLATFORM_COUPON_PEOPLE = { all: '全部', daren: '哒人' };
 // 平台券管理 - 适用端口
 export const PLATFORM_APPLY_PORT = { all: '全部', noAll: '部分平台' };
 
+// 平台券管理 - 是否可膨胀
+export const PLATFORM_INCREASE_RULE = ['不可膨胀', '可膨胀'];
+
+// 券规则管理  端口类型
 // 平台券管理 - 适用端口type
 export const PLATFORM_APPLY_PORT_TYPE = {
   app: 'APP',
   weChat: '哒卡乐小程序',
   markWechat: '哒小卡小程序',
   communityWechat: '哒小团小程序',
+};
+
+// 券规则管理 - 父规则类型
+export const CONPON_RULES_TYPE = {
+  categoryRule: '行业',
+  merchantRule: '店铺',
+  goodsRule: '商品',
+  tagRule: '标签',
+  availableAreaRule: '可用区域',
+  unavailableAreaRule: '不可用区域',
+  userRule: '用户',
+  userOsRule: '端口',
+};
+
+// 券规则管理 - 子规则类型
+export const CONPON_RULES_SON_TYPE = {
+  category: '行业',
+  merchant: '店铺',
+  group: '集团',
+  specialGoods: '特惠商品',
+  reduceCoupon: '有价券',
+  commerceGoods: '电商品',
+  phoneBill: '话费',
+  member: '会员',
+  platformGoodsTags: '平台商品标签',
+  // merchantTags: '商家标签',
+  merchantGoodsTags: '商家商品标签',
+  availableArea: '可用区域',
+  unavailableArea: '不可用区域',
+  user: '用户',
+  userOs: '端口',
+};
+
+// 券规则管理  店铺 类型
+export const CONPON_RULES_BUSINESS_TYPE = { merchant: '单店', group: '集团' };
+
+// 券规则管理  商品 类型
+export const CONPON_RULES_GOODS_TYPE = {
+  specialGoods: '特惠商品',
+  reduceCoupon: '有价券',
+  commerceGoods: '电商品',
+  phoneBill: '话费充值',
+  member: '会员充值',
+};
+
+// 券规则管理  用户类型  适用人群
+export const CONPON_RULES_USER_TYPE = {
+  daren: '仅限哒人',
 };
 
 // 礼包管理 - 卡券类型
@@ -902,6 +969,19 @@ export const MARK_CARD_OPEN_STATE = ['停用', '启用'];
 export const MARK_CARD_PARENT_TYPE = {
   merchant: '店铺',
   user: '用户',
+};
+
+// 哒小卡 - 点位管理 - 特殊时间段类型
+export const SPECIAL_TIME_TYPE = {
+  all: '不限',
+  fixedTime: '固定时间',
+};
+
+// 哒小卡 - 点位管理 - 其他奖品类型
+export const OTHER_PRIZE_TYPE = {
+  hittingRewardRightGoodsObject: '平台权益商品',
+  hittingRewardOnlineGoodsObject: '电商品',
+  hittingRewardActualGoodsObject: '自提商品',
 };
 
 // 全局配置 - 虚拟商品优惠比例配置 - 启用状态

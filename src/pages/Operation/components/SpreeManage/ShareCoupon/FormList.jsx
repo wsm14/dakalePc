@@ -21,6 +21,7 @@ const FormList = (props) => {
           }}
         />
       </div>
+
       {(() => {
         const goodsItem = form.getFieldValue(type)[field.name];
         return {

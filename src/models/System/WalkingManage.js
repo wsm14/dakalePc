@@ -131,14 +131,14 @@ export default {
       const response = yield call(fetchWalkManageVaneDetail, payload);
       if (!response) return;
       const { configWindVaneDTO } = response.content;
-      const { bubbleFlag, param = '{}', jumpType, nativeJumpType } = configWindVaneDTO;
+      const { bubbleFlag, param = '{}', jumpUrlType, nativeJumpType } = configWindVaneDTO;
       const { categoryId, topCategoryId } = JSON.parse(param || '{}');
       callback({
         ...configWindVaneDTO,
-        jumpType: {
+        jumpUrlType: {
           native: nativeJumpType === 'windVaneCategory' ? 'trade' : 'native',
-          url: jumpType,
-        }[jumpType],
+          h5: jumpUrlType,
+        }[jumpUrlType],
         param: JSON.parse(param || '{}'),
         windVaneParamObject: JSON.parse(param || '{}'),
         bubbleFlag: Boolean(Number(bubbleFlag)),

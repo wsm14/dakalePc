@@ -31,13 +31,7 @@ const GlobalModalDrawerSet = (props) => {
     form.validateFields().then(async (values) => {
       console.log(values);
 
-      const {
-        activityBeginTime: time,
-        bannerImage,
-        jumpType,
-        activityGoodsObjects,
-        ...other
-      } = values;
+      const { activityBeginTime: time, bannerImage, activityGoodsObjects, ...other } = values;
 
       // 上传图片到oss -> 提交表单
       const imgList = await aliOssUpload(bannerImage);
@@ -53,7 +47,6 @@ const GlobalModalDrawerSet = (props) => {
           activityBeginTime: time[0].format('YYYY-MM-DD HH:mm'),
           activityEndTime: time[1].format('YYYY-MM-DD HH:mm'),
           bannerImage: imgList.toString(),
-          jumpUrlType: jumpType,
           goodsIds: activityGoodsObjects.map((item) => item.activityGoodsId).toString(),
         },
         callback: () => {

@@ -237,9 +237,9 @@ export function fetchBannerList(params) {
   });
 }
 
-// get banner管理 - 获取banner图片分辨率
+// get banner管理 - banner图片位置+banner图片分辨率 -列表
 export function fetchBannerRatio(params) {
-  return request('/admin/bannerManagement/getBannerPictureResolutionConfig', {
+  return request('/admin/configBannerType/listConfigBannerType', {
     params,
   });
 }
@@ -270,6 +270,14 @@ export function fetchBannerStatus(data) {
 // post banner管理 - 新增
 export function fetchBannerSet(data) {
   return request('/admin/bannerManagement/saveBannerMarketPlatform', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post banner管理 - banner图片位置 - 新增
+export function fetchSaveConfigBannerType(data) {
+  return request('/admin/configBannerType/saveConfigBannerType', {
     method: 'POST',
     data,
   });
@@ -579,6 +587,21 @@ export function fetchSaveConfigNewUserPopUp(data) {
 // post 新人福利弹窗 - 编辑
 export function fetchUpdateConfigNewUserPopUp(data) {
   return request('/admin/configNewUserPopUp/updateConfigNewUserPopUp', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 周卡配置 - 详情
+export function fetchGetWeeklyCard(params) {
+  return request('/admin/weeklyCard/getWeeklyCard', {
+    params,
+  });
+}
+
+// post 周卡配置 - 编辑
+export function fetchSetWeeklyCard(data) {
+  return request('/admin/weeklyCard/setWeeklyCard', {
     method: 'POST',
     data,
   });

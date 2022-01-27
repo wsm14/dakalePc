@@ -282,7 +282,7 @@ const PlatformEquitySet = ({
       label: '售卖类型',
       name: 'buyFlag',
       type: 'radio',
-      disabled: commonDisabled,
+      disabled: editDisabled,
       select: PEQUITY_GOODSBUY_TYPE,
       onChange: (e) => setBuyFlag(e.target.value),
     },
@@ -300,7 +300,7 @@ const PlatformEquitySet = ({
       max: 999999,
       visible: buyFlag == '1',
       suffix: '卡豆',
-      disabled: commonDisabled,
+      disabled: editDisabled,
     },
     {
       label: '现金（元）',
@@ -311,7 +311,7 @@ const PlatformEquitySet = ({
       max: 999999.99,
       visible: buyFlag == '1',
       formatter: (value) => `￥ ${value}`,
-      disabled: commonDisabled,
+      disabled: editDisabled,
     },
     {
       label: '平台结算价',
@@ -327,12 +327,13 @@ const PlatformEquitySet = ({
         {
           validator: (rule, value) => {
             const merchantPrice = Number(value);
-            const buyPrice = Number(form.getFieldValue('realPrice'));
-            if (merchantPrice > buyPrice) {
+            const buyPrice = form.getFieldValue('paymentModeObject');
+            const buyPriceAdd = Number(buyPrice.bean) / 100 + Number(buyPrice.cash);
+            if (merchantPrice > buyPriceAdd) {
               return Promise.reject('商家结算价不可超过售卖价格');
             }
             // “商家结算价不可超过N（结算价≤特惠价格*（1-费率））”
-            const getPrice = buyPrice * (1 - mreList.ratio / 100);
+            const getPrice = buyPriceAdd * (1 - mreList.ratio / 100);
             if (merchantPrice > getPrice) {
               return Promise.reject(`商家结算价不可超过${getPrice}`);
             }
@@ -362,7 +363,7 @@ const PlatformEquitySet = ({
       max: 999999,
       visible: buyFlag == '1' && commissionShow === '1',
       suffix: '卡豆',
-      disabled: commonDisabled,
+      disabled: editDisabled,
       onChange: () => {
         const keyArr = manualList.map((i) => [
           'serviceDivisionDTO',

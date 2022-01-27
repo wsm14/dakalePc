@@ -39,6 +39,7 @@ import {
   fetchPlatformCouponSelect,
   fetchListHitting,
   fetchPagePreferentialActivity,
+  fetchListConfigGoodsTag,
 } from '@/services/PublicServices';
 
 export default {
@@ -69,6 +70,8 @@ export default {
     PlatformCoupon: { list: [], total: 0 },
     pointList: { list: [], total: 0 },
     virtualList: { list: [], total: 0 },
+    allCouponList: { list: [], total: 0 },
+    configGoodsTagList: [],
   },
 
   reducers: {
@@ -369,6 +372,20 @@ export default {
         },
       });
     },
+    // 所有优惠券
+    *fetchGetAllCouponSelect({ payload }, { call, put }) {
+      const response = yield call(fetchGetEquityCouponSelect, {
+        ...payload,
+      });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          allCouponList: { list: content.recordList, total: content.total },
+        },
+      });
+    },
 
     // 平台券
     *fetchPlatformCouponSelect({ payload }, { call, put }) {
@@ -619,6 +636,22 @@ export default {
             })),
             total: content.total,
           },
+        },
+      });
+    },
+    //get 券规则管理 - 标签列表
+    *fetchListConfigGoodsTag({ payload }, { put, call }) {
+      const response = yield call(fetchListConfigGoodsTag, {
+        status: 1,
+        ...payload,
+      });
+      if (!response) return;
+      const { content } = response;
+
+      yield put({
+        type: 'save',
+        payload: {
+          configGoodsTagList: content.configGoodsTagDTOS,
         },
       });
     },

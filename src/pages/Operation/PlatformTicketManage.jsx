@@ -1,17 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
-import { Tag, Tooltip } from 'antd';
-import {
-  COUPON_STATUS,
-  PLATFORM_TICKET_SCENE,
-  PLATFORM_TICKET_TYPE,
-  PLATFORM_COUPON_PEOPLE,
-} from '@/common/constant';
-import CITYJSON from '@/common/cityJson';
+import { Tag } from 'antd';
+import { COUPON_STATUS, PLATFORM_TICKET_TYPE, PLATFORM_TICKET_SCENE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
-import { getCityName } from '@/utils/utils';
 import PlatformDrawer from './components/PlatformManage/PlatformDrawer';
 import RemainModal from './components/PlatformManage/Detail/RemainModal';
 
@@ -39,13 +32,7 @@ const PlatformManage = (props) => {
       label: '券类型',
       type: 'select',
       name: 'useScenesType',
-      select: {
-        goodsBuy: '商品券',
-        // scan: '扫码',
-        virtual: '虚拟品券',
-        commerce: '电商品券',
-        // community: '团购',
-      },
+      select: PLATFORM_TICKET_SCENE,
     },
     {
       label: '状态',
@@ -53,12 +40,6 @@ const PlatformManage = (props) => {
       name: 'couponStatus',
       select: COUPON_STATUS,
     },
-    // {
-    //   label: '适用人群',
-    //   name: 'consortUser',
-    //   type: 'select',
-    //   select: PLATFORM_COUPON_PEOPLE,
-    // },
     {
       label: '最后修改时间',
       type: 'rangePicker',
@@ -69,40 +50,25 @@ const PlatformManage = (props) => {
       label: '最后修改人',
       name: 'updater',
     },
-    {
-      label: '可使用区域',
-      name: 'city',
-      type: 'cascader',
-      select: CITYJSON.filter((item) => item.level === '1').map((item) => ({
-        ...item,
-        children: CITYJSON.filter((items) => items.pid === item.id),
-      })),
-      fieldNames: { label: 'name', value: 'id' },
-      valuesKey: ['provinceCode', 'cityCode'],
-    },
   ];
 
   // table 表头
   const getColumns = [
     {
-      title: '券编号',
-      fixed: 'left',
-      dataIndex: 'platformCouponId',
-    },
-    {
-      title: '券类型/名称',
+      title: '券类型/名称/编号',
       fixed: 'left',
       dataIndex: 'couponName',
       render: (val, row) => (
         <div>
           <div style={{ display: 'flex', marginTop: 5 }}>
             <Tag style={{ borderRadius: 11 }} color="#87d068">{`${
-              PLATFORM_TICKET_SCENE[row.useScenesType]
-            }${PLATFORM_TICKET_TYPE[row.classType]}`}</Tag>
+              PLATFORM_TICKET_TYPE[row.useScenesType][row.classType]
+            }`}</Tag>
             <Ellipsis length={10} tooltip>
               {val}
             </Ellipsis>
           </div>
+          <div style={{ color: '#ccc' }}>{row.platformCouponId}</div>
         </div>
       ),
     },
@@ -129,41 +95,6 @@ const PlatformManage = (props) => {
     {
       title: '剩余数量',
       dataIndex: 'remain',
-    },
-    {
-      title: '使用地区限制',
-      dataIndex: 'ruleConditionObjects',
-      render: (val, row) => {
-        const ruleCondition = val.find((item) =>
-          ['availableAreaRule', 'unavailableAreaRule'].includes(item.ruleType),
-        );
-        const arr = ruleCondition?.ruleConditionList || [];
-        if (arr[0]?.condition == 'all') {
-          return '全国可用';
-        } else if (ruleCondition?.ruleType === 'availableAreaRule') {
-          return (
-            <Tooltip
-              placement="topLeft"
-              title={arr.map((item) => {
-                return <span key={item.condition}>{`${getCityName(item.condition)}、`}</span>;
-              })}
-            >
-              部分地区可用
-            </Tooltip>
-          );
-        } else {
-          return (
-            <Tooltip
-              placement="topLeft"
-              title={arr.map((item) => {
-                return <span key={item.condition}>{`${getCityName(item.condition)}、`}</span>;
-              })}
-            >
-              部分地区不可用
-            </Tooltip>
-          );
-        }
-      },
     },
     {
       title: '状态',

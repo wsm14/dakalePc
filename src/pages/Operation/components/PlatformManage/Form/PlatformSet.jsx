@@ -1,60 +1,85 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
-import CITYJSON from '@/common/cityJson';
-import { Radio, Form, Row, Col, Select, Button, Cascader } from 'antd';
+import { Radio, Form, Row, Col, Select, Button, Cascader, InputNumber } from 'antd';
 import {
   COUPON_BUY_RULE,
   PLATFORM_TICKET_TYPE,
   PLATFORM_USERTIME_TYPE,
-  PLATFORM_COUPON_PEOPLE,
-  PLATFORM_APPLY_PORT,
-  PLATFORM_APPLY_PORT_TYPE,
+  PLATFORM_INCREASE_RULE,
+  CONPON_RULES_TYPE,
+  PLATFORM_TICKET_SCENE,
 } from '@/common/constant';
 import { NUM_ALL, NUM_INT } from '@/common/regExp';
+import PopImgShow from '@/components/PopImgShow';
+import TableDataBlock from '@/components/TableDataBlock';
 import FormCondition from '@/components/FormCondition';
-import { getCityName } from '@/utils/utils';
+import RuleModal from './RuleModal';
+import typeRuleImg from './typeRule.png';
 import styles from './index.less';
 
 const { Option } = Select;
 
 const CouponSet = (props) => {
-  const { form, type, ticket, setTicket, initialValues, citys, setCitys } = props;
-
-  const cityList = CITYJSON.filter((item) => item.level === '2');
+  const { form, type, ticket, setTicket, initialValues } = props;
 
   const [radioData, setRadioData] = useState({
-    areaFlag: '0', // 地区限制
     effectTime: 'fixed', // 券有效期
     getLimit: 'unlimited', // 领取上限
-    applyPort: 'all', // 适用端口
+    increaseType: 0, //  是否可膨胀
   });
-  const { ruleCondition, useTimeRule, ruleType, consortUserOs, citys: initCitys } = initialValues;
+  const [ruleList, setRuleList] = useState([]); // 暂存所选规则
+  const [visible, setVisible] = useState(false); // 选择规则的modal
+
+  const { useScenesType, useTimeRule, ruleType, increaseRule, ruleList: ruleLists } = initialValues;
 
   useEffect(() => {
     if (initialValues.platformCouponId) {
+      setTicket(useScenesType);
+      setRuleList(ruleLists);
       setRadioData({
-        areaFlag: ruleCondition, // 地区限制
         effectTime: useTimeRule, // 券有效期
         getLimit: ruleType, // 领取上限
-        applyPort: consortUserOs, // 适用端口
+        increaseType: increaseRule, //  是否可膨胀
       });
-      setCitys(initCitys);
     }
   }, [initialValues]);
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
 
-  // 添加城市
-  const addCity = () => {
-    const code = form.getFieldValue('cityCode')[1];
-    console.log('123', code);
-    if (code == undefined) return;
-    if (citys.indexOf(code) > -1) {
-      return;
-    }
-    setCitys([...citys, code]);
+  const getColumns = [
+    {
+      title: '规则类型',
+      dataIndex: 'ruleType',
+      render: (val) => CONPON_RULES_TYPE[val],
+    },
+    {
+      title: '规则名称',
+      dataIndex: 'ruleName',
+    },
+    {
+      type: 'handle',
+      dataIndex: 'ruleId',
+      show: type === 'add',
+      render: (ruleId, record) => [
+        {
+          type: 'del',
+          auth: true,
+          click: () => handleDelect(ruleId),
+        },
+      ],
+    },
+  ];
+
+  // 删除所选规则
+  const handleDelect = (ruleId) => {
+    const newList = ruleList.filter((item) => item.ruleId !== ruleId);
+    setRuleList(newList);
+    form.setFieldsValue({
+      ruleList: newList,
+    });
   };
+
   // 信息
   const formItems = [
     {
@@ -72,42 +97,41 @@ const CouponSet = (props) => {
               setTicket(e.target.value);
               form.setFieldsValue({
                 useScenesType: e.target.value,
-                ruleCondition: '0',
+                classType: 'universal',
               });
               saveSelectData({ areaFlag: '0' });
             }}
             className={styles.btn_Bbox}
           >
-            <Radio.Button className={styles.btn_box} value="goodsBuy">
-              <div>商品券</div>
-              <div>特惠商品/优惠券可用</div>
-            </Radio.Button>
-            {/* <Radio.Button className={styles.btn_box} value="scan">
-              <div>扫码券</div>
-              <div>特惠商品/优惠券可用</div>
-            </Radio.Button> */}
-            <Radio.Button className={styles.btn_box} value="virtual">
-              <div>虚拟券</div>
-              <div>购买虚拟商品可用</div>
-            </Radio.Button>
-            <Radio.Button className={styles.btn_box} value="commerce">
-              <div>电商券</div>
-              <div>购买电商品可用</div>
-            </Radio.Button>
-            {/* <Radio.Button className={styles.btn_box} value="community">
-              <div>团购券</div>
-              <div>特惠商品/优惠券可用</div>
-            </Radio.Button> */}
+            {Object.keys(PLATFORM_TICKET_SCENE).map((item) => (
+              <Radio.Button key={item} className={styles.btn_box} value={item}>
+                <div>{PLATFORM_TICKET_SCENE[item]}</div>
+                <div>
+                  {
+                    {
+                      goodsBuy: '特惠商品/优惠券可用',
+                      virtual: '购买虚拟商品可用',
+                      commerce: '购买电商品可用',
+                    }[item]
+                  }
+                </div>
+              </Radio.Button>
+            ))}
           </Radio.Group>
         </>
       ),
     },
     {
-      label: '券类型',
+      label: '券标签',
       name: 'classType',
       type: 'radio',
-      disabled: type === 'edit',
-      select: PLATFORM_TICKET_TYPE,
+      select: PLATFORM_TICKET_TYPE[ticket],
+      extra: (
+        <div className={styles.lookTypeRuleImg}>
+          选择标签后请选择对应的规则，选择错误将影响用户使用
+          <PopImgShow type="previewImg" url={typeRuleImg} previewDom={<a>查看对应规则</a>} />
+        </div>
+      ),
     },
     {
       title: '基本信息',
@@ -205,7 +229,6 @@ const CouponSet = (props) => {
       max: 999999999,
       extra: '修改优惠券总量时只能增加不能减少，请谨慎设置',
     },
-
     {
       label: '领取上限',
       type: 'radio',
@@ -233,102 +256,62 @@ const CouponSet = (props) => {
       addRules: [{ pattern: NUM_INT, message: '份数必须为整数，且不可为0' }],
       visible: radioData.getLimit === 'dayLimit',
     },
-
     {
-      label: '使用地区限制',
-      disabled: type === 'edit',
+      label: '是否可膨胀',
       type: 'radio',
-      select:
-        ticket === 'virtual' || ticket === 'commerce'
-          ? ['全国可用']
-          : ['全国可用', '部分地区可用', '部分地区不可用'],
-      name: 'ruleCondition',
-      addRules: [
-        {
-          validator: (rule, value) => {
-            if (value != '0' && citys.length == 0) {
-              return Promise.reject('请选择城市');
-            }
-            return Promise.resolve();
-          },
-        },
-      ],
-      onChange: (e) => (saveSelectData({ areaFlag: e.target.value }), setCitys([])),
+      name: 'increaseRule',
+      select: PLATFORM_INCREASE_RULE,
+      onChange: (e) => saveSelectData({ increaseType: e.target.value }),
+      disabled: type === 'edit',
     },
     {
       type: 'formItem',
-      visible: radioData.areaFlag != '0',
+      visible: radioData.increaseType == '1',
+      className: styles.btn_all_2,
+      // disabled: type === 'edit',
       formItem: (
-        <div style={{ paddingLeft: 150 }}>
-          <Row gutter={8}>
-            <Col span={18}>
-              <Form.Item name="cityCode" noStyle>
-                {/* <Select disabled={type === 'edit'} placeholder="请选择城市" allowClear>
-                  {cityList.map((item) => {
-                    return (
-                      <Option key={item.id} value={item.id}>
-                        {item.name}
-                      </Option>
-                    );
-                  })}
-                </Select> */}
-                <Cascader
-                  disabled={type === 'edit'}
-                  options={CITYJSON.filter((item) => item.level === '1').map((item) => ({
-                    ...item,
-                    children: CITYJSON.filter((items) => items.pid === item.id),
-                  }))}
-                  placeholder="请选择城市"
-                  allowClear
-                  fieldNames={{ label: 'name', value: 'id' }}
-                ></Cascader>
-              </Form.Item>
-            </Col>
-            <Col span={6}>
-              <Button disabled={type === 'edit'} type="primary" onClick={addCity}>
-                添加
-              </Button>
-            </Col>
-          </Row>
+        <div style={{ display: 'flex' }}>
+          <div style={{ lineHeight: '32px' }}>可使用</div>
+          <Form.Item name="beanNum" noStyle rules={[{ required: true, message: '请输入卡豆数' }]}>
+            <InputNumber
+              style={{ width: 110, margin: '0 5px' }}
+              precision={0}
+              min={1}
+              addonAfter="卡豆"
+              disabled={type === 'edit'}
+            ></InputNumber>
+          </Form.Item>
+          <div style={{ lineHeight: '32px' }}>进行膨胀，最高可膨胀</div>
+          <Form.Item
+            name="maxValue"
+            noStyle
+            // rules={[{ required: true, message: '请输入膨胀金额' }]}
+            rules={[
+              {
+                validator: (rule, value) => {
+                  console.log(Number(value));
+                  const maxNum = Number(form.getFieldValue('thresholdPrice')); // 使用门槛
+                  const nowNum = Number(form.getFieldValue('couponValue')); // 券价值
+                  if (Number(value) + nowNum > maxNum) {
+                    return Promise.reject('券价值+最高膨胀金额不可高于使用门槛');
+                  }
+                  if (Number(value) <= 0) {
+                    return Promise.reject('膨胀金额需大于0,且不能为0');
+                  }
+                  return Promise.resolve();
+                },
+              },
+            ]}
+          >
+            <InputNumber
+              precision={0}
+              style={{ width: 110, marginLeft: 5 }}
+              addonAfter="元"
+              disabled={type === 'edit'}
+            ></InputNumber>
+          </Form.Item>
         </div>
       ),
-    },
-    {
-      label: '选择城市',
-      type: 'noForm',
-      name: 'cityCodeName',
-      visible: radioData.areaFlag != '0',
-      formItem: (
-        <div className={styles.city_box}>
-          {citys.map((item) => {
-            return <span key={item}>{`${getCityName(item)}；`}</span>;
-          })}
-        </div>
-      ),
-    },
-
-    {
-      label: '适用人群',
-      type: 'radio',
-      disabled: type === 'edit',
-      name: 'consortUser',
-      select: PLATFORM_COUPON_PEOPLE,
-    },
-    {
-      label: '适用端口',
-      type: 'radio',
-      disabled: type === 'edit',
-      select: PLATFORM_APPLY_PORT,
-      name: 'consortUserOs',
-      onChange: (e) => saveSelectData({ applyPort: e.target.value }),
-    },
-    {
-      label: '平台',
-      type: 'checkbox',
-      disabled: type === 'edit',
-      select: PLATFORM_APPLY_PORT_TYPE,
-      name: 'apply',
-      visible: radioData.applyPort === 'noAll',
     },
     {
       label: '其他说明',
@@ -337,6 +320,33 @@ const CouponSet = (props) => {
       maxLength: 100,
       rules: [{ required: false }],
     },
+    {
+      title: '使用规则',
+      type: 'noForm',
+      formItem: (
+        <>
+          {type === 'add' && (
+            <Button type="link" onClick={() => setVisible({ show: true, useScenesType: ticket })}>
+              选择
+            </Button>
+          )}
+          <TableDataBlock
+            noCard={false}
+            size="small"
+            columns={getColumns}
+            rowKey={(record) => `${record.ruleId}`}
+            list={ruleList}
+            total={ruleList?.length || 0}
+          ></TableDataBlock>
+        </>
+      ),
+    },
+    {
+      label: '规则List',
+      name: 'ruleList',
+      rules: [{ required: false }],
+      hidden: true,
+    },
   ];
 
   const formProps = {
@@ -344,9 +354,7 @@ const CouponSet = (props) => {
     useScenesType: 'goodsBuy',
     useTimeRule: 'fixed',
     ruleType: 'unlimited',
-    ruleCondition: '0',
-    consortUser: 'all',
-    consortUserOs: 'all',
+    increaseRule: '0',
   };
   return (
     <>
@@ -355,6 +363,13 @@ const CouponSet = (props) => {
         formItems={formItems}
         initialValues={{ ...formProps, ...initialValues }}
       ></FormCondition>
+      <RuleModal
+        form={form}
+        ruleList={ruleList}
+        setRuleList={setRuleList}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></RuleModal>
     </>
   );
 };
