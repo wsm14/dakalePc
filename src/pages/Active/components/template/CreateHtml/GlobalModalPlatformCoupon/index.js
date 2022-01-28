@@ -92,25 +92,26 @@ export default (function (platformCouponIds, uid, coupon_end, coupon_bag) {
 
 // 领取券
 export const userGetCoupon = `<script>
-$('body').on('click', "#btnGetCoupon", function() {
-  var evn = native.getPhone();
-  if (evn) {
-    native.nativeInit('getToken', {}, (val) => {
-      // token 存在
-      if (val && val.length > 0) {
-        HTTP_POST('',{ids:$(this).attr("data-idList")}).then((res) => {
-          // 领取成功 关闭
-          native.nativeInit('close');
-        })
-        .catch(() => {
-          // 没有获取到 关闭
-          native.nativeInit('close');
-        });
-      }
-    });   
-  }
-});
-</script>`;
+  $('body').on('click', "#btnGetCoupon", function() {
+    var evn = native.getPhone();
+    if (evn) {
+      native.nativeInit('getToken', {}, (val) => {
+        // token 存在
+        if (val && val.length > 0) {
+          HTTP_POST('',{ 
+            token: val, 
+            ids: $(this).attr("data-idList") 
+          }).then((res) => {
+            native.nativeInit('close'); // 领取成功 关闭
+          })
+          .catch(() => {
+            native.nativeInit('close'); // 没有获取到 关闭
+          });
+        } else { native.nativeInit('goLogin') }
+      });   
+    }
+  });
+  </script>`;
 
 const vwGet = (px) => (px / 375) * 100 + 'vw';
 
