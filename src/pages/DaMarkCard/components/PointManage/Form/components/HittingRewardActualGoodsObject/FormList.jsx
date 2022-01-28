@@ -7,7 +7,7 @@ import Upload from '@/components/FormCondition/Upload/Img';
 import styles from './index.less';
 
 const FormList = (props) => {
-  const { name, form, field, remove, move } = props;
+  const { name, form, field, remove, move, initialValues } = props;
 
   const uploadImg = async (index, val) => {
     let imgUrl = await aliOssUpload(val);
@@ -21,7 +21,10 @@ const FormList = (props) => {
           1,
           {
             ...dataList[index],
-            actualGoodsDTO: { ...dataList.actualGoodsDTO, goodsImg: imgUrl.toString() },
+            actualGoodsDTO: {
+              ...dataList[index].actualGoodsDTO,
+              goodsImg: imgUrl.toString(),
+            },
           },
         ],
       ],
@@ -37,7 +40,20 @@ const FormList = (props) => {
     <div key={field.key}>
       <Space className={styles.ifame_carouseal} align="baseline">
         <Form.Item name={[field.name, 'actualGoodsDTO', 'goodsImg']} noStyle>
-          <Upload maxFile={1} form={form} onChange={(val) => uploadImg(field.name, val)}></Upload>
+          <Upload
+            name={[
+              'hittingRewardActualGoodsObject',
+              'subRewardList',
+              field.name,
+              'actualGoodsDTO',
+              'goodsImg',
+            ]}
+            maxFile={1}
+            form={form}
+            initialvalues={initialValues}
+            onChange={(val) => uploadImg(field.name, val)}
+            onRemove={() => uploadImg(field.name, undefined)}
+          ></Upload>
         </Form.Item>
         <div>
           <Form.Item name={[field.name, 'actualGoodsDTO', 'goodsName']} noStyle>

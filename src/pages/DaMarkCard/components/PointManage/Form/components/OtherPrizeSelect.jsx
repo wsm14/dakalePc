@@ -7,7 +7,7 @@ import FormListActual from './HittingRewardActualGoodsObject/FormList';
 import GoodsSelectModal from './HittingRewardRightGoodsObject/GoodsSelectModal';
 
 const OtherPrizeSelect = (props) => {
-  const { form } = props;
+  const { form, initialValues } = props;
   const [goodsType, setGoodsType] = useState([]); // 选择的其他奖品类型
   const [visible, setVisible] = useState(false); // 权益商品 弹窗
 
@@ -32,6 +32,7 @@ const OtherPrizeSelect = (props) => {
                 <Form.ErrorList errors={errors} />
                 {fields.map((field) => (
                   <FormList
+                    initialValues={initialValues}
                     name={['hittingRewardRightGoodsObject', 'subRewardList']}
                     key={field.fieldKey}
                     form={form}
@@ -79,6 +80,7 @@ const OtherPrizeSelect = (props) => {
                 <Form.ErrorList errors={errors} />
                 {fields.map((field) => (
                   <FormListOnline
+                    initialValues={initialValues}
                     name={['hittingRewardOnlineGoodsObject', 'subRewardList']}
                     key={field.fieldKey}
                     form={form}
@@ -127,6 +129,7 @@ const OtherPrizeSelect = (props) => {
                 <Form.ErrorList errors={errors} />
                 {fields.map((field) => (
                   <FormListActual
+                    initialValues={initialValues}
                     name={['hittingRewardActualGoodsObject', 'subRewardList']}
                     key={field.fieldKey}
                     form={form}

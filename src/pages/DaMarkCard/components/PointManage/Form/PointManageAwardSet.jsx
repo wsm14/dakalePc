@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Form, Input, Button, Checkbox, InputNumber } from 'antd';
+import { Form, Input, Button, Checkbox, InputNumber, Alert } from 'antd';
 import { SPECIAL_TIME_TYPE, OTHER_PRIZE_TYPE } from '@/common/constant';
 import { MarkAwardSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
@@ -11,17 +11,29 @@ const PlatformSet = (props) => {
   const { dayCount } = initialValues;
 
   const [specialTimes, setSpecialTime] = useState('all'); // 特殊时间段类型
+  const [oneOpen, setOneOpen] = useState(true); // 是否展示提示语
 
   useEffect(() => {
     if (!dayCount) {
       form.setFieldsValue({
         specialTime: 'all',
       });
+      setOneOpen(false);
     }
   }, []);
 
   // 信息
   const formItems = [
+    {
+      type: 'noForm',
+      formItem: oneOpen && (
+        <Alert
+          style={{ marginBottom: 24 }}
+          message="卡豆配置修改后第二天00:00生效，谨慎操作"
+          type="error"
+        />
+      ),
+    },
     {
       label: '每日打赏次数',
       name: 'dayCount',
@@ -113,7 +125,17 @@ const PlatformSet = (props) => {
     },
     {
       type: 'noForm',
-      formItem: <OtherPrizeSelect form={form}></OtherPrizeSelect>,
+      formItem: oneOpen && (
+        <Alert
+          style={{ marginBottom: 24 }}
+          message="奖品配置及关联视频修改后次月（自然月）生效，谨慎操作"
+          type="error"
+        />
+      ),
+    },
+    {
+      type: 'noForm',
+      formItem: <OtherPrizeSelect initialValues={initialValues} form={form}></OtherPrizeSelect>,
     },
   ];
 

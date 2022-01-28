@@ -107,7 +107,7 @@ const PointManageDrawer = (props) => {
             subRewardList: hittingRewardRightGoodsObject.subRewardList.map(
               ({ rightGoodsObject, total, ...other }) => ({
                 ...other,
-                shardingKey: rightGoodsObject.relateIdString,
+                // shardingKey: rightGoodsObject.relateIdString,
                 total,
                 weight: total,
               }),

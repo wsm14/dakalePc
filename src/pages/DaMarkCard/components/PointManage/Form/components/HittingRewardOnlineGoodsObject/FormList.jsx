@@ -8,7 +8,7 @@ import Video from '@/components/FormCondition/Upload/Video';
 import styles from './index.less';
 
 const FormList = (props) => {
-  const { name, form, field, remove, move } = props;
+  const { name, form, field, remove, initialValues } = props;
   const [videoType, setVideoType] = useState('1'); // 视频类型
 
   const uploadVideo = async (index, val) => {
@@ -63,7 +63,20 @@ const FormList = (props) => {
     <div key={field.key}>
       <Space className={styles.ifame_carouseal} align="baseline">
         <Form.Item name={[field.name, 'onlineGoodsDTO', 'goodsImg']} noStyle>
-          <Upload maxFile={1} form={form} onChange={(val) => uploadImg(field.name, val)}></Upload>
+          <Upload
+            name={[
+              'hittingRewardOnlineGoodsObject',
+              'subRewardList',
+              field.name,
+              'onlineGoodsDTO',
+              'goodsImg',
+            ]}
+            maxFile={1}
+            form={form}
+            initialvalues={initialValues}
+            onChange={(val) => uploadImg(field.name, val)}
+            onRemove={() => uploadImg(field.name, undefined)}
+          ></Upload>
         </Form.Item>
         <div>
           <Form.Item name={[field.name, 'onlineGoodsDTO', 'goodsName']} noStyle>
@@ -93,7 +106,20 @@ const FormList = (props) => {
             name={[field.name, 'videoUrl']}
             rules={[{ required: true, message: '请选择视频' }]}
           >
-            <Video maxFile={1} form={form} onChange={(val) => uploadVideo(field.name, val)}></Video>
+            <Video
+              name={[
+                'hittingRewardOnlineGoodsObject',
+                'subRewardList',
+                field.name,
+                'actualGoodsDTO',
+                'goodsImg',
+              ]}
+              initialValues={initialValues}
+              maxFile={1}
+              form={form}
+              onChange={(val) => uploadVideo(field.name, val)}
+              onRemove={() => uploadVideo(field.name, undefined)}
+            ></Video>
           </Form.Item>
           <Form.Item preserve={false} hidden={true} name={[field.name, 'length']}>
             <Input />
