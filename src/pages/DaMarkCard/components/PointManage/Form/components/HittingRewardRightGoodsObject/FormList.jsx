@@ -56,7 +56,11 @@ const FormList = (props) => {
       >
         <InputNumber style={{ width: 250 }} min={0} placeholder="每月奖品总量" />
       </Form.Item>
-      <Form.Item label="奖品视频" name={[field.name, 'isThirdVideo']}>
+      <Form.Item
+        label="奖品视频"
+        name={[field.name, 'isThirdVideo']}
+        rules={[{ required: true, message: '请选择奖品视频类型' }]}
+      >
         <Radio.Group onChange={(e) => setVideoType(e.target.value)}>
           <Radio value="0">哒卡乐视频</Radio>
           <Radio value="1">第三方视频</Radio>

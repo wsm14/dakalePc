@@ -191,7 +191,6 @@ const OtherPrizeSelect = (props) => {
         visible={visible}
         onSumbit={(list) => {
           console.log(list);
-          // subRewardList.map(({ goodInfo, ...other }) => other);
           form.setFieldsValue({
             hittingRewardRightGoodsObject: {
               subRewardList: list.map((item) => ({

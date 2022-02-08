@@ -39,7 +39,11 @@ const FormList = (props) => {
   return (
     <div key={field.key}>
       <Space className={styles.ifame_carouseal} align="baseline">
-        <Form.Item name={[field.name, 'actualGoodsDTO', 'goodsImg']} noStyle>
+        <Form.Item
+          name={[field.name, 'actualGoodsDTO', 'goodsImg']}
+          style={{ marginBottom: 0 }}
+          rules={[{ required: true, message: '请上传封面' }]}
+        >
           <Upload
             name={[
               'hittingRewardActualGoodsObject',
@@ -55,8 +59,12 @@ const FormList = (props) => {
             onRemove={() => uploadImg(field.name, undefined)}
           ></Upload>
         </Form.Item>
-        <div>
-          <Form.Item name={[field.name, 'actualGoodsDTO', 'goodsName']} noStyle>
+        <div style={{ marginTop: 10 }}>
+          <Form.Item
+            name={[field.name, 'actualGoodsDTO', 'goodsName']}
+            rules={[{ required: true, message: '' }]}
+            noStyle
+          >
             <Input
               style={{ width: 300, marginBottom: 24 }}
               placeholder="请输入商品名称"
@@ -64,12 +72,19 @@ const FormList = (props) => {
             />
           </Form.Item>
           <div>
-            <Form.Item name={[field.name, 'total']} noStyle>
+            <Form.Item
+              name={[field.name, 'total']}
+              rules={[{ required: true, message: '' }]}
+              noStyle
+            >
               <InputNumber style={{ width: 160 }} placeholder="每月奖品总量" />
             </Form.Item>
           </div>
         </div>
-        <MinusCircleOutlined style={{ marginLeft: 20 }} onClick={() => remove(field.name)} />
+        <MinusCircleOutlined
+          style={{ marginLeft: 20, fontSize: 16, marginTop: 45 }}
+          onClick={() => remove(field.name)}
+        />
       </Space>
     </div>
   );

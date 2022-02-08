@@ -16,6 +16,9 @@ const GoodsSelectModal = (props) => {
   useEffect(() => {
     if (visible) {
       fetchSpecialGoodsList();
+      const RGObj = form.getFieldValue('hittingRewardRightGoodsObject') || {};
+      const list = RGObj?.subRewardList?.map((item) => item.rightGoodsObject) || [];
+      setSelectItem(list);
     }
   }, [visible]);
 

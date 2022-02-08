@@ -62,7 +62,11 @@ const FormList = (props) => {
   return (
     <div key={field.key}>
       <Space className={styles.ifame_carouseal} align="baseline">
-        <Form.Item name={[field.name, 'onlineGoodsDTO', 'goodsImg']} noStyle>
+        <Form.Item
+          name={[field.name, 'onlineGoodsDTO', 'goodsImg']}
+          style={{ marginBottom: 0 }}
+          rules={[{ required: true, message: '请上传封面' }]}
+        >
           <Upload
             name={[
               'hittingRewardOnlineGoodsObject',
@@ -78,22 +82,41 @@ const FormList = (props) => {
             onRemove={() => uploadImg(field.name, undefined)}
           ></Upload>
         </Form.Item>
-        <div>
-          <Form.Item name={[field.name, 'onlineGoodsDTO', 'goodsName']} noStyle>
+        <div style={{ marginTop: 10 }}>
+          <Form.Item
+            name={[field.name, 'onlineGoodsDTO', 'goodsName']}
+            noStyle
+            rules={[{ required: true, message: '' }]}
+          >
             <Input style={{ marginBottom: 24 }} placeholder="请输入商品名称" maxLength={20} />
           </Form.Item>
           <div>
-            <Form.Item name={[field.name, 'onlineGoodsDTO', 'oriPrice']} noStyle>
+            <Form.Item
+              name={[field.name, 'onlineGoodsDTO', 'oriPrice']}
+              noStyle
+              rules={[{ required: true, message: '' }]}
+            >
               <InputNumber style={{ width: 180, marginRight: 10 }} addonBefore="售价￥" />
             </Form.Item>
-            <Form.Item name={[field.name, 'total']} noStyle>
+            <Form.Item
+              name={[field.name, 'total']}
+              noStyle
+              rules={[{ required: true, message: '' }]}
+            >
               <InputNumber style={{ width: 160 }} placeholder="每月奖品总量" />
             </Form.Item>
           </div>
         </div>
-        <MinusCircleOutlined onClick={() => remove(field.name)} />
+        <MinusCircleOutlined
+          style={{ fontSize: 16, marginTop: 45 }}
+          onClick={() => remove(field.name)}
+        />
       </Space>
-      <Form.Item label="奖品视频" name={[field.name, 'isThirdVideo']}>
+      <Form.Item
+        label="奖品视频"
+        name={[field.name, 'isThirdVideo']}
+        rules={[{ required: true, message: '请选择奖品视频类型' }]}
+      >
         <Radio.Group onChange={(e) => setVideoType(e.target.value)}>
           <Radio value="0">哒卡乐视频</Radio>
           <Radio value="1">第三方视频</Radio>
