@@ -97,7 +97,7 @@ const PointListModal = (props) => {
     {
       text: '新增',
       auth: 'save',
-      onClick: () => setVisible({ type: 'add', show: true, detail }),
+      onClick: () => setVisible({ type: 'add', show: true }),
     },
   ];
 

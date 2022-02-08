@@ -8,10 +8,12 @@ import OtherPrizeSelect from './components/OtherPrizeSelect';
 
 const PlatformSet = (props) => {
   const { form, initialValues } = props;
-  const { dayCount } = initialValues;
+  const { dayCount, specialTime } = initialValues;
 
   const [specialTimes, setSpecialTime] = useState('all'); // 特殊时间段类型
   const [oneOpen, setOneOpen] = useState(true); // 是否展示提示语
+
+  console.log('initialValues', initialValues);
 
   useEffect(() => {
     if (!dayCount) {
@@ -19,6 +21,8 @@ const PlatformSet = (props) => {
         specialTime: 'all',
       });
       setOneOpen(false);
+    } else {
+      setSpecialTime(specialTime);
     }
   }, []);
 

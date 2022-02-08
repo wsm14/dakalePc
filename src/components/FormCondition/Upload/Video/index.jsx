@@ -101,6 +101,8 @@ const UploadBlock = (props) => {
     }
   });
 
+  console.log(fileLists);
+
   // 查看视频
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {

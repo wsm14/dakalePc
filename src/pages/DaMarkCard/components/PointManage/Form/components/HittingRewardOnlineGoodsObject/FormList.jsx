@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import update from 'immutability-helper';
 import { Space, Form, InputNumber, Input, Radio } from 'antd';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -10,6 +10,12 @@ import styles from './index.less';
 const FormList = (props) => {
   const { name, form, field, remove, initialValues } = props;
   const [videoType, setVideoType] = useState('1'); // 视频类型
+
+  useEffect(() => {
+    const lists = form.getFieldValue(['hittingRewardOnlineGoodsObject', 'subRewardList']);
+    const vType = lists[field.name]?.isThirdVideo || '';
+    setVideoType(vType);
+  }, []);
 
   const uploadVideo = async (index, val) => {
     let videoUrl = await aliOssUpload(val);
@@ -125,19 +131,14 @@ const FormList = (props) => {
       {videoType === '0' && (
         <>
           <Form.Item
+            style={{ width: 515 }}
             preserve={false}
             name={[field.name, 'videoUrl']}
             rules={[{ required: true, message: '请选择视频' }]}
           >
             <Video
-              name={[
-                'hittingRewardOnlineGoodsObject',
-                'subRewardList',
-                field.name,
-                'actualGoodsDTO',
-                'goodsImg',
-              ]}
-              initialValues={initialValues}
+              name={['hittingRewardOnlineGoodsObject', 'subRewardList', field.name, 'videoUrl']}
+              initialvalues={initialValues}
               maxFile={1}
               form={form}
               onChange={(val) => uploadVideo(field.name, val)}

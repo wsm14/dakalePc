@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import update from 'immutability-helper';
 import { Space, Form, InputNumber, Input, Radio } from 'antd';
-import { UpSquareOutlined, DownSquareOutlined, DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 import { goodsDom } from './CouponFreeDom';
 import aliOssUpload from '@/utils/aliOssUpload';
 import Video from '@/components/FormCondition/Upload/Video';
@@ -9,7 +9,13 @@ import styles from './index.less';
 
 const FormList = (props) => {
   const { name, form, field, remove, initialValues } = props;
-  const [videoType, setVideoType] = useState('1'); // 视频类型
+  const [videoType, setVideoType] = useState(''); // 视频类型
+
+  useEffect(() => {
+    const lists = form.getFieldValue(['hittingRewardRightGoodsObject', 'subRewardList']);
+    const vType = lists[field.name]?.isThirdVideo || '';
+    setVideoType(vType);
+  }, []);
 
   const uploadVideo = async (index, val) => {
     // const dataList = form.getFieldValue(name);
@@ -41,7 +47,7 @@ const FormList = (props) => {
     <div key={field.key}>
       <Space className={styles.ifame_carouseal} align="baseline">
         {(() => {
-          const goodsItem = form.getFieldValue(name)[field.name]['rightGoodsObject'];
+          const goodsItem = form.getFieldValue(name)[field.name]['activityGoodsDTO'];
           return goodsDom(goodsItem, goodsItem?.specialGoodsId);
         })()}
         <DeleteOutlined onClick={() => remove(field.name)} />
@@ -69,19 +75,14 @@ const FormList = (props) => {
       {videoType === '0' && (
         <>
           <Form.Item
+            style={{ width: 515 }}
             preserve={false}
             name={[field.name, 'videoUrl']}
             rules={[{ required: true, message: '请选择视频' }]}
           >
             <Video
-              name={[
-                'hittingRewardRightGoodsObject',
-                'subRewardList',
-                field.name,
-                'actualGoodsDTO',
-                'goodsImg',
-              ]}
-              initialValues={initialValues}
+              name={['hittingRewardRightGoodsObject', 'subRewardList', field.name, 'videoUrl']}
+              initialvalues={initialValues}
               maxFile={1}
               form={form}
               onChange={(val) => uploadVideo(field.name, val)}

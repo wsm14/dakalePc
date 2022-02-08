@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Checkbox, InputNumber } from 'antd';
 import { OTHER_PRIZE_TYPE } from '@/common/constant';
 import FormList from './HittingRewardRightGoodsObject/FormList';
@@ -10,6 +10,14 @@ const OtherPrizeSelect = (props) => {
   const { form, initialValues } = props;
   const [goodsType, setGoodsType] = useState([]); // 选择的其他奖品类型
   const [visible, setVisible] = useState(false); // 权益商品 弹窗
+
+  const { goodsObject } = initialValues;
+
+  useEffect(() => {
+    if (goodsObject) {
+      setGoodsType(goodsObject);
+    }
+  }, []);
 
   // 改变选择的其他奖品类型
   const handleChange = (val) => {
@@ -173,11 +181,6 @@ const OtherPrizeSelect = (props) => {
             <div key={item}>
               <Checkbox value={item}>
                 <span>{OTHER_PRIZE_TYPE[item]}</span>
-                {/* {goodsType.includes(item) && (
-                  <Button type="link" onClick={() => handleVisible(item)}>
-                    {item === 'hittingRewardRightGoodsObject' ? '+选择' : '+新增'}
-                  </Button>
-                )} */}
               </Checkbox>
               {listProps[item]}
             </div>
@@ -194,8 +197,8 @@ const OtherPrizeSelect = (props) => {
           form.setFieldsValue({
             hittingRewardRightGoodsObject: {
               subRewardList: list.map((item) => ({
-                rightGoodsObject: item,
-                rewardId: item.activityGoodsId,
+                activityGoodsDTO: item,
+                rewardId: item.specialGoodsId,
               })),
             },
           });
