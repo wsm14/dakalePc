@@ -13,8 +13,6 @@ const PlatformSet = (props) => {
   const [specialTimes, setSpecialTime] = useState('all'); // 特殊时间段类型
   const [oneOpen, setOneOpen] = useState(true); // 是否展示提示语
 
-  console.log('initialValues', initialValues);
-
   useEffect(() => {
     if (!dayCount) {
       form.setFieldsValue({
