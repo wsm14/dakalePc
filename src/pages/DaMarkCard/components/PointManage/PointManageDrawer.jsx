@@ -137,8 +137,6 @@ const PointManageDrawer = (props) => {
           },
         };
       }
-      console.log(data);
-      return;
       dispatch({
         type: 'pointManage/fetchSetHittingReward',
         payload: data,
