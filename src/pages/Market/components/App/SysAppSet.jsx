@@ -133,7 +133,7 @@ const SysAppSet = (props) => {
       label: '是否显示标题',
       type: 'switch',
       name: 'hideTitle',
-      visible: showTitle === 'H5',
+      visible: showTitle === 'h5',
     },
   ];
 
