@@ -320,12 +320,13 @@ const PlatformEquityCouponSet = (props) => {
         {
           validator: (rule, value) => {
             const merchantPrice = Number(value);
-            const buyPrice = Number(form.getFieldValue('realPrice'));
-            if (merchantPrice > buyPrice) {
+            const buyPrice = form.getFieldValue('paymentModeObject');
+            const buyPriceAdd = Number(buyPrice.bean) / 100 + Number(buyPrice.cash);
+            if (merchantPrice > buyPriceAdd) {
               return Promise.reject('商家结算价不可超过售卖价格');
             }
             // “商家结算价不可超过N（结算价≤特惠价格*（1-费率））”
-            const getPrice = buyPrice * (1 - mreList.ratio / 100);
+            const getPrice = buyPriceAdd * (1 - mreList.ratio / 100);
             if (merchantPrice > getPrice) {
               return Promise.reject(`商家结算价不可超过${getPrice}`);
             }

@@ -10,7 +10,7 @@ const PointDrawer = (props) => {
   const { visible, dispatch, childRef, onClose, loading, loadingDetail } = props;
 
   const { type = 'add', hittingId, show = false, detail = {} } = visible;
-  console.log(detail);
+
   const [form] = Form.useForm();
 
   // 确认提交
@@ -44,7 +44,7 @@ const PointDrawer = (props) => {
   const drawerProps = {
     add: {
       title: '新增点位',
-      children: <PointSet {...listProp} form={form} initialValues={detail}></PointSet>,
+      children: <PointSet {...listProp} form={form}></PointSet>,
     },
     edit: {
       title: '编辑点位',

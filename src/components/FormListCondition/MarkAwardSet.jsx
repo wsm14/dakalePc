@@ -7,7 +7,25 @@ const MarkAwardSet = ({ name }) => {
 
   return (
     <div style={{ marginBottom: 24 }}>
-      <Form.List name={name}>
+      <Form.List
+        name={name}
+        rules={[
+          {
+            validator: async (_, names) => {
+              if (!names) {
+                return Promise.reject(new Error('请添加卡豆池'));
+              }
+              const sum = names.reduce(
+                (preValue, curValue) => preValue + Number(curValue?.countRate || 0),
+                0,
+              );
+              if (sum !== 100) {
+                return Promise.reject(new Error('各卡豆池概率相加不等于100%，请修改'));
+              }
+            },
+          },
+        ]}
+      >
         {(fields, { add, remove }, { errors }) => (
           <>
             <Form.Item label={'添加卡豆奖池'} required>
@@ -20,7 +38,9 @@ const MarkAwardSet = ({ name }) => {
                 添加
               </Button>
             </Form.Item>
-            <Form.ErrorList errors={errors} />
+            <div style={{ marginLeft: 200 }}>
+              <Form.ErrorList errors={errors} />
+            </div>
             {fields.map((field, name) => (
               <React.Fragment key={field.key}>
                 <Form.Item required label={`每次打卡领取卡豆数池${name + 1}`}>

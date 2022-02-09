@@ -11,9 +11,11 @@ import {
   PLATFORM_TICKET_SCENE,
 } from '@/common/constant';
 import { NUM_ALL, NUM_INT } from '@/common/regExp';
+import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import FormCondition from '@/components/FormCondition';
 import RuleModal from './RuleModal';
+import typeRuleImg from './typeRule.png';
 import styles from './index.less';
 
 const { Option } = Select;
@@ -95,6 +97,7 @@ const CouponSet = (props) => {
               setTicket(e.target.value);
               form.setFieldsValue({
                 useScenesType: e.target.value,
+                classType: 'universal',
               });
               saveSelectData({ areaFlag: '0' });
             }}
@@ -119,10 +122,16 @@ const CouponSet = (props) => {
       ),
     },
     {
-      label: '券类型',
+      label: '券标签',
       name: 'classType',
       type: 'radio',
       select: PLATFORM_TICKET_TYPE[ticket],
+      extra: (
+        <div className={styles.lookTypeRuleImg}>
+          选择标签后请选择对应的规则，选择错误将影响用户使用
+          <PopImgShow type="previewImg" url={typeRuleImg} previewDom={<a>查看对应规则</a>} />
+        </div>
+      ),
     },
     {
       title: '基本信息',
@@ -284,7 +293,7 @@ const CouponSet = (props) => {
                   const maxNum = Number(form.getFieldValue('thresholdPrice')); // 使用门槛
                   const nowNum = Number(form.getFieldValue('couponValue')); // 券价值
                   if (Number(value) + nowNum > maxNum) {
-                    return Promise.reject('最高膨胀金额不可高于使用门槛');
+                    return Promise.reject('券价值+最高膨胀金额不可高于使用门槛');
                   }
                   if (Number(value) <= 0) {
                     return Promise.reject('膨胀金额需大于0,且不能为0');

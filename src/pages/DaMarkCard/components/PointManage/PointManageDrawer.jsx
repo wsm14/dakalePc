@@ -3,9 +3,9 @@ import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import uploadLive from '@/utils/uploadLive';
 import DrawerCondition from '@/components/DrawerCondition';
-import PointManageSet from './Form/PlatformSet';
-import PlatformVideoSet from './Form/PlatformVideoSet';
-import PlatformAwardSet from './Form/PlatformAwardSet';
+import PointManageSet from './Form/PointManageSet';
+import PointManageVideoSet from './Form/PointManageVideoSet';
+import PointManageAwardSet from './Form/PointManageAwardSet';
 
 const PointManageDrawer = (props) => {
   const { visible, dispatch, childRef, onClose, loading, loadingDetail } = props;
@@ -70,6 +70,79 @@ const PointManageDrawer = (props) => {
   const handleAwardUpAudit = () => {
     form.validateFields().then(async (values) => {
       console.log('award', values);
+      const {
+        beanPoolList,
+        beanPoolRange,
+        dayCount,
+        remain,
+        timeRangeStart,
+        timeRangeEnd,
+        total,
+        specialTime,
+        // 以上是卡豆奖励配置
+        goodsObject = [],
+        hittingRewardRightGoodsObject, // 平台权益商品
+        hittingRewardOnlineGoodsObject, // 电商品
+        hittingRewardActualGoodsObject, // 自提商品
+        // 以上是奖品配置及关联视频
+      } = values;
+
+      let data = {
+        hittingMainId,
+        hittingRewardObject: {
+          beanPoolList,
+          beanPoolRange,
+          dayCount,
+          remain,
+          timeRange: specialTime === 'all' ? undefined : `${timeRangeStart}-${timeRangeEnd}`,
+          total,
+        },
+      };
+      if (goodsObject.includes('hittingRewardRightGoodsObject')) {
+        data = {
+          ...data,
+          hittingRewardRightGoodsObject: {
+            ...hittingRewardRightGoodsObject,
+            // 筛去权益商品数据对象
+            subRewardList: hittingRewardRightGoodsObject.subRewardList.map(
+              ({ activityGoodsDTO, total, rewardIdString, ...other }) => ({
+                ...other,
+                rewardId: rewardIdString,
+                shardingKey: Number(activityGoodsDTO.ownerIdString),
+                total,
+                weight: total,
+              }),
+            ),
+          },
+        };
+      }
+      if (goodsObject.includes('hittingRewardOnlineGoodsObject')) {
+        data = {
+          ...data,
+          hittingRewardOnlineGoodsObject: {
+            ...hittingRewardOnlineGoodsObject,
+            subRewardList: hittingRewardOnlineGoodsObject.subRewardList.map(
+              ({ total, ...other }) => ({ ...other, total, weight: total }),
+            ),
+          },
+        };
+      }
+      if (goodsObject.includes('hittingRewardActualGoodsObject')) {
+        data = {
+          ...data,
+          hittingRewardActualGoodsObject: {
+            ...hittingRewardActualGoodsObject,
+            subRewardList: hittingRewardActualGoodsObject.subRewardList.map(
+              ({ total, ...other }) => ({ ...other, total, weight: total }),
+            ),
+          },
+        };
+      }
+      dispatch({
+        type: 'pointManage/fetchSetHittingReward',
+        payload: data,
+        callback: onClose,
+      });
     });
   };
 
@@ -92,11 +165,16 @@ const PointManageDrawer = (props) => {
     },
     advert: {
       title: '打卡广告设置',
-      children: <PlatformVideoSet form={form} initialValues={detail}></PlatformVideoSet>,
+      children: <PointManageVideoSet form={form} initialValues={detail}></PointManageVideoSet>,
     },
     award: {
       title: '打卡奖励设置',
-      children: <PlatformAwardSet form={form} initialValues={detail}></PlatformAwardSet>,
+      children: (
+        <PointManageAwardSet
+          form={form}
+          initialValues={{ specialTime: 'all', ...detail }}
+        ></PointManageAwardSet>
+      ),
     },
   }[type];
 

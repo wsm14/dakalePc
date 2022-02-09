@@ -1,23 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Form, Input, Button, Checkbox, InputNumber } from 'antd';
+import { Form, Input, Button, Checkbox, InputNumber, Alert } from 'antd';
 import { SPECIAL_TIME_TYPE, OTHER_PRIZE_TYPE } from '@/common/constant';
 import { MarkAwardSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
+import OtherPrizeSelect from './components/OtherPrizeSelect';
 
 const PlatformSet = (props) => {
   const { form, initialValues } = props;
+  const { dayCount, specialTime } = initialValues;
 
   const [specialTimes, setSpecialTime] = useState('all'); // 特殊时间段类型
-  const [goodsType, setGoodsType] = useState([]); // 选择的其他奖品类型
+  const [oneOpen, setOneOpen] = useState(true); // 是否展示提示语
 
-  // 改变选择的其他奖品类型
-  const handleChange = (val) => {
-    setGoodsType(val);
-  };
+  useEffect(() => {
+    if (!dayCount) {
+      form.setFieldsValue({
+        specialTime: 'all',
+      });
+      setOneOpen(false);
+    } else {
+      setSpecialTime(specialTime);
+    }
+  }, []);
 
   // 信息
   const formItems = [
+    {
+      type: 'noForm',
+      formItem: oneOpen && (
+        <Alert
+          style={{ marginBottom: 24 }}
+          message="卡豆配置修改后第二天00:00生效，谨慎操作"
+          type="error"
+        />
+      ),
+    },
     {
       label: '每日打赏次数',
       name: 'dayCount',
@@ -26,16 +44,6 @@ const PlatformSet = (props) => {
     {
       type: 'noForm',
       formItem: <MarkAwardSet name={'beanPoolList'} form={form}></MarkAwardSet>,
-    },
-    {
-      label: '特殊时间段打卡次数',
-      name: 'total',
-      addonAfter: '次',
-    },
-    {
-      label: '特殊时间段剩余打卡次数',
-      name: 'remain',
-      addonAfter: '次',
     },
     {
       label: '特殊时间段',
@@ -47,26 +55,39 @@ const PlatformSet = (props) => {
       },
     },
     {
+      label: '特殊时间段打卡次数',
+      name: 'total',
+      visible: specialTimes === 'fixedTime',
+      addonAfter: '次',
+    },
+    {
+      label: '特殊时间段剩余打卡次数',
+      name: 'remain',
+      visible: specialTimes === 'fixedTime',
+      addonAfter: '次',
+    },
+    {
       label: '固定时间',
       type: 'formItem',
       visible: specialTimes === 'fixedTime',
       required: true,
+      rules: [{ required: false }],
       formItem: (
         <Input.Group size="small" compact>
           <Form.Item
             noStyle
             name="timeRangeStart"
-            rules={[{ required: true, message: '请输入时间' }]}
+            rules={[{ required: true, message: '请输入开始时间' }]}
           >
-            <InputNumber max={24} min={0} precision={0} />
+            <InputNumber addonAfter="时" max={24} min={0} precision={0} />
           </Form.Item>
           <div style={{ lineHeight: '32px', margin: '0 10px' }}>至</div>
           <Form.Item
             noStyle
             name="timeRangeEnd"
-            rules={[{ required: true, message: '请输入时间' }]}
+            rules={[{ required: true, message: '请输入结束时间' }]}
           >
-            <InputNumber max={24} min={0} precision={0} />
+            <InputNumber addonAfter="时" max={24} min={0} precision={0} />
           </Form.Item>
         </Input.Group>
       ),
@@ -105,25 +126,18 @@ const PlatformSet = (props) => {
       ),
     },
     {
-      label: '其他奖品',
-      name: 'goodsObject',
-      type: 'formItem',
-      formItem: (
-        <Checkbox.Group onChange={handleChange}>
-          {Object.keys(OTHER_PRIZE_TYPE).map((item) => (
-            <div key={item}>
-              <Checkbox value={item}>
-                <span>{OTHER_PRIZE_TYPE[item]}</span>
-                {goodsType.includes(item) && (
-                  <Button type="link">
-                    {item === 'hittingRewardRightGoodsObject' ? '+选择' : '+新增'}
-                  </Button>
-                )}
-              </Checkbox>
-            </div>
-          ))}
-        </Checkbox.Group>
+      type: 'noForm',
+      formItem: oneOpen && (
+        <Alert
+          style={{ marginBottom: 24 }}
+          message="奖品配置及关联视频修改后次月（自然月）生效，谨慎操作"
+          type="error"
+        />
       ),
+    },
+    {
+      type: 'noForm',
+      formItem: <OtherPrizeSelect initialValues={initialValues} form={form}></OtherPrizeSelect>,
     },
   ];
 

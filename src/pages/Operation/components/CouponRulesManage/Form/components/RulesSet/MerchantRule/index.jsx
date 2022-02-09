@@ -64,7 +64,7 @@ const index = ({ form }) => {
     const newList = shopData.list.filter((item) => item.id !== id);
     setShopData({ ...shopData, list: newList });
     form.setFieldsValue({
-      remark: `（已选${newList.length}个${CONPON_RULES_BUSINESS_TYPE[shopData.subRuleType]}）`,
+      remark: `已选${newList.length}个${CONPON_RULES_BUSINESS_TYPE[shopData.subRuleType]}`,
       ruleConditions: newList.map((item) => ({
         condition: item.id,
       })),

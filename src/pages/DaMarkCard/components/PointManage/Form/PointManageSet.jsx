@@ -200,6 +200,7 @@ const PlatformSet = (props) => {
       label: '主体名称',
       name: 'name',
       disabled: type === 'info',
+      maxLength: 20,
     },
     {
       label: '主体类型',

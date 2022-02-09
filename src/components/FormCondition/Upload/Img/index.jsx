@@ -255,7 +255,6 @@ const UploadBlock = (props) => {
           ? fileList
           : // dklFileStatus  === out 的值 不允许上传
             fileList.filter((file) => file.dklFileStatus !== 'out');
-        console.log(newFileList);
         if ((!value.file.status || value.file.status === 'done') && newFileList.length) {
           const fileExtr = value.file.name.replace(/.+\./, '.').toLowerCase();
           // 是否传入时裁剪 git不允许裁剪
@@ -269,7 +268,6 @@ const UploadBlock = (props) => {
             return;
           }
           setFileLists(newFileList.slice(0, maxFile || 999));
-          console.log('check', checkArrKeyVal(name, newFileList, maxFile));
           form.setFieldsValue(checkArrKeyVal(name, newFileList, maxFile, 'fileList'));
           if (onChange) onChange(value);
         } else {

@@ -11,6 +11,8 @@ import {
   fetchGetHittingById,
   fetchGetStrapContent,
   fetchSetStrapContent,
+  fetchSetHittingReward,
+  fetchGetHittingRewardByMainId,
 } from '@/services/DaMarkCardServices';
 
 export default {
@@ -159,6 +161,49 @@ export default {
         description: '设置视频成功',
       });
       callback && callback();
+    },
+    // get 哒小卡点位主体 - 奖励 - 设置
+    *fetchSetHittingReward({ payload, callback }, { call }) {
+      const response = yield call(fetchSetHittingReward, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '设置奖励成功',
+      });
+      callback && callback();
+    },
+    // get 哒小卡点位主体 - 奖励 - 详情
+    *fetchGetHittingRewardByMainId({ payload, callback }, { call }) {
+      const response = yield call(fetchGetHittingRewardByMainId, payload);
+      if (!response) return;
+      const { content } = response;
+      const { hittingRewardDTO = {} } = content;
+      const {
+        hittingRewardObject = {}, // 卡豆配置
+        hittingRewardRightGoodsObject = {}, // 平台权益商品
+        hittingRewardOnlineGoodsObject = {}, // 电商品
+        hittingRewardActualGoodsObject = {}, // 自提商品
+      } = hittingRewardDTO;
+      const { timeRange = '' } = hittingRewardObject;
+
+      const isNoObj = (obj) => Object.keys(obj).length;
+
+      const data = {
+        ...hittingRewardObject,
+        hittingRewardRightGoodsObject,
+        hittingRewardOnlineGoodsObject,
+        hittingRewardActualGoodsObject,
+        goodsObject: [
+          isNoObj(hittingRewardRightGoodsObject) && 'hittingRewardRightGoodsObject',
+          isNoObj(hittingRewardOnlineGoodsObject) && 'hittingRewardOnlineGoodsObject',
+          isNoObj(hittingRewardActualGoodsObject) && 'hittingRewardActualGoodsObject',
+        ],
+        specialTime: timeRange ? 'fixedTime' : 'all',
+        timeRangeStart: Number(timeRange.split('-')[0]),
+        timeRangeEnd: Number(timeRange.split('-')[1]),
+      };
+
+      callback && callback(data || {});
     },
   },
 };

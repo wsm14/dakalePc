@@ -173,6 +173,7 @@ const CommerceGoodsSet = ({
         // form.setFieldsValue({
         //   paymentModeObject: {
         //     bean: 0,
+        //     cash: 0,
         //   },
         // });
         saveSelectData({ buyType: e.target.value });
@@ -234,7 +235,13 @@ const CommerceGoodsSet = ({
             const merchantPrice = Number(value);
             const buyPrice = Number(form.getFieldValue(['paymentModeObject', 'cash']));
             const buyPriceBean = Number(form.getFieldValue(['paymentModeObject', 'bean']));
-            if (merchantPrice > buyPrice + buyPriceBean / 100) {
+            const realPrice = Number(form.getFieldValue('realPrice'));
+            console.log(merchantPrice, buyPrice, buyPriceBean, realPrice);
+            if (
+              radioData.buyType === 'self'
+                ? merchantPrice > buyPrice + buyPriceBean / 100
+                : merchantPrice > realPrice
+            ) {
               return Promise.reject('商家结算价不可超过售卖价格');
             }
 

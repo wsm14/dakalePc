@@ -277,25 +277,25 @@ const ShareDetail = (props) => {
         return;
       }
       // 分享配置
-      if (type === 'share') {
-        const { shareImg = '', friendShareImg = '', customTitle } = values;
-        const sImg = await aliOssUpload(shareImg);
-        const fImg = await aliOssUpload(friendShareImg);
-        fetchNewShareNoAudit(
-          {
-            momentId,
-            ownerId,
-            customTitle,
-            shareImg: sImg.toString(),
-            friendShareImg: fImg.toString(),
-          },
-          () => {
-            childRef.current.fetchGetData();
-            onClose();
-          },
-        );
-        return;
-      }
+      // if (type === 'share') {
+      //   const { shareImg = '', friendShareImg = '', customTitle } = values;
+      //   const sImg = await aliOssUpload(shareImg);
+      //   const fImg = await aliOssUpload(friendShareImg);
+      //   fetchNewShareNoAudit(
+      //     {
+      //       momentId,
+      //       ownerId,
+      //       customTitle,
+      //       shareImg: sImg.toString(),
+      //       friendShareImg: fImg.toString(),
+      //     },
+      //     () => {
+      //       childRef.current.fetchGetData();
+      //       onClose();
+      //     },
+      //   );
+      //   return;
+      // }
       if (type === 'portrait') {
         const { areaType, age, ageData = '', area, tagsId = '', cityList = [], ...other } = values;
         fetchNewShareNoAudit(
@@ -321,6 +321,7 @@ const ShareDetail = (props) => {
       const { free, contact } = couponData;
       fetchNewShareNoAudit(
         {
+          flag: 'configCommerce',
           ownerId,
           momentId,
           freeOwnerCouponList: free.couponName
