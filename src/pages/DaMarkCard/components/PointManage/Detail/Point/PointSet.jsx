@@ -9,7 +9,7 @@ import { MARK_CARD_OPEN_STATE } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 
 const PointSet = (props) => {
-  const { dispatch, form, initialValues } = props;
+  const { dispatch, form, initialValues = {} } = props;
 
   const [ampShow, setAmpShow] = useState(false); // 地图是否显示
   const [location, setLocation] = useState([120, 30]); // 地图显示 [经度, 纬度]

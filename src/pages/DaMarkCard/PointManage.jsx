@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
+import Ellipsis from '@/components/Ellipsis';
 import { checkCityName } from '@/utils/utils';
 import { MARK_CARD_MAIN_TYPE, MARK_CARD_OPEN_STATE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -41,6 +42,11 @@ const PointManage = (props) => {
     {
       title: '主体名称',
       dataIndex: 'name',
+      render: (val) => (
+        <Ellipsis length={8} tooltip>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
       title: '主体类型',
@@ -65,7 +71,7 @@ const PointManage = (props) => {
     {
       title: '最后修改',
       dataIndex: 'updater',
-      render: (val, row) => val || row.creator,
+      render: (val, row) => `${row.createTime} ${val || row.creator}`,
     },
     {
       title: '设置',
