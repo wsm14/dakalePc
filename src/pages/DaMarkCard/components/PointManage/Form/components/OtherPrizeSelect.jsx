@@ -198,7 +198,7 @@ const OtherPrizeSelect = (props) => {
             hittingRewardRightGoodsObject: {
               subRewardList: list.map((item) => ({
                 activityGoodsDTO: item,
-                rewardId: item.specialGoodsId,
+                rewardIdString: item.specialGoodsId,
               })),
             },
           });

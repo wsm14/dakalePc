@@ -52,7 +52,7 @@ const FormList = (props) => {
         })()}
         <DeleteOutlined onClick={() => remove(field.name)} />
       </Space>
-      <Form.Item label="权益商品Id" name={[field.name, 'rewardId']} hidden={true}>
+      <Form.Item label="权益商品Id" name={[field.name, 'rewardIdString']} hidden={true}>
         <Input />
       </Form.Item>
       <Form.Item

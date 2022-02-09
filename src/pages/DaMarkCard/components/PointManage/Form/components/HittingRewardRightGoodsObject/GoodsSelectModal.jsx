@@ -17,7 +17,7 @@ const GoodsSelectModal = (props) => {
     if (visible) {
       fetchSpecialGoodsList();
       const RGObj = form.getFieldValue('hittingRewardRightGoodsObject') || {};
-      const list = RGObj?.subRewardList?.map((item) => item.rightGoodsObject) || [];
+      const list = RGObj?.subRewardList?.map((item) => item.activityGoodsDTO) || [];
       setSelectItem(list);
     }
   }, [visible]);

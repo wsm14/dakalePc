@@ -105,8 +105,9 @@ const PointManageDrawer = (props) => {
             ...hittingRewardRightGoodsObject,
             // 筛去权益商品数据对象
             subRewardList: hittingRewardRightGoodsObject.subRewardList.map(
-              ({ activityGoodsDTO, total, ...other }) => ({
+              ({ activityGoodsDTO, total, rewardIdString, ...other }) => ({
                 ...other,
+                rewardId: rewardIdString,
                 shardingKey: Number(activityGoodsDTO.ownerIdString),
                 total,
                 weight: total,
