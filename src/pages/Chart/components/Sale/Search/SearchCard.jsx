@@ -1,11 +1,12 @@
 import React from 'react';
 import moment from 'moment';
+import { connect } from 'umi';
 import { DatePicker } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 
 const disTime = moment('2020-03-01');
 
-const SearchCard = ({ timeData, setTimeData }) => {
+const SearchCard = ({ timeData, api, loading, setTimeData }) => {
   // 时间计算
   const returnDay = (day, type) => [moment().subtract(day, type), moment()];
 
@@ -26,6 +27,7 @@ const SearchCard = ({ timeData, setTimeData }) => {
   return (
     <div style={{ marginLeft: -12 }}>
       <DatePicker.RangePicker
+        disabled={loading.effects[api]}
         bordered={false}
         suffixIcon={<DownOutlined></DownOutlined>}
         allowClear={false}
@@ -41,4 +43,4 @@ const SearchCard = ({ timeData, setTimeData }) => {
   );
 };
 
-export default SearchCard;
+export default connect(({ loading }) => ({ loading }))(SearchCard);
