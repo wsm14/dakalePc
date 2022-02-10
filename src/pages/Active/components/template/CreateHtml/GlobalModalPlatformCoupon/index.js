@@ -93,27 +93,26 @@ export default (function (platformCouponIds, uid, coupon_end, coupon_bag) {
 // 领取券
 export const userGetCoupon = `<script>
   $('body').on('click', "#btnGetCoupon", function() {
-    var evn = native.getPhone();
-    if (evn) {
-      native.nativeInit('getToken', {}, (val) => {
-        // token 存在
-        if (val && val.length > 0) {
-          HTTP_POST('',{ 
-            token: val, 
-            ids: $(this).attr("data-idList") 
-          }).then((res) => {
-            native.nativeInit('close'); // 领取成功 关闭
+    const platformCouponIds = $(this).attr("data-idList")
+    if(!platformCouponIds) return;
+    native.nativeInit('getToken', {}, (val) => {
+      // token 存在
+      if (val && val.length > 0) {
+        HTTP_POST('/user/platform/coupon/acquirePlatformCouponBatch',{ 
+          token: val, 
+          platformCouponIds: platformCouponIds.split(',')
+        }).then((res) => {
+          native.nativeInit('close'); // 领取成功 关闭
+        })
+        .catch((res) => {
+          toast({
+            text: '异常提醒',
+            timeout: 2000,
+            closeCallBack: () => native.nativeInit('close'),
           })
-          .catch((res) => {
-            toast({
-              text: '异常提醒',
-              timeout: 2000,
-              closeCallBack: () => native.nativeInit('close'),
-            })
-          });
-        } else { native.nativeInit('goLogin') }
-      });   
-    }
+        });
+      } else { native.nativeInit('goLogin') }
+    });   
   });
   </script>`;
 
