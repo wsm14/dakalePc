@@ -104,8 +104,12 @@ export const userGetCoupon = `<script>
           }).then((res) => {
             native.nativeInit('close'); // 领取成功 关闭
           })
-          .catch(() => {
-            native.nativeInit('close'); // 没有获取到 关闭
+          .catch((res) => {
+            toast({
+              text: '异常提醒',
+              timeout: 2000,
+              closeCallBack: () => native.nativeInit('close'),
+            })
           });
         } else { native.nativeInit('goLogin') }
       });   

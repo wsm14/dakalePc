@@ -161,7 +161,12 @@ const htmlDom = {
     },
     uid,
   ) => {
-    head = { ...head, request: requestJs, couponStyle: couponStyle() };
+    head = {
+      ...head,
+      request: requestJs,
+      couponStyle: couponStyle(),
+      toast: ["<script src='https://resource-new.dakale.net/admin/activeJs/toast.js'></script>"],
+    };
     footer = { ...footer, couponGet: userGetCoupon };
     const vw = (px) => (px / 375) * 100 + 'vw';
     return `
