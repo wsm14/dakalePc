@@ -39,7 +39,7 @@ const SaleBlockComponent = ({
     <Col span={6}>
       <Card>
         <QuestionTooltip type="quest" title={title} content={tip}></QuestionTooltip>
-        {timeSearch && <Search timeData={timeData} setTimeData={setTimeData}></Search>}
+        {timeSearch && <Search api={api} timeData={timeData} setTimeData={setTimeData}></Search>}
         {keyOther ? (
           <Row>
             {keyOther.map((item) => (
@@ -49,7 +49,7 @@ const SaleBlockComponent = ({
                   value={
                     saleTotal[item.key] > 999999
                       ? saleTotal[item.key] / 10000
-                      : saleTotal[item.key] || 0
+                      : saleTotal[item.key] || '--'
                   }
                   precision={0}
                   suffix={saleTotal[item.key] > 999999 ? 'w' : null}
@@ -62,7 +62,7 @@ const SaleBlockComponent = ({
           </Row>
         ) : (
           <Statistic
-            value={saleTotal[keyName] || 0}
+            value={saleTotal[keyName] || '--'}
             precision={0}
             loading={loading.effects[api]}
             valueStyle={{ fontSize: 40, color: '#1890ff', marginTop: timeSearch ? 0 : 32 }}
