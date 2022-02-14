@@ -143,19 +143,19 @@ const FormCondition = ({
           if (file.type.includes('video')) {
             resolve('url.mp4');
           } else {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = (error) => reject(error);
+            resolve(URL.createObjectURL(file.originFileObj || file));
           }
         });
       },
       onChange: (value) => {
         const { fileList } = value;
         if (!value.file.status) {
-          imageCompress(value.file).then(({ file }) => {
-            fileList[fileList.length - 1].originFileObj = file;
-          });
+          const fileExtr = value.file.name.replace(/.+\./, '.').toLowerCase();
+          if (fileExtr !== '.gif') {
+            imageCompress(value.file).then(({ file }) => {
+              fileList[fileList.length - 1].originFileObj = file;
+            });
+          }
           const fName = Array.isArray(name) ? name[1] : name;
           setFunction({ ...fileLists, [fName]: fileList });
         } else {
@@ -171,10 +171,15 @@ const FormCondition = ({
     const fileExtr = file.name.replace(/.+\./, '.').toLowerCase();
     if (fileExtr.includes('.mp4') && !file.url && !file.preview) {
       file.preview = URL.createObjectURL(file.originFileObj || file);
-    } else if (!file.url && !file.preview) {
+    } else if (!file.url && !file.preview && fileExtr === '.gif') {
       file.preview = await getBase64(file.originFileObj || file);
     }
-    const showFile = file.url || file.preview;
+    const showFile =
+      fileExtr === '.gif'
+        ? file.url || file.preview
+        : file.originFileObj
+        ? file.originFileObj
+        : file.url || file.preview;
     setPreviewImage(showFile);
     setPreviewTitle({
       name: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
