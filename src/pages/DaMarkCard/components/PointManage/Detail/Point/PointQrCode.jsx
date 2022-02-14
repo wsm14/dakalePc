@@ -8,6 +8,8 @@ const PointQrCode = (props) => {
 
   const dakaUrl = 'https://www.dakale.net?uniqueKey=';
 
+  console.log(detail.uniqueKey, '11');
+
   //   点击下载
   const changeCanvasToPic = (id, type, down) => {
     let img = id;
@@ -43,7 +45,8 @@ const PointQrCode = (props) => {
         <div style={{ border: '1px solid #d2d2d2', padding: 5 }}>
           <QRCode
             id="qrCodeDa"
-            value={`${dakaUrl}${visible.uniqueKey}`}
+            value={`${dakaUrl}${detail.uniqueKey}`}
+            // value={`${detail.uniqueKey}`}
             size={350} //二维码的宽高尺寸
             fgColor="#000000" //二维码的颜色
           />

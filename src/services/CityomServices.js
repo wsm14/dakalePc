@@ -187,3 +187,14 @@ export function fetchSaleAccountEdit(data) {
 }
 
 // 销售管理系统帐号 end
+
+// 市公司列表
+
+// get 市公司列表 - 列表
+export function fetchCityList(params) {
+  return request('/admin/city/listCity', {
+    params,
+  });
+}
+
+// 市公司列表 end
