@@ -1,21 +1,20 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { COMPANY_PROV_STATUS } from '@/common/constant';
+import { getCityName } from '@/utils/utils';
 import CITYJSON from '@/common/city';
 import TableDataBlock from '@/components/TableDataBlock';
-import ProvCompanyDetailList from './components/Prov/Detail/ProvDetailList';
-import ProvCompanySet from './components/Prov/Form/ProvCompanySet';
-import ProvAccountSet from './components/Prov/Form/ProvAccountSet';
+import CityCompanySet from './components/City/Form/CityCompanySet';
+import CityAccountSet from './components/City/Form/CityAccountSet';
 
 const CityCompany = (props) => {
   const { list, loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState(false);
-  const [visibleSet, setVisibleSet] = useState(false);
-  const [visibleAct, setVisibleAct] = useState(false);
+  const [visibleSet, setVisibleSet] = useState(false); // 市级公司信息
+  const [visibleAct, setVisibleAct] = useState(false); // 账户信息
 
-  // 获取省公司详情
+  // 获取市公司详情
   const fetchProvDetail = (payload) => {
     dispatch({
       type: 'provCompany/close',
@@ -27,7 +26,7 @@ const CityCompany = (props) => {
     });
   };
 
-  // 获取省公司账户详情
+  // 获取市公司账户详情
   const fetchProvBankDetail = (payload) => {
     dispatch({
       type: 'provCompany/fetchProvBankDetail',
@@ -42,12 +41,12 @@ const CityCompany = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '省公司名称',
+      label: '市级公司名称',
       name: 'companyName',
     },
     {
-      label: '代理省份',
-      name: 'provinceCode',
+      label: '代理城市',
+      name: 'cityCode',
       type: 'select',
       select: CITYJSON,
       fieldNames: { label: 'label' },
@@ -67,7 +66,8 @@ const CityCompany = (props) => {
     {
       title: '分管城市',
       fixed: 'left',
-      dataIndex: 'agentProvinceName',
+      dataIndex: 'agentCityCode',
+      render: (val) => getCityName(val),
     },
     {
       title: '企业名称',
@@ -76,7 +76,7 @@ const CityCompany = (props) => {
     },
     {
       title: '登录账号',
-      dataIndex: 'contactPerson',
+      dataIndex: 'contactMobile',
     },
     {
       title: '联系人姓名',
@@ -93,18 +93,19 @@ const CityCompany = (props) => {
     },
     {
       title: '累计入驻店铺数',
-      align: 'right',
+      align: 'center',
       dataIndex: 'merchantCount',
     },
     {
       title: '状态',
-      align: 'right',
+      align: 'center',
       dataIndex: 'status',
       render: (val) => COMPANY_PROV_STATUS[val],
     },
     {
       type: 'handle',
-      dataIndex: 'companyId',
+      align: 'center',
+      dataIndex: 'cityId',
       render: (companyId, record) => [
         {
           type: 'info',
@@ -130,34 +131,34 @@ const CityCompany = (props) => {
     <>
       <TableDataBlock
         order
-        keepData
         cRef={childRef}
         btnExtra={extraBtn}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.companyId}`}
-        dispatchType="provCompany/fetchGetList"
+        rowKey={(record) => `${record.cityId}`}
+        dispatchType="cityCompany/fetchGetList"
         {...list}
       ></TableDataBlock>
-      <ProvCompanyDetailList visible={visible} setVisible={setVisible} />
-      <ProvCompanySet
+      // 新增/编辑-市级公司信息 详情
+      <CityCompanySet
         cRef={childRef}
         visible={visibleSet}
         setVisibleSet={setVisibleSet}
         setVisibleAct={setVisibleAct}
-      ></ProvCompanySet>
-      <ProvAccountSet
+      ></CityCompanySet>
+      // 新增/编辑-账户信息
+      <CityAccountSet
         cRef={childRef}
         visible={visibleAct}
         setVisibleSet={setVisibleSet}
         setVisibleAct={setVisibleAct}
-      ></ProvAccountSet>
+      ></CityAccountSet>
     </>
   );
 };
 
-export default connect(({ provCompany, loading }) => ({
-  list: provCompany.list,
-  loading: loading.models.provCompany,
+export default connect(({ cityCompany, loading }) => ({
+  list: cityCompany.list,
+  loading: loading.models.cityCompany,
 }))(CityCompany);
