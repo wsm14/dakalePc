@@ -31,7 +31,7 @@ const CorporateAccount = (props) => {
         },
       });
       dispatch({
-        type: 'provCompany/fetchGetOcrLicense',
+        type: 'cityCompany/fetchGetOcrLicense',
         payload: {
           imageUrl: res.toString(),
         },
@@ -62,7 +62,7 @@ const CorporateAccount = (props) => {
         },
       });
       dispatch({
-        type: 'provCompany/fetchGetOcrBank',
+        type: 'cityCompany/fetchGetOcrBank',
         payload: {
           imageUrl: res.toString(),
         },
@@ -91,7 +91,7 @@ const CorporateAccount = (props) => {
         },
       });
       dispatch({
-        type: 'provCompany/fetchGetOcrFront',
+        type: 'cityCompany/fetchGetOcrFront',
         payload: {
           imageUrl: res.toString(),
         },
@@ -119,7 +119,7 @@ const CorporateAccount = (props) => {
         },
       });
       dispatch({
-        type: 'provCompany/fetchGetOcrBefor',
+        type: 'cityCompany/fetchGetOcrBefor',
         payload: {
           imageUrl: res.toString(),
         },
@@ -334,7 +334,7 @@ const CorporateAccount = (props) => {
   );
 };
 
-export default connect(({ provCompany, loading }) => ({
-  detail: provCompany.bankDetail,
-  loading: loading.models.provCompany,
+export default connect(({ cityCompany, loading }) => ({
+  detail: cityCompany.bankDetail,
+  loading: loading.models.cityCompany,
 }))(CorporateAccount);

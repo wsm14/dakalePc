@@ -29,7 +29,8 @@ const CityCompanySet = (props) => {
   // 提交数据
   const handleUpData = (next) => {
     (type == 'add' ? Addform : form).validateFields().then((values) => {
-      const { password, contactMobile, entryDate, allCityCode, allCityName, lat } = values;
+      const { agentCityCode, password, contactMobile, entryDate, allCityCode, allCityName, lat } =
+        values;
       if (!lat) {
         notification.info({
           message: '温馨提示',
@@ -38,10 +39,11 @@ const CityCompanySet = (props) => {
         return;
       }
       dispatch({
-        type: { add: 'cityCompany/fetchCityAdd', edit: 'provCompany/fetchProvEdit' }[type],
+        type: { add: 'cityCompany/fetchCityAdd', edit: 'cityCompany/fetchCityEdit' }[type],
         payload: {
           ...values,
           cityId,
+          agentCityCode: agentCityCode[1],
           provinceCode: allCityCode[0],
           cityCode: allCityCode[1],
           districtCode: allCityCode[2],
@@ -72,7 +74,7 @@ const CityCompanySet = (props) => {
       title: `确认${{ 0: '启用', 1: '冻结', 2: '解约' }[status]}？`,
       onOk() {
         dispatch({
-          type: 'provCompany/fetchProvEdit',
+          type: 'cityCompany/fetchCityEdit',
           payload: {
             cityId: detail.cityId,
             status,
@@ -181,10 +183,10 @@ const CityCompanySet = (props) => {
   );
 };
 
-export default connect(({ provCompany, cityCompany, loading }) => ({
-  detail: provCompany.detail,
+export default connect(({ cityCompany, loading }) => ({
+  detail: cityCompany.detail,
   cityId: cityCompany.cityId,
   loading:
-    loading.effects['provCompany/fetchProvAdd'] || loading.effects['provCompany/fetchProvEdit'],
-  loadingDetail: loading.effects['provCompany/fetchProvDetail'],
+    loading.effects['cityCompany/fetchCityAdd'] || loading.effects['cityCompany/fetchCityEdit'],
+  loadingDetail: loading.effects['cityCompany/fetchCityDetail'],
 }))(CityCompanySet);

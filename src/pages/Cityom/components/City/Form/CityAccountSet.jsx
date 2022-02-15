@@ -58,7 +58,7 @@ const CityAccountSet = (props) => {
   );
 };
 
-export default connect(({ provCompany, loading }) => ({
-  cityId: provCompany.cityId,
-  loading: loading.effects['provCompany/fetchProvBankSet'],
+export default connect(({ cityCompany, loading }) => ({
+  cityId: cityCompany.cityId,
+  loading: loading.effects['cityCompany/fetchCityBankSet'],
 }))(CityAccountSet);

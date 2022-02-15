@@ -227,4 +227,20 @@ export function fetchCityBankDetail(params) {
   });
 }
 
+// post 市公司列表 - 修改
+export function fetchCityEdit(data) {
+  return request('/admin/city/updateCity', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 市公司列表 - 修改帐号
+export function fetchCityAccountEdit(data) {
+  return request('/admin/city/account/updateCityAccount', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 市公司列表 end

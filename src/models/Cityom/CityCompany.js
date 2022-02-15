@@ -12,6 +12,8 @@ import {
   fetchCityBankSet,
   fetchCityDetail,
   fetchCityBankDetail,
+  fetchCityEdit,
+  fetchCityAccountEdit,
 } from '@/services/CityomServices';
 
 export default {
@@ -39,46 +41,53 @@ export default {
         detail: {},
         bankDetail: {},
         cityAccountId: '',
-        // totalData: { list: [], total: 0 },
       };
     },
   },
 
   effects: {
+    // 清楚数据
+    *fetchCloseData({ callback }, { put }) {
+      yield put({
+        type: 'close',
+      });
+      callback && callback();
+    },
     // 市级公司列表
     *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchCityList, payload);
-      // if (!response) return;
-      // const { content } = response;
-
-      const content = {
-        total: 1,
-        recordList: [
-          {
-            agentCityCode: '3301',
-            agentCityName: '杭州',
-            cityCode: '3301',
-            cityId: '1',
-            cityName: '杭州',
-            companyName: '哒卡乐城市代理',
-            contactMobile: '15555555555',
-            contactPerson: '孙贝贝',
-            districtCode: '330109',
-            districtName: '萧山区',
-            entryDate: '2021-07-22',
-            merchantCount: 905,
-            provinceCode: '33',
-            provinceName: '浙江',
-            status: '1',
-          },
-        ],
-      };
+      if (!response) return;
+      const { content } = response;
       yield put({
         type: 'save',
         payload: {
           list: { list: content.recordList, total: content.total },
         },
       });
+    },
+    *fetchGetOcrLicense({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetOcrLicense, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content);
+    },
+    *fetchGetOcrBank({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetOcrBank, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content);
+    },
+    *fetchGetOcrFront({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetOcrIdCardFront, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content);
+    },
+    *fetchGetOcrBefor({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetOcrIdCardBack, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content);
     },
     // 市级公司  新增
     *fetchCityAdd({ payload, callback }, { call, put }) {
@@ -120,10 +129,12 @@ export default {
         cityName,
         districtName,
         entryDate,
+        agentCityCode,
       } = content.cityDetail;
       const detail = {
         ...content.cityDetail,
         entryDate: moment(entryDate),
+        agentCityCode: [agentCityCode.slice(0, 2), agentCityCode],
         allCityName: [provinceName, cityName, districtName],
         allCityCode: [provinceCode, cityCode, districtCode],
         password: '',
@@ -157,6 +168,23 @@ export default {
         payload: {
           bankDetail: detail,
         },
+      });
+      callback && callback();
+    },
+    // 修改市级公司信息
+    *fetchCityEdit({ payload, callback }, { call, put, select }) {
+      const cityAccountId = yield select((state) => state.cityCompany.cityAccountId);
+      const { cityId, gender, email, account, password } = payload;
+      const payloadAccont = { cityId, cityAccountId, gender, email, account, password };
+      const response = yield call(fetchCityEdit, payload);
+      const response2 = yield call(fetchCityAccountEdit, payloadAccont);
+      if (!response || !response2) return;
+      notification.success({
+        message: '温馨提示',
+        description: '市级公司信息修改成功',
+      });
+      yield put({
+        type: 'close',
       });
       callback && callback();
     },

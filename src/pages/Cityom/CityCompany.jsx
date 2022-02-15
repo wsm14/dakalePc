@@ -47,9 +47,12 @@ const CityCompany = (props) => {
     {
       label: '代理城市',
       name: 'cityCode',
-      type: 'select',
-      select: CITYJSON,
-      fieldNames: { label: 'label' },
+      type: 'cascader',
+      select: CITYJSON.map((item) => ({
+        ...item,
+        children: item.children.map((citem) => ({ ...citem, children: undefined })),
+      })),
+      // fieldNames: { label: 'label' },
     },
     {
       label: '联系人姓名',
@@ -120,7 +123,7 @@ const CityCompany = (props) => {
       auth: 'save',
       onClick: () => {
         dispatch({
-          type: 'provCompany/fetchCloseData',
+          type: 'cityCompany/fetchCloseData',
           callback: () => setVisibleSet({ type: 'add', show: true }),
         });
       },

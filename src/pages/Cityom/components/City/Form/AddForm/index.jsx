@@ -22,6 +22,6 @@ const AddFromSet = (props) => {
   );
 };
 
-export default connect(({ provCompany }) => ({
-  detailInfo: provCompany.detail,
+export default connect(({ cityCompany }) => ({
+  detailInfo: cityCompany.detail,
 }))(AddFromSet);
