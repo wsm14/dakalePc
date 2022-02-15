@@ -12,7 +12,7 @@ const CityAccountSet = (props) => {
     setVisibleAct,
     setVisibleSet,
     loading,
-    companyId,
+    cityId,
   } = props;
 
   const { type = 'add', show = false } = visible;
@@ -23,8 +23,8 @@ const CityAccountSet = (props) => {
   const handleUpData = () => {
     cRef.current.fetchData().then((values) => {
       dispatch({
-        type: 'provCompany/fetchProvBankSet',
-        payload: { ownerId: companyId, ...values },
+        type: 'cityCompany/fetchCityBankSet',
+        payload: { ownerId: cityId, ownerType: 'city', ...values },
         callback: () => {
           closeDrawer();
         },
@@ -59,6 +59,6 @@ const CityAccountSet = (props) => {
 };
 
 export default connect(({ provCompany, loading }) => ({
-  companyId: provCompany.companyId,
+  cityId: provCompany.cityId,
   loading: loading.effects['provCompany/fetchProvBankSet'],
 }))(CityAccountSet);

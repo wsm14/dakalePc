@@ -17,10 +17,10 @@ const CityCompany = (props) => {
   // 获取市公司详情
   const fetchProvDetail = (payload) => {
     dispatch({
-      type: 'provCompany/close',
+      type: 'cityCompany/close',
     });
     dispatch({
-      type: 'provCompany/fetchProvDetail',
+      type: 'cityCompany/fetchCityDetail',
       payload,
       callback: () => fetchProvBankDetail(payload),
     });
@@ -29,10 +29,10 @@ const CityCompany = (props) => {
   // 获取市公司账户详情
   const fetchProvBankDetail = (payload) => {
     dispatch({
-      type: 'provCompany/fetchProvBankDetail',
+      type: 'cityCompany/fetchCityBankDetail',
       payload: {
-        ownerId: payload.companyId,
-        ownerType: 'company',
+        ownerId: payload.cityId,
+        ownerType: 'city',
       },
       callback: () => setVisibleSet({ type: payload.type, show: true }),
     });
@@ -106,10 +106,10 @@ const CityCompany = (props) => {
       type: 'handle',
       align: 'center',
       dataIndex: 'cityId',
-      render: (companyId, record) => [
+      render: (cityId, record) => [
         {
           type: 'info',
-          click: () => fetchProvDetail({ type: 'detail', companyId }),
+          click: () => fetchProvDetail({ type: 'detail', cityId }),
         },
       ],
     },

@@ -17,7 +17,7 @@ const CityCompanySet = (props) => {
     setVisibleAct,
     loading,
     loadingDetail,
-    companyId,
+    cityId,
   } = props;
 
   const { type = 'edit', show = false } = visible;
@@ -38,10 +38,10 @@ const CityCompanySet = (props) => {
         return;
       }
       dispatch({
-        type: { add: 'provCompany/fetchProvAdd', edit: 'provCompany/fetchProvEdit' }[type],
+        type: { add: 'cityCompany/fetchCityAdd', edit: 'provCompany/fetchProvEdit' }[type],
         payload: {
           ...values,
-          companyId,
+          cityId,
           provinceCode: allCityCode[0],
           cityCode: allCityCode[1],
           districtCode: allCityCode[2],
@@ -74,7 +74,7 @@ const CityCompanySet = (props) => {
         dispatch({
           type: 'provCompany/fetchProvEdit',
           payload: {
-            companyId: detail.companyId,
+            cityId: detail.cityId,
             status,
           },
           callback: () => {
@@ -181,9 +181,9 @@ const CityCompanySet = (props) => {
   );
 };
 
-export default connect(({ provCompany, loading }) => ({
+export default connect(({ provCompany, cityCompany, loading }) => ({
   detail: provCompany.detail,
-  companyId: provCompany.companyId,
+  cityId: cityCompany.cityId,
   loading:
     loading.effects['provCompany/fetchProvAdd'] || loading.effects['provCompany/fetchProvEdit'],
   loadingDetail: loading.effects['provCompany/fetchProvDetail'],

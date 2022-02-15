@@ -205,4 +205,26 @@ export function fetchCityAdd(data) {
   });
 }
 
+// post 市公司列表 - 设置绑定账户信息
+export function fetchCityBankSet(data) {
+  return request('/admin/city/submitBankBindingInfo', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 市公司列表 - 详情
+export function fetchCityDetail(params) {
+  return request('/admin/city/getCityDetail', {
+    params,
+  });
+}
+
+// get 市公司列表 - 账户信息+银行卡 详情
+export function fetchCityBankDetail(params) {
+  return request('/admin/bankBindingInfo/getBankBindingInfo', {
+    params,
+  });
+}
+
 // 市公司列表 end

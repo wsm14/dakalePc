@@ -6,7 +6,13 @@ import {
   fetchGetOcrIdCardFront,
   fetchGetOcrIdCardBack,
 } from '@/services/PublicServices';
-import { fetchCityList, fetchCityAdd } from '@/services/CityomServices';
+import {
+  fetchCityList,
+  fetchCityAdd,
+  fetchCityBankSet,
+  fetchCityDetail,
+  fetchCityBankDetail,
+} from '@/services/CityomServices';
 
 export default {
   namespace: 'cityCompany',
@@ -14,6 +20,9 @@ export default {
   state: {
     list: { list: [], total: 0 },
     cityId: '',
+    detail: {},
+    bankDetail: {},
+    cityAccountId: '',
   },
 
   reducers: {
@@ -23,12 +32,22 @@ export default {
         ...payload,
       };
     },
+    close(state) {
+      return {
+        ...state,
+        cityId: '',
+        detail: {},
+        bankDetail: {},
+        cityAccountId: '',
+        // totalData: { list: [], total: 0 },
+      };
+    },
   },
 
   effects: {
     // 市级公司列表
     *fetchGetList({ payload }, { call, put }) {
-      // const response = yield call(fetchCityList, payload);
+      const response = yield call(fetchCityList, payload);
       // if (!response) return;
       // const { content } = response;
 
@@ -75,6 +94,69 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '市级公司新增成功',
+      });
+      callback && callback();
+    },
+    // post 市公司 - 设置绑定账户信息
+    *fetchCityBankSet({ payload, callback }, { call, put }) {
+      const response = yield call(fetchCityBankSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '市级公司账户信息绑定成功',
+      });
+      callback && callback();
+    },
+    // 获取市级公司详情
+    *fetchCityDetail({ payload, callback }, { call, put }) {
+      const response = yield call(fetchCityDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      const {
+        provinceCode,
+        cityCode,
+        districtCode,
+        provinceName,
+        cityName,
+        districtName,
+        entryDate,
+      } = content.cityDetail;
+      const detail = {
+        ...content.cityDetail,
+        entryDate: moment(entryDate),
+        allCityName: [provinceName, cityName, districtName],
+        allCityCode: [provinceCode, cityCode, districtCode],
+        password: '',
+      };
+      yield put({
+        type: 'save',
+        payload: {
+          cityAccountId: detail.cityAccountId,
+          cityId: detail.cityId,
+          detail: detail,
+        },
+      });
+      callback && callback();
+    },
+    // 获取账户信息详情
+    *fetchCityBankDetail({ payload, callback }, { call, put }) {
+      const response = yield call(fetchCityBankDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      let detail = { ...content };
+      if (content.bankBindingObject) {
+        const { provCode, areaCode, startDate, legalCertIdExpires } = content.bankBindingObject;
+        detail = {
+          ...content,
+          activeDate: [moment(startDate), moment(legalCertIdExpires)],
+          allCityCode: [provCode, areaCode],
+        };
+      }
+      yield put({
+        type: 'save',
+        payload: {
+          bankDetail: detail,
+        },
       });
       callback && callback();
     },
