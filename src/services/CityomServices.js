@@ -243,4 +243,12 @@ export function fetchCityAccountEdit(data) {
   });
 }
 
+// post 市公司列表 - 设置可管理区县
+export function fetchCityManageDistrictSet(data) {
+  return request('/admin/city/setCityManageDistrict', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 市公司列表 end

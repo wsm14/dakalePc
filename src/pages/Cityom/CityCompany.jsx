@@ -6,6 +6,7 @@ import CITYJSON from '@/common/city';
 import TableDataBlock from '@/components/TableDataBlock';
 import CityCompanySet from './components/City/Form/CityCompanySet';
 import CityAccountSet from './components/City/Form/CityAccountSet';
+import CityManageSet from './components/City/Form/CityManageSet';
 
 const CityCompany = (props) => {
   const { list, loading, dispatch } = props;
@@ -13,21 +14,22 @@ const CityCompany = (props) => {
   const childRef = useRef();
   const [visibleSet, setVisibleSet] = useState(false); // 市级公司信息
   const [visibleAct, setVisibleAct] = useState(false); // 账户信息
+  const [visibleArea, setVisibleArea] = useState(false); // 设置可管理区县
 
   // 获取市公司详情
-  const fetchProvDetail = (payload) => {
+  const fetchCityDetail = (payload) => {
     dispatch({
       type: 'cityCompany/close',
     });
     dispatch({
       type: 'cityCompany/fetchCityDetail',
       payload,
-      callback: () => fetchProvBankDetail(payload),
+      callback: () => fetchCityBankDetail(payload),
     });
   };
 
   // 获取市公司账户详情
-  const fetchProvBankDetail = (payload) => {
+  const fetchCityBankDetail = (payload) => {
     dispatch({
       type: 'cityCompany/fetchCityBankDetail',
       payload: {
@@ -112,7 +114,12 @@ const CityCompany = (props) => {
       render: (cityId, record) => [
         {
           type: 'info',
-          click: () => fetchProvDetail({ type: 'detail', cityId }),
+          click: () => fetchCityDetail({ type: 'detail', cityId }),
+        },
+        {
+          type: 'set',
+          visible: record.status !== '2',
+          click: () => setVisibleArea({ show: true, detail: record }),
         },
       ],
     },
@@ -157,6 +164,8 @@ const CityCompany = (props) => {
         setVisibleSet={setVisibleSet}
         setVisibleAct={setVisibleAct}
       ></CityAccountSet>
+      {/* 设置可管理区县 */}
+      <CityManageSet cRef={childRef} visible={visibleArea} onClose={() => setVisibleArea(false)} />
     </>
   );
 };

@@ -14,6 +14,7 @@ import {
   fetchCityBankDetail,
   fetchCityEdit,
   fetchCityAccountEdit,
+  fetchCityManageDistrictSet,
 } from '@/services/CityomServices';
 
 export default {
@@ -185,6 +186,16 @@ export default {
       });
       yield put({
         type: 'close',
+      });
+      callback && callback();
+    },
+    // post 市公司列表 - 设置可管理区县
+    *fetchCityManageDistrictSet({ payload, callback }, { call, put }) {
+      const response = yield call(fetchCityManageDistrictSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '可管理区县设置成功',
       });
       callback && callback();
     },
