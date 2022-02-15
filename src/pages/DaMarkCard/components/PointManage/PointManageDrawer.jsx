@@ -45,7 +45,7 @@ const PointManageDrawer = (props) => {
   // 设置首刷视频
   const handleAdvertUpAudit = () => {
     form.validateFields().then(async (values) => {
-      const { url, videoId } = values;
+      const { url, videoId, length } = values;
       uploadLive({
         data: videoId ? videoId : url,
         title: Math.random() * 1000,
@@ -55,6 +55,7 @@ const PointManageDrawer = (props) => {
             payload: {
               videoId: videos,
               hittingMainId,
+              length: String(length),
             },
             callback: () => {
               onClose();
