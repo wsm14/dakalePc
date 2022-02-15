@@ -7,7 +7,7 @@ import AddDetail from './AddForm/index';
 import AccountForm from './AccountForm/CorporateAccount';
 import DrawerCondition from '@/components/DrawerCondition';
 
-const ProvCompanySet = (props) => {
+const CityCompanySet = (props) => {
   const {
     dispatch,
     cRef,
@@ -187,4 +187,4 @@ export default connect(({ provCompany, loading }) => ({
   loading:
     loading.effects['provCompany/fetchProvAdd'] || loading.effects['provCompany/fetchProvEdit'],
   loadingDetail: loading.effects['provCompany/fetchProvDetail'],
-}))(ProvCompanySet);
+}))(CityCompanySet);

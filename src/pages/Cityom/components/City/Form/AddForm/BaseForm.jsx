@@ -92,17 +92,20 @@ const BaseForm = (props) => {
       maxLength: 30,
     },
     {
-      label: '分管省份',
-      type: 'select',
-      name: 'agentProvinceCode',
-      select: CITYJSON,
-      fieldNames: { label: 'label' },
-      onChange: (val, item) => form.setFieldsValue({ agentProvinceName: item.children[0] }),
-      render: (val, row) => row.agentProvinceName,
+      label: '分管城市',
+      type: 'cascader',
+      name: 'agentCityCode',
+      select: CITYJSON.map((item) => ({
+        ...item,
+        children: item.children.map((citem) => ({ ...citem, children: undefined })),
+      })),
+      // fieldNames: { label: 'label' },
+      onChange: (val, item) => form.setFieldsValue({ agentCityName: item[1].label }),
+      render: (val, row) => row.agentCityName,
     },
     {
-      label: '分管省份名字值',
-      name: 'agentProvinceName',
+      label: '分管城市名字值',
+      name: 'agentCityName',
       hidden: true,
       show: false,
     },
@@ -111,6 +114,7 @@ const BaseForm = (props) => {
       type: 'cascader',
       name: 'allCityCode',
       onChange: (val, option) => {
+        console.log(option);
         form.setFieldsValue({ allCityName: option.map((item) => item.label) });
       },
       show: false,

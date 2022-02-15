@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import AccountForm from './AccountForm/CorporateAccount';
 import DrawerCondition from '@/components/DrawerCondition';
 
-const ProvAccountSet = (props) => {
+const CityAccountSet = (props) => {
   const {
     dispatch,
     visible = {},
@@ -61,4 +61,4 @@ const ProvAccountSet = (props) => {
 export default connect(({ provCompany, loading }) => ({
   companyId: provCompany.companyId,
   loading: loading.effects['provCompany/fetchProvBankSet'],
-}))(ProvAccountSet);
+}))(CityAccountSet);

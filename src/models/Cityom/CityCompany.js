@@ -6,13 +6,14 @@ import {
   fetchGetOcrIdCardFront,
   fetchGetOcrIdCardBack,
 } from '@/services/PublicServices';
-import { fetchCityList } from '@/services/CityomServices';
+import { fetchCityList, fetchCityAdd } from '@/services/CityomServices';
 
 export default {
   namespace: 'cityCompany',
 
   state: {
     list: { list: [], total: 0 },
+    cityId: '',
   },
 
   reducers: {
@@ -27,7 +28,7 @@ export default {
   effects: {
     // 市级公司列表
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchCityList, payload);
+      // const response = yield call(fetchCityList, payload);
       // if (!response) return;
       // const { content } = response;
 
@@ -59,6 +60,23 @@ export default {
           list: { list: content.recordList, total: content.total },
         },
       });
+    },
+    // 市级公司  新增
+    *fetchCityAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchCityAdd, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          cityId: content.cityId,
+        },
+      });
+      notification.success({
+        message: '温馨提示',
+        description: '市级公司新增成功',
+      });
+      callback && callback();
     },
   },
 };

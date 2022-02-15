@@ -197,4 +197,12 @@ export function fetchCityList(params) {
   });
 }
 
+// post 市公司列表 - 新增
+export function fetchCityAdd(data) {
+  return request('/admin/city/saveCity', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 市公司列表 end

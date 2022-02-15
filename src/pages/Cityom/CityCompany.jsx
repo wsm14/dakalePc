@@ -140,14 +140,14 @@ const CityCompany = (props) => {
         dispatchType="cityCompany/fetchGetList"
         {...list}
       ></TableDataBlock>
-      // 新增/编辑-市级公司信息 详情
+      {/* 新增/编辑-市级公司信息 详情 */}
       <CityCompanySet
         cRef={childRef}
         visible={visibleSet}
         setVisibleSet={setVisibleSet}
         setVisibleAct={setVisibleAct}
       ></CityCompanySet>
-      // 新增/编辑-账户信息
+      {/* 新增/编辑-账户信息 */}
       <CityAccountSet
         cRef={childRef}
         visible={visibleAct}
