@@ -75,9 +75,6 @@ export const GMV_DATA_TYPE = {
   expiredOrder: '过期不可退',
 };
 
-// 加盟申请状态
-export const FRANCHISE_APP_STATUS = ['未处理', '已处理'];
-
 // 提现状态
 export const WITHDRAW_STATUS = [false, '发起提现', '处理中', '成功', '失败'];
 
@@ -289,7 +286,11 @@ export const USER_SOURCE = {
 };
 
 // 合作意向类型
-export const FRANCHISE_COOPERATION_TYPE = { company: '省公司', partner: '区县代理' };
+export const FRANCHISE_COOPERATION_TYPE = {
+  company: '省公司',
+  city: '市级代理',
+  partner: '区县代理',
+};
 
 // 分享类型
 export const PUZZLE_AD_TYPE = { video: '视频', image: '图片' };
