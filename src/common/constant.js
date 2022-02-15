@@ -895,7 +895,7 @@ export const PLATFORM_INCREASE_RULE = ['不可膨胀', '可膨胀'];
 export const PLATFORM_APPLY_PORT_TYPE = {
   app: 'APP',
   weChat: '哒卡乐小程序',
-  markWechat: '哒小卡小程序',
+  mark: '哒小卡小程序',
   communityWechat: '哒小团小程序',
 };
 
