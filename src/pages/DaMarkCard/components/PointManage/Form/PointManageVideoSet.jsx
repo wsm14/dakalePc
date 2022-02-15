@@ -21,7 +21,7 @@ const PlatformVideoSet = (props) => {
           const duration = videoElement.duration; // 单位：秒
           form.setFieldsValue({
             videoId: undefined,
-            length: duration,
+            length: parseInt(duration),
           });
         });
         videoElement.src = fileurl;
