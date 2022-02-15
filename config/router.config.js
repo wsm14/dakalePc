@@ -223,12 +223,6 @@ export default [
         buttons: ['save', 'edit', 'info', 'status', 'relieve'],
       },
       {
-        path: '/cityom/cityCo',
-        name: '市级公司',
-        component: './Cityom/CityCompany',
-        buttons: ['save', 'edit', 'info', 'status', 'relieve'],
-      },
-      {
         path: '/cityom/area',
         name: '区县运营中心',
         component: './Cityom/AreaCenter',
