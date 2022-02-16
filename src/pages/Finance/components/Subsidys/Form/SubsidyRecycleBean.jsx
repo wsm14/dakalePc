@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import lodash from 'lodash';
 import { DownSquareOutlined } from '@ant-design/icons';
 import { Button, InputNumber, Tooltip, Space } from 'antd';
-import { SUBSIDY_ACTION_ROLES, SUBSIDY_ACTION_ROLE } from '@/common/constant';
+import { SUBSIDY_ACTION_ROLES, SUBSIDY_TASK_ROLE } from '@/common/constant';
 import {
   MreSelect,
   MreSelectShow,
@@ -29,8 +29,8 @@ const SubsidyRecycleBean = (props) => {
   const [userList, setUserList] = useState({ keys: [], list: [], resultList: [] }); // 选择后回显的数据
   const [userNumber, setUserNumber] = useState({}); // 卡豆数 暂存输入值
 
-   // 监听用户卡豆数变化
-   useEffect(() => {
+  // 监听用户卡豆数变化
+  useEffect(() => {
     // user: '用户', merchant: '店铺', group: '集团'
     const list = { user: userList, merchant: mreList, group: groupList }[role];
     const number = { user: userNumber, merchant: mreNumber, group: groupNumber }[role];
@@ -74,7 +74,7 @@ const SubsidyRecycleBean = (props) => {
       label: '角色',
       name: 'role',
       type: 'select',
-      select: tab === 'direct' ? SUBSIDY_ACTION_ROLES : SUBSIDY_ACTION_ROLE,
+      select: tab === 'direct' ? SUBSIDY_ACTION_ROLES : SUBSIDY_TASK_ROLE,
       onChange: (val) => {
         form.setFieldsValue({ subsidyBeanObjects: undefined });
         setRole(val);

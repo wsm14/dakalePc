@@ -9,14 +9,14 @@ import TableDataBlock from '@/components/TableDataBlock';
  * @param {Object} list 渲染的数组 { list:[], total:0 }
  * @returns
  */
-const CitySelect = ({
+const PartnerSelect = ({
   visible,
   keys = [],
   cityList = [],
   onOk,
   onCancel,
   list = [],
-  rowKey = 'cityId',
+  rowKey = 'partnerId',
   loading,
 }) => {
   const [selectCity, setSelectCity] = useState([]); // 选中的市级代理
@@ -29,10 +29,10 @@ const CitySelect = ({
   const searchItems = [
     {
       label: '企业名称',
-      name: 'companyName',
+      name: 'partnerName',
     },
     {
-      label: '分管城市',
+      label: '分管区县',
       name: 'cityCode',
       type: 'cascader',
       select: CITYJSON.map((item) => ({
@@ -50,13 +50,13 @@ const CitySelect = ({
   const getColumns = [
     {
       title: '企业名称',
-      dataIndex: 'companyName',
+      dataIndex: 'partnerName',
       width: 200,
       ellipsis: { lines: 2 },
     },
     {
-      title: '分管城市',
-      dataIndex: 'agentCityName',
+      title: '分管区县',
+      dataIndex: 'agentDistrictName',
     },
     {
       title: '登录账号',
@@ -91,7 +91,7 @@ const CitySelect = ({
 
   return (
     <Modal
-      title={'选择市级代理（已解约、已冻结状态不可选）'}
+      title={'选择区县代理（已解约、已冻结状态不可选）'}
       destroyOnClose
       maskClosable
       width={1000}
@@ -113,7 +113,7 @@ const CitySelect = ({
         loading={loading}
         searchItems={searchItems}
         rowKey={(record) => `${record[rowKey]}`}
-        dispatchType="cityCompany/fetchGetList"
+        dispatchType="areaCenter/fetchGetList"
         rowSelection={rowSelection}
         {...list}
       ></TableDataBlock>
@@ -121,7 +121,7 @@ const CitySelect = ({
   );
 };
 
-export default connect(({ cityCompany, loading }) => ({
-  list: cityCompany.list,
-  loading: loading.effects['cityCompany/fetchGetList'],
-}))(CitySelect);
+export default connect(({ areaCenter, loading }) => ({
+  list: areaCenter.list,
+  loading: loading.effects['areaCenter/fetchGetList'],
+}))(PartnerSelect);

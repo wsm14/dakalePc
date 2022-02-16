@@ -353,7 +353,7 @@ export const SUBSIDY_TASK_ROLE = {
   merchant: '店铺',
   group: '集团',
   brand: '品牌',
-  city: '市级公司',
+  city: '市级代理',
   partner: '区县代理',
 };
 
