@@ -45,7 +45,7 @@ const PointManageDrawer = (props) => {
   // 设置首刷视频
   const handleAdvertUpAudit = () => {
     form.validateFields().then(async (values) => {
-      const { url, videoId } = values;
+      const { url, videoId, length } = values;
       uploadLive({
         data: videoId ? videoId : url,
         title: Math.random() * 1000,
@@ -55,6 +55,7 @@ const PointManageDrawer = (props) => {
             payload: {
               videoId: videos,
               hittingMainId,
+              length: String(length),
             },
             callback: () => {
               onClose();
@@ -70,20 +71,79 @@ const PointManageDrawer = (props) => {
   const handleAwardUpAudit = () => {
     form.validateFields().then(async (values) => {
       console.log('award', values);
-      const { beanPoolList, beanPoolRange, dayCount, remain, timeRangeStart, timeRangeEnd, total } =
-        values;
+      const {
+        beanPoolList,
+        beanPoolRange,
+        dayCount,
+        remain,
+        timeRangeStart,
+        timeRangeEnd,
+        total,
+        specialTime,
+        // 以上是卡豆奖励配置
+        goodsObject = [],
+        hittingRewardRightGoodsObject, // 平台权益商品
+        hittingRewardOnlineGoodsObject, // 电商品
+        hittingRewardActualGoodsObject, // 自提商品
+        // 以上是奖品配置及关联视频
+      } = values;
 
-      const data = {
+      let data = {
         hittingMainId,
         hittingRewardObject: {
           beanPoolList,
           beanPoolRange,
           dayCount,
           remain,
-          timeRange: `${timeRangeStart}-${timeRangeEnd}`,
+          timeRange: specialTime === 'all' ? undefined : `${timeRangeStart}-${timeRangeEnd}`,
           total,
         },
       };
+      if (goodsObject.includes('hittingRewardRightGoodsObject')) {
+        data = {
+          ...data,
+          hittingRewardRightGoodsObject: {
+            ...hittingRewardRightGoodsObject,
+            // 筛去权益商品数据对象
+            subRewardList: hittingRewardRightGoodsObject.subRewardList.map(
+              ({ activityGoodsDTO, total, rewardIdString, ...other }) => ({
+                ...other,
+                rewardId: rewardIdString,
+                shardingKey: Number(activityGoodsDTO.ownerIdString),
+                total,
+                weight: total,
+              }),
+            ),
+          },
+        };
+      }
+      if (goodsObject.includes('hittingRewardOnlineGoodsObject')) {
+        data = {
+          ...data,
+          hittingRewardOnlineGoodsObject: {
+            ...hittingRewardOnlineGoodsObject,
+            subRewardList: hittingRewardOnlineGoodsObject.subRewardList.map(
+              ({ total, ...other }) => ({ ...other, total, weight: total }),
+            ),
+          },
+        };
+      }
+      if (goodsObject.includes('hittingRewardActualGoodsObject')) {
+        data = {
+          ...data,
+          hittingRewardActualGoodsObject: {
+            ...hittingRewardActualGoodsObject,
+            subRewardList: hittingRewardActualGoodsObject.subRewardList.map(
+              ({ total, ...other }) => ({ ...other, total, weight: total }),
+            ),
+          },
+        };
+      }
+      dispatch({
+        type: 'pointManage/fetchSetHittingReward',
+        payload: data,
+        callback: onClose,
+      });
     });
   };
 

@@ -1,0 +1,54 @@
+.ifame_btnArr {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 62px;
+}
+
+.ifame_carouseal {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 8px 8px;
+  background: #f9f9f9;
+  .listItem_img {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    padding: 5px;
+    background: #fff;
+    border: 1px solid #e4e4e4;
+    .listItem_price {
+      font-weight: bold;
+      font-size: 15px;
+    }
+    .listItem_tp {
+      font-size: 12px;
+    }
+  }
+  .listItem_info {
+    width: 208px;
+    overflow: hidden;
+    .listItem_tag {
+      display: inline-block;
+      margin-right: 3px;
+      padding: 0 6px;
+      color: white;
+      background-color: #31b389;
+      border-radius: 8px;
+    }
+    div {
+      width: 208px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .tip {
+      color: #a2a2a2;
+      font-size: 12px;
+      text-decoration: line-through;
+    }
+  }
+}

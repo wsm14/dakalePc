@@ -175,7 +175,7 @@ const OrderChart = ({ dispatch, searchData = {}, GMVObject, loading }) => {
       style={{ marginTop: 20, height: '100%' }}
     >
       <Row gutter={24}>
-        <Col flex={1}>
+        <Col span={8}>
           <TableDataBlock
             tableSize="small"
             bordered={true}
@@ -188,7 +188,7 @@ const OrderChart = ({ dispatch, searchData = {}, GMVObject, loading }) => {
             list={GMVStatisticList}
           ></TableDataBlock>
         </Col>
-        <Col flex={1}>
+        <Col span={8}>
           <TableDataBlock
             tableSize="small"
             bordered={true}
@@ -236,7 +236,7 @@ const OrderChart = ({ dispatch, searchData = {}, GMVObject, loading }) => {
             }`}</Descriptions.Item>
           </Descriptions>
         </Col>
-        <Col flex={1}>
+        <Col span={8}>
           <TableDataBlock
             tableSize="small"
             bordered={true}

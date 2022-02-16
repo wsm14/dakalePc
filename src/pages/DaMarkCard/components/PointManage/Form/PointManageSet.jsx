@@ -33,7 +33,7 @@ const PlatformSet = (props) => {
         distanceFlagType: distanceFlag,
         parentUserTypes: parentUserType,
       });
-      // parentUserType === 'merchant' ? fetchGetMre(parentUserId) : fetchGetUser(parentUserId);
+      parentUserType === 'merchant' ? fetchGetMre('', parentUserId) : fetchGetUser(parentUserId);
     }
   }, []);
 
@@ -165,18 +165,21 @@ const PlatformSet = (props) => {
   );
 
   // 搜索店铺
-  const fetchGetMre = debounce((content) => {
-    if (!content.replace(/'/g, '') || content.replace(/'/g, '').length < 2) return;
+  const fetchGetMre = debounce((content, id = '') => {
+    if ((!content.replace(/'/g, '') || content.replace(/'/g, '').length < 2) && id.length === 0)
+      return;
     dispatch({
       type: 'baseData/fetchGetGroupMreList',
       payload: {
         name: content.replace(/'/g, ''),
+        merchantId: id || undefined,
       },
     });
   }, 500);
 
   // 获取用户搜索
   const fetchGetUser = debounce((content) => {
+    console.log('content', content);
     if (!content) return;
     dispatch({
       type: 'baseData/fetchGetUsersSearch',
@@ -185,10 +188,11 @@ const PlatformSet = (props) => {
       },
       callback: (useList) => {
         const list = useList.map((item) => ({
-          name: `${item.username}`,
+          name: `${item.username} ${item.mobile}`,
           value: item.userIdString,
-          otherData: `${item.mobile} ${item.beanCode}`,
+          otherData: `${item.beanCode}`,
         }));
+        console.log('list', list);
         setUserList(list);
       },
     });
@@ -200,6 +204,7 @@ const PlatformSet = (props) => {
       label: '主体名称',
       name: 'name',
       disabled: type === 'info',
+      maxLength: 20,
     },
     {
       label: '主体类型',
@@ -298,7 +303,7 @@ const PlatformSet = (props) => {
     {
       name: 'parentUserId',
       type: 'select',
-      loading: loading.effects['baseData/fetchGetGroupMreList'],
+      loading: loading.effects['baseData/fetchGetUsersSearch'],
       placeholder: '请输入昵称、手机号或豆号',
       onSearch: fetchGetUser,
       style: { marginLeft: 150 },

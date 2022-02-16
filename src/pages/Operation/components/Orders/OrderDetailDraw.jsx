@@ -68,17 +68,17 @@ const OrderDetailDraw = (props) => {
   const couponItem = (item) => [
     {
       label: '券码',
-      name: 'userCouponId',
+      name: 'verificationCode',
       render: (val, row) => {
         const names = val.substring(0, 6) + '****' + val.substring(val.length - 4, val.length);
-        return <span>{row.status !== '1' ? names : row.userCouponId}</span>;
+        return <span>{row.status !== '1' ? names : row.verificationCode}</span>;
       },
     },
     // 0：未核销，1：已核销 2：已过期 3-申请退款中 4-关闭
     {
       label: '核销号',
-      name: 'verificationCode',
-      show: item.verificationCode,
+      name: 'userCouponId',
+      show: item.userCouponId,
     },
     {
       label: '状态',

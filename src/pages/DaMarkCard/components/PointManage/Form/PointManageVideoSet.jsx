@@ -18,8 +18,10 @@ const PlatformVideoSet = (props) => {
         // 获取视频的时长 长宽高
         const videoElement = document.createElement('video');
         videoElement.addEventListener('loadedmetadata', function (_event) {
+          const duration = videoElement.duration; // 单位：秒
           form.setFieldsValue({
             videoId: undefined,
+            length: parseInt(duration),
           });
         });
         videoElement.src = fileurl;
@@ -29,6 +31,12 @@ const PlatformVideoSet = (props) => {
     {
       label: '视频id',
       name: 'videoId',
+      rules: [{ required: false }],
+      hidden: true,
+    },
+    {
+      label: '视频时长',
+      name: 'length',
       rules: [{ required: false }],
       hidden: true,
     },

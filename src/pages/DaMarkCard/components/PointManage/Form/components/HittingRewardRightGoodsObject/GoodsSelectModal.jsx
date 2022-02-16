@@ -9,22 +9,16 @@ import './index.less';
  * 选择权益商品（多选）
  */
 const GoodsSelectModal = (props) => {
-  const {
-    platformEquityList = {},
-    form,
-    dispatch,
-    visible,
-    onSumbit,
-    onClose,
-    loading,
-    typeGoods = 'rightGoodsList',
-  } = props;
+  const { platformEquityList = {}, form, dispatch, visible, onSumbit, onClose, loading } = props;
 
   const [selectItem, setSelectItem] = useState([]); // 当前选择项
 
   useEffect(() => {
     if (visible) {
       fetchSpecialGoodsList();
+      const RGObj = form.getFieldValue('hittingRewardRightGoodsObject') || {};
+      const list = RGObj?.subRewardList?.map((item) => item.activityGoodsDTO) || [];
+      setSelectItem(list);
     }
   }, [visible]);
 

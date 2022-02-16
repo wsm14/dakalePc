@@ -240,6 +240,13 @@ export default [
         component: './Cityom/SaleAccount',
         buttons: ['save', 'edit', 'info', 'status', 'relieve'],
       },
+      // 哒小卡 daMarkCard
+      {
+        path: '/daMarkCard/pointManage',
+        name: '点位管理',
+        component: './DaMarkCard/PointManage',
+        buttons: ['point', 'award', 'advert', 'info', 'edit', 'signDetail', 'save', 'qrCode'],
+      },
       // 哒人管理 expert
       {
         path: '/expert/uaerlist',
@@ -437,12 +444,6 @@ export default [
         name: '新手视频',
         component: './Market/NoviceAdvert',
         buttons: ['save', 'info', 'down', 'peasDetail', 'again', 'diary'],
-      },
-      // 哒小卡 daMarkCard
-      {
-        path: '/daMarkCard/pointManage',
-        name: '点位管理',
-        component: './DaMarkCard/PointManage',
       },
       // 店铺运营 operation
       {
