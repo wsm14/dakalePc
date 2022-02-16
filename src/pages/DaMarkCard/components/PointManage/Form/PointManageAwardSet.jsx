@@ -59,12 +59,18 @@ const PlatformSet = (props) => {
       name: 'total',
       visible: specialTimes === 'fixedTime',
       addonAfter: '次',
+      // 暂时隐藏
+      rules: [{ required: false }],
+      hidden: true,
     },
     {
       label: '特殊时间段剩余打卡次数',
       name: 'remain',
       visible: specialTimes === 'fixedTime',
       addonAfter: '次',
+      // 暂时隐藏
+      rules: [{ required: false }],
+      hidden: true,
     },
     {
       label: '固定时间',
