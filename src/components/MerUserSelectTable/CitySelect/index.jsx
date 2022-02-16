@@ -10,21 +10,19 @@ import TableDataBlock from '@/components/TableDataBlock';
  * @returns
  */
 const CitySelect = ({
-  type = 'select',
   visible,
   keys = [],
-  mreList = [],
+  cityList = [],
   onOk,
   onCancel,
   list = [],
-  pagination,
   rowKey = 'cityId',
   loading,
 }) => {
   const [selectCity, setSelectCity] = useState([]); // 选中的市级代理
   const [selectCityKey, setSelectCityKey] = useState([]);
   useEffect(() => {
-    visible && type === 'select' && setSelectMreKey(keys);
+    visible && setSelectCityKey(keys);
   }, [visible]);
 
   // 搜索参数
@@ -62,43 +60,46 @@ const CitySelect = ({
     },
     {
       title: '登录账号',
+      dataIndex: 'account',
+    },
+    {
+      title: '联系人电话',
       dataIndex: 'contactMobile',
     },
   ];
 
   const rowSelection = {
     preserveSelectedRowKeys: true,
-    selectedRowKeys: selectMreKey,
-    getCheckboxProps: ({ bankStatus, businessStatus, status }) => ({
-      disabled: !['3'].includes(bankStatus) || businessStatus === '0' || status === '0', // 非激活状态
+    selectedRowKeys: selectCityKey,
+    getCheckboxProps: ({ status }) => ({
+      disabled: ['1', '2'].includes(status),
     }),
     onChange: (val, list) => {
       // 先去重处理 排除重复已选数据
       // 再对 已选的数据mreList和最新数据进行去重处理 获得去重后结果
       const obj = {};
-      const newSelectList = [...mreList, ...list]
+      const newSelectList = [...cityList, ...list]
         .reduce((item, next) => {
           next && obj[next[rowKey]] ? '' : next && (obj[next[rowKey]] = true && item.push(next));
           return item;
         }, [])
         .filter((item) => item && val.includes(item[rowKey]));
-      setSelectMreKey(val);
-      setSelectMre(newSelectList);
+      setSelectCityKey(val);
+      setSelectCity(newSelectList);
     },
   };
 
   return (
     <Modal
-      title={`${type === 'select' ? '选择发布店铺（未激活，暂停营业，禁用不可选）' : '查看店铺'}`}
+      title={'选择市级代理（已解约、已冻结状态不可选）'}
       destroyOnClose
       maskClosable
       width={1000}
       visible={visible}
-      footer={type === 'select' ? undefined : false}
-      okText={`确定（已选${selectMreKey.length}项）`}
+      okText={`确定（已选${selectCityKey.length}项）`}
       onOk={() => {
-        console.log(selectMreKey, selectMre, 'selectMre');
-        onOk({ keys: selectMreKey, list: selectMre });
+        console.log(selectCityKey, selectCity, 'selectCity');
+        onOk({ keys: selectCityKey, list: selectCity });
         onCancel();
       }}
       onCancel={onCancel}
@@ -113,8 +114,7 @@ const CitySelect = ({
         searchItems={searchItems}
         rowKey={(record) => `${record[rowKey]}`}
         dispatchType="cityCompany/fetchGetList"
-        pagination={pagination}
-        rowSelection={type === 'select' ? rowSelection : undefined}
+        rowSelection={rowSelection}
         {...list}
       ></TableDataBlock>
     </Modal>

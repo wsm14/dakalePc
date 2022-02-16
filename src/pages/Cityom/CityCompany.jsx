@@ -81,7 +81,7 @@ const CityCompany = (props) => {
     },
     {
       title: '登录账号',
-      dataIndex: 'contactMobile',
+      dataIndex: 'account',
     },
     {
       title: '联系人姓名',

@@ -25,6 +25,10 @@ const CitySelectShow = ({
     },
     {
       title: '登录账号',
+      dataIndex: 'account',
+    },
+    {
+      title: '联系人电话',
       dataIndex: 'contactMobile',
     },
     ...otherColumns,
