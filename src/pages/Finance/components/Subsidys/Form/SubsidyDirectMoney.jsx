@@ -9,6 +9,8 @@ import {
   UserSelectShow,
   GroupSelectModal,
   GroupSelectShow,
+  CitySelect,
+  CitySelectShow,
 } from '@/components/MerUserSelectTable';
 import FormCondition from '@/components/FormCondition';
 import ImportDataModal from './ImportDataModal';
@@ -319,7 +321,7 @@ const SubsidyDirectMoney = (props) => {
       type: 'noForm',
       visible: role === 'city',
       formItem: (
-        <MreSelectShow
+        <CitySelectShow
           key="CityTable"
           {...cityList}
           setCityList={setCityList}
@@ -355,7 +357,7 @@ const SubsidyDirectMoney = (props) => {
               ),
             },
           ]}
-        ></MreSelectShow>
+        ></CitySelectShow>
       ),
     },
     {
@@ -374,6 +376,14 @@ const SubsidyDirectMoney = (props) => {
   return (
     <>
       <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>
+      {/* city */}
+      <CitySelect
+        keys={cityList.keys}
+        visible={visibleCity}
+        cityList={cityList.list}
+        onOk={(val) => setCityList(val)}
+        onCancel={() => setVisibleCity(false)}
+      ></CitySelect>
       {/* merchant */}
       <MreSelect
         keys={mreList.keys}
