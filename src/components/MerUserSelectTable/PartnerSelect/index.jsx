@@ -35,10 +35,7 @@ const PartnerSelect = ({
       label: '分管区县',
       name: 'cityCode',
       type: 'cascader',
-      select: CITYJSON.map((item) => ({
-        ...item,
-        children: item.children.map((citem) => ({ ...citem, children: undefined })),
-      })),
+      select: CITYJSON,
     },
     {
       label: '联系人电话',

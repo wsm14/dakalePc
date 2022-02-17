@@ -170,6 +170,7 @@ const TaskManage = (props) => {
         dispatchType="subsidyManage/fetchGetTaskList"
         {...subsidyManage.list}
       ></TableDataBlock>
+      {/* 补贴详情 */}
       <TaskDetailList visible={taskDetail} onClose={() => setTaskDates(false)}></TaskDetailList>
     </>
   );

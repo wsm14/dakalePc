@@ -428,7 +428,7 @@ const SubsidyDirectMoney = (props) => {
               render: (val, record) => (
                 <>
                   <InputNumber
-                    value={cityNumber[record.partnerId]}
+                    value={partnerNumber[record.partnerId]}
                     precision={0}
                     min={1}
                     onChange={(val) => {
@@ -443,7 +443,7 @@ const SubsidyDirectMoney = (props) => {
                   {partnerList.list[0].partnerId === record.partnerId && (
                     <Tooltip placement="top" title={'向下填充（已勾选数据）'}>
                       <DownSquareOutlined
-                        onClick={() => downBean(cityNumber[record.partnerId])}
+                        onClick={() => downBean(partnerNumber[record.partnerId])}
                         style={{ fontSize: 20, marginLeft: 5, cursor: 'pointer' }}
                       ></DownSquareOutlined>
                     </Tooltip>
