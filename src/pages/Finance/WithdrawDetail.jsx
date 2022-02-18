@@ -4,6 +4,7 @@ import { authCheck } from '@/layouts/AuthConsumer';
 import MerchantList from './components/Withdraw/MerchantList';
 import MerchantListCash from './components/Withdraw/MerchantListCash';
 import ExpertUserList from './components/Withdraw/ExpertUserList';
+import AllianceTab from './components/Withdraw/AllianceTab';
 
 const tabList = [
   {
@@ -20,6 +21,11 @@ const tabList = [
     key: 'withdrawExpert',
     auth: 'withdrawExpert',
     tab: '哒人提现',
+  },
+  {
+    key: 'withdrawAlliance',
+    auth: 'withdrawAlliance',
+    tab: '加盟商提现',
   },
 ];
 
@@ -38,6 +44,7 @@ const WithdrawDetail = () => {
     withdrawMerchant: <MerchantList></MerchantList>, // 单店卡豆提现
     withdrawMerchantCash: <MerchantListCash></MerchantListCash>, // 单店现金提现
     withdrawExpert: <ExpertUserList></ExpertUserList>, // 哒人提现
+    withdrawAlliance: <AllianceTab></AllianceTab>, // 加盟商提现
   };
 
   return (

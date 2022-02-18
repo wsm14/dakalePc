@@ -50,8 +50,6 @@ const ProceDataForm = (props) => {
     userType = 'merchant',
   } = visible;
 
-  console.log('userType', userType);
-
   // 对应字段修改，contentList 更新
 
   const handleChanges = (type) => {
@@ -88,8 +86,6 @@ const ProceDataForm = (props) => {
         configWithdrawId: detail.configWithdrawId,
         userType: userType,
         ...values,
-        // areaCode: values.areaCode ? values.areaCode[values.areaCode.length - 1] : '',
-        // areaType: values.areaCode == '' || values.areaCode == undefined ? 'all' : 'city',
         handlingFeeList: handlingFeeList,
         monthIsFree: values.monthIsFree ? 1 : 0,
         contentList: values.contentList,
@@ -97,7 +93,14 @@ const ProceDataForm = (props) => {
 
       dispatch({
         type: 'widthdrawRegularList/fetchWithdrawUpdate',
-        payload,
+        payload:
+          userType === 'merchant'
+            ? {
+                ...payload,
+                areaCode: values.areaCode ? values.areaCode[values.areaCode.length - 1] : '',
+                areaType: values.areaCode == '' || values.areaCode == undefined ? 'all' : 'city',
+              }
+            : payload,
         callback: () => {
           childRef.current.fetchGetData();
           onClose();

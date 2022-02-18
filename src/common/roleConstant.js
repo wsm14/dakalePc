@@ -163,6 +163,7 @@ export const ROLE_BUTTON_TYPE = {
   withdrawMerchant: '单店卡豆提现',
   withdrawMerchantCash: '单店现金提现',
   withdrawExpert: '哒人提现',
+  withdrawAlliance: '加盟商提现',
 };
 
 // 数据权限选项
