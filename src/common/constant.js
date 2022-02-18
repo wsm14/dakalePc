@@ -997,3 +997,10 @@ export const VIR_OPEN_STATE = ['禁用', '启用', '已过期'];
 
 // 全局配置 - 虚拟商品优惠比例配置 - 限优惠次数类型
 export const VIR_OPEN_TYPE = ['不限', '每人限制'];
+
+// 提现规则配置 - 代理商级别类型  AgencyTab
+export const AGENCY_TYPE = {
+  province: '省级代理',
+  city: '市级代理',
+  partner: '区县代理',
+};

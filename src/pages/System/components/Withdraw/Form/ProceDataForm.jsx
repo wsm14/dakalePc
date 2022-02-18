@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
+import { AGENCY_TYPE } from '@/common/constant';
 import { Button, Form, InputNumber, Switch } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -19,7 +20,9 @@ const ProceDataForm = (props) => {
     const handlingFee = getData([key, 1, 'handlingFee']);
     const maxMoney = getData([key, 0, 'maxMoney']);
     return [
-      `单笔提现金额最低为${getData('singleMinMoney')}元人民币（${getData('singleMinMoney') * 100 }卡豆)`,
+      `单笔提现金额最低为${getData('singleMinMoney')}元人民币（${
+        getData('singleMinMoney') * 100
+      }卡豆)`,
       `每日可申请提现${getData('dayLimitCount')}次，若当日次数已满，请次日申请；`,
       `提现金额不满${maxMoney}元人民币（${
         maxMoney * 100
@@ -44,7 +47,10 @@ const ProceDataForm = (props) => {
         { minMoney: '', maxMoney: 999999999, handlingFee: '', weight: 2 },
       ],
     },
+    userType = 'merchant',
   } = visible;
+
+  console.log('userType', userType);
 
   // 对应字段修改，contentList 更新
 
@@ -74,14 +80,16 @@ const ProceDataForm = (props) => {
     form.setFieldsValue({ contentList: [...list, ...formListEdit] });
   };
 
+  // 提交
   const handleSave = () => {
     form.validateFields().then((values) => {
       const { handlingFeeList } = values;
       const payload = {
         configWithdrawId: detail.configWithdrawId,
+        userType: userType,
         ...values,
-        areaCode: values.areaCode ? values.areaCode[values.areaCode.length - 1] : '',
-        areaType: values.areaCode == '' || values.areaCode == undefined ? 'all' : 'city',
+        // areaCode: values.areaCode ? values.areaCode[values.areaCode.length - 1] : '',
+        // areaType: values.areaCode == '' || values.areaCode == undefined ? 'all' : 'city',
         handlingFeeList: handlingFeeList,
         monthIsFree: values.monthIsFree ? 1 : 0,
         contentList: values.contentList,
@@ -110,6 +118,12 @@ const ProceDataForm = (props) => {
         });
         return item;
       }),
+      visible: userType === 'merchant',
+    },
+    {
+      type: 'noForm',
+      formItem: <div style={{ marginLeft: 67 }}>{`代理商级别：${AGENCY_TYPE[userType]}`}</div>,
+      visible: userType !== 'merchant',
     },
     {
       label: '提现规则',

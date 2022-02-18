@@ -1,17 +1,17 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
-import ExtraButton from '@/components/ExtraButton';
+import { AGENCY_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import ProceDataForm from './Form/ProceDataForm';
 
-const MerchantTab = (props) => {
+const AgencyTab = (props) => {
   const { loading, list, tabkey } = props;
   const [visible, setVisible] = useState(false);
   const childRef = useRef();
 
   //编辑
   const handleEdit = (row) => {
-    const { provinceCode, cityCode, monthIsFree } = row;
+    const { provinceCode, cityCode, monthIsFree, userType } = row;
     const code = provinceCode ? provinceCode.split(',') : [];
     code.push(cityCode);
     setVisible({
@@ -22,15 +22,16 @@ const MerchantTab = (props) => {
         monthIsFree: Number(monthIsFree),
         areaCode: code,
       },
+      userType,
     });
   };
 
   const getColumns = [
     {
-      title: '地区',
+      title: '代理商级别',
       fixed: 'left',
-      dataIndex: 'areaType',
-      render: (val, row) => <>{val == 'all' ? '通用' : `${row.provinceName}-${row.cityName}`}</>,
+      dataIndex: 'userType',
+      render: (val) => AGENCY_TYPE[val],
     },
     {
       title: '手续费规则',
@@ -80,18 +81,10 @@ const MerchantTab = (props) => {
     },
   ];
 
-  // 权限按钮
-  const btnList = [{ onClick: () => setVisible({ type: 'add', show: true }) }]; // 新增按钮
-
   return (
     <>
       <TableDataBlock
         order
-        cardProps={{
-          // title: '店铺',
-          bordered: false,
-          extra: <ExtraButton list={btnList}></ExtraButton>,
-        }}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
@@ -112,4 +105,4 @@ const MerchantTab = (props) => {
 export default connect(({ widthdrawRegularList, loading }) => ({
   list: widthdrawRegularList.list,
   loading: loading.models.widthdrawRegularList,
-}))(MerchantTab);
+}))(AgencyTab);
