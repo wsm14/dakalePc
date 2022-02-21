@@ -338,6 +338,7 @@ export default [
           'withdrawMerchant',
           'withdrawMerchantCash',
           'withdrawExpert',
+          'withdrawAlliance',
         ],
       },
       {

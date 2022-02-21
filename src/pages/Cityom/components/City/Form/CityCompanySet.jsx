@@ -7,7 +7,7 @@ import AddDetail from './AddForm/index';
 import AccountForm from './AccountForm/CorporateAccount';
 import DrawerCondition from '@/components/DrawerCondition';
 
-const ProvCompanySet = (props) => {
+const CityCompanySet = (props) => {
   const {
     dispatch,
     cRef,
@@ -17,7 +17,7 @@ const ProvCompanySet = (props) => {
     setVisibleAct,
     loading,
     loadingDetail,
-    companyId,
+    cityId,
   } = props;
 
   const { type = 'edit', show = false } = visible;
@@ -29,7 +29,8 @@ const ProvCompanySet = (props) => {
   // 提交数据
   const handleUpData = (next) => {
     (type == 'add' ? Addform : form).validateFields().then((values) => {
-      const { password, contactMobile, entryDate, allCityCode, allCityName, lat } = values;
+      const { agentCityCode, password, contactMobile, entryDate, allCityCode, allCityName, lat } =
+        values;
       if (!lat) {
         notification.info({
           message: '温馨提示',
@@ -38,10 +39,11 @@ const ProvCompanySet = (props) => {
         return;
       }
       dispatch({
-        type: { add: 'provCompany/fetchProvAdd', edit: 'provCompany/fetchProvEdit' }[type],
+        type: { add: 'cityCompany/fetchCityAdd', edit: 'cityCompany/fetchCityEdit' }[type],
         payload: {
           ...values,
-          companyId,
+          cityId,
+          agentCityCode: agentCityCode[1],
           provinceCode: allCityCode[0],
           cityCode: allCityCode[1],
           districtCode: allCityCode[2],
@@ -72,9 +74,9 @@ const ProvCompanySet = (props) => {
       title: `确认${{ 0: '启用', 1: '冻结', 2: '解约' }[status]}？`,
       onOk() {
         dispatch({
-          type: 'provCompany/fetchProvEdit',
+          type: 'cityCompany/fetchCityEdit',
           payload: {
-            companyId: detail.companyId,
+            cityId: detail.cityId,
             status,
           },
           callback: () => {
@@ -181,10 +183,10 @@ const ProvCompanySet = (props) => {
   );
 };
 
-export default connect(({ provCompany, loading }) => ({
-  detail: provCompany.detail,
-  companyId: provCompany.companyId,
+export default connect(({ cityCompany, loading }) => ({
+  detail: cityCompany.detail,
+  cityId: cityCompany.cityId,
   loading:
-    loading.effects['provCompany/fetchProvAdd'] || loading.effects['provCompany/fetchProvEdit'],
-  loadingDetail: loading.effects['provCompany/fetchProvDetail'],
-}))(ProvCompanySet);
+    loading.effects['cityCompany/fetchCityAdd'] || loading.effects['cityCompany/fetchCityEdit'],
+  loadingDetail: loading.effects['cityCompany/fetchCityDetail'],
+}))(CityCompanySet);

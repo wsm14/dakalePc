@@ -10,6 +10,9 @@ import {
   fetchWithdrawManagementList,
   fetchWithdrawManagementTotal,
   fetchWithdrawExportManagementExcel,
+  fetchListCityPartnerWithdrawal,
+  fetchListCityPartnerWithdrawalTotal,
+  fetchListCityPartnerWithdrawalExport,
 } from '@/services/FinanceServices';
 
 export default {
@@ -19,8 +22,10 @@ export default {
     list: { list: [], total: 0 },
     listCash: { list: [], total: 0 },
     expertlist: { list: [], total: 0 },
+    alliancelist: { list: [], total: 0 },
     totalData: { withdrawalFeeSum: 0, allWithdrawalFeeSum: 0, withdrawalHandlingFeeSum: 0 },
     expretTotalData: { withdrawalFeeSum: 0, allWithdrawalFeeSum: 0, withdrawalHandlingFeeSum: 0 },
+    allianceTotalData: { withdrawalFeeSum: 0, allWithdrawalFeeSum: 0, withdrawalHandlingFeeSum: 0 },
   },
 
   reducers: {
@@ -131,6 +136,30 @@ export default {
         description: '备注设置成功',
       });
       callback();
+    },
+    // get 提现明细 - 加盟商提现 - 列表
+    *fetchListCityPartnerWithdrawal({ payload }, { call, put }) {
+      const response = yield call(fetchListCityPartnerWithdrawal, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          alliancelist: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+    // get 提现明细 - 加盟商提现 - 合计
+    *fetchListCityPartnerWithdrawalTotal({ payload }, { call, put }) {
+      const response = yield call(fetchListCityPartnerWithdrawalTotal, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          allianceTotalData: content,
+        },
+      });
     },
   },
 };

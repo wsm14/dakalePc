@@ -1,15 +1,32 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { FRANCHISE_APP_STATUS, FRANCHISE_COOPERATION_TYPE } from '@/common/constant';
+import { FRANCHISE_COOPERATION_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import FranchiseDrawer from './components/Franchise/FranchiseDrawer';
 import { checkCityName } from '@/utils/utils';
+
+const tabList = [
+  {
+    key: '0',
+    tab: '未处理',
+  },
+  {
+    key: '1',
+    tab: '已处理',
+  },
+];
 
 const FranchiseApplication = (props) => {
   const { list, loading, dispatch } = props;
 
   const childRef = useRef();
+
+  const [tabKey, setTabKey] = useState('0');
   const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    childRef.current && childRef.current.fetchGetData({ handled: tabKey });
+  }, [tabKey]);
 
   // 搜索参数
   const searchItems = [
@@ -20,12 +37,6 @@ const FranchiseApplication = (props) => {
     {
       label: '手机号',
       name: 'mobile',
-    },
-    {
-      label: '申请状态',
-      name: 'handled',
-      type: 'select',
-      select: FRANCHISE_APP_STATUS,
     },
     {
       label: '合作意向类型',
@@ -81,12 +92,6 @@ const FranchiseApplication = (props) => {
       dataIndex: 'createTime',
     },
     {
-      title: '申请状态',
-      align: 'right',
-      dataIndex: 'handled',
-      render: (val) => FRANCHISE_APP_STATUS[val],
-    },
-    {
       type: 'handle',
       dataIndex: 'userApplyIdString',
       render: (val, record) => [
@@ -116,6 +121,11 @@ const FranchiseApplication = (props) => {
   return (
     <>
       <TableDataBlock
+        cardProps={{
+          tabList: tabList,
+          activeTabKey: tabKey,
+          onTabChange: setTabKey,
+        }}
         order
         keepData
         cRef={childRef}
@@ -123,6 +133,7 @@ const FranchiseApplication = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.userApplyIdString}`}
+        params={{ handled: tabKey }}
         dispatchType="franchiseApp/fetchGetList"
         {...list}
       ></TableDataBlock>

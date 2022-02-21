@@ -75,9 +75,6 @@ export const GMV_DATA_TYPE = {
   expiredOrder: '过期不可退',
 };
 
-// 加盟申请状态
-export const FRANCHISE_APP_STATUS = ['未处理', '已处理'];
-
 // 提现状态
 export const WITHDRAW_STATUS = [false, '发起提现', '处理中', '成功', '失败'];
 
@@ -289,7 +286,11 @@ export const USER_SOURCE = {
 };
 
 // 合作意向类型
-export const FRANCHISE_COOPERATION_TYPE = { company: '省公司', partner: '区县代理' };
+export const FRANCHISE_COOPERATION_TYPE = {
+  company: '省公司',
+  city: '市级代理',
+  partner: '区县代理',
+};
 
 // 分享类型
 export const PUZZLE_AD_TYPE = { video: '视频', image: '图片' };
@@ -347,7 +348,14 @@ export const SUBSIDY_TYPE = {
 export const SUBSIDY_BEAN_TYPE = { out: '补贴', in: '回收' };
 
 // 补贴管理 任务列表 补贴角色
-export const SUBSIDY_TASK_ROLE = { user: '用户', merchant: '店铺', group: '集团', brand: '品牌' };
+export const SUBSIDY_TASK_ROLE = {
+  user: '用户',
+  merchant: '店铺',
+  group: '集团',
+  brand: '品牌',
+  city: '市级代理',
+  partner: '区县代理',
+};
 
 // 补贴管理 行为管理 补贴角色
 export const SUBSIDY_ACTION_ROLE = { user: '用户', merchant: '店铺', group: '集团', brand: '品牌' };
@@ -989,3 +997,10 @@ export const VIR_OPEN_STATE = ['禁用', '启用', '已过期'];
 
 // 全局配置 - 虚拟商品优惠比例配置 - 限优惠次数类型
 export const VIR_OPEN_TYPE = ['不限', '每人限制'];
+
+// 提现规则配置 - 代理商级别类型  AgencyTab
+export const AGENCY_TYPE = {
+  province: '省级代理',
+  city: '市级代理',
+  partner: '区县代理',
+};

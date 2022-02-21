@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
-import { checkCityName } from '@/utils/utils';
+import { checkCityName, getCityName } from '@/utils/utils';
 import { brand } from '@/pages/Business/components/Group/Detail/detailsIndex';
 
 const SubsidyDetail = (props) => {
@@ -15,7 +15,7 @@ const SubsidyDetail = (props) => {
   // group: string;)
   // brand
 
-  const getColumnsGroup=[
+  const getColumnsGroup = [
     {
       title: '集团名称',
       dataIndex: 'groupName',
@@ -36,7 +36,7 @@ const SubsidyDetail = (props) => {
       align: 'center',
       dataIndex: 'subsidyBean',
     },
-  ]
+  ];
 
   const getColumnsVideo = [
     {
@@ -129,6 +129,44 @@ const SubsidyDetail = (props) => {
     },
   ];
 
+  const getColumnsCity = [
+    {
+      title: '企业名称',
+      align: 'center',
+      dataIndex: 'companyName',
+    },
+    {
+      title: '分管城市',
+      align: 'center',
+      dataIndex: 'agentCityCode',
+      render: (val) => getCityName(val) || '--',
+    },
+    {
+      title: '补贴/回收卡豆数',
+      align: 'center',
+      dataIndex: 'subsidyBean',
+    },
+  ];
+
+  const getColumnsPartner = [
+    {
+      title: '企业名称',
+      align: 'center',
+      dataIndex: 'partnerName',
+    },
+    {
+      title: '分管区县',
+      align: 'center',
+      dataIndex: 'agentDistrictCode',
+      render: (val) => getCityName(val) || '--',
+    },
+    {
+      title: '补贴/回收卡豆数',
+      align: 'center',
+      dataIndex: 'subsidyBean',
+    },
+  ];
+
   const modalProps = {
     title: `详情-${titles}-补贴/回收`,
     visible: show,
@@ -140,8 +178,10 @@ const SubsidyDetail = (props) => {
   const columns = {
     user: getColumns,
     merchant: getColumnsM,
-    group:getColumnsGroup,
+    group: getColumnsGroup,
     brand: getColumnsVideo,
+    city: getColumnsCity,
+    partner: getColumnsPartner,
   }[role];
 
   return (
@@ -150,7 +190,15 @@ const SubsidyDetail = (props) => {
         order
         noCard={false}
         columns={role ? columns : []}
-        rowKey={(record) => (role == 'brand' ? `${record.id}` : `${record.configBrandIdString}`)}
+        rowKey={(record) =>
+          ['brand', 'city', 'partner'].includes(role)
+            ? {
+                brand: `${record.id}`,
+                city: `${record.cityId}`,
+                partner: `${record.partnerIdString}`,
+              }[role]
+            : `${record.configBrandIdString}`
+        }
         list={list || []}
         total={list?.length || 0}
       ></TableDataBlock>

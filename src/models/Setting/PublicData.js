@@ -40,6 +40,8 @@ import {
   fetchListHitting,
   fetchPagePreferentialActivity,
   fetchListConfigGoodsTag,
+  fetchGlobalListCity,
+  fetchGlobalListPartner,
 } from '@/services/PublicServices';
 
 export default {
@@ -654,6 +656,30 @@ export default {
           configGoodsTagList: content.configGoodsTagDTOS,
         },
       });
+    },
+    //get 市级代理列表
+    *fetchGlobalListCity({ payload, callback }, { put, call }) {
+      const response = yield call(fetchGlobalListCity, payload);
+      if (!response) return;
+      const { content } = response;
+      const arr = content.recordList.map((item) => ({
+        label: item.companyName,
+        value: item.cityId,
+      }));
+
+      callback && callback(arr);
+    },
+    //get 区县代理列表
+    *fetchGlobalListPartner({ payload, callback }, { put, call }) {
+      const response = yield call(fetchGlobalListPartner, payload);
+      if (!response) return;
+      const { content } = response;
+      const arr = content.recordList.map((item) => ({
+        label: item.partnerName,
+        value: item.partnerId,
+      }));
+
+      callback && callback(arr);
     },
   },
 };
