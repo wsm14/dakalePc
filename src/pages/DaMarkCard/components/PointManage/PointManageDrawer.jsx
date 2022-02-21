@@ -94,7 +94,7 @@ const PointManageDrawer = (props) => {
           beanPoolList,
           beanPoolRange,
           dayCount,
-          remain,
+          remain: dayCount,
           timeRange: specialTime === 'all' ? undefined : `${timeRangeStart}-${timeRangeEnd}`,
           total,
         },
