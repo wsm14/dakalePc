@@ -175,8 +175,16 @@ export default {
     // 修改市级公司信息
     *fetchCityEdit({ payload, callback }, { call, put, select }) {
       const cityAccountId = yield select((state) => state.cityCompany.cityAccountId);
-      const { cityId, gender, email, account, password } = payload;
-      const payloadAccont = { cityId, cityAccountId, gender, email, account, password };
+      const { cityId, gender, email, account, password, status } = payload;
+      const payloadAccont = {
+        status: status == '1' ? '0' : '1',
+        cityId,
+        cityAccountId,
+        gender,
+        email,
+        account,
+        password,
+      };
       const response = yield call(fetchCityEdit, payload);
       const response2 = yield call(fetchCityAccountEdit, payloadAccont);
       if (!response || !response2) return;
