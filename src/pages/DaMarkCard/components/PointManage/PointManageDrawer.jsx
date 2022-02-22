@@ -94,7 +94,7 @@ const PointManageDrawer = (props) => {
           beanPoolList,
           beanPoolRange,
           dayCount,
-          remain,
+          remain: dayCount,
           timeRange: specialTime === 'all' ? undefined : `${timeRangeStart}-${timeRangeEnd}`,
           total,
         },
@@ -112,6 +112,7 @@ const PointManageDrawer = (props) => {
                 shardingKey: Number(activityGoodsDTO.ownerIdString),
                 total,
                 weight: total,
+                acquireType: 'manual',
               }),
             ),
           },
@@ -123,7 +124,7 @@ const PointManageDrawer = (props) => {
           hittingRewardOnlineGoodsObject: {
             ...hittingRewardOnlineGoodsObject,
             subRewardList: hittingRewardOnlineGoodsObject.subRewardList.map(
-              ({ total, ...other }) => ({ ...other, total, weight: total }),
+              ({ total, ...other }) => ({ ...other, total, weight: total, acquireType: 'manual' }),
             ),
           },
         };
@@ -134,7 +135,7 @@ const PointManageDrawer = (props) => {
           hittingRewardActualGoodsObject: {
             ...hittingRewardActualGoodsObject,
             subRewardList: hittingRewardActualGoodsObject.subRewardList.map(
-              ({ total, ...other }) => ({ ...other, total, weight: total }),
+              ({ total, ...other }) => ({ ...other, total, weight: total, acquireType: 'manual' }),
             ),
           },
         };

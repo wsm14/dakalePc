@@ -53,7 +53,7 @@ const FormList = (props) => {
           1,
           {
             ...dataList[index],
-            onlineGoodsDTO: { ...dataList.onlineGoodsDTO, goodsImg: imgUrl.toString() },
+            onlineGoodsDTO: { ...dataList[index].onlineGoodsDTO, goodsImg: imgUrl.toString() },
           },
         ],
       ],
