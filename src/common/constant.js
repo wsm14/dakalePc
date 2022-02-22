@@ -78,6 +78,12 @@ export const GMV_DATA_TYPE = {
 // 提现状态
 export const WITHDRAW_STATUS = [false, '发起提现', '处理中', '成功', '失败'];
 
+// 加盟商提现平台类型
+export const WITHDRAW_ALLIANCE_TYPE = {
+  city: '市级提现',
+  partner: '区县提现',
+};
+
 // 反馈状态
 export const FEEDBACK_STATUS = [false, '处理中', '已解答'];
 

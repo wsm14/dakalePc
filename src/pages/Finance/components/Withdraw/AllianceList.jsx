@@ -3,11 +3,11 @@ import moment from 'moment';
 import { connect } from 'umi';
 import { Spin, Tag } from 'antd';
 import debounce from 'lodash/debounce';
-import { FormOutlined } from '@ant-design/icons';
 import { checkCityName } from '@/utils/utils';
 import { WITHDRAW_STATUS } from '@/common/constant';
-import TableDataBlock, { HandleSetTable } from '@/components/TableDataBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import WithdrawRemark from './WithdrawRemark';
+import excelProps from './ExcelProps';
 
 const AllianceList = (props) => {
   const { withdrawDetail, loading, dispatch, tabkey, loadings } = props;
@@ -157,6 +157,16 @@ const AllianceList = (props) => {
     });
   };
 
+  // 导出excel按钮
+  const excelBtn = ({ get }) => [
+    {
+      type: 'excel',
+      dispatch: 'withdrawDetail/fetchListCityPartnerWithdrawalExport',
+      data: get(),
+      exportProps: excelProps,
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
@@ -181,6 +191,7 @@ const AllianceList = (props) => {
         }
         cRef={childRef}
         noCard={false}
+        btnExtra={excelBtn}
         searchCallback={fetchWithdrawExpertTotal}
         loading={loading.effects['withdrawDetail/fetchListCityPartnerWithdrawal']}
         columns={getColumns}

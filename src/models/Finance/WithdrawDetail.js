@@ -161,5 +161,12 @@ export default {
         },
       });
     },
+    // 提现明细 - 加盟商提现 - 导出
+    *fetchListCityPartnerWithdrawalExport({ payload, callback }, { call }) {
+      const response = yield call(fetchListCityPartnerWithdrawalExport, payload);
+      if (!response) return;
+      const { content } = response;
+      if (callback) callback(content.merchantBeanWithdrawalList);
+    },
   },
 };
