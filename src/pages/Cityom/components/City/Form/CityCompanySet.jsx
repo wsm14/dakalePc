@@ -116,7 +116,7 @@ const CityCompanySet = (props) => {
   ];
 
   const modalProps = {
-    title: `${{ add: '新增省公司', edit: '编辑信息', detail: '省公司详情' }[type]}`,
+    title: `${{ add: '新增市公司', edit: '编辑信息', detail: '市公司详情' }[type]}`,
     visible: show,
     maskClosable: false,
     loading: loadingDetail,
@@ -165,7 +165,7 @@ const CityCompanySet = (props) => {
             edit: <AddDetail form={form} type={type} detail={detail}></AddDetail>,
             detail: (
               <Tabs defaultActiveKey="1" onChange={setTabKey}>
-                <Tabs.TabPane tab="省公司信息" key="1">
+                <Tabs.TabPane tab="市公司信息" key="1">
                   <AddDetail type={type} detail={detail}></AddDetail>
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="账户信息" key="2">

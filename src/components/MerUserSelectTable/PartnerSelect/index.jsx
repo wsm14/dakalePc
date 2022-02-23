@@ -12,7 +12,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 const PartnerSelect = ({
   visible,
   keys = [],
-  cityList = [],
+  partnerList = [],
   onOk,
   onCancel,
   list = [],
@@ -33,7 +33,7 @@ const PartnerSelect = ({
     },
     {
       label: '分管区县',
-      name: 'cityCode',
+      name: 'districtCode',
       type: 'cascader',
       select: CITYJSON,
     },
@@ -68,14 +68,14 @@ const PartnerSelect = ({
   const rowSelection = {
     preserveSelectedRowKeys: true,
     selectedRowKeys: selectCityKey,
-    getCheckboxProps: ({ status }) => ({
-      disabled: ['1', '2'].includes(status),
+    getCheckboxProps: ({ partnerStatus }) => ({
+      disabled: ['1', '2'].includes(partnerStatus),
     }),
     onChange: (val, list) => {
       // 先去重处理 排除重复已选数据
       // 再对 已选的数据mreList和最新数据进行去重处理 获得去重后结果
       const obj = {};
-      const newSelectList = [...cityList, ...list]
+      const newSelectList = [...partnerList, ...list]
         .reduce((item, next) => {
           next && obj[next[rowKey]] ? '' : next && (obj[next[rowKey]] = true && item.push(next));
           return item;
