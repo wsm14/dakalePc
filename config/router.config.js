@@ -226,7 +226,7 @@ export default [
         path: '/cityom/cityCo',
         name: '市级公司',
         component: './Cityom/CityCompany',
-        buttons: ['save', 'edit', 'info', 'status', 'relieve'],
+        buttons: ['save', 'edit', 'info', 'status', 'relieve', 'set'],
       },
       {
         path: '/cityom/area',
