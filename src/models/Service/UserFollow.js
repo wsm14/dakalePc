@@ -102,11 +102,13 @@ export default {
     },
     //  post 运营后台-用户跟进-设置跟进标签
     *fetchSetUserFollowUpTags({ payload, callback }, { call }) {
-      const response = yield call(fetchSetUserFollowUpTags, payload);
+      const { type, ...other } = payload;
+      const response = yield call(fetchSetUserFollowUpTags, other);
       if (!response) return;
+      const message = { add: '新增标签成功', edit: '修改标签成功' }[type];
       notification.success({
         message: '温馨提示',
-        description: '新增标签成功',
+        description: message,
       });
       callback && callback();
     },
