@@ -141,7 +141,7 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
           type === 'specialGoods' ||
           type === 'writeOff' ||
           type === 'expiredOrder'
-            ? '平台佣金=商品佣金-区县分佣-省公司分佣-用户家主分佣-店铺家主分佣-哒人带货分佣-豆长团队分佣'
+            ? '平台佣金=商品佣金-区县分佣-省公司分佣-地市级分佣-用户家主分佣-店铺家主分佣-哒人带货分佣-豆长团队分佣'
             : '平台佣金=店铺服务费-区县分佣-市级分佣-省公司分佣-用户家主分佣-店铺家主分佣'}
         </span>
       </div>
@@ -194,6 +194,7 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
         <div className={styles.detail_item_class}>
           省公司分佣：{detail.provinceProfitBean || 0}卡豆
         </div>
+        <div className={styles.detail_item_class}>地市级分佣：{detail.cityProfitBean || 0}卡豆</div>
         <div className={styles.detail_item_class}>
           用户家主分佣：{detail.userParentProfitBean || 0}卡豆
         </div>
