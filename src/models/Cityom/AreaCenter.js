@@ -184,9 +184,9 @@ export default {
     },
     *fetchAreaEdit({ payload, callback }, { call, put, select }) {
       const partnerAccountId = yield select((state) => state.areaCenter.partnerAccountId);
-      const { partnerId, gender, email, account, password, status } = payload;
+      const { partnerId, gender, email, account, password, partnerStatus } = payload;
       const payloadAccont = {
-        status: status == '1' || status == '2' ? '0' : '1',
+        status: partnerStatus == '1' || partnerStatus == '2' ? '0' : '1',
         partnerId,
         partnerAccountId,
         gender,

@@ -62,15 +62,15 @@ const AreaCompanySet = (props) => {
   };
 
   // 修改省公司状态
-  const fetchAreaEdit = (status) => {
+  const fetchAreaEdit = (partnerStatus) => {
     Modal.confirm({
-      title: `确认${{ 0: '启用', 1: '冻结', 2: '解约' }[status]}？`,
+      title: `确认${{ 0: '启用', 1: '冻结', 2: '解约' }[partnerStatus]}？`,
       onOk() {
         dispatch({
           type: 'areaCenter/fetchAreaEdit',
           payload: {
-            companyId: detail.companyId,
-            status,
+            partnerId: detail.partnerId,
+            partnerStatus,
           },
           callback: () => {
             closeDrawer();
