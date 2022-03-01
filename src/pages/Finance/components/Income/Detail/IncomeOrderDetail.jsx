@@ -13,11 +13,13 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
   const { show = false, type = 'scan', detail = {}, bean = 0 } = visible;
 
   // 公式计算dom
-  const formulaDom = (title = '服务费=店铺实收*服务费比例', footTip) => (
+  const formulaDom = (title = '服务费=用户实付*服务费比例', footTip) => (
     <div style={{ lineHeight: 2.5 }}>
       <div>{title}</div>
       <span style={{ color: '#00000069' }}>
         区县分佣=服务费*20%
+        <br />
+        市级分佣=服务费*10%
         <br />
         省公司分佣=服务费*5%
         <br />
@@ -140,7 +142,7 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
           type === 'writeOff' ||
           type === 'expiredOrder'
             ? '平台佣金=商品佣金-区县分佣-省公司分佣-用户家主分佣-店铺家主分佣-哒人带货分佣-豆长团队分佣'
-            : '平台佣金=店铺服务费-区县分佣-省公司分佣-用户家主分佣-店铺家主分佣'}
+            : '平台佣金=店铺服务费-区县分佣-市级分佣-省公司分佣-用户家主分佣-店铺家主分佣'}
         </span>
       </div>
       <div className={styles.income_order_detail}>
