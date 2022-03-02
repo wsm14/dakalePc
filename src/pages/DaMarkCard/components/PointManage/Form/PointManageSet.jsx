@@ -26,13 +26,14 @@ const PlatformSet = (props) => {
   const [selectLocal, setSelectLocal] = useState(''); // 已选地址
   const [userList, setUserList] = useState(false); // 搜索的用户列表
 
-  const { distanceFlag, parentUserType, parentUserId } = initialValues;
+  const { distanceFlag, parentUserType, parentUserId, lnt, lat } = initialValues;
   useEffect(() => {
     if (initialValues.hittingMainId) {
       setRadioData({
         distanceFlagType: distanceFlag,
         parentUserTypes: parentUserType,
       });
+      setLocation([lnt, lat]);
       parentUserType === 'merchant' ? fetchGetMre('', parentUserId) : fetchGetUser(parentUserId);
     }
   }, []);

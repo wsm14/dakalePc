@@ -123,8 +123,8 @@ const AllianceList = (props) => {
     {
       title: '提现金额',
       align: 'right',
-      dataIndex: 'withdrawalBeanAmount',
-      render: (val) => val / 100,
+      dataIndex: 'withdrawalFee',
+      render: (val) => `￥ ${val}`,
     },
     {
       title: '实收提现手续费',
