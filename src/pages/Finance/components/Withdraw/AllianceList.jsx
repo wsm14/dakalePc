@@ -27,7 +27,7 @@ const AllianceList = (props) => {
 
   useEffect(() => {
     fetchWithdrawExpertTotal();
-    childRef.current.fetchGetData();
+    childRef.current.fetchGetData({ userType: tabkey });
   }, [tabkey]);
 
   // 搜索公司名称
