@@ -31,6 +31,8 @@ const GoodsDetail = (props) => {
     serviceDivisionDTO: dService = {},
   } = detail;
 
+  console.log('detail', detail);
+
   const [recordList, setRecordList] = useState({});
 
   const [visibleRefuse, setVisibleRefuse] = useState(false);
