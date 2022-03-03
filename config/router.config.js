@@ -471,6 +471,7 @@ export default [
         component: './Operation/PlatformTicketManage',
         buttons: ['addnum', 'info', 'edit', 'down', 'save', 'up'],
       },
+      // 视频管理    video
       {
         path: '/operation/share',
         name: '视频管理',
