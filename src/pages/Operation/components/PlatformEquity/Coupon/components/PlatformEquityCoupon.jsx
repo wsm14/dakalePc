@@ -105,6 +105,10 @@ const CouponDrawer = (props) => {
             relateType: 'merchant',
             couponDetailType: '1',
             paymentModeObject: { type: 'self' },
+            reduceObject: {
+              anytimeRefund: 0,
+              expireRefund: 0,
+            },
           }}
         ></CouponSet>
       ),
