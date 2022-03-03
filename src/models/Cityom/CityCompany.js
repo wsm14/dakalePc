@@ -177,7 +177,7 @@ export default {
       const cityAccountId = yield select((state) => state.cityCompany.cityAccountId);
       const { cityId, gender, email, account, password, status } = payload;
       const payloadAccont = {
-        status: status == '1' ? '0' : '1',
+        status: status == '1' || status == '2' ? '0' : '1',
         cityId,
         cityAccountId,
         gender,

@@ -38,7 +38,7 @@ export default {
       const { content } = response;
       const { ownerCouponInfo = {}, auditDetail = {} } = content;
 
-      const { couponDesc = '', serviceDivisionDTO = {} } = ownerCouponInfo;
+      const { couponDesc = '', serviceDivisionDTO = {}, reduceObject = {} } = ownerCouponInfo;
       const { divisionTemplateType, ...templateOther } = serviceDivisionDTO;
 
       callback({
@@ -50,6 +50,11 @@ export default {
         couponDesc: couponDesc?.includes(']') ? JSON.parse(couponDesc || '[]') : [],
         ...content,
         serviceDivisionDTO: templateOther,
+        reduceObject: {
+          ...reduceObject,
+          anytimeRefund: Number(reduceObject.anytimeRefund),
+          expireRefund: Number(reduceObject.expireRefund),
+        },
       });
     },
   },

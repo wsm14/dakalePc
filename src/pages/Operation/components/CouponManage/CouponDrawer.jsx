@@ -88,7 +88,21 @@ const CouponDrawer = (props) => {
     },
     add: {
       title: '新建券',
-      children: <CouponSet {...listProp} form={form} initialValues={detail}></CouponSet>,
+      children: (
+        <CouponSet
+          {...listProp}
+          form={form}
+          initialValues={{
+            reduceObject: {
+              anytimeRefund: 1,
+              expireRefund: 1,
+            },
+            ownerType: 'merchant',
+            couponDetailType: '0',
+            ...detail,
+          }}
+        ></CouponSet>
+      ),
     },
     edit: {
       title: '编辑券',

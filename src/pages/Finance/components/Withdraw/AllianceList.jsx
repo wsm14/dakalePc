@@ -7,7 +7,7 @@ import { checkCityName } from '@/utils/utils';
 import { WITHDRAW_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import WithdrawRemark from './WithdrawRemark';
-import excelProps from './ExcelProps';
+import excelProps from './AllianceExcelProps';
 
 const AllianceList = (props) => {
   const { withdrawDetail, loading, dispatch, tabkey, loadings } = props;
@@ -27,7 +27,7 @@ const AllianceList = (props) => {
 
   useEffect(() => {
     fetchWithdrawExpertTotal();
-    childRef.current.fetchGetData();
+    childRef.current.fetchGetData({ userType: tabkey });
   }, [tabkey]);
 
   // 搜索公司名称
@@ -123,8 +123,8 @@ const AllianceList = (props) => {
     {
       title: '提现金额',
       align: 'right',
-      dataIndex: 'withdrawalBeanAmount',
-      render: (val) => val / 100,
+      dataIndex: 'withdrawalFee',
+      render: (val) => `￥ ${val}`,
     },
     {
       title: '实收提现手续费',
@@ -162,7 +162,7 @@ const AllianceList = (props) => {
     {
       type: 'excel',
       dispatch: 'withdrawDetail/fetchListCityPartnerWithdrawalExport',
-      data: get(),
+      data: { ...get(), userType: tabkey },
       exportProps: excelProps,
     },
   ];

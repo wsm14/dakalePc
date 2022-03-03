@@ -166,7 +166,7 @@ export default {
       const response = yield call(fetchListCityPartnerWithdrawalExport, payload);
       if (!response) return;
       const { content } = response;
-      if (callback) callback(content.merchantBeanWithdrawalList);
+      if (callback) callback(content.directWithdrawalList);
     },
   },
 };
