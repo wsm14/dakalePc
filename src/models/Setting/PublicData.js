@@ -390,7 +390,7 @@ export default {
     },
 
     // 平台券
-    *fetchPlatformCouponSelect({ payload }, { call, put }) {
+    *fetchPlatformCouponSelect({ payload, callback }, { call, put }) {
       const response = yield call(fetchPlatformCouponSelect, {
         ...payload,
         adminFlag: 1,
@@ -403,6 +403,8 @@ export default {
           PlatformCoupon: { list: content.recordList, total: content.total },
         },
       });
+      callback && callback(content.recordList);
+     
     },
     *fetchGetExpertLevel({ payload }, { call, put }) {
       const response = yield call(fetchGetExpertLevel, payload);

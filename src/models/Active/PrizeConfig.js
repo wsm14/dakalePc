@@ -3,9 +3,9 @@ import {
   fetchBlindBoxList,
   fetchBlindBoxConfigList,
   fetchBlindBoxConfigSet,
-  fetchBlindBoxAdd,
-  fetchBlindBoxEdit,
-  fetchBlindBoxDelete,
+  fetchAddPrizePool,
+  fetchUpdatePrizePool,
+  fetchDeletePrizePool,
 } from '@/services/ActiveServices';
 
 export default {
@@ -33,12 +33,12 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          blindBox: content.blindBoxProductObjects,
+          blindBox: content.luckPrizePoolList,
         },
       });
     },
-    *fetchBlindBoxAdd({ payload, callback }, { call }) {
-      const response = yield call(fetchBlindBoxAdd, payload);
+    *fetchAddPrizePool({ payload, callback }, { call }) {
+      const response = yield call(fetchAddPrizePool, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
@@ -46,8 +46,8 @@ export default {
       });
       callback();
     },
-    *fetchBlindBoxEdit({ payload, callback }, { call }) {
-      const response = yield call(fetchBlindBoxEdit, payload);
+    *fetchUpdatePrizePool({ payload, callback }, { call }) {
+      const response = yield call(fetchUpdatePrizePool, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
@@ -55,8 +55,8 @@ export default {
       });
       callback();
     },
-    *fetchBlindBoxDelete({ payload, callback }, { call }) {
-      const response = yield call(fetchBlindBoxDelete, payload);
+    *fetchDeletePrizePool({ payload, callback }, { call }) {
+      const response = yield call(fetchDeletePrizePool, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',

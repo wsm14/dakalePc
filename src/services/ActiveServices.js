@@ -117,30 +117,30 @@ export function fetchMaterialConfigSave(data) {
 
 // get 盲盒奖池列表 - 列表
 export async function fetchBlindBoxList(params) {
-  return request('/admin/config/blindBox/listBlindBoxProduct', {
+  return request('/admin/luckDraw/getAllPrizePool', {
     params,
   });
 }
 
 // post 盲盒奖池 - 添加
-export function fetchBlindBoxAdd(data) {
-  return request('/admin/config/blindBox/saveBlindBoxProduct', {
+export function fetchAddPrizePool(data) {
+  return request('/admin/luckDraw/addPrizePool', {
     method: 'POST',
     data,
   });
 }
 
 // post 盲盒奖池 - 修改
-export function fetchBlindBoxEdit(data) {
-  return request('/admin/config/blindBox/updateBlindBoxProduct', {
+export function fetchUpdatePrizePool(data) {
+  return request('/admin/luckDraw/updatePrizePool', {
     method: 'POST',
     data,
   });
 }
 
 // post 盲盒奖池 - 删除
-export function fetchBlindBoxDelete(data) {
-  return request('/admin/config/blindBox/deleteBlindBoxProduct', {
+export function fetchDeletePrizePool(data) {
+  return request('/admin/luckDraw/deletePrizePool', {
     method: 'POST',
     data,
   });
