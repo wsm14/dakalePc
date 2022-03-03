@@ -23,7 +23,7 @@ const GroupSelect = ({
   onOk,
   onCancel,
   data = {},
-  rowKey = 'id',
+  rowKey = 'luckPrizeIdStr',
   loading,
 }) => {
   const [selectGroup, setSelectGroup] = useState([]); // 选中的商品
@@ -41,12 +41,12 @@ const GroupSelect = ({
     {
       label: '奖品类型',
       type: 'select',
-      name: 'type',
+      name: 'prizeType',
       select: BLINDBOX_PRIZE_TYPE,
     },
     {
       label: '奖品名称',
-      name: 'prize',
+      name: 'prizeName',
     },
   ];
 
@@ -54,16 +54,16 @@ const GroupSelect = ({
   const getColumns = [
     {
       title: '奖品ID',
-      dataIndex: 'id',
+      dataIndex: 'luckPrizeIdStr',
     },
     {
       title: '奖品类型',
-      dataIndex: 'type',
+      dataIndex: 'prizeType',
       render: (val) => BLINDBOX_PRIZE_TYPE[val],
     },
     {
       title: '中奖图',
-      dataIndex: 'winningImg',
+      dataIndex: 'winPrizeImg',
       render: (val) => <PopImgShow url={val}></PopImgShow>,
     },
     {
@@ -73,11 +73,11 @@ const GroupSelect = ({
     },
     {
       title: '奖品名称',
-      dataIndex: 'showName',
+      dataIndex: 'prizeName',
     },
     {
       title: '是否真实奖品',
-      dataIndex: 'isParticipate',
+      dataIndex: 'isJoinLuck',
       render: (val) => ['否', '是'][val],
     },
   ];
@@ -85,8 +85,8 @@ const GroupSelect = ({
   const rowSelection = {
     preserveSelectedRowKeys: true,
     selectedRowKeys: selectGroupKey,
-    getCheckboxProps: ({ isParticipate }) => ({
-      disabled: ['0'].includes(isParticipate) && data?.isNovice === 1, // 是否真实奖品 0-否 1-是 默认值1
+    getCheckboxProps: ({ isJoinLuck }) => ({
+      disabled: ['0'].includes(isJoinLuck) && data?.isNovice === 1, // 是否真实奖品 0-否 1-是 默认值1
     }),
     onChange: (val, list) => {
       setSelectGroupKey(val);
@@ -136,5 +136,5 @@ export default connect(({ prizeConfig, loading }) => ({
   blindBox: prizeConfig.blindBox,
   loading:
     loading.effects['prizeConfig/fetchBlindBoxList'] ||
-    loading.effects['prizeConfig/fetchBlindBoxConfigSet'],
+    loading.effects['prizeConfig/fetchSetLuckDrawConfig'],
 }))(GroupSelect);

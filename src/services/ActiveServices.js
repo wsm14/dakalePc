@@ -147,15 +147,16 @@ export function fetchDeletePrizePool(data) {
 }
 
 // get 盲盒抽奖配置 - 列表
-export async function fetchBlindBoxConfigList(params) {
-  return request('/admin/config/blindBox/getBlindBoxRule', {
+export async function fetchGetLuckDrawPool(params) {
+  return request('/admin/luckDraw/getLuckDrawPool', {
     params,
   });
 }
 
 // post 盲盒抽奖配置 - 设置
-export function fetchBlindBoxConfigSet(data) {
-  return request('/admin/config/blindBox/setBlindBoxRule', {
+export function fetchSetLuckDrawConfig(data) {
+  // /admin/luckDraw/setLuckDrawConfig
+  return request('/admin/luckDraw/setLuckDrawConfig', {
     method: 'POST',
     data,
   });

@@ -50,17 +50,17 @@ const Rule = (props) => {
     {
       title: '奖品ID',
       fixed: 'left',
-      dataIndex: 'id',
+      dataIndex: 'luckPrizeIdStr',
     },
     {
       title: '奖品类型',
       fixed: 'left',
-      dataIndex: 'type',
+      dataIndex: 'prizeType',
       render: (val) => BLINDBOX_PRIZE_TYPE[val],
     },
     {
       title: '中奖图',
-      dataIndex: 'winningImg',
+      dataIndex: 'winPrizeImg',
       render: (val) => <PopImgShow url={val}></PopImgShow>,
     },
     {
@@ -70,22 +70,22 @@ const Rule = (props) => {
     },
     {
       title: '奖品名称',
-      dataIndex: 'prize',
+      dataIndex: 'prizeName',
       ellipsis: true,
     },
     {
       title: '盲盒展示名称',
-      dataIndex: 'showName',
+      dataIndex: 'prizeName',
       ellipsis: true,
     },
     {
       title: '抽中概率',
-      dataIndex: 'rate',
-      render: (val) => `${val}%`,
+      dataIndex: 'probability',
+      render: (val) => `${val*100}%`,
     },
     {
       title: '是否真实奖品',
-      dataIndex: 'isParticipate',
+      dataIndex: 'isJoinLuck',
       render: (val) => DAREN_TEMP_FLAG[val],
     },
   ];
@@ -94,27 +94,27 @@ const Rule = (props) => {
   const base = [
     {
       label: '每次抽取所需卡豆',
-      name: 'bean',
+      name: 'needBean',
     },
     {
       label: '盲盒背景图',
       type: 'upload',
-      name: 'backImg',
+      name: 'backGroundImg',
     },
     {
       label: '盲盒动效',
       type: 'otherUpload',
-      name: 'backFile',
+      name: 'dynamicEffect',
     },
     {
       label: '奖池',
-      name: 'allBlindBoxProducts',
+      name: 'showPrizePoolList',
       render: (val) => (
         <TableDataBlock
           noCard={false}
           loading={loading}
           columns={getColumns}
-          rowKey={(record) => `${record.id}`}
+          rowKey={(record) => `${record.luckPrizeIdStr}`}
           list={val}
           pagination={false}
         ></TableDataBlock>
@@ -136,21 +136,19 @@ const Rule = (props) => {
     },
     {
       label: '奖池',
-      name: 'allBlindBoxProducts',
+      name: 'showPrizePoolList',
       render: (val) => (
         <TableDataBlock
           noCard={false}
           loading={loading}
           columns={getColumns}
-          rowKey={(record) => `${record.id}`}
+          rowKey={(record) => `${record.luckPrizeIdStr}`}
           list={val}
           pagination={false}
         ></TableDataBlock>
       ),
     },
   ];
-
-  // useEffect(() => {}, []);
 
   return (
     <>
