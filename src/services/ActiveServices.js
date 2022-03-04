@@ -117,7 +117,7 @@ export function fetchMaterialConfigSave(data) {
 
 // get 盲盒奖池列表 - 列表
 export async function fetchBlindBoxList(params) {
-  return request('/admin/luckDraw/getAllPrizePool', {
+  return request('/admin/luckDraw/getPrizePoolList', {
     params,
   });
 }
@@ -170,6 +170,12 @@ export function fetchBoxLotteryList(params) {
     params,
   });
 }
+// get 天天抽奖 - 列表
+export function fetchGetLuckDrawRecord(params) {
+  return request('/admin/luckDraw/getLuckDrawRecord', {
+    params,
+  });
+}
 
 // get 盲盒中奖记录 - 列表导出
 export function fetchBoxLotteryExport(params) {
@@ -217,6 +223,13 @@ export function fetchListUserPackageManagementBean(params) {
 // get 盲盒中奖记录 - 签到游戏/免费领商品(卡豆权益品) - 列表导出
 export function fetchListUserPackageManagementBeanExport(params) {
   return request('/admin/gameRecord/listGameRecordManagementExport', {
+    params,
+  });
+}
+
+//天天抽奖其他导出
+export function fetchAllPrizeRecordExport(params) {
+  return request('/admin/luckDraw/getAllPrizeRecord', {
     params,
   });
 }

@@ -1,6 +1,7 @@
 import { notification } from 'antd';
 import {
   fetchBoxLotteryList,
+  fetchGetLuckDrawRecord, //天天抽奖
   fetchBoxLotteryExport,
   fetchBoxDetail,
   fetchBoxAddAndPush,
@@ -10,6 +11,7 @@ import {
   fetchDeliveryUserPackage,
   fetchListUserPackageManagementBean,
   fetchListUserPackageManagementBeanExport,
+  fetchAllPrizeRecordExport,
 } from '@/services/ActiveServices';
 
 export default {
@@ -17,6 +19,10 @@ export default {
 
   state: {
     beanBoxList: {
+      list: [],
+      total: 0,
+    },
+    prizeList: {
       list: [],
       total: 0,
     },
@@ -53,6 +59,26 @@ export default {
           },
         },
       });
+    },
+    *fetchGetLuckDrawRecord({ payload }, { call, put }) {
+      const response = yield call(fetchGetLuckDrawRecord, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          prizeList: {
+            list: content.prizeRecordList,
+            total: content.total,
+          },
+        },
+      });
+    },
+    *fetchAllPrizeRecordExport({payload, callback},{call}){
+      const response = yield call(fetchAllPrizeRecordExport, payload);
+      if (!response) return;
+      const { content } = response;
+      if (callback) callback(content.allPrizeRecordList);
     },
     *fetchGetExcel({ payload, callback }, { call }) {
       const response = yield call(fetchBoxLotteryExport, payload);

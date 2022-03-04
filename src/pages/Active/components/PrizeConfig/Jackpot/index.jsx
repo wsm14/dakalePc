@@ -26,6 +26,10 @@ const Jackpot = (props) => {
       title: '奖品',
       dataIndex: 'prize',
       ellipsis: true,
+      render: (val, row) =>
+        ['rightGood', 'commerce', 'actualGoods', 'platformCoupon', 'none'].includes(row.prizeType)
+          ? `${row.prizeName}`
+          : `${val}`,
     },
     {
       title: '盲盒展示名称',
@@ -58,7 +62,7 @@ const Jackpot = (props) => {
             setVisible({
               show: true,
               type: 'edit',
-              detail: {...row, isJoinLuck: Boolean(Number(row?.isJoinLuck)) },
+              detail: { ...row, isJoinLuck: Boolean(Number(row?.isJoinLuck)) },
             }),
         },
         {

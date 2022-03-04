@@ -52,6 +52,16 @@ const ConfigureFrawerSet = (props) => {
       // 上传图片到oss -> 提交表单
       const winningImgList = await aliOssUpload(winPrizeImg);
       const prizeImgList = await aliOssUpload(prizeImg);
+      let pName = '';
+      let prizeNew = '';
+      if (prizeType === 'platformCoupon') {
+        pName = platformGiftPackRelateList[0].couponName;
+        prizeNew = platformGiftPackRelateList[0].platformCouponId;
+      } else if (prizeType === 'none') {
+        pName = '谢谢惠顾';
+      } else {
+        pName = `${BLINDBOX_PRIZE_TYPE[prizeType]}*${prize}`;
+      }
       dispatch({
         type: { add: 'prizeConfig/fetchAddPrizePool', edit: 'prizeConfig/fetchUpdatePrizePool' }[
           type
@@ -59,9 +69,20 @@ const ConfigureFrawerSet = (props) => {
         payload: {
           ...other,
           prizeType,
-          prizeName:prizeType === 'platformCoupon' ? platformGiftPackRelateList[0].couponName : prizeName,
-          prize:
-            prizeType === 'platformCoupon' ? platformGiftPackRelateList[0].platformCouponId : prize,
+          prizeTypeName:BLINDBOX_PRIZE_TYPE[prizeType],
+          //卡豆，星豆，肥料，抽奖次数，成长值 prizeName（奖品名称）为prizeTypeName和prize（奖品卡豆数/数量）拼接值，2，平台券prizeName取券名称，prize 取券ID、谢谢惠顾prizeName与prize均为谢谢惠顾
+          prizeName: [
+            'platformCoupon',
+            'none',
+            'bean',
+            'starBean',
+            'growValue',
+            'luckDrawChance',
+            'manure',
+          ].includes(prizeType)
+            ? pName
+            : prizeName,
+          prize: ['platformCoupon'].includes(prizeType) ? prizeNew : prize,
           winPrizeImg: winningImgList.toString(),
           prizeImg: prizeImgList.toString(),
           isJoinLuck: isJoinLuck ? Number(isJoinLuck) : 0,
@@ -105,19 +126,9 @@ const ConfigureFrawerSet = (props) => {
         select: BLINDBOX_PRIZE_TYPE,
         disabled: type === 'edit',
         onChange: (val) => {
-          Object.keys(BLINDBOX_PRIZE_TYPE).map((key) => {
-            if (key === val.target.value) {
-              form.setFieldsValue({ prizeTypeName: BLINDBOX_PRIZE_TYPE[key] });
-            }
-          });
           form.setFieldsValue({ prize: '', prizeName: '' });
           setPrizeTypes(val.target.value);
         },
-      },
-      {
-        label: '类型名称',
-        name: 'prizeTypeName',
-        hidden: true,
       },
       {
         label: '商品名称',
@@ -161,17 +172,20 @@ const ConfigureFrawerSet = (props) => {
         type: 'upload',
         name: 'winPrizeImg',
         maxFile: 1,
+        visible: prizeTypes !== 'none',
       },
       {
         label: '奖品图',
         type: 'upload',
         name: 'prizeImg',
         maxFile: 1,
+        visible: prizeTypes !== 'none',
       },
       {
         label: '是否真实奖品',
         name: 'isJoinLuck',
         type: 'switch',
+        visible: prizeTypes !== 'none',
       },
     ],
     [type, prizeTypes],

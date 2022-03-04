@@ -72,6 +72,10 @@ const Rule = (props) => {
       title: '奖品名称',
       dataIndex: 'prizeName',
       ellipsis: true,
+      // render: (val, row) =>
+      // ['rightGood', 'commerce', 'actualGoods', 'platformCoupon', 'none'].includes(row.prizeType)
+      //   ? `${row.prizeName}`
+      //   : `${val}`,
     },
     {
       title: '盲盒展示名称',

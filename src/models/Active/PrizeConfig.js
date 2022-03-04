@@ -33,7 +33,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          blindBox: content.luckPrizePoolList,
+          blindBox: content.prizeList,
         },
       });
     },
