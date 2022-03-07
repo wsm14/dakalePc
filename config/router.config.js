@@ -253,6 +253,12 @@ export default [
         component: './DaMarkCard/PointManage',
         buttons: ['point', 'award', 'advert', 'info', 'edit', 'signDetail', 'save', 'qrCode'],
       },
+      {
+        path: '/daMarkCard/pointCheck',
+        name: '点位管理',
+        component: './DaMarkCard/PointCheck',
+        buttons: ['check','checkDetail','info'],
+      },
       // 哒人管理 expert
       {
         path: '/expert/uaerlist',
