@@ -31,8 +31,12 @@ const GroupSelect = ({
 
   useEffect(() => {
     if (visible) {
-      setSelectGroup(selectList);
-      setSelectGroupKey(selectList.map((item) => `${item[rowKey]}`));
+      // 过滤掉已经删除的数据
+      let list = [];
+      const selectids = selectList.map((item) => item[rowKey]);
+      list = blindBox.filter((ids) => selectids.includes(ids[rowKey]));
+      setSelectGroup(list);
+      setSelectGroupKey(list.map((item) => `${item[rowKey]}`));
     }
   }, [visible]);
 
