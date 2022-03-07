@@ -135,14 +135,14 @@ const TemplateDrawSet = (props) => {
       addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
       onChange: (e) => handleChange(),
     },
-    {
-      label: '哒人分佣比例', // 手动分佣需要展示
-      name: ['differenceDivisionObjects', 'daren'],
-      addonAfter: '%',
-      visible: commissType === 'difference',
-      disabled: true,
-      addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
-    },
+    // {
+    //   label: '哒人分佣比例', // 手动分佣需要展示
+    //   name: ['differenceDivisionObjects', 'daren'],
+    //   addonAfter: '%',
+    //   visible: commissType === 'difference',
+    //   disabled: true,
+    //   addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+    // },
     {
       label: '平台分佣比例', // 手动分佣需要展示
       name: ['differenceDivisionObjects', 'platform'],

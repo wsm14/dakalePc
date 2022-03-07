@@ -298,3 +298,17 @@ export function fetchListConfigGoodsTag(params) {
     params,
   });
 }
+
+//get 市级代理列表
+export function fetchGlobalListCity(params) {
+  return request('/admin/city/listCity', {
+    params,
+  });
+}
+
+//get 区县代理列表
+export function fetchGlobalListPartner(params) {
+  return request('/admin/partner/listPartner', {
+    params,
+  });
+}

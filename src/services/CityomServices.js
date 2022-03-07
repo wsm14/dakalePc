@@ -197,4 +197,58 @@ export function fetchCityList(params) {
   });
 }
 
+// post 市公司列表 - 新增
+export function fetchCityAdd(data) {
+  return request('/admin/city/saveCity', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 市公司列表 - 设置绑定账户信息
+export function fetchCityBankSet(data) {
+  return request('/admin/city/submitBankBindingInfo', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 市公司列表 - 详情
+export function fetchCityDetail(params) {
+  return request('/admin/city/getCityDetail', {
+    params,
+  });
+}
+
+// get 市公司列表 - 账户信息+银行卡 详情
+export function fetchCityBankDetail(params) {
+  return request('/admin/bankBindingInfo/getBankBindingInfo', {
+    params,
+  });
+}
+
+// post 市公司列表 - 修改
+export function fetchCityEdit(data) {
+  return request('/admin/city/updateCity', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 市公司列表 - 修改帐号
+export function fetchCityAccountEdit(data) {
+  return request('/admin/city/account/updateCityAccount', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 市公司列表 - 设置可管理区县
+export function fetchCityManageDistrictSet(data) {
+  return request('/admin/city/setCityManageDistrict', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 市公司列表 end

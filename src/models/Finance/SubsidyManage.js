@@ -53,19 +53,23 @@ export default {
         userInfoObjects = [],
         merchantGroupObjects = [],
         userMerchantObjects = [],
-        totalBeans
+        cityObjects = [],
+        partnerObjects = [],
+        totalBeans,
       } = content.subsidyDTO;
 
       const detailList = {
         user: userInfoObjects,
         group: merchantGroupObjects,
         merchant: userMerchantObjects,
+        city: cityObjects,
+        partner: partnerObjects,
       }[role];
 
       yield put({
         type: 'save',
         payload: {
-          detailList: { list: detailList, total: detailList?.length || 0,totalBeans },
+          detailList: { list: detailList, total: detailList?.length || 0, totalBeans },
         },
       });
     },

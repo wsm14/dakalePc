@@ -14,15 +14,15 @@ export default {
     },
     proxy: {
       '/admin': {
-        target,
+        target: target,
         changeOrigin: true,
       },
       '/user': {
-        target,
+        target: target,
         changeOrigin: true,
       },
       '/common': {
-        target,
+        target: target,
         changeOrigin: true,
       },
       '/media': {

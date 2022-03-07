@@ -45,7 +45,7 @@ const TaskManage = (props) => {
       label: '补贴角色',
       type: 'select',
       name: 'role',
-      select: tabkey === 'direct' ? SUBSIDY_ACTION_ROLE : SUBSIDY_TASK_ROLE,
+      select: tabkey === 'direct' ? SUBSIDY_ACTION_ROLES : SUBSIDY_TASK_ROLE,
     },
     {
       label: '时间',
@@ -70,7 +70,7 @@ const TaskManage = (props) => {
       title: '角色',
       align: 'center',
       dataIndex: 'role',
-      render: (val) => (tabkey === 'direct' ? SUBSIDY_ACTION_ROLES[val] : SUBSIDY_ACTION_ROLE[val]),
+      render: (val) => (tabkey === 'direct' ? SUBSIDY_ACTION_ROLES[val] : SUBSIDY_TASK_ROLE[val]),
     },
     {
       title: '类型',
@@ -170,6 +170,7 @@ const TaskManage = (props) => {
         dispatchType="subsidyManage/fetchGetTaskList"
         {...subsidyManage.list}
       ></TableDataBlock>
+      {/* 补贴详情 */}
       <TaskDetailList visible={taskDetail} onClose={() => setTaskDates(false)}></TaskDetailList>
     </>
   );

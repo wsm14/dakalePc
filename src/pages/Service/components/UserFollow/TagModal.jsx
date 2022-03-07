@@ -21,7 +21,6 @@ const TagModal = (props) => {
 
   useEffect(() => {
     if (show) {
-      // setTags(tagArr);
       handleGetTags();
       setSelectedTags(oldTag);
     }
@@ -47,12 +46,13 @@ const TagModal = (props) => {
   };
 
   // 新增标签列表
-  const handleSetTags = (val) => {
+  const handleSetTags = (val, type) => {
     dispatch({
       type: 'userFollow/fetchSetUserFollowUpTags',
       payload: {
         dictionaryId: '1417829187663585300',
         extraParam: val,
+        type,
       },
       callback: () => {
         handleGetTags();
@@ -103,12 +103,8 @@ const TagModal = (props) => {
     if (inputValue && tags.indexOf(inputValue) === -1) {
       newTag = [...tags, inputValue];
     }
-    // setTags(newTag);
-    handleSetTags(newTag.join(','));
-    // handleSetTags('品类问题,视频问题,商家问题');
-    // handleGetTags();
+    handleSetTags(newTag.join(','),'add');
     setInputValue('');
-    // form.setFieldsValue({ extraParam: newTag });
   };
 
   const handleEditInputChange = (e) => {
@@ -119,9 +115,7 @@ const TagModal = (props) => {
   const handleEditInputConfirm = () => {
     const newTags = [...tags];
     newTags[editInputIndex] = editInputValue;
-    // setTags(newTags);
-    handleSetTags(newTags.join(','));
-    // form.setFieldsValue({ extraParam: newTags });
+    handleSetTags(newTags.join(','),'edit');
     setEditInputIndex('-1');
     setEditInputValue('');
   };

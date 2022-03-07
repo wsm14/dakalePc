@@ -22,6 +22,10 @@ const tabList = [
     tab: '省公司',
   },
   {
+    key: 'city',
+    tab: '市级',
+  },
+  {
     key: 'partner',
     tab: '区县',
   },

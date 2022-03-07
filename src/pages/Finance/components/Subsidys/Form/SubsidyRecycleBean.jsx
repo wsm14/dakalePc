@@ -2,13 +2,17 @@ import React, { useState, useEffect } from 'react';
 import lodash from 'lodash';
 import { DownSquareOutlined } from '@ant-design/icons';
 import { Button, InputNumber, Tooltip, Space } from 'antd';
-import { SUBSIDY_ACTION_ROLES, SUBSIDY_ACTION_ROLE } from '@/common/constant';
+import { SUBSIDY_ACTION_ROLES, SUBSIDY_TASK_ROLE } from '@/common/constant';
 import {
   MreSelect,
   MreSelectShow,
   GroupSelectModal,
   GroupSelectShow,
   UserSelectShow,
+  CitySelect,
+  CitySelectShow,
+  PartnerSelect,
+  PartnerSelectShow,
 } from '@/components/MerUserSelectTable';
 import FormCondition from '@/components/FormCondition';
 import ImportDataModal from './ImportDataModal';
@@ -19,6 +23,10 @@ const SubsidyRecycleBean = (props) => {
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
   const [visibleGroup, setVisibleGroup] = useState(false); // 选择店铺弹窗
   const [mreList, setMreList] = useState({ keys: [], list: [] }); // 选择店铺后回显的数据
+  const [visibleCity, setVisibleCity] = useState(false); // 选择市级代理弹窗
+  const [cityList, setCityList] = useState({ keys: [], list: [] }); // 选择市级代理后回显的数据
+  const [visiblePartner, setVisiblePartner] = useState(false); // 选择区县代理弹窗
+  const [partnerList, setPartnerList] = useState({ keys: [], list: [] }); // 选择区县代理后回显的数据
   const [groupList, setGroupList] = useState({ keys: [], list: [] }); // 选择集团后回显的数据
   const [mreNumber, setMreNumber] = useState({}); // 店铺回收卡豆数 暂存输入值
   const [groupNumber, setGroupNumber] = useState({}); // 集团回收卡豆数 暂存输入值
@@ -28,12 +36,26 @@ const SubsidyRecycleBean = (props) => {
   const [visibleSelect, setVisibleSelect] = useState(false); // 选择用户弹窗
   const [userList, setUserList] = useState({ keys: [], list: [], resultList: [] }); // 选择后回显的数据
   const [userNumber, setUserNumber] = useState({}); // 卡豆数 暂存输入值
+  const [cityNumber, setCityNumber] = useState({}); // 市级代理回收卡豆数 暂存输入值
+  const [partnerNumber, setPartnerNumber] = useState({}); // 区县代理回收卡豆数 暂存输入值
 
-   // 监听用户卡豆数变化
-   useEffect(() => {
-    // user: '用户', merchant: '店铺', group: '集团'
-    const list = { user: userList, merchant: mreList, group: groupList }[role];
-    const number = { user: userNumber, merchant: mreNumber, group: groupNumber }[role];
+  // 监听用户卡豆数变化
+  useEffect(() => {
+    // user: '用户', merchant: '店铺', group: '集团', city: '市级代理', partner: '区县代理'
+    const list = {
+      user: userList,
+      merchant: mreList,
+      group: groupList,
+      city: cityList,
+      partner: partnerList,
+    }[role];
+    const number = {
+      user: userNumber,
+      merchant: mreNumber,
+      group: groupNumber,
+      city: cityNumber,
+      partner: partnerNumber,
+    }[role];
     const newData = lodash.pickBy(number, (value, key) => list.keys.includes(key));
     const subsidyBeanObjects = Object.keys(newData).map((item) => ({
       ownerId: item,
@@ -41,13 +63,30 @@ const SubsidyRecycleBean = (props) => {
     }));
     setMreTotal(lodash.sumBy(subsidyBeanObjects, 'bean'));
     form.setFieldsValue({ subsidyBeanObjects });
-  }, [userList, userNumber, mreList, mreNumber, groupList, groupNumber]);
+  }, [
+    userList,
+    userNumber,
+    mreList,
+    mreNumber,
+    groupList,
+    groupNumber,
+    cityList,
+    cityNumber,
+    partnerList,
+    partnerNumber,
+  ]);
 
   // 向下填充
   const downBean = (bean) => {
     if (!bean) return;
     const obj = {};
-    const list = { user: userList, merchant: mreList, group: groupList }[role];
+    const list = {
+      user: userList,
+      merchant: mreList,
+      group: groupList,
+      city: cityList,
+      partner: partnerList,
+    }[role];
     list.keys.map((item) => (obj[item] = bean));
     switch (role) {
       case 'user':
@@ -58,6 +97,12 @@ const SubsidyRecycleBean = (props) => {
         break;
       case 'group':
         setGroupNumber(obj);
+        break;
+      case 'city':
+        setCityNumber(obj);
+        break;
+      case 'partner':
+        setPartnerNumber(obj);
         break;
     }
   };
@@ -74,13 +119,15 @@ const SubsidyRecycleBean = (props) => {
       label: '角色',
       name: 'role',
       type: 'select',
-      select: tab === 'direct' ? SUBSIDY_ACTION_ROLES : SUBSIDY_ACTION_ROLE,
+      select: tab === 'direct' ? SUBSIDY_ACTION_ROLES : SUBSIDY_TASK_ROLE,
       onChange: (val) => {
         form.setFieldsValue({ subsidyBeanObjects: undefined });
         setRole(val);
         setUserList({ keys: [], list: [] });
         setMreList({ keys: [], list: [] });
         setGroupList({ keys: [], list: [] });
+        setCityList({ keys: [], list: [] });
+        setPartnerList({ keys: [], list: [] });
       },
     },
     {
@@ -270,6 +317,124 @@ const SubsidyRecycleBean = (props) => {
         ></UserSelectShow>
       ),
     },
+
+    {
+      label: '适用市级代理',
+      name: 'subsidyBeanObjects',
+      type: 'formItem',
+      rules: [{ required: true, message: '请选择市级代理' }],
+      visible: role === 'city',
+      formItem: (
+        <Space size="large">
+          <Button type="primary" ghost onClick={() => setVisibleCity(true)}>
+            选择市级代理
+          </Button>
+        </Space>
+      ),
+    },
+    {
+      label: '适用市级代理',
+      type: 'noForm',
+      visible: role === 'city',
+      formItem: (
+        <CitySelectShow
+          key="CityTable"
+          {...cityList}
+          setCityList={setCityList}
+          otherColumns={[
+            {
+              fixed: 'right',
+              title: '回收卡豆数',
+              dataIndex: 'bean',
+              render: (val, record) => (
+                <>
+                  <InputNumber
+                    value={cityNumber[record.cityId]}
+                    precision={0}
+                    min={1}
+                    onChange={(val) => {
+                      setCityNumber(({ sum, ...other }) => {
+                        return {
+                          ...other,
+                          [record.cityId]: val,
+                        };
+                      });
+                    }}
+                  ></InputNumber>
+                  {cityList.list[0].cityId === record.cityId && (
+                    <Tooltip placement="top" title={'向下填充（已勾选数据）'}>
+                      <DownSquareOutlined
+                        onClick={() => downBean(cityNumber[record.cityId])}
+                        style={{ fontSize: 20, marginLeft: 5, cursor: 'pointer' }}
+                      ></DownSquareOutlined>
+                    </Tooltip>
+                  )}
+                </>
+              ),
+            },
+          ]}
+        ></CitySelectShow>
+      ),
+    },
+
+    {
+      label: '适用区县代理',
+      name: 'subsidyBeanObjects',
+      type: 'formItem',
+      rules: [{ required: true, message: '请选择区县代理' }],
+      visible: role === 'partner',
+      formItem: (
+        <Space size="large">
+          <Button type="primary" ghost onClick={() => setVisiblePartner(true)}>
+            选择区县代理
+          </Button>
+        </Space>
+      ),
+    },
+    {
+      label: '适用区县代理',
+      type: 'noForm',
+      visible: role === 'partner',
+      formItem: (
+        <PartnerSelectShow
+          key="PartnerTable"
+          {...partnerList}
+          setPartnerList={setPartnerList}
+          otherColumns={[
+            {
+              fixed: 'right',
+              title: '回收卡豆数',
+              dataIndex: 'bean',
+              render: (val, record) => (
+                <>
+                  <InputNumber
+                    value={partnerNumber[record.partnerId]}
+                    precision={0}
+                    min={1}
+                    onChange={(val) => {
+                      setPartnerNumber(({ sum, ...other }) => {
+                        return {
+                          ...other,
+                          [record.partnerId]: val,
+                        };
+                      });
+                    }}
+                  ></InputNumber>
+                  {partnerList.list[0].partnerId === record.partnerId && (
+                    <Tooltip placement="top" title={'向下填充（已勾选数据）'}>
+                      <DownSquareOutlined
+                        onClick={() => downBean(partnerNumber[record.partnerId])}
+                        style={{ fontSize: 20, marginLeft: 5, cursor: 'pointer' }}
+                      ></DownSquareOutlined>
+                    </Tooltip>
+                  )}
+                </>
+              ),
+            },
+          ]}
+        ></PartnerSelectShow>
+      ),
+    },
     {
       label: '回收卡豆数',
       name: 'subsidyBeanObjects',
@@ -287,6 +452,22 @@ const SubsidyRecycleBean = (props) => {
   return (
     <>
       <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>
+      {/* partner */}
+      <PartnerSelect
+        keys={partnerList.keys}
+        visible={visiblePartner}
+        partnerList={partnerList.list}
+        onOk={(val) => setPartnerList(val)}
+        onCancel={() => setVisiblePartner(false)}
+      ></PartnerSelect>
+      {/* city */}
+      <CitySelect
+        keys={cityList.keys}
+        visible={visibleCity}
+        cityList={cityList.list}
+        onOk={(val) => setCityList(val)}
+        onCancel={() => setVisibleCity(false)}
+      ></CitySelect>
       <MreSelect
         keys={mreList.keys}
         visible={visible}

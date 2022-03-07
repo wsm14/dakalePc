@@ -147,6 +147,7 @@ const SubsidyShop = (props) => {
           dispatchType="subsidyShop/fetchSubsidyShopList"
           {...subsidyShop.list}
         ></TableDataBlock>
+        {/* 详情 */}
         <SubsidyDetail visible={visible} onClose={() => setVisible(false)}></SubsidyDetail>
       </Card>
     </>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
-import { checkCityName } from '@/utils/utils';
+import { checkCityName, getCityName } from '@/utils/utils';
 import { SUBSIDY_BEAN_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 
@@ -133,6 +133,84 @@ const TaskDetailList = (props) => {
         },
       ],
     },
+    city: {
+      api: 'subsidyManage/fetchSubsidyTaskDetailList',
+      searchItems: [
+        {
+          label: '企业名称',
+          name: 'name',
+        },
+        {
+          label: '联系人电话',
+          name: 'mobile',
+        },
+      ],
+      getColumns: [
+        {
+          title: '企业名称',
+          dataIndex: 'companyName',
+          width: 200,
+          ellipsis: { lines: 2 },
+        },
+        {
+          title: '分管城市',
+          dataIndex: 'agentCityCode',
+          render: (val) => getCityName(val) || '--',
+        },
+        {
+          title: '登录账号',
+          dataIndex: 'account',
+        },
+        {
+          title: '联系人电话',
+          dataIndex: 'contactMobile',
+        },
+        {
+          title: `${SUBSIDY_BEAN_TYPE[mode]}卡豆数`,
+          align: 'right',
+          dataIndex: 'subsidyBean',
+        },
+      ],
+    },
+    partner: {
+      api: 'subsidyManage/fetchSubsidyTaskDetailList',
+      searchItems: [
+        {
+          label: '企业名称',
+          name: 'name',
+        },
+        {
+          label: '联系人电话',
+          name: 'mobile',
+        },
+      ],
+      getColumns: [
+        {
+          title: '企业名称',
+          dataIndex: 'partnerName',
+          width: 200,
+          ellipsis: { lines: 2 },
+        },
+        {
+          title: '分管区县',
+          dataIndex: 'agentDistrictCode',
+          render: (val) => getCityName(val) || '--',
+        },
+        {
+          title: '登录账号',
+          dataIndex: 'account',
+        },
+        {
+          title: '联系人电话',
+          dataIndex: 'contactMobile',
+        },
+        {
+          title: `${SUBSIDY_BEAN_TYPE[mode]}卡豆数`,
+          align: 'right',
+          dataIndex: 'subsidyBean',
+        },
+      ],
+    },
   }[role];
 
   return (
@@ -150,7 +228,7 @@ const TaskDetailList = (props) => {
         loading={loading}
         searchItems={tableProps.searchItems}
         columns={tableProps.getColumns}
-        rowKey={(row) => row.merchantId || row.userId}
+        rowKey={(row) => row.cityId || row.partnerIdString || row.merchantId || row.userId}
         params={{ subsidyId, role }}
         dispatchType={tableProps.api}
         size="middle"

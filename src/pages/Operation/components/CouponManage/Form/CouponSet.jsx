@@ -521,22 +521,7 @@ const CouponSet = (props) => {
       <FormCondition
         form={form}
         formItems={formItems}
-        initialValues={
-          {
-            reduceObject: {
-              anytimeRefund: 1,
-              expireRefund: 1,
-            },
-            ...initialValues,
-          } || {
-            reduceObject: {
-              anytimeRefund: 1,
-              expireRefund: 1,
-            },
-            ownerType: 'merchant',
-            couponDetailType: '0',
-          }
-        }
+        initialValues={initialValues}
       ></FormCondition>
       <MreSelect
         dispatchType={'baseData/fetchSkuAvailableMerchant'}

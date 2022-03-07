@@ -169,6 +169,27 @@ export function fetchWithdrawExpertSetRemark(data) {
   });
 }
 
+// get 提现明细 - 加盟商提现 - 列表
+export function fetchListCityPartnerWithdrawal(params) {
+  return request('/admin/cityPartnerWithdrawal/listCityPartnerWithdrawal', {
+    params,
+  });
+}
+
+// get 提现明细 - 加盟商提现 - 合计
+export function fetchListCityPartnerWithdrawalTotal(params) {
+  return request('/admin/cityPartnerWithdrawal/listCityPartnerWithdrawalTotal', {
+    params,
+  });
+}
+
+// get 提现明细 - 加盟商提现 - 导出excel
+export function fetchListCityPartnerWithdrawalExport(params) {
+  return request('/admin/cityPartnerWithdrawal/listCityPartnerWithdrawalExport', {
+    params,
+  });
+}
+
 // 提现明细 end
 
 // 平台收益
