@@ -148,7 +148,7 @@ export const EXPERT_LIST_TYPE = { daren: '哒人', douzhang: '豆长' };
 export const EXPERT_TEMP_STATUS = ['未开始', '实习中', '实习结束'];
 
 // 哒小团提现状态
-export const WXCOMMUNITY_WITHDRAW_STATUS = ['待审核', '已审核'];
+export const COMMUNITY_WITHDRAW_STATUS = ['待审核', '已审核'];
 
 // 活动状态
 export const ACTIVITY_STATUS = ['待开始', '进行中', '已下架'];

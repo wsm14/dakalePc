@@ -1,13 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { WXCOMMUNITY_WITHDRAW_STATUS } from '@/common/constant';
+import { COMMUNITY_WITHDRAW_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
+import CommunityDetail from './CommunityDetail';
 
 const WchatCommunityList = (props) => {
   const { list, loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState(false); // 新增弹窗
+  const [visible, setVisible] = useState(false); // 详情
 
   // 搜索参数
   const searchItems = [
@@ -26,17 +27,15 @@ const WchatCommunityList = (props) => {
       label: '审核状态',
       type: 'select',
       name: 'status',
-      select: WXCOMMUNITY_WITHDRAW_STATUS,
+      select: COMMUNITY_WITHDRAW_STATUS,
     },
     {
       label: '提现账户',
-      type: 'select',
       name: 'withdrawalAccount',
     },
-
     {
       label: '用户昵称',
-      type: 'username',
+      name: 'username',
     },
     {
       label: '提现单号',
@@ -91,35 +90,39 @@ const WchatCommunityList = (props) => {
     },
     {
       title: '用户账号',
-      dataIndex: 'mobile',
       align: 'center',
+      dataIndex: 'mobile',
     },
     {
       title: '审核状态',
       align: 'center',
       dataIndex: 'status',
-      render: (val) => WXCOMMUNITY_WITHDRAW_STATUS[val],
+      render: (val) => COMMUNITY_WITHDRAW_STATUS[val],
     },
-    // {
-    //   type: 'handle',
-    //   dataIndex: 'directWithdrawalAuditId',
-    //   render: (userTempLevelId, row) => [
-    //     {
-    //       type: 'cancelTemp',
-    //       pop: true,
-    //       visible: row.status === '1',
-    //       click: () => fetchExpertStop({ userTempLevelId }),
-    //     },
-    //   ],
-    // },
+    {
+      type: 'handle',
+      dataIndex: 'directWithdrawalAuditId',
+      render: (val, row) => [
+        {
+          type: 'info',
+          visible: row.status === '1',
+          click: () => fetchGetDetail(val, 'info'),
+        },
+        {
+          type: 'check',
+          visible: record.status === '0',
+          click: () => fetchGetDetail(val, 'check'),
+        },
+      ],
+    },
   ];
 
-  // 取消实习
-  const fetchExpertStop = (values) => {
+  // 获取提现详情
+  const fetchGetDetail = (id, type) => {
     dispatch({
-      type: 'expertTempList/fetchExpertTempStop',
-      payload: values,
-      callback: childRef.current.fetchGetData,
+      type: 'withdrawAudit/fetchWithdrawAuditCommunityDetail',
+      payload: { directWithdrawalAuditId: id },
+      callback: (detail) => setVisible({ show: true, type, detail }),
     });
   };
 
@@ -127,14 +130,21 @@ const WchatCommunityList = (props) => {
     <>
       <TableDataBlock
         order
+        noCard={false}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.directWithdrawalAuditId}`}
-        // dispatchType="withdrawAudit/fetchWithdrawAuditCommunityList"
-        // {...list}
+        dispatchType="withdrawAudit/fetchWithdrawAuditCommunityList"
+        {...list}
       ></TableDataBlock>
+      {/* 详情 */}
+      <CommunityDetail
+        cRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></CommunityDetail>
     </>
   );
 };

@@ -219,4 +219,19 @@ export function fetchWithdrawAuditCommunityList(params) {
   });
 }
 
+// get 提现审核 - 哒小团提现详情
+export function fetchWithdrawAuditCommunityDetail(params) {
+  return request('/admin/community/direct/withdrawal/withdrawalAuditDetail', {
+    params,
+  });
+}
+
+// post 提现审核 - 审核通过
+export function fetchWithdrawAuditAllow(data) {
+  return request('/community/direct/withdrawal/doWithdrawalAudit', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 提现审核 end
