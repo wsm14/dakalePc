@@ -38,7 +38,7 @@ function EditBean(props) {
             probability
           }
         })
-        console.log(newTabList,"newTabList")
+      
         payload = {
           needBean: values.needBean,
           giveTimes:values.giveTimes,
@@ -315,7 +315,7 @@ function EditBean(props) {
       <PrizeSelectModal
         visible={modalVisible}
         selectList={tableList}
-        data={{ isNovice: 0 }} // 覆盖数据 isNovice 是否属于新手必中奖池 0-否 1-是 这里不是新手奖池
+        // data={{ isNovice: 0 }} // 覆盖数据 isNovice 是否属于新手必中奖池 0-否 1-是 这里不是新手奖池
         onOk={handleBlindConfigSet}
         onCancel={() => setModalVisible(false)}
       ></PrizeSelectModal>
