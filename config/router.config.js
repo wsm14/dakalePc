@@ -353,6 +353,11 @@ export default [
         component: './Finance/PlatformIncome',
         buttons: ['exportList'],
       },
+      {
+        path: '/finance/withdrawAudit',
+        name: '提现审核',
+        component: './Finance/WithdrawAudit',
+      },
       // 广告营销 market
       {
         path: '/market/addNewActivity',

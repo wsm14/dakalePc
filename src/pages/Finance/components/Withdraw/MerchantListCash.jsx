@@ -2,9 +2,8 @@ import React, { useRef, useEffect, useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Spin, Tag } from 'antd';
-import { FormOutlined } from '@ant-design/icons';
-import { WITHDRAW_STATUS, ACCOUNT_TYPE } from '@/common/constant';
-import TableDataBlock, { HandleSetTable } from '@/components/TableDataBlock';
+import { WITHDRAW_STATUS } from '@/common/constant';
+import TableDataBlock from '@/components/TableDataBlock';
 import { checkCityName } from '@/utils/utils';
 
 const MerchantListCash = (props) => {
@@ -16,7 +15,6 @@ const MerchantListCash = (props) => {
 
   const childRef = useRef();
 
-  const [visible, setVisible] = useState(false); // 修改弹窗
   // 显示当前数据的时间标记
   const [searchTime, setSearchTime] = useState([
     moment().subtract(1, 'month').format('YYYY-MM-DD'),
