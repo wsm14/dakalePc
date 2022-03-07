@@ -815,7 +815,6 @@ export const BLINDBOX_PRIZE_TYPE = {
   manure : '肥料',
   rightGood :'权益产品',
   commerce: '电商商品',
-  actualGoods :'实物商品',
   platformCoupon : '平台券',
   none: '谢谢惠顾',
 };

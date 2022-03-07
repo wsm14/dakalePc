@@ -31,8 +31,12 @@ const GroupSelect = ({
 
   useEffect(() => {
     if (visible) {
-      setSelectGroup(selectList);
-      setSelectGroupKey(selectList.map((item) => `${item[rowKey]}`));
+      // 过滤掉已经删除的数据
+      let list = [];
+      const selectids = selectList.map((item) => item[rowKey]);
+      list = blindBox.filter((ids) => selectids.includes(ids[rowKey]));
+      setSelectGroup(list);
+      setSelectGroupKey(list.map((item) => `${item[rowKey]}`));
     }
   }, [visible]);
 
@@ -85,9 +89,9 @@ const GroupSelect = ({
   const rowSelection = {
     preserveSelectedRowKeys: true,
     selectedRowKeys: selectGroupKey,
-    getCheckboxProps: ({ isJoinLuck }) => ({
-      disabled: ['0'].includes(isJoinLuck) && data?.isNovice === 1, // 是否真实奖品 0-否 1-是 默认值1
-    }),
+    // getCheckboxProps: ({ isJoinLuck }) => ({
+    //   disabled: ['0'].includes(isJoinLuck), // 是否真实奖品 0-否 1-是 默认值1
+    // }),
     onChange: (val, list) => {
       setSelectGroupKey(val);
       setSelectGroup(list);
