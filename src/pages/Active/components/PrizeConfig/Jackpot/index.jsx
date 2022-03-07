@@ -15,26 +15,30 @@ const Jackpot = (props) => {
   const getColumns = [
     {
       title: '奖品ID',
-      dataIndex: 'id',
+      dataIndex: 'luckPrizeIdStr',
     },
     {
       title: '奖品类型',
-      dataIndex: 'type',
+      dataIndex: 'prizeType',
       render: (val) => BLINDBOX_PRIZE_TYPE[val],
     },
     {
       title: '奖品',
       dataIndex: 'prize',
       ellipsis: true,
+      render: (val, row) =>
+        ['rightGood', 'commerce', 'actualGoods', 'platformCoupon', 'none'].includes(row.prizeType)
+          ? `${row.prizeName}`
+          : `${val}`,
     },
     {
       title: '盲盒展示名称',
-      dataIndex: 'showName',
+      dataIndex: 'prizeName',
       ellipsis: true,
     },
     {
       title: '中奖图',
-      dataIndex: 'winningImg',
+      dataIndex: 'winPrizeImg',
       render: (val) => <PopImgShow url={val}></PopImgShow>,
     },
     {
@@ -44,12 +48,12 @@ const Jackpot = (props) => {
     },
     {
       title: '是否真实奖品',
-      dataIndex: 'isParticipate',
+      dataIndex: 'isJoinLuck',
       render: (val) => DAREN_TEMP_FLAG[val],
     },
     {
       type: 'handle',
-      dataIndex: 'id',
+      dataIndex: 'luckPrizeIdStr',
       render: (val, row) => [
         {
           type: 'edit',
@@ -58,21 +62,21 @@ const Jackpot = (props) => {
             setVisible({
               show: true,
               type: 'edit',
-              detail: { ...row, isParticipate: Boolean(Number(row?.isParticipate)) },
+              detail: { ...row, isJoinLuck: Boolean(Number(row?.isJoinLuck)) },
             }),
         },
         {
           type: 'del',
           auth: true,
-          click: () => fetchBlindBoxDelete({ id: val }),
+          click: () => fetchDeletePrizePool({ luckPrizeIdStr: val }),
         },
       ],
     },
   ];
   // 删除
-  const fetchBlindBoxDelete = (payload) => {
+  const fetchDeletePrizePool = (payload) => {
     dispatch({
-      type: 'prizeConfig/fetchBlindBoxDelete',
+      type: 'prizeConfig/fetchDeletePrizePool',
       payload,
       callback: tableRef.current.fetchGetData,
     });
@@ -92,7 +96,7 @@ const Jackpot = (props) => {
         cRef={tableRef}
         loading={loading}
         columns={getColumns}
-        rowKey={(record) => `${record.id}`}
+        rowKey={(record) => `${record.luckPrizeIdStr}`}
         dispatchType="prizeConfig/fetchBlindBoxList"
         pagination={false}
         list={blindBox}

@@ -1,11 +1,11 @@
 import { notification } from 'antd';
 import {
   fetchBlindBoxList,
-  fetchBlindBoxConfigList,
-  fetchBlindBoxConfigSet,
-  fetchBlindBoxAdd,
-  fetchBlindBoxEdit,
-  fetchBlindBoxDelete,
+  fetchGetLuckDrawPool,
+  fetchSetLuckDrawConfig,
+  fetchAddPrizePool,
+  fetchUpdatePrizePool,
+  fetchDeletePrizePool,
 } from '@/services/ActiveServices';
 
 export default {
@@ -33,12 +33,12 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          blindBox: content.blindBoxProductObjects,
+          blindBox: content.prizeList,
         },
       });
     },
-    *fetchBlindBoxAdd({ payload, callback }, { call }) {
-      const response = yield call(fetchBlindBoxAdd, payload);
+    *fetchAddPrizePool({ payload, callback }, { call }) {
+      const response = yield call(fetchAddPrizePool, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
@@ -46,8 +46,8 @@ export default {
       });
       callback();
     },
-    *fetchBlindBoxEdit({ payload, callback }, { call }) {
-      const response = yield call(fetchBlindBoxEdit, payload);
+    *fetchUpdatePrizePool({ payload, callback }, { call }) {
+      const response = yield call(fetchUpdatePrizePool, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
@@ -55,8 +55,8 @@ export default {
       });
       callback();
     },
-    *fetchBlindBoxDelete({ payload, callback }, { call }) {
-      const response = yield call(fetchBlindBoxDelete, payload);
+    *fetchDeletePrizePool({ payload, callback }, { call }) {
+      const response = yield call(fetchDeletePrizePool, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
@@ -65,20 +65,20 @@ export default {
       callback();
     },
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchBlindBoxConfigList, payload);
+      const response = yield call(fetchGetLuckDrawPool, payload);
       if (!response) return;
       const { content = {} } = response;
       yield put({
         type: 'save',
         payload: {
-          blindBoxRule: content?.blindBoxRule?.allBlindBoxProducts
-            ? content?.blindBoxRule
-            : { allBlindBoxProducts: [] },
+          blindBoxRule: content?.prizePoolInfo?.showPrizePoolList
+            ? content?.prizePoolInfo
+            : { showPrizePoolList: [] },
         },
       });
     },
-    *fetchBlindBoxConfigSet({ payload, callback }, { call }) {
-      const response = yield call(fetchBlindBoxConfigSet, payload);
+    *fetchSetLuckDrawConfig({ payload, callback }, { call }) {
+      const response = yield call(fetchSetLuckDrawConfig, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',

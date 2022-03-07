@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Card } from 'antd';
 import BoxLotteryBean from './components/BoxLottery/BoxLotteryBean';
 import GameType from './components/BoxLottery/GameType';
+import DayDrawLottery from './components/BoxLottery/DayDrawLottery'
 
 const tabList = [
   {
@@ -20,6 +21,10 @@ const tabList = [
     key: 'mark',
     tab: '哒小卡中奖',
   },
+  {
+    key: 'dailyLuckDraw',
+    tab: '天天抽奖',
+  }
 ];
 const BoxLottery = () => {
   const [tabkey, setTabKey] = useState('boxLotteryBean');
@@ -31,6 +36,7 @@ const BoxLottery = () => {
     gameSign: <GameType {...listProps}></GameType>,
     gameFree: <GameType {...listProps}></GameType>,
     mark: <GameType {...listProps}></GameType>,
+    dailyLuckDraw :<DayDrawLottery {...listProps}></DayDrawLottery>,
   };
 
   return (
