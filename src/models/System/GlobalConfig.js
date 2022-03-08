@@ -439,7 +439,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '编辑成功',
+        description: '修改成功',
       });
       callback && callback();
     },

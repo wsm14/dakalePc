@@ -43,9 +43,28 @@ const TabConfigure = (props) => {
           },
           auth: true,
         },
+        {
+          type: 'del',
+          title: '删除版本',
+          click: () => {
+            handleDelVersion(val);
+          },
+          auth: true,
+        },
       ],
     },
   ];
+
+  const handleDelVersion = (configBottomCenterIconId) => {
+    dispatch({
+      type: 'globalConfig/fetchUpdateConfigBottomCenterIcon',
+      payload: {
+        configBottomCenterIconId,
+        flag: 'delete',
+      },
+      callback: childRef?.current?.fetchGetData,
+    });
+  };
 
   const handleDetail = (configBottomCenterIconId) => {
     dispatch({

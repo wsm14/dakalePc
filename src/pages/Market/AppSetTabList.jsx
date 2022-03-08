@@ -50,23 +50,9 @@ const AppSetTabList = (props) => {
           },
           auth: true,
         },
-        {
-          type: 'del',
-          title: '删除版本',
-          click: () => {
-            console.log('del', val);
-          },
-          auth: true,
-        },
       ],
     },
   ];
-
-  const handleDelVersion = () => {
-    dispatch({
-      type: '',
-    });
-  };
 
   const cardBtnList = [
     {
