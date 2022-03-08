@@ -47,11 +47,13 @@ const WchatCommunityList = (props) => {
   const getColumns = [
     {
       title: '提现单号',
+      fixed: 'left',
       dataIndex: 'incomeSn',
     },
 
     {
       title: '提现日期',
+      fixed: 'left',
       dataIndex: 'createTime',
     },
     {

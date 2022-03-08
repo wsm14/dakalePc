@@ -13,6 +13,7 @@ import {
   fetchListCityPartnerWithdrawal,
   fetchListCityPartnerWithdrawalTotal,
   fetchListCityPartnerWithdrawalExport,
+  fetchWithdrawGroupList,
 } from '@/services/FinanceServices';
 
 export default {
@@ -22,6 +23,7 @@ export default {
     list: { list: [], total: 0 },
     listCash: { list: [], total: 0 },
     expertlist: { list: [], total: 0 },
+    grouplist: { list: [], total: 0 },
     alliancelist: { list: [], total: 0 },
     totalData: { withdrawalFeeSum: 0, allWithdrawalFeeSum: 0, withdrawalHandlingFeeSum: 0 },
     expretTotalData: { withdrawalFeeSum: 0, allWithdrawalFeeSum: 0, withdrawalHandlingFeeSum: 0 },
@@ -46,6 +48,17 @@ export default {
         type: 'save',
         payload: {
           list: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+    *fetchWithdrawGroupList({ payload }, { call, put }) {
+      const response = yield call(fetchWithdrawGroupList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          grouplist: { list: content.recordList, total: content.total },
         },
       });
     },

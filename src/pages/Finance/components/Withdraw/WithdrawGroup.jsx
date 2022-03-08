@@ -1,42 +1,38 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { WITHDRAW_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const WithdrawGroup = (props) => {
-  const { withdrawDetail, loading, dispatch } = props;
+  const { withdrawDetail, loading } = props;
 
   const childRef = useRef();
-
-  useEffect(() => {
-    fetchWithdrawCashTotal();
-  }, []);
 
   // 搜索参数
   const searchItems = [
     {
       label: '提现日期',
       type: 'rangePicker',
-      name: 'withdrawalDateStart',
-      end: 'withdrawalDateEnd',
+      name: 'beginDate',
+      end: 'endDate',
     },
     {
       label: '用户账号',
-      name: 'merchantAccount',
+      name: 'mobile',
       placeholder: '请输入用户注册手机号',
     },
     {
       label: '提现账户',
-      name: 'merchantAccount',
+      name: 'withdrawalAccount',
       placeholder: '请输入用户注册账号',
     },
     {
       label: '用户昵称',
-      name: 'merchantAccount',
+      name: 'username',
     },
     {
       label: '提现单号',
-      name: 'withdrawalSn',
+      name: 'incomeSn',
     },
   ];
 
@@ -45,84 +41,78 @@ const WithdrawGroup = (props) => {
     {
       title: '流水单号',
       fixed: 'left',
-      dataIndex: 'withdrawalSn',
+      dataIndex: 'incomeSn',
     },
     {
       title: '提现日期',
       fixed: 'left',
-      dataIndex: 'withdrawalDate',
+      dataIndex: 'createTime',
     },
     {
       title: '需提现金额',
-      dataIndex: 'merchantName',
+      align: 'right',
+      dataIndex: 'withdrawalFee',
+      render: (val) => `￥${val}`,
     },
     {
       title: '服务费(6‰)',
-      dataIndex: 'withdrawalHandlingFee',
-      render: (val) => `￥0`,
+      align: 'right',
+      dataIndex: 'chargeCash',
+      render: (val) => `-￥${val}`,
     },
     {
       title: '卡豆抵扣',
-      dataIndex: 'districtCode',
+      align: 'right',
+      dataIndex: 'chargeBean',
+      render: (val) => (Number(val) > 0 ? `${val}豆\n(￥${val / 100})` : 0),
     },
     {
       title: '实际提现金额',
-      align: 'center',
-      dataIndex: 'withdrawalFee',
-      render: (val) => `￥ ${(Number(val) || 0).toFixed(2)}`,
+      align: 'right',
+      dataIndex: 'totalFee',
+      render: (val) => `￥${val}`,
     },
     {
       title: '提现账户',
-      align: 'right',
+      align: 'center',
       dataIndex: 'withdrawalAccount',
       render: (val, row) => `${row.withdrawalChannelName}\n${val}`,
     },
     {
       title: '用户昵称',
-      align: 'right',
-      dataIndex: 'withdrawalFee',
+      align: 'center',
+      dataIndex: 'username',
     },
     {
       title: '用户账号',
-      align: 'right',
-      dataIndex: 'merchantAccount',
+      align: 'center',
+      dataIndex: 'mobile',
     },
     {
       title: '审核时间',
-      dataIndex: 'status',
+      dataIndex: 'auditTime',
     },
     {
       title: '状态',
       align: 'right',
       fixed: 'right',
       dataIndex: 'status',
-      render: (val) => WITHDRAW_STATUS[val],
+      render: (val) => (val == 4 ? '发起提现失败' : '发起提现成功'),
     },
   ];
 
-  // 统计数据
-  const fetchWithdrawCashTotal = (payload = {}) => {
-    dispatch({
-      type: 'withdrawDetail/fetchWithdrawCashTotal',
-      payload,
-    });
-  };
-
   return (
-    <>
-      <TableDataBlock
-        order
-        cRef={childRef}
-        noCard={false}
-        searchCallback={fetchWithdrawCashTotal}
-        loading={loading.effects['withdrawDetail/fetchGetCashList']}
-        columns={getColumns}
-        searchItems={searchItems}
-        rowKey={(record) => `${record.directWithdrawalId}`}
-        dispatchType="withdrawDetail/fetchGetCashList"
-        {...withdrawDetail.listCash}
-      ></TableDataBlock>
-    </>
+    <TableDataBlock
+      order
+      cRef={childRef}
+      noCard={false}
+      loading={loading.effects['withdrawDetail/fetchWithdrawGroupList']}
+      columns={getColumns}
+      searchItems={searchItems}
+      rowKey={(record) => `${record.directWithdrawalId}`}
+      dispatchType="withdrawDetail/fetchWithdrawGroupList"
+      {...withdrawDetail.grouplist}
+    ></TableDataBlock>
   );
 };
 

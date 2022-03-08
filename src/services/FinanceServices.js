@@ -190,6 +190,13 @@ export function fetchListCityPartnerWithdrawalExport(params) {
   });
 }
 
+// get 提现明细 - 团长 - 列表
+export function fetchWithdrawGroupList(params) {
+  return request('/admin/community/withdrawal/listWithdrawalAdmin', {
+    params,
+  });
+}
+
 // 提现明细 end
 
 // 平台收益
