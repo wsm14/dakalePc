@@ -209,3 +209,29 @@ export function fetchPlatformInconmeDetail(params) {
 }
 
 // 平台收益 end
+
+// 提现审核
+
+// get 提现审核 - 哒小团列表
+export function fetchWithdrawAuditCommunityList(params) {
+  return request('/admin/community/direct/withdrawal/withdrawalList', {
+    params,
+  });
+}
+
+// get 提现审核 - 哒小团提现详情
+export function fetchWithdrawAuditCommunityDetail(params) {
+  return request('/admin/community/direct/withdrawal/withdrawalAuditDetail', {
+    params,
+  });
+}
+
+// post 提现审核 - 审核通过
+export function fetchWithdrawAuditAllow(data) {
+  return request('/community/direct/withdrawal/doWithdrawalAudit', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 提现审核 end
