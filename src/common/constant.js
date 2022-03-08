@@ -427,6 +427,7 @@ export const BANNER_PORT_TYPE = {
   merchant: '商家端',
   weChat: '微信小程序',
   mark: '哒小卡小程序',
+  communityWechat: '哒小团小程序',
 };
 
 const bannerType = {
@@ -809,14 +810,14 @@ export const GAME_SIGN_PACKAGE_TYPE = {
 // 盲盒商品类型枚举
 export const BLINDBOX_PRIZE_TYPE = {
   bean: '卡豆',
-  starBean : '星豆',
-  growValue : '成长值',
-  luckDrawChance : '抽奖次数（集碎片）',
-  manure : '肥料',
-  rightGood :'权益产品',
+  starBean: '星豆',
+  growValue: '成长值',
+  luckDrawChance: '抽奖次数（集碎片）',
+  manure: '肥料',
+  rightGood: '权益产品',
   commerce: '电商商品',
-  actualGoods :'实物商品',
-  platformCoupon : '平台券',
+  actualGoods: '实物商品',
+  platformCoupon: '平台券',
   none: '谢谢惠顾',
 };
 

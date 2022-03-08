@@ -95,7 +95,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: `占位图修改成功`,
+        description: `修改成功`,
       });
       callback();
     },
@@ -106,7 +106,7 @@ export default {
       const text = ['下架', '上架'][bannerStatus];
       notification.success({
         message: '温馨提示',
-        description: `占位图${text ? text : '删除'}成功`,
+        description: `${text ? text : '删除'}成功`,
       });
       callback();
     },
@@ -115,7 +115,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '占位图新增成功',
+        description: '新增成功',
       });
       callback();
     },
