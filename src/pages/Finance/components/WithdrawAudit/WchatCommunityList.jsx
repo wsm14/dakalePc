@@ -112,7 +112,7 @@ const WchatCommunityList = (props) => {
         },
         {
           type: 'check',
-          visible: record.status === '0',
+          visible: row.status === '0',
           click: () => fetchGetDetail(val, 'check'),
         },
       ],
