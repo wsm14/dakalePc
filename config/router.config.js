@@ -443,7 +443,7 @@ export default [
       {
         path: '/market/appset',
         name: 'Banner管理',
-        component: './Market/AppSetList',
+        component: './Market/AppSetTabList',
         buttons: ['save', 'del', 'edit', 'up', 'down', 'addPlace'],
       },
       {

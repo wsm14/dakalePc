@@ -3,27 +3,25 @@ import { connect } from 'umi';
 import { Tooltip, Form } from 'antd';
 import {
   BANNER_LOOK_AREA,
-  BANNER_PORT_TYPE,
   BANNER_JUMP_TYPE,
   BANNER_AREA_TYPE,
   BANNER_SHOW_STATUS,
 } from '@/common/constant';
-import ExtraButton from '@/components/ExtraButton';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import SysAppSetForm from './components/App/SysAppSet';
-import AddImgplace from './components/App/AddImgplace';
+import SysAppSetForm from './SysAppSet';
+import AddImgplace from './AddImgplace';
 
-const SysAppSet = (props) => {
-  const { sysAppList, bannerTypeObj, loading, dispatch } = props;
+const AppSetList = (props) => {
+  const { tabKey, tabKeyTwo, version, sysAppList, bannerTypeObj, loading, dispatch } = props;
 
   const childRef = useRef();
   const [form] = Form.useForm();
   const [visibleSet, setVisibleSet] = useState({ show: false, info: '' });
-  const [tabKey, setTabKey] = useState('user');
   const [visibleAddImg, setVisibleAddImg] = useState(false); // 新增位置
 
   useEffect(() => {
+    childRef.current.fetchGetData();
     fetchBannerRatio();
   }, [tabKey]);
 
@@ -195,7 +193,7 @@ const SysAppSet = (props) => {
         setVisibleSet({
           show: true,
           type: 'add',
-          detail: { visibleRange: 'user,kol', bannerType: type },
+          detail: { version, visibleRange: 'user,kol', bannerType: type },
         });
       },
     },
@@ -204,21 +202,11 @@ const SysAppSet = (props) => {
   return (
     <>
       <TableDataBlock
+        noCard={false}
         cRef={childRef}
         searchForm={form}
-        cardProps={{
-          tabList: Object.keys(BANNER_PORT_TYPE).map((key) => ({
-            key,
-            tab: BANNER_PORT_TYPE[key],
-          })),
-          tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
-          onTabChange: (userType) => {
-            setTabKey(userType);
-            form.resetFields();
-            childRef.current.fetchGetData({ userType, page: 1 });
-          },
-        }}
-        params={{ userType: tabKey }}
+        btnExtra={btnList}
+        params={{ userType: tabKey, userOs: tabKeyTwo, version, isAutomatic: 0 }}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
@@ -230,6 +218,7 @@ const SysAppSet = (props) => {
       <SysAppSetForm
         bannerTypeObj={bannerTypeObj}
         tabKey={tabKey}
+        tabKeyTwo={tabKeyTwo}
         cRef={childRef}
         visible={visibleSet}
         onClose={() => setVisibleSet({ show: false })}
@@ -249,4 +238,4 @@ export default connect(({ sysAppList, loading }) => ({
   sysAppList: sysAppList.list,
   bannerTypeObj: sysAppList.bannerTypeObj,
   loading: loading.models.sysAppList,
-}))(SysAppSet);
+}))(AppSetList);
