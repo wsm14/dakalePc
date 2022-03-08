@@ -37,7 +37,7 @@ export default {
       const response = yield call(fetchWithdrawAuditCommunityDetail, payload);
       if (!response) return;
       const { content } = response;
-      callback(content);
+      callback(content.auditDTO);
     },
     *fetchWithdrawAuditAllow({ payload, callback }, { call }) {
       const response = yield call(fetchWithdrawAuditAllow, payload);
