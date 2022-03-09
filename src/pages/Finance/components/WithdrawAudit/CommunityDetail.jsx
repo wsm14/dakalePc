@@ -72,7 +72,7 @@ const CommunityDetail = (props) => {
       payload: { directWithdrawalAuditId: detail.directWithdrawalAuditId },
       callback: () => {
         cRef.current.fetchGetData();
-        setVisible(false);
+        onClose();
       },
     });
   };
