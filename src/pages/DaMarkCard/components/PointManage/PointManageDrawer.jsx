@@ -16,7 +16,6 @@ const PointManageDrawer = (props) => {
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
-      console.log('values', values);
       // return;
       const { districtCode, distanceFlag, range, ...other } = values;
 
@@ -70,7 +69,6 @@ const PointManageDrawer = (props) => {
   // 设置奖励
   const handleAwardUpAudit = () => {
     form.validateFields().then(async (values) => {
-      console.log('award', values);
       const {
         beanPoolList,
         beanPoolRange,

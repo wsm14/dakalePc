@@ -75,7 +75,7 @@ const PointCheckDetail = (props) => {
 
   const modalProps = {
     title: '审核详情',
-    visible: true,
+    visible: show,
     onClose,
     dataPage: {
       current: index,

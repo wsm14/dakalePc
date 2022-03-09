@@ -18,8 +18,8 @@ const RelevanceDot = (props) => {
   const [pointSelect, setPointSelect] = useState([]); //选中的点位
   const [showPoint, setShowPoint] = useState(false);
   const [showBody, setShowBody] = useState(false);
-  const [visibleBody, setVisibleBody] = useState(false); //新增主体
   const [visiblePoint, setVisiblePoint] = useState(false); //新增点位
+  const [visibleSet, setVisibleSet] = useState(false);//主体奖励配置，首刷广告，新增
   const [bodyId, setBodyId] = useState(''); //单选 选中的主体id
   const [PointID, setPointID] = useState([]); //多选选中平的点位Id
   const [form] = Form.useForm();
@@ -62,15 +62,22 @@ const RelevanceDot = (props) => {
     setPointID(val);
   };
 
-  //新增主体/点位
-  const handleAdd = (type) => {
-    const setVisibleAdd = {
-      body: setVisibleBody,
-      point: setVisiblePoint,
-    }[type];
-    setVisibleAdd({
-      type: 'add',
-      show: true,
+
+  // 获取主体详情
+  const fetchCouponDetail = (hittingMainId, type) => {
+    dispatch({
+      type:
+        type === 'advert'
+          ? 'pointManage/fetchGetStrapContent'
+          : type === 'award'
+          ? 'pointManage/fetchGetHittingRewardByMainId'
+          : 'pointManage/fetchGetHittingMainById',
+      payload: {
+        hittingMainId,
+      },
+      callback: (detail) => {
+        setVisibleSet({ type, show: true, detail, hittingMainId });
+      },
     });
   };
 
@@ -89,7 +96,7 @@ const RelevanceDot = (props) => {
             >
               请选择主体
             </Button>
-            <Button type="link" onClick={() => handleAdd('body')}>
+            <Button type="link" onClick={() => setVisibleSet({ type: 'add', show: true })}>
               +新增
             </Button>
           </Space>
@@ -116,10 +123,17 @@ const RelevanceDot = (props) => {
                   setBodyId('');
                 }}
               ></CommonList>
-              <div className="bottomCon">
-                <span>每人每天打卡次数</span>
-                <span>1次</span>
-              </div>
+              <Space className="bottomCon">
+                <Button type="link" onClick={() => fetchCouponDetail(mItem.hittingMainId, 'award')}>
+                  +奖励配置
+                </Button>
+                <Button
+                  type="link"
+                  onClick={() => fetchCouponDetail(mItem.hittingMainId, 'advert')}
+                >
+                  +首刷广告
+                </Button>
+              </Space>
             </div>
           ))}
         </>
@@ -140,7 +154,7 @@ const RelevanceDot = (props) => {
             >
               请选择点位
             </Button>
-            <Button type="link" onClick={() => handleAdd('point')}>
+            <Button type="link" onClick={() => setVisiblePoint({ type: 'add', show: true })}>
               +新增
             </Button>
           </Space>
@@ -200,11 +214,11 @@ const RelevanceDot = (props) => {
       <DrawerCondition {...modalProps}>
         <FormCondition formItems={formItems} form={form}></FormCondition>
       </DrawerCondition>
-      {/* 新增主体 */}
+      {/* 新增 编辑 详情 广告 奖励*/}
       <PointManageDrawer
         childRef={cRef}
-        visible={visibleBody}
-        onClose={() => setVisibleBody(false)}
+        visible={visibleSet}
+        onClose={() => setVisibleSet(false)}
       ></PointManageDrawer>
       {/* 新增 点位*/}
       <PointDrawer
