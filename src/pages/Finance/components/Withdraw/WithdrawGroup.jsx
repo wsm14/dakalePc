@@ -90,7 +90,7 @@ const WithdrawGroup = (props) => {
     },
     {
       title: '审核时间',
-      dataIndex: 'createTime',
+      dataIndex: 'auditTime',
     },
     {
       title: '状态',
