@@ -65,7 +65,7 @@ const SelectBlock = (props) => {
                 value={valueData}
                 option={data}
               >
-                {nameData}
+                {nameData}-{valueData}
                 {otherData && <div style={{ fontSize: 12, color: '#989898' }}>{otherData}</div>}
               </Select.Option>
             );
