@@ -802,7 +802,7 @@ export const FOLLOW_MANNER = {
 // export const GAME_SIGN_STATUS = ['未领取', '待发货', '已完成', '已过期', '未完善地址'];
 
 //盲盒抽奖记录 - 免费领商品 - 发放状态
-export const GAME_FREE_STATUS = ['未领取', '待发货', '已完成'];
+export const GAME_FREE_STATUS = ['未完善地址', '待发货', '已完成'];
 
 //盲盒抽奖记录 - 签到游戏 - 奖品类型
 export const GAME_SIGN_PACKAGE_TYPE = {
