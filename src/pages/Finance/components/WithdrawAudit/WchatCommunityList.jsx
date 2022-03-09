@@ -59,7 +59,7 @@ const WchatCommunityList = (props) => {
     {
       title: '需提现金额',
       align: 'right',
-      dataIndex: 'withdrawalFee',
+      dataIndex: 'totalFee',
       render: (val) => `￥${val}`,
     },
     {
@@ -77,7 +77,7 @@ const WchatCommunityList = (props) => {
     {
       title: '实际提现金额',
       align: 'right',
-      dataIndex: 'totalFee',
+      dataIndex: 'withdrawalFee',
       render: (val) => `￥${val}`,
     },
     {
