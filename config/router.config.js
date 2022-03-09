@@ -358,6 +358,7 @@ export default [
         path: '/finance/withdrawAudit',
         name: '提现审核',
         component: './Finance/WithdrawAudit',
+        buttons: ['info', 'check'],
       },
       // 广告营销 market
       {
