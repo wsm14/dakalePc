@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useContext } from 'react';
 import { Button, Space, message, Form } from 'antd';
 import update from 'immutability-helper';
 import editorConfig from '../panel.config';
+import editFormGroup from '../EditFormGroup';
 import styles from './style.less';
 
 const EditorPanel = ({ context }) => {
@@ -10,15 +11,16 @@ const EditorPanel = ({ context }) => {
   const { dispatchData, showEditor, showPanel, moduleData } = useContext(context);
 
   const { dataList } = moduleData;
-  const { id, moduleName, name, drop, only = false, data } = showEditor;
+  const { id, moduleName, drop, only = false, index, ...other } = showEditor;
 
   const [form] = Form.useForm();
+
   // 关闭编辑框
   const handleCloseEdit = () => dispatchData({ type: 'closeEditor' });
 
   // 每次重置数据显示
   useEffect(() => {
-    if (id) form.setFieldsValue(data);
+    if (id) form.setFieldsValue(other);
   }, [id]);
   /**
    * 保存事件
@@ -27,19 +29,16 @@ const EditorPanel = ({ context }) => {
    * 如果是 则保存在 moduleData 的 dataList[] 内
    */
   const handleSaveData = () => {
+    const params = { id, moduleName };
     cRef.current
       .getContent()
       .then((content) => {
         if (!content) return false;
         let payload = {};
-        if (!drop && !only) {
-          payload = content;
-        } else {
-          const newData = update(dataList, {
-            $splice: [[only ? 0 : showPanel, 1, { ...showEditor, data: content }]],
-          });
-          payload = { dataList: newData };
-        }
+        const newData = update(dataList, {
+          $splice: [[only ? 0 : showPanel, 1, { ...params, ...content }]],
+        });
+        payload = { dataList: newData };
         console.log('saveModuleData', payload);
         dispatchData({
           type: 'saveModuleData',
@@ -60,26 +59,34 @@ const EditorPanel = ({ context }) => {
       });
   };
 
+  const FormDom = editFormGroup[moduleName];
+
+  // 检查控件是否存在
+  const checkForm =
+    editorConfig[moduleName] && editorConfig[moduleName].editFormFlag && editFormGroup[moduleName];
+
   return (
     <div
       className={`${styles.active_Template_right} ${styles[moduleName]} ${
-        moduleName ? styles.show : ''
+        !!editorConfig[moduleName]?.editFormFlag ? styles.show : ''
       }`}
     >
       <div className={styles.heard}>
-        {name}
+        {editorConfig[moduleName]?.name}
         <div className={styles.divideLine}></div>
       </div>
       <div className={styles.content}>
         <div className={styles.previewer_active_editor}>
-          {editorConfig[moduleName] && editorConfig[moduleName].editorDom
-            ? editorConfig[moduleName]?.editorDom({ id, form, cRef, moduleName, value: data })
-            : '控件暂未配置'}
+          {checkForm ? (
+            <FormDom id={id} form={form} cRef={cRef} value={other}></FormDom>
+          ) : (
+            '控件暂未配置'
+          )}
         </div>
       </div>
       <div className={styles.footer}>
         <Space>
-          {editorConfig[moduleName] && editorConfig[moduleName].editorDom && (
+          {checkForm && (
             <Button type="primary" onClick={handleSaveData}>
               保存
             </Button>

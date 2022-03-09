@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { useDrop } from 'react-dnd';
 import update from 'immutability-helper';
-import showImg from '../panel.config';
 import PreviewerActive from './PreviewerActive';
 import PreviewerContent from './PreviewerContent';
 import search from '../Img/search.png';
@@ -29,18 +28,18 @@ const BasketDom = ({
     accept: 'Card',
     drop: (dropItem) => {
       setStyBasket(false);
-      const { moduleName } = dropItem;
+      const { icon, editForm, defaultImg, drop, type, name, ...other } = dropItem;
       /**
        * 拖拽结束时，判断是否将拖拽元素放入了目标接收组件中
        *  1、如果是，则使用真正传入的 box 元素代替占位元素
        */
       // 更新 dataList 数据源
       const movefile = update(dataList, {
-        $splice: [[index, 0, { moduleName }]],
+        $splice: [[index, 0, other]],
       });
       console.log(movefile, 'movefile');
       changeCardList(movefile);
-      handleShowEditor({ moduleName }, index);
+      handleShowEditor(dropItem, index);
     }, // 放置方法
     collect: (monitor) => ({ isOver: monitor.isOver(), canDrop: monitor.canDrop() }),
   });
@@ -76,6 +75,7 @@ const ActiveTemplateIframe = (props) => {
   // 显示对应的模块编辑内容
   const handleShowEditor = (cell, index) => {
     console.log('drop', cell, index);
+    const { editForm, defaultImg, icon, defaultData = {}, ...ohter } = cell;
     // 高亮选择项目
     dispatchData({ type: 'showPanel', payload: index });
     // 编辑区域模组显示
@@ -85,7 +85,7 @@ const ActiveTemplateIframe = (props) => {
         ...ohter,
         id: cell?.id || new Date().getTime(), // 需要编辑的组件id
         index,
-        data: cell?.data || cell?.defaultData || null,
+        ...defaultData,
       },
     });
   };
@@ -106,7 +106,7 @@ const ActiveTemplateIframe = (props) => {
             <React.Fragment key={`${index}`}>
               <div className={styles.previewer_cell} onClick={() => handleShowEditor(item, index)}>
                 {/* 回显dom*/}
-                <PreviewerContent cell={showImg[item.moduleName]}></PreviewerContent>
+                <PreviewerContent moduleName={item.moduleName}></PreviewerContent>
                 {/* 高亮操作区域 */}
                 <PreviewerActive
                   data={dataList}
