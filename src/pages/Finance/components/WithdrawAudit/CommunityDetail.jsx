@@ -25,7 +25,7 @@ const CommunityDetail = (props) => {
     },
     {
       label: `需提现金额`,
-      name: 'withdrawalFee',
+      name: 'totalFee',
       render: (val) => `￥${val}`,
     },
     {
@@ -40,7 +40,7 @@ const CommunityDetail = (props) => {
     },
     {
       label: '实际提现金额',
-      name: 'totalFee',
+      name: 'withdrawalFee',
       render: (val) => `￥${val}`,
     },
     {
