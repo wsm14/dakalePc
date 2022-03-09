@@ -56,7 +56,7 @@ const CommunityDetail = (props) => {
   const otherData = [
     {
       label: '交易截图',
-      name: 'image',
+      name: 'images',
       type: 'upload',
     },
     {
