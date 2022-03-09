@@ -8,7 +8,7 @@ import PointCheckDetail from './components/PointCheck/PointCheckDetail';
 
 const PointCheck = (props) => {
   const { pointManageList, loading, dispatch } = props;
-//   const { list = [] } = pointManageList;
+  //   const { list = [] } = pointManageList;
 
   const [visible, setVisible] = useState(false);
 

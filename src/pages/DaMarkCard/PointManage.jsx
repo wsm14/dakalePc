@@ -1,9 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Card } from 'antd';
-
 import BodyList from './components/PointManage/List/BodyList';
 import PointList from './components/PointManage/List/PointList';
+
 const tabList = [
   {
     key: '0',
@@ -31,7 +31,4 @@ const PointManage = (props) => {
   );
 };
 
-export default connect(({ pointManage, loading }) => ({
-  pointManageList: pointManage.list,
-  loading: loading.effects['pointManage/fetchGetList'],
-}))(PointManage);
+export default PointManage;
