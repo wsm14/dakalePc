@@ -4,11 +4,27 @@ import Ellipsis from '@/components/Ellipsis';
 import { checkCityName } from '@/utils/utils';
 import { MARK_CARD_MAIN_TYPE, MARK_CARD_OPEN_STATE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
+import PointCheckDetail from './components/PointCheck/PointCheckDetail';
 
 const PointCheck = (props) => {
   const { pointManageList, loading, dispatch } = props;
+//   const { list = [] } = pointManageList;
+
+  const [visible, setVisible] = useState(false);
+
+  const tabList = [
+    {
+      key: '0',
+      tab: '待审核',
+    },
+    {
+      key: '1',
+      tab: '已审核',
+    },
+  ];
 
   const childRef = useRef();
+  const [tabKey, setTabKey] = useState('0');
   const searchItems = [
     {
       label: '点位名称',
@@ -83,25 +99,41 @@ const PointCheck = (props) => {
       type: 'handle',
       width: 150,
       dataIndex: 'hittingMainId',
-      render: (hittingMainId, record) => {
+      render: (val, record, index) => {
         return [
           {
             type: 'check',
-            click: () => fetchCouponDetail(hittingMainId, 'check'),
+            click: () => fetchcheckDetail(index, 'check'),
+          },
+          {
+            type: 'info',
           },
           {
             type: 'checkDetail',
-            click: () => setVisibleModalDrawer({ show: true, detail: record, type: 'checkDetail' }),
           },
         ];
       },
     },
   ];
+
+  const fetchcheckDetail = (index, type) => {
+    // const { ids } = list[index];
+    setVisible({
+      type,
+      show: true,
+      index,
+    });
+  };
   return (
     <>
       <TableDataBlock
         order
         cRef={childRef}
+        cardProps={{
+          tabList: tabList,
+          activeTabKey: tabKey,
+          onTabChange: setTabKey,
+        }}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
@@ -109,9 +141,17 @@ const PointCheck = (props) => {
         dispatchType="pointManage/fetchGetList"
         {...pointManageList}
       ></TableDataBlock>
+      <PointCheckDetail
+        childRef={childRef}
+        getDetail={fetchcheckDetail}
+        total={2}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></PointCheckDetail>
     </>
   );
 };
-export default connect(({ loading }) => ({
+export default connect(({ loading, pointManageList }) => ({
+  pointManageList,
   loading: loading.models.pointManage,
 }))(PointCheck);

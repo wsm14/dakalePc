@@ -614,6 +614,7 @@ export default {
             list: content.recordList.map((item) => ({
               name: `${item.name}`,
               value: item.hittingId,
+              otherData:item.address
             })),
             total: content.total,
           },
