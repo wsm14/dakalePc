@@ -4,6 +4,7 @@ import { Drawer } from 'antd';
 import { reducerValue, fetchReducerEdit } from './StrollTemplateReducer';
 import DragAndDropHOC from '@/components/DndDragContext/DragAndDropHOC';
 import SideMenu from './SideMenu';
+import EditorPanel from './EditorPanel';
 import ModuleDrawer from './ModuleDrawer';
 import PreviewerContainer from './PreviewerContainer';
 
@@ -72,6 +73,7 @@ const ActiveTemplate = (props) => {
             setStyBasket={setStyBasket}
           ></PreviewerContainer>
         </DragAndDropHOC>
+        <EditorPanel context={TemplateContext}></EditorPanel>
       </Drawer>
     </TemplateContext.Provider>
   );

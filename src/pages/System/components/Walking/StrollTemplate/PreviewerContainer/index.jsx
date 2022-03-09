@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useDrop } from 'react-dnd';
 import update from 'immutability-helper';
-import showImg from '../showImg';
+import showImg from '../panel.config';
 import PreviewerActive from './PreviewerActive';
 import PreviewerContent from './PreviewerContent';
 import search from '../Img/search.png';
@@ -78,6 +78,16 @@ const ActiveTemplateIframe = (props) => {
     console.log('drop', cell, index);
     // 高亮选择项目
     dispatchData({ type: 'showPanel', payload: index });
+    // 编辑区域模组显示
+    dispatchData({
+      type: 'showEditor',
+      payload: {
+        ...ohter,
+        id: cell?.id || new Date().getTime(), // 需要编辑的组件id
+        index,
+        data: cell?.data || cell?.defaultData || null,
+      },
+    });
   };
 
   const dropProps = { dataList, changeCardList, styBasket, setStyBasket, handleShowEditor };

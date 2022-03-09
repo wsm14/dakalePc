@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useDrag } from 'react-dnd';
 import { Collapse } from 'antd';
 import panelItem from '../panelItem';
-import showImg from '../showImg';
+import showImg from '../panel.config';
 import styles from './style.less';
 
 const { Panel } = Collapse;

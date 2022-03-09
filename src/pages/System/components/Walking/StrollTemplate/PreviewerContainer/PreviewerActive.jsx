@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowUpOutlined, ArrowDownOutlined, DeleteOutlined } from '@ant-design/icons';
-import showImg from '../showImg';
+import showImg from '../panel.config';
 import update from 'immutability-helper';
 import styles from './style.less';
 
