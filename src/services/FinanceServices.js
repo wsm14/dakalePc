@@ -235,7 +235,7 @@ export function fetchWithdrawAuditCommunityDetail(params) {
 
 // post 提现审核 - 审核通过
 export function fetchWithdrawAuditAllow(data) {
-  return request('/community/direct/withdrawal/doWithdrawalAudit', {
+  return request('/admin/community/direct/withdrawal/doWithdrawalAudit', {
     method: 'POST',
     data,
   });
