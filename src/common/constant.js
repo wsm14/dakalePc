@@ -798,7 +798,7 @@ export const FOLLOW_MANNER = {
 // export const GAME_SIGN_STATUS = ['未领取', '待发货', '已完成', '已过期', '未完善地址'];
 
 //盲盒抽奖记录 - 免费领商品 - 发放状态
-export const GAME_FREE_STATUS = ['未领取', '待发货', '已完成'];
+export const GAME_FREE_STATUS = ['未完善地址', '待发货', '已完成'];
 
 //盲盒抽奖记录 - 签到游戏 - 奖品类型
 export const GAME_SIGN_PACKAGE_TYPE = {
@@ -809,13 +809,13 @@ export const GAME_SIGN_PACKAGE_TYPE = {
 // 盲盒商品类型枚举
 export const BLINDBOX_PRIZE_TYPE = {
   bean: '卡豆',
-  starBean : '星豆',
-  growValue : '成长值',
-  luckDrawChance : '抽奖次数（集碎片）',
-  manure : '肥料',
-  rightGood :'权益产品',
+  starBean: '星豆',
+  growValue: '成长值',
+  luckDrawChance: '抽奖次数（集碎片）',
+  manure: '肥料',
+  rightGood: '权益产品',
   commerce: '电商商品',
-  platformCoupon : '平台券',
+  platformCoupon: '平台券',
   none: '谢谢惠顾',
 };
 
