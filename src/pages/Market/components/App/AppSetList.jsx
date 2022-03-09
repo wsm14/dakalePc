@@ -39,12 +39,12 @@ const AppSetList = (props) => {
       type: 'select',
       select: BANNER_SHOW_STATUS,
     },
-    {
-      label: '投放区域',
-      name: 'shoswStatus',
-      type: 'select',
-      select: BANNER_AREA_TYPE,
-    },
+    // {
+    //   label: '投放区域',
+    //   name: 'shoswStatus',
+    //   type: 'select',
+    //   select: BANNER_AREA_TYPE,
+    // },
   ];
 
   // table 表头
