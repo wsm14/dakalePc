@@ -86,6 +86,7 @@ const RelevanceDot = (props) => {
       label: `关联主体`,
       type: 'formItem',
       name: 'body',
+      // rules: [{ required: true }],
       formItem: (
         <>
           <Space>
@@ -194,20 +195,22 @@ const RelevanceDot = (props) => {
 
   //审核通过
   const handleCheck = () => {
-    Modal.confirm({
-      okText: '确定',
-      cancelText: '取消',
-      content: '审核通过后主体和点位则绑定成功且不可更改，确定审核通过吗?',
-      onOk: () => {
-        // dispatch({
-        //   type: 'businessList/fetchSetStatus',
-        //   payload: { merchantId, ...payload },
-        //   callback: () => {
-        //     onClose();
-        //     cRef.current.fetchGetData();
-        //   },
-        // });
-      },
+    form.validateFields().then((values) => {
+      Modal.confirm({
+        okText: '确定',
+        cancelText: '取消',
+        content: '审核通过后主体和点位则绑定成功且不可更改，确定审核通过吗?',
+        onOk: () => {
+          // dispatch({
+          //   type: 'businessList/fetchSetStatus',
+          //   payload: { merchantId, ...payload },
+          //   callback: () => {
+          //     onClose();
+          //     cRef.current.fetchGetData();
+          //   },
+          // });
+        },
+      });
     });
   };
 
