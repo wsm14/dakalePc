@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import debounce from 'lodash/debounce';
-import { Button, Form, Space } from 'antd';
+import { Button, Form, Space, Modal } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import { Select } from '@/components/FormCondition/formModule';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -19,9 +19,10 @@ const RelevanceDot = (props) => {
   const [showPoint, setShowPoint] = useState(false);
   const [showBody, setShowBody] = useState(false);
   const [visiblePoint, setVisiblePoint] = useState(false); //新增点位
-  const [visibleSet, setVisibleSet] = useState(false);//主体奖励配置，首刷广告，新增
+  const [visibleSet, setVisibleSet] = useState(false); //主体奖励配置，首刷广告，新增
   const [bodyId, setBodyId] = useState(''); //单选 选中的主体id
   const [PointID, setPointID] = useState([]); //多选选中平的点位Id
+  const [visibleModal, setVisibleModal] = useState(false);
   const [form] = Form.useForm();
 
   // 搜索主体
@@ -61,7 +62,6 @@ const RelevanceDot = (props) => {
     setPointSelect(selectPoints);
     setPointID(val);
   };
-
 
   // 获取主体详情
   const fetchCouponDetail = (hittingMainId, type) => {
@@ -193,7 +193,23 @@ const RelevanceDot = (props) => {
   ];
 
   //审核通过
-  const handleCheck = () => {};
+  const handleCheck = () => {
+    Modal.confirm({
+      okText: '确定',
+      cancelText: '取消',
+      content: '审核通过后主体和点位则绑定成功且不可更改，确定审核通过吗?',
+      onOk: () => {
+        // dispatch({
+        //   type: 'businessList/fetchSetStatus',
+        //   payload: { merchantId, ...payload },
+        //   callback: () => {
+        //     onClose();
+        //     cRef.current.fetchGetData();
+        //   },
+        // });
+      },
+    });
+  };
 
   const btnList = [
     {

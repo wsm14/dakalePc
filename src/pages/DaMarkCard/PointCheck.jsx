@@ -58,6 +58,7 @@ const PointCheck = (props) => {
       title: '点位ID',
       fixed: 'left',
       dataIndex: 'hittingMainId',
+      show: tabKey === '1',
     },
     {
       title: '点位名称',
@@ -92,8 +93,28 @@ const PointCheck = (props) => {
       dataIndex: 'name',
     },
     {
-      title: '提交时间',
+      title: '最新提交时间',
       dataIndex: 'name',
+    },
+    {
+      title: '审核类型',
+      dataIndex: 'name',
+      show: tabKey === '1',
+    },
+    {
+      title: '审核时间',
+      dataIndex: 'name',
+      show: tabKey === '1',
+    },
+    {
+      title: '审核结果',
+      dataIndex: 'name',
+      show: tabKey === '1',
+    },
+    {
+      title: '驳回原因',
+      dataIndex: 'name',
+      show: tabKey === '1',
     },
     {
       type: 'handle',
@@ -102,14 +123,20 @@ const PointCheck = (props) => {
       render: (val, record, index) => {
         return [
           {
-            type: 'check',
+            type: 'check', //审核
             click: () => fetchcheckDetail(index, 'check'),
           },
           {
             type: 'info',
+            click: () => fetchcheckDetail(index, 'info'),
           },
           {
-            type: 'checkDetail',
+            type: 'checkDetail',//审核记录
+          },
+          {
+            type: 'close',//关闭
+            pop: true,
+            popText:'关闭则表示用户不再申请该点位，确定关闭吗'
           },
         ];
       },

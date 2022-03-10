@@ -257,7 +257,7 @@ export default [
         path: '/daMarkCard/pointCheck',
         name: '点位管理',
         component: './DaMarkCard/PointCheck',
-        buttons: ['check','checkDetail','info'],
+        buttons: ['check', 'checkDetail', 'info', 'close'],
       },
       // 哒人管理 expert
       {
