@@ -39,6 +39,8 @@ export default (function (list, id) {
   if (evn) {
     if (evn === 'miniProgram') {
       getCommission(getUrlKey('token'));
+    } else if (evn === 'wxChatWebView') {
+      showList(list);
     } else {
       native.nativeInit('getToken', {}, (val) => {
         if (val && val.length > 0) {
@@ -57,6 +59,11 @@ export default (function (list, id) {
   // 默认50%
   function showList(source, payC = 50, shareC) {
     const vw = (px) => (px / 375) * 100 + 'vw';
+    const wxOpenLaunchWeapp = (html, sid) =>
+      `<wx-open-launch-weapp 
+      username="gh_7ffa23a2dcd1" 
+      path="pages/perimeter/favourableDetails/index.html?merchantId=-1&specialActivityId=${sid}"
+      ><script type="text/wxtag-template">${html}<\\/script></wx-open-launch-weapp>`;
     document.getElementById(
       id,
     ).innerHTML = `<div style="display: flex;justify-content: space-between;padding: 0 ${vw(
@@ -67,7 +74,7 @@ ${source
     const {
       paymentModeObject: { type, bean, cash },
     } = item;
-    return `<div class="handleGoNative"  data-key="specialActivityId,ownerId" data-specialActivityId=${
+    const cellDom = `<div class="handleGoNative"  data-key="specialActivityId,ownerId" data-specialActivityId=${
       item.specialGoodsId
     } data-ownerId="-1" data-path="commerceGoods" data-linkType="inside" 
       style="width: ${vw(172)};border-radius: ${vw(4)};margin-bottom: ${vw(
@@ -142,6 +149,10 @@ ${source
       }</div>
       </div>
       </div>`;
+    if (native.getPhone() === 'wxChatWebView') {
+      return wxOpenLaunchWeapp(cellDom, item.specialGoodsId);
+    }
+    return cellDom;
   })
   .join('')}</div>`;
   }

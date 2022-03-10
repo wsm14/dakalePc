@@ -33,11 +33,12 @@ export default (function (data, id) {
     left: ${vw(x)};
     zIndex: 10"
     data-native="goShare"
-    data-key="shareId,subType,shareType,operateItem,callType,nativeShowPlatform,sharePlatform" 
+    data-key="shareId,subType,shareType,operateItem,callType,nativeShowPlatform,sharePlatform,wechatType" 
     data-shareType="activityH5"
     data-subType="activity"
     data-shareId="${getUrlParam('shareKey')}"
     data-callType="native"
+    data-wechatType="h5"
     data-operateItem="savePhoto"
     data-nativeShowPlatform="wechatFriend,wechatMoment"
     data-sharePlatform="SharePlatformDialog"
