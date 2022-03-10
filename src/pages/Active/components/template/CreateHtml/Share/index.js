@@ -36,7 +36,7 @@ export default (function (data, id) {
     data-key="shareId,subType,shareType,operateItem,callType,nativeShowPlatform,sharePlatform" 
     data-shareType="activityImage"
     data-subType="activity"
-    data-shareId="${getUrlParam('shareId')}"
+    data-shareId="${getUrlParam('shareKey')}"
     data-callType="native"
     data-operateItem="savePhoto"
     data-nativeShowPlatform="wechatFriend,wechatMoment"
