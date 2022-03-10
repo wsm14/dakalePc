@@ -34,7 +34,7 @@ export default (function (data, id) {
     zIndex: 10"
     data-native="goShare"
     data-key="shareId,subType,shareType,operateItem,callType,nativeShowPlatform,sharePlatform" 
-    data-shareType="activityImage"
+    data-shareType="activityH5"
     data-subType="activity"
     data-shareId="${getUrlParam('shareKey')}"
     data-callType="native"
