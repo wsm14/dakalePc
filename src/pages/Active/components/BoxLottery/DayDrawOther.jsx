@@ -18,12 +18,12 @@ const DayDrawOther = ({ prizeList, loading, dispatch, tabkey }) => {
       name: 'userId',
       type: 'user',
     },
-    {
-      label: '抽奖场次',
-      type: 'select',
-      name: 'sceneType',
-      select: BOXLOTTERY_TYPE,
-    },
+    // {
+    //   label: '抽奖场次',
+    //   type: 'select',
+    //   name: 'sceneType',
+    //   select: BOXLOTTERY_TYPE,
+    // },
 
     // {
     //   label: '抽奖结果',
@@ -71,11 +71,11 @@ const DayDrawOther = ({ prizeList, loading, dispatch, tabkey }) => {
       title: '抽奖时间',
       dataIndex: 'luckDrawTime',
     },
-    {
-      title: '抽奖场次',
-      dataIndex: 'sceneType',
-      render: (val) => (val ? BOXLOTTERY_TYPE[val] : '--'),
-    },
+    // {
+    //   title: '抽奖场次',
+    //   dataIndex: 'sceneType',
+    //   render: (val) => (val ? BOXLOTTERY_TYPE[val] : '--'),
+    // },
     {
       title: '消耗卡豆数',
       dataIndex: 'needBeanNums',
