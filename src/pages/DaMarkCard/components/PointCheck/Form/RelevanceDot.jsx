@@ -229,7 +229,7 @@ const RelevanceDot = (props) => {
 
   const modalProps = {
     title: '关联点位',
-    visible: true,
+    visible: show,
     onClose,
     footer: <ExtraButton list={btnList}></ExtraButton>,
   };
