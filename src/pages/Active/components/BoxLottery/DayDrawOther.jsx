@@ -11,7 +11,7 @@ const DayDrawOther = ({ prizeList, loading, dispatch, tabkey }) => {
   const searchItems = [
     {
       label: '中奖记录编号',
-      name: 'blindBoxRewardId',
+      name: 'winPrizeId',
     },
     {
       label: '抽奖用户',
