@@ -351,6 +351,7 @@ export default [
           'withdrawMerchantCash',
           'withdrawExpert',
           'withdrawAlliance',
+          'withdrawGroup',
         ],
       },
       {
@@ -358,6 +359,12 @@ export default [
         name: '平台收益',
         component: './Finance/PlatformIncome',
         buttons: ['exportList'],
+      },
+      {
+        path: '/finance/withdrawAudit',
+        name: '提现审核',
+        component: './Finance/WithdrawAudit',
+        buttons: ['info', 'check'],
       },
       // 广告营销 market
       {
@@ -443,7 +450,7 @@ export default [
       {
         path: '/market/appset',
         name: 'Banner管理',
-        component: './Market/AppSetList',
+        component: './Market/AppSetTabList',
         buttons: ['save', 'del', 'edit', 'up', 'down', 'addPlace'],
       },
       {

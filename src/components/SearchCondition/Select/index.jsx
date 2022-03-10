@@ -10,7 +10,7 @@ const { Option } = Select;
 const SelectBlock = (props) => {
   const {
     type,
-    select,
+    select = [],
     allItem = 'true',
     defaultValue = '',
     fieldNames = {},
