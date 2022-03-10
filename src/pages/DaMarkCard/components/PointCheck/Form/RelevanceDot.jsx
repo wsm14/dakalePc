@@ -55,11 +55,13 @@ const RelevanceDot = (props) => {
     const selectBodys = bodyList.filter((item) => val === item.hittingMainId);
     setBodyId(val);
     setBodySelect(selectBodys);
+    form.setFieldsValue({body:selectBodys})
     setShowBody(false);
   };
   const onChangePoint = (val) => {
     const selectPoints = pointList.filter((item) => val.includes(item.value));
     setPointSelect(selectPoints);
+    form.setFieldsValue({dot:selectPoints})
     setPointID(val);
   };
 
@@ -86,7 +88,7 @@ const RelevanceDot = (props) => {
       label: `关联主体`,
       type: 'formItem',
       name: 'body',
-      // rules: [{ required: true }],
+      rules: [{ required: true }],
       formItem: (
         <>
           <Space>
@@ -121,6 +123,7 @@ const RelevanceDot = (props) => {
                 item={{ name: mItem.name, address: mItem.address, id: mItem.hittingMainId }}
                 onDel={() => {
                   setBodySelect([]);
+                  form.setFieldsValue({body:''})
                   setBodyId('');
                 }}
               ></CommonList>
@@ -145,6 +148,7 @@ const RelevanceDot = (props) => {
       type: 'formItem',
       name: 'dot',
       visible: bodyId != '',
+      rules: [{ required: true }],
       formItem: (
         <>
           <Space>
@@ -180,6 +184,7 @@ const RelevanceDot = (props) => {
                 onDel={() => {
                   setPointSelect(pointSelect.filter((ids) => ids.value != item1.value));
                   setPointID(PointID.filter((ID) => ID !== item1.value));
+                  form.setFieldsValue({dot:''})
                 }}
               ></CommonList>
               <div className="bottomCon">
@@ -224,7 +229,7 @@ const RelevanceDot = (props) => {
 
   const modalProps = {
     title: '关联点位',
-    visible: show,
+    visible: true,
     onClose,
     footer: <ExtraButton list={btnList}></ExtraButton>,
   };
