@@ -165,8 +165,8 @@ const PointCheck = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.hittingMainId}`}
-        dispatchType="pointManage/fetchGetList"
-        {...pointManageList}
+        // dispatchType="pointManage/fetchGetList"
+        // {...pointManageList}
       ></TableDataBlock>
       <PointCheckDetail
         childRef={childRef}

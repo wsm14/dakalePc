@@ -22,7 +22,6 @@ const RelevanceDot = (props) => {
   const [visibleSet, setVisibleSet] = useState(false); //主体奖励配置，首刷广告，新增
   const [bodyId, setBodyId] = useState(''); //单选 选中的主体id
   const [PointID, setPointID] = useState([]); //多选选中平的点位Id
-  const [visibleModal, setVisibleModal] = useState(false);
   const [form] = Form.useForm();
 
   // 搜索主体
@@ -56,6 +55,10 @@ const RelevanceDot = (props) => {
     setBodyId(val);
     setBodySelect(selectBodys);
     form.setFieldsValue({body:selectBodys})
+    //切换后点位列表清空
+    setPointSelect([]);
+    form.setFieldsValue({dot:[]})
+    setPointID([]);
     setShowBody(false);
   };
   const onChangePoint = (val) => {
@@ -106,7 +109,6 @@ const RelevanceDot = (props) => {
           {showBody && (
             <div style={{ display: 'flex', alignItems: 'center', marginTop: 20 }}>
               <Select
-                allowClear
                 placeholder="输入主体名称/ID"
                 onSearch={handleSearch}
                 onChange={onChangeBody}
@@ -147,7 +149,7 @@ const RelevanceDot = (props) => {
       label: `关联点位`,
       type: 'formItem',
       name: 'dot',
-      visible: bodyId != '',
+      visible: bodyId,
       rules: [{ required: true }],
       formItem: (
         <>
@@ -229,7 +231,7 @@ const RelevanceDot = (props) => {
 
   const modalProps = {
     title: '关联点位',
-    visible: show,
+    visible: true,
     onClose,
     footer: <ExtraButton list={btnList}></ExtraButton>,
   };
