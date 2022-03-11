@@ -10,9 +10,9 @@ export default {
     <title>${activityName}</title>
     <style>*{box-sizing:border-box;font-family: PingFang SC;}html,body{overflow-x: hidden;background-color:${backgroundColor};width:100vw;height:100%;margin:0;padding:0;line-height: 1.15;-webkit-overflow-scrolling: touch;}</style>
     <script type="text/javascript" src="https://resource-new.dakale.net/admin/activeJs/zepto.min.js"></script>
-    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
-    ${head}
+    <script type="text/javascript" src="https://res2.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
     <script>${nativeText}</script>
+    ${head}
     </head>
     <body>
     ${body}

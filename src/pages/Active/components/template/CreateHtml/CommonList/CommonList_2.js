@@ -39,6 +39,8 @@ export default (function (list, id) {
   if (evn) {
     if (evn === 'miniProgram') {
       getCommission(getUrlKey('token'));
+    } else if (evn === 'wxChatWebView') {
+      showList(list);
     } else {
       native.nativeInit('getToken', {}, (val) => {
         if (val && val.length > 0) {
@@ -57,60 +59,66 @@ export default (function (list, id) {
   // 默认50%
   function showList(source, payC = 50, shareC) {
     const vw = (px) => (px / 375) * 100 + 'vw';
+    const wxOpenLaunchWeapp = (html, mid, sid) =>
+      `<wx-open-launch-weapp 
+        username="gh_7ffa23a2dcd1" 
+        path="pages/perimeter/favourableDetails/index.html?merchantId=${mid}&specialActivityId=${sid}">
+        <script type="text/wxtag-template">${html}<\\/script>
+      </wx-open-launch-weapp>`;
     document.getElementById(
       id,
     ).innerHTML = `<div style="display: flex;justify-content: space-between;padding: 0 ${vw(
       12,
     )};flex-wrap: wrap">
 ${source
-  .map(
-    (
-      item,
-    ) => `<div class="handleGoNative"  data-key="specialActivityId,merchantId" data-specialActivityId=${
+  .map((item) => {
+    const cellDom = `<div class="handleGoNative"  data-key="specialActivityId,merchantId" data-specialActivityId=${
       item.specialGoodsId
     } data-merchantId=${item.ownerIdString} data-path="goods" data-linkType="inside" 
-    style="width: ${vw(172)};border-radius: ${vw(4)};margin-bottom: ${vw(
+      style="width: ${vw(172)};border-radius: ${vw(4)};margin-bottom: ${vw(
       12,
     )}; background: #FFFFFF;padding:${vw(4)} ${vw(4)} ${vw(12)}">
-    <div style="width: ${vw(164)};height: ${vw(122)};border-radius: ${vw(2)};background: url(${
+      <div style="width: ${vw(164)};height: ${vw(122)};border-radius: ${vw(2)};background: url(${
       item.goodsImg
     }) center / cover;"></div>
-    <div style="padding:${vw(12)} ${vw(4)} 0">
-    <div style="font-size: ${vw(
-      14,
-    )};color: #333333; white-space:nowrap;text-overflow: ellipsis;overflow: hidden;">${
+      <div style="padding:${vw(12)} ${vw(4)} 0">
+      <div style="font-size: ${vw(
+        14,
+      )};color: #333333; white-space:nowrap;text-overflow: ellipsis;overflow: hidden;">${
       item.goodsName
     }</div>
-    <div style="font-size: ${vw(12)};margin-top: ${vw(
+      <div style="font-size: ${vw(12)};margin-top: ${vw(
       8,
     )};color: #999999; display: flex; align-items: center;">
-    <img src="${item.ownerImg}" style="border-radius: 50%;width: ${vw(15)};height: ${vw(
+      <img src="${item.ownerImg}" style="border-radius: 50%;width: ${vw(15)};height: ${vw(
       15,
     )};margin-right: ${vw(4)};background-color: #f5f5f5;"></img>
-    <div style="flex: 1;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;line-height: initial">${
-      item.ownerName
-    }</div>
-    </div>
-    <div style="margin-top: ${vw(
-      12,
-    )};white-space: nowrap;text-overflow: ellipsis;overflow: hidden;line-height: initial">
-    <span style="font-size: ${vw(12)}; color: #333333; margin-top: ${vw(
+      <div style="flex: 1;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;line-height: initial">${
+        item.ownerName
+      }</div>
+      </div>
+      <div style="margin-top: ${vw(
+        12,
+      )};white-space: nowrap;text-overflow: ellipsis;overflow: hidden;line-height: initial">
+      <span style="font-size: ${vw(12)}; color: #333333; margin-top: ${vw(
       7,
     )}">优惠价: <span style="font-size: ${vw(14)}; font-weight: bold">¥${
       item.realPrice
     }</span></span><span style="font-size: ${vw(12)}; color: #999999; margin-left: ${vw(
       4,
     )}">原价: <span style="text-decoration: line-through">¥${item.oriPrice}</span></span></div>
-    <div style="height: ${vw(16)};border-radius: ${vw(8)};margin-top: ${vw(
+      <div style="height: ${vw(16)};border-radius: ${vw(8)};margin-top: ${vw(
       4,
     )};display: inline-flex;align-items: center;overflow: hidden;position: relative;">
-      <div style="font-size: ${vw(10)};padding-left: ${vw(4)};padding-right: ${vw(3)};height: ${vw(
+        <div style="font-size: ${vw(10)};padding-left: ${vw(4)};padding-right: ${vw(
+      3,
+    )};height: ${vw(
       16,
     )};background: #ef476f;display: flex;align-items: center;color: #ffffff;;z-index: 1;width: max-content;">卡豆再省</div>
-      <div style="width: 0;height: 0;border-top: ${vw(16)} solid #ef476f;border-right:${vw(
+        <div style="width: 0;height: 0;border-top: ${vw(16)} solid #ef476f;border-right:${vw(
       2,
     )} solid transparent;;z-index: 1"></div>
-      <div style="font-size: ${vw(12)};border-radius: 0 ${vw(50)} ${vw(50)} 0;padding-right: ${vw(
+        <div style="font-size: ${vw(12)};border-radius: 0 ${vw(50)} ${vw(50)} 0;padding-right: ${vw(
       4,
     )};font-weight: bold;color: #ef476f;background: #ffffff;padding-left: ${vw(
       10,
@@ -120,17 +128,21 @@ ${source
       item.realPrice,
       payC,
     )}</div>
-    </div>
-    </div>
-    <div style="width: ${vw(154)};height: ${vw(27)};border-radius: ${vw(13)};font-size: ${vw(
+      </div>
+      </div>
+      <div style="width: ${vw(154)};height: ${vw(27)};border-radius: ${vw(13)};font-size: ${vw(
       14,
     )}; margin-top: ${vw(
       16,
     )};background: #EF476F;color: #FFFFFF;display: flex;align-items: center;justify-content: center;line-height: normal;white-space: nowrap;">
-    ${
-      shareC ? `分享赚￥${computedPrice(item.realPrice - item.merchantPrice, shareC)}` : '抢购'
-    }</div></div></div>`,
-  )
+      ${
+        shareC ? `分享赚￥${computedPrice(item.realPrice - item.merchantPrice, shareC)}` : '抢购'
+      }</div></div></div>`;
+    if (native.getPhone() === 'wxChatWebView') {
+      return wxOpenLaunchWeapp(cellDom, item.ownerIdString, item.specialGoodsId);
+    }
+    return cellDom;
+  })
   .join('')}</div>`;
   }
 }.toString());
