@@ -1,34 +1,57 @@
 export default (function (list, id) {
   showList(list);
 
+    function getUrlParam(shareKey) {
+    const query = window.location.search.substring(1);
+    const vars = query.split('&');
+    for (let i = 0; i < vars.length; i++) {
+      const pair = vars[i].split('=');
+      if (pair[0] == shareKey) {
+        return pair[1];
+      }
+    }
+    return '';
+  };
+
+  function wxOpenLaunchWeapp(html, merchantType, id) {
+    const path = {
+      group: `pages/perimeter/kaMerchantDetails/index.html?merchantGroupId=${id}&shareUserId=${getUrlParam(
+        'shareUserId',
+      )}&shareUserType=${getUrlParam('shareUserType')}`,
+      merchant: `pages/perimeter/merchantDetails/index.html?merchantId=${id}&shareUserId=${getUrlParam(
+        'shareUserId',
+      )}&shareUserType=${getUrlParam('shareUserType')}`,
+    }[merchantType];
+
+    return `
+      <div style="position: relative">
+        ${html}
+        <wx-open-launch-weapp 
+          username="gh_7ffa23a2dcd1" 
+          path="${path}"
+          style="position: absolute;width: 100%;height: 100%;top:0"
+        >
+        <template>
+          <style>
+            .weappArea{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 10
+            }
+          </style>
+          <div class="weappArea"></div>
+        </template>
+        </wx-open-launch-weapp>
+      </div>`;
+  }
+
+  function vw(px) {
+    return (px / 375) * 100 + 'vw';
+  }
+
   // 默认50%
   function showList(source) {
-    const vw = (px) => (px / 375) * 100 + 'vw';
-    const getUrlParam = (shareKey) => {
-      const query = window.location.search.substring(1);
-      const vars = query.split('&');
-      for (let i = 0; i < vars.length; i++) {
-        const pair = vars[i].split('=');
-        if (pair[0] == shareKey) {
-          return pair[1];
-        }
-      }
-      return '';
-    };
-    const wxOpenLaunchWeapp = (html, merchantType, id) => {
-      const path = {
-        group: `pages/perimeter/kaMerchantDetails/index.html?merchantGroupId=${id}&shareUserId=${getUrlParam(
-          'shareUserId',
-        )}&shareUserType=${getUrlParam('shareUserType')}`,
-        merchant: `pages/perimeter/merchantDetails/index.html?shopId=${id}&shareUserId=${getUrlParam(
-          'shareUserId',
-        )}&shareUserType=${getUrlParam('shareUserType')}`,
-      }[merchantType];
-      return `<wx-open-launch-weapp 
-        username="gh_7ffa23a2dcd1" 
-        path="${path}"><script type="text/wxtag-template">${html}
-        <\\/script></wx-open-launch-weapp>`;
-    };
     document.getElementById(id).innerHTML = `<div style="padding: ${vw(4)} ${vw(12)} ${vw(16)}">
 ${source
   .map((item) => {

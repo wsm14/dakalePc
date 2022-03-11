@@ -9,22 +9,25 @@ export default (function (data, id) {
 
   if (['dakaleIOS', 'dakaleAndroid'].includes(getPhone())) showShare(data);
 
+  function getUrlParam(shareKey) {
+    const query = window.location.search.substring(1);
+    const vars = query.split('&');
+    for (let i = 0; i < vars.length; i++) {
+      const pair = vars[i].split('=');
+      if (pair[0] == shareKey) {
+        return pair[1];
+      }
+    }
+    return false;
+  }
+
+  function vw(px) {
+    return (px / 2 / 375) * 100 + 'vw';
+  }
+
   // 默认50%
   function showShare(data) {
     const { img, width, height, x, y } = data;
-    const vw = (px) => (px / 2 / 375) * 100 + 'vw';
-
-    const getUrlParam = (shareKey) => {
-      const query = window.location.search.substring(1);
-      const vars = query.split('&');
-      for (let i = 0; i < vars.length; i++) {
-        const pair = vars[i].split('=');
-        if (pair[0] == shareKey) {
-          return pair[1];
-        }
-      }
-      return false;
-    };
 
     document.getElementById(id).innerHTML = `<img src="${img}" style="width: ${vw(width)};
     height: ${vw(height)};
