@@ -76,6 +76,7 @@ const CityListComponent = (props) => {
           rowKey={(record) => `${record.bucket}`}
           params={{ bucket: 'cityCode' }}
           dispatchType="areaTotal/fetchGetList"
+          pagination={false}
           list={list}
           rowClassName={(record) => (record.bucket == selectRow ? styles.waitList_rowColor : '')}
           onRow={(record) => {

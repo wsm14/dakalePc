@@ -1,55 +1,65 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import { Card } from 'antd';
-import { STROLLAROUND_TAB_TYPE } from '@/common/constant';
+import { RESOURCE_NAME } from '@/common/constant';
+import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
+import ResourceContentDrawer from './ResourceContentDrawer';
 
 const ResourceContent = (props) => {
-  const { dispatch, loading, editionList } = props;
+  const { dispatch, loading, resourceList } = props;
   const [visible, setVisible] = useState(false);
-  const [tabKey, setTabKey] = useState('iOS');
 
   const childRef = useRef();
+
+  // 搜索参数
+  const searchItems = [
+    {
+      label: '活动名称',
+      name: 'name',
+    },
+    {
+      label: '关联模板名称',
+      name: 'templateName',
+      type: 'select',
+      select: RESOURCE_NAME,
+      allItem: false,
+    },
+  ];
 
   const getColumns = [
     {
       title: '活动名称',
       align: 'center',
-      dataIndex: 'version',
+      dataIndex: 'name',
     },
     {
       title: '备注',
       align: 'center',
-      dataIndex: 'version',
+      dataIndex: 'remark',
     },
     {
       title: '关联模板名称',
       align: 'center',
-      dataIndex: 'version',
-    },
-    {
-      title: '活动商品数',
-      align: 'center',
-      dataIndex: 'version',
+      dataIndex: 'templateName',
     },
     {
       title: '创建人',
       align: 'center',
-      dataIndex: 'version',
+      dataIndex: 'creator',
     },
     {
       title: '创建时间',
       align: 'center',
-      dataIndex: 'version',
+      dataIndex: 'createTime',
     },
     {
       type: 'handle',
       // align: 'center',
-      dataIndex: 'configWanderAroundModuleId',
+      dataIndex: 'templateId',
       render: (val, row) => [
         {
           type: 'edit',
-          title: '编辑详情',
           click: () => {
             setVisible({
               show: true,
@@ -70,23 +80,41 @@ const ResourceContent = (props) => {
     },
   ];
 
+  const btnList = [
+    {
+      text: '新增',
+      auth: 'save',
+      onClick: () => setVisible({ type: 'add', show: true }),
+    },
+  ];
+
   return (
-    <TableDataBlock
-      order
-      cardProps={{ title: '资源位内容配置' }}
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      pagination={false}
-      rowKey={(record) => `${record.configWanderAroundModuleId}`}
-      params={{ userOs: tabKey, area: 'all' }}
-      dispatchType="walkingManage/fetchAroundModuleList"
-      {...editionList}
-    />
+    <>
+      <TableDataBlock
+        order
+        cardProps={{
+          title: '资源位内容配置',
+          extra: <ExtraButton list={btnList}></ExtraButton>,
+        }}
+        cRef={childRef}
+        loading={loading}
+        searchItems={searchItems}
+        columns={getColumns}
+        rowKey={(record) => `${record.templateId}`}
+        params={{ deleteFlag: 1 }}
+        dispatchType="walkingManage/fetchPageResourceTemplateContent"
+        {...resourceList}
+      />
+      <ResourceContentDrawer
+        childRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></ResourceContentDrawer>
+    </>
   );
 };
 
 export default connect(({ loading, walkingManage }) => ({
-  editionList: walkingManage.editionList,
+  resourceList: walkingManage.resourceList,
   loading: loading.models.walkingManage,
 }))(ResourceContent);

@@ -1,5 +1,5 @@
-import MainBanner from './SolaImg';
+import SolaImg from './SolaImg';
 
 export default {
-  mainBanner: MainBanner,
+  mainBanner: SolaImg,
 };

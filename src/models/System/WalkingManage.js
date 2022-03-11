@@ -32,6 +32,9 @@ import {
   fetchSaveConfigSpecialGoodsCategory,
   fetchUpdateConfigSpecialGoodsCategory,
   fetchGetConfigSpecialGoodsCategoryById,
+  fetchPageResourceTemplateContent,
+  fetchListResourceTemplate,
+  fetchGetResourceTemplateById,
 } from '@/services/SystemServices';
 import { fetchAddNewActivityDetailCheck } from '@/services/MarketServices';
 export default {
@@ -55,6 +58,8 @@ export default {
     gratiaClassList: { list: [] },
     gratiaClassCityList: { list: [] },
     gratiaClassInfoList: { list: [] },
+    resourceTemplateList: { list: [] },
+    resourceList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -521,6 +526,43 @@ export default {
       if (!response) return;
       const { content } = response;
       callback && callback(content.configSpecialGoodsCategoryDTO);
+    },
+    //资源位内容配置-  分页列表
+    *fetchPageResourceTemplateContent({ payload }, { call, put }) {
+      const response = yield call(fetchPageResourceTemplateContent, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          resourceList: {
+            list: content.recordList,
+            total: content.total,
+          },
+        },
+      });
+    },
+    //资源位模板-  不分页列表\查询
+    *fetchListResourceTemplate({ payload }, { call, put }) {
+      const response = yield call(fetchListResourceTemplate, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          resourceTemplateList: {
+            list: content.resourceTemplates,
+          },
+        },
+      });
+    },
+    //资源位模板-  详情、获取配置
+    *fetchGetResourceTemplateById({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetResourceTemplateById, payload);
+      if (!response) return;
+      const { content } = response;
+
+      callback && callback(content.resourceTemplateDTO);
     },
   },
 };
