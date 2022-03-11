@@ -9,9 +9,12 @@ import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const SysAppSet = (props) => {
-  const { dispatch, cRef, visible, onClose, tabKey, radioType, loading, bannerTypeObj } = props;
+  const { dispatch, cRef, visible, onClose, tabKey, tabKeyTwo, radioType, loading, bannerTypeObj } =
+    props;
 
   const { show = false, type = 'add', detail = { provinceCityDistrictObjects: [{}] } } = visible;
+  const { version } = detail;
+
   const [form] = Form.useForm();
   const [showArea, setShowArea] = useState(false); // 区域
   const [showRadio, setShowRadio] = useState(null); // 图片分辨率
@@ -39,9 +42,15 @@ const SysAppSet = (props) => {
           payload: {
             bannerId: detail.bannerIdString,
             ...values,
+            flag: {
+              add: 'addConfig',
+              edit: 'updateConfig',
+            }[type],
+            version,
             beginDate: moment(activityTime[0]).format('YYYY-MM-DD'),
             endDate: moment(activityTime[1]).format('YYYY-MM-DD'),
             userType: tabKey,
+            userOs: tabKeyTwo,
             hideTitle: Number(!hideTitle),
             provinceCityDistrictObjects,
             coverImg: res.toString(),

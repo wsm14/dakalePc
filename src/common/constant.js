@@ -147,6 +147,9 @@ export const EXPERT_LIST_TYPE = { daren: '哒人', douzhang: '豆长' };
 // 实习豆长状态
 export const EXPERT_TEMP_STATUS = ['未开始', '实习中', '实习结束'];
 
+// 哒小团提现状态
+export const COMMUNITY_WITHDRAW_STATUS = ['待审核', '已审核'];
+
 // 活动状态
 export const ACTIVITY_STATUS = ['待开始', '进行中', '已下架'];
 
@@ -427,6 +430,7 @@ export const BANNER_PORT_TYPE = {
   merchant: '商家端',
   weChat: '微信小程序',
   mark: '哒小卡小程序',
+  communityWechat: '哒小团小程序',
 };
 
 const bannerType = {
@@ -798,7 +802,7 @@ export const FOLLOW_MANNER = {
 // export const GAME_SIGN_STATUS = ['未领取', '待发货', '已完成', '已过期', '未完善地址'];
 
 //盲盒抽奖记录 - 免费领商品 - 发放状态
-export const GAME_FREE_STATUS = ['未领取', '待发货', '已完成'];
+export const GAME_FREE_STATUS = ['未完善地址', '待发货', '已完成'];
 
 //盲盒抽奖记录 - 签到游戏 - 奖品类型
 export const GAME_SIGN_PACKAGE_TYPE = {
@@ -809,7 +813,14 @@ export const GAME_SIGN_PACKAGE_TYPE = {
 // 盲盒商品类型枚举
 export const BLINDBOX_PRIZE_TYPE = {
   bean: '卡豆',
+  starBean: '星豆',
+  growValue: '成长值',
+  luckDrawChance: '抽奖次数（集碎片）',
+  manure: '肥料',
+  // rightGood: '权益产品',
   commerce: '电商商品',
+  platformCoupon: '平台券',
+  none: '谢谢惠顾',
 };
 
 //盲盒抽奖记录 - 抽奖状态

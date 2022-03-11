@@ -36,7 +36,6 @@ const GameSign = ({ gameEquityList, loading, tabkey, twoTabkey }) => {
     {
       label: '中奖结果',
       name: 'prize',
-      // placeholder: '请输入卡豆数或权益商品id',
       placeholder: '请输入卡豆数',
     },
     {

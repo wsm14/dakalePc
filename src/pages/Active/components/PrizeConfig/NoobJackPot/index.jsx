@@ -9,7 +9,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 const NoobJackPot = (props) => {
   const { blindBoxRule, loading, dispatch } = props;
 
-  const { allBlindBoxProducts: list } = blindBoxRule;
+  const { showPrizePoolList: list } = blindBoxRule;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
@@ -18,17 +18,17 @@ const NoobJackPot = (props) => {
   const getColumns = [
     {
       title: '奖品ID',
-      dataIndex: 'id',
+      dataIndex: 'luckPrizeIdStr',
     },
     {
       title: '奖品类型',
       align: 'center',
-      dataIndex: 'type',
+      dataIndex: 'prizeType',
       render: (val) => BLINDBOX_PRIZE_TYPE[val],
     },
     {
       title: '中奖图',
-      dataIndex: 'winningImg',
+      dataIndex: 'winPrizeImg',
       render: (val) => <PopImgShow url={val}></PopImgShow>,
     },
     {
@@ -39,11 +39,11 @@ const NoobJackPot = (props) => {
     {
       title: '奖品名称',
       align: 'center',
-      dataIndex: 'showName',
+      dataIndex: 'prizeName',
     },
     {
       type: 'handle',
-      dataIndex: 'rate',
+      dataIndex: 'probability',
       render: (val, row) => {
         return [
           {
@@ -51,7 +51,7 @@ const NoobJackPot = (props) => {
             auth: true,
             click: () =>
               handleBlindConfigSet(
-                list.filter((item) => item.id !== row.id),
+                list.filter((item) => item.luckPrizeIdStr !== row.luckPrizeIdStr),
                 childRef.current.fetchGetData,
               ),
           },
@@ -63,7 +63,7 @@ const NoobJackPot = (props) => {
   // 规则配置
   const handleBlindConfigSet = (lists, callback) => {
     dispatch({
-      type: 'prizeConfig/fetchBlindBoxConfigSet',
+      type: 'prizeConfig/fetchSetLuckDrawConfig',
       payload: {
         ruleType: 'novice',
         allBlindBoxProducts: lists,
@@ -88,7 +88,7 @@ const NoobJackPot = (props) => {
         loading={loading}
         columns={getColumns}
         params={{ ruleType: 'novice' }}
-        rowKey={(record) => `${record.id}`}
+        rowKey={(record) => `${record.luckPrizeIdStr}`}
         dispatchType="prizeConfig/fetchGetList"
         pagination={false}
         list={list}
@@ -98,7 +98,7 @@ const NoobJackPot = (props) => {
         childRef={childRef}
         visible={visible}
         selectList={list}
-        data={{ isNovice: 1 }} // 覆盖数据 isNovice 是否属于新手必中奖池 0-否 1-是 这里是新手奖池
+        // data={{ isNovice: 1 }} // 覆盖数据 isNovice 是否属于新手必中奖池 0-否 1-是 这里是新手奖池
         onOk={handleBlindConfigSet}
         onCancel={() => setVisible(false)}
       ></PrizeSelectModal>

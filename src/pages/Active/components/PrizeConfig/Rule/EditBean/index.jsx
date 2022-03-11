@@ -14,7 +14,6 @@ import { DAREN_TEMP_FLAG } from '@/common/constant';
 
 function EditBean(props) {
   const { visible, onClose, blindBoxRule = {}, loading, keyType, dispatch, callBack } = props;
-  // console.log(blindBoxRule, '22222');
 
   const [form] = Form.useForm();
 
@@ -26,34 +25,37 @@ function EditBean(props) {
 
   //表单提交
   const handleUpAction = () => {
-    // console.log(tableList, 'tableList');
-    // keyType === 'bean'
-    // ?
     form.validateFields().then(async (values) => {
-      // console.log(values, 'values');
-      const { backImg = '', backFile = '' } = values;
-
+      const { backGroundImg = '', dynamicEffect = '' } = values;
       let payload = {};
-
       if (keyType === 'bean') {
-        const sImg = await aliOssUpload(backImg);
-        const fImg = await aliOssUpload(backFile);
+        const sImg = await aliOssUpload(backGroundImg);
+        const fImg = await aliOssUpload(dynamicEffect);
+        const newTabList = tableList.map(item=>{
+          let probability = item.probability/100
+          return {
+            ...item,
+            probability
+          }
+        })
+      
         payload = {
-          bean: values.bean,
-          backImg: sImg.toString(),
-          backFile: fImg.toString(),
-          allBlindBoxProducts: tableList,
+          needBean: values.needBean,
+          giveTimes:values.giveTimes,
+          backGroundImg: sImg.toString(),
+          dynamicEffect: fImg.toString(),
+          showPrizePoolList: newTabList,
         };
       } else {
         payload = {
           num: values.num,
           times: values.times,
-          allBlindBoxProducts: tableList,
+          showPrizePoolList: newTabList,
         };
       }
 
       dispatch({
-        type: 'prizeConfig/fetchBlindBoxConfigSet',
+        type: 'prizeConfig/fetchSetLuckDrawConfig',
         payload: {
           ruleType: keyType,
           ...payload,
@@ -68,10 +70,9 @@ function EditBean(props) {
 
   //弹窗点击确认
   const handleBlindConfigSet = (lists, callback) => {
-    console.log(lists);
     tableList.forEach((item) => {
       const num = lists.findIndex((val) => {
-        return val.id === item.id;
+        return val.luckPrizeIdStr === item.luckPrizeIdStr;
       });
       if (num !== -1) {
         lists.splice(num, 1, item);
@@ -85,7 +86,7 @@ function EditBean(props) {
   const onChangeInput = (val, index, type) => {
     switch (type) {
       case 'add':
-        tableList[index].rate = val;
+        tableList[index].probability = val;
         break;
       case 'delete':
         tableList.splice(index, 1);
@@ -101,17 +102,17 @@ function EditBean(props) {
     {
       title: '奖品ID',
       fixed: 'left',
-      dataIndex: 'id',
+      dataIndex: 'luckPrizeIdStr',
     },
     {
       title: '奖品类型',
       fixed: 'left',
-      dataIndex: 'type',
+      dataIndex: 'prizeType',
       render: (val) => BLINDBOX_PRIZE_TYPE[val],
     },
     {
       title: '中奖图',
-      dataIndex: 'winningImg',
+      dataIndex: 'winPrizeImg',
       render: (val) => <PopImgShow url={val}></PopImgShow>,
     },
     {
@@ -121,21 +122,23 @@ function EditBean(props) {
     },
     {
       title: '奖品名称',
-      dataIndex: 'prize',
+      dataIndex: 'prizeName',
       ellipsis: true,
     },
     {
       title: '盲盒展示名称',
-      dataIndex: 'showName',
+      dataIndex: 'prizeName',
       ellipsis: true,
     },
     {
       title: '抽中概率',
-      dataIndex: 'rate',
+      dataIndex: 'probability',
       render: (val, row, index) => (
         <InputNumber
           style={{ width: '100px' }}
           precision={5}
+          min={0}
+          max={100}
           suffix={'%'}
           value={val}
           onChange={(e) => {
@@ -146,12 +149,12 @@ function EditBean(props) {
     },
     {
       title: '是否真实奖品',
-      dataIndex: 'isParticipate',
+      dataIndex: 'isJoinLuck',
       render: (val) => DAREN_TEMP_FLAG[val],
     },
     {
       type: 'handle',
-      dataIndex: 'id',
+      dataIndex: 'luckPrizeIdStr',
       fixed: 'right',
       render: (val, row, index) => [
         {
@@ -167,46 +170,36 @@ function EditBean(props) {
   const formItems = [
     {
       label: '每次抽取需要卡豆',
-      name: 'bean',
+      name: 'needBean',
       type: 'number',
       suffix: '卡豆',
+      rules: [{ required: false }],
+    },
+    {
+      label: '赠送次数',
+      name: 'giveTimes',
+      type: 'number',
+      suffix: '次',
+      rules: [{ required: false }],
     },
     {
       label: '盲盒背景图',
       type: 'upload',
       rules: [{ required: false }],
       extra: '(请上传XXX*XXX尺寸，大小50KB以内的PNG格式图片)',
-      name: 'backImg',
+      name: 'backGroundImg',
     },
     {
       label: '盲盒动效',
       type: 'otherUpload',
       extra: '请上传大小XX以内的XX格式文件',
       rules: [{ required: false }],
-      name: 'backFile',
-      // labelCol: { span: 6 },
-      // style: { flex: 1 },
+      name: 'dynamicEffect',
     },
     {
       label: '奖池',
-      name: 'allBlindBoxProducts',
+      name: 'showPrizePoolList',
       type: 'formItem',
-      // addRules: [
-      //   {
-      //     validator: () => {
-      //       const total = tableList
-      //         .filter((item) => item.isParticipate === '1')
-      //         .reduce((item, next) => {
-      //           return item + Number(next.rate);
-      //         }, 0);
-      //       // console.log(total);
-      //       if (total != 100) {
-      //         return Promise.reject(`当前各奖品抽中概率之和（不含仅展示）不等于100%，请修改`);
-      //       }
-      //       return Promise.resolve();
-      //     },
-      //   },
-      // ],
       formItem: (
         <Button
           type="primary"
@@ -220,14 +213,13 @@ function EditBean(props) {
       ),
     },
     {
-      label: '适用用户',
       type: 'noForm',
       formItem: (
         <TableDataBlock
           noCard={false}
           loading={loading}
           columns={getColumns}
-          rowKey={(record) => `${record.id}`}
+          rowKey={(record) => `${record.luckPrizeIdStr}`}
           list={tableList}
           pagination={false}
         ></TableDataBlock>
@@ -243,15 +235,15 @@ function EditBean(props) {
     },
     {
       label: '奖池',
-      name: 'allBlindBoxProducts',
+      name: 'showPrizePoolList',
       type: 'formItem',
       addRules: [
         {
           validator: () => {
             const total = tableList
-              .filter((item) => item.isParticipate === '1')
+              .filter((item) => item.isJoinLuck === '1')
               .reduce((item, next) => {
-                return item + Number(next.rate);
+                return item + Number(next.probability);
               }, 0);
             // console.log(total);
             if (total != 100) {
@@ -281,7 +273,7 @@ function EditBean(props) {
           noCard={false}
           loading={loading}
           columns={getColumns}
-          rowKey={(record) => `${record.id}`}
+          rowKey={(record) => `${record.luckPrizeIdStr}`}
           list={tableList}
         ></TableDataBlock>
       ),
@@ -295,8 +287,14 @@ function EditBean(props) {
     visible,
     onClose,
     afterCallBack: () => {
-      // console.log(blindBoxRule, 'participateBlindBoxProducts');
-      setTableList(blindBoxRule?.allBlindBoxProducts);
+      const newTabList = blindBoxRule?.showPrizePoolList.map(item=>{
+        let probability = item.probability*100
+        return {
+          ...item,
+          probability
+        }
+      })
+      setTableList(newTabList);
     },
     footer: (
       <Button onClick={handleUpAction} type="primary" loading={loading}>
@@ -317,7 +315,7 @@ function EditBean(props) {
       <PrizeSelectModal
         visible={modalVisible}
         selectList={tableList}
-        data={{ isNovice: 0 }} // 覆盖数据 isNovice 是否属于新手必中奖池 0-否 1-是 这里不是新手奖池
+        // data={{ isNovice: 0 }} // 覆盖数据 isNovice 是否属于新手必中奖池 0-否 1-是 这里不是新手奖池
         onOk={handleBlindConfigSet}
         onCancel={() => setModalVisible(false)}
       ></PrizeSelectModal>
@@ -329,5 +327,5 @@ export default connect(({ prizeConfig, loading }) => ({
   // blindBoxRule: prizeConfig.blindBoxRule,
   loading:
     loading.effects['prizeConfig/fetchGetList'] ||
-    loading.effects['prizeConfig/fetchBlindBoxConfigSet'],
+    loading.effects['prizeConfig/fetchSetLuckDrawConfig'],
 }))(EditBean);
