@@ -817,7 +817,7 @@ export const BLINDBOX_PRIZE_TYPE = {
   growValue: '成长值',
   luckDrawChance: '抽奖次数（集碎片）',
   manure: '肥料',
-  rightGood: '权益产品',
+  // rightGood: '权益产品',
   commerce: '电商商品',
   platformCoupon: '平台券',
   none: '谢谢惠顾',
