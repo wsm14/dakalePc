@@ -39,6 +39,8 @@ export default (function (list, id) {
   if (evn) {
     if (evn === 'miniProgram') {
       getCommission(getUrlKey('token'));
+    } else if (evn === 'wxChatWebView') {
+      showList(list);
     } else {
       native.nativeInit('getToken', {}, (val) => {
         if (val && val.length > 0) {
@@ -57,12 +59,16 @@ export default (function (list, id) {
   // 默认50%
   function showList(source, payC = 50, shareC) {
     const vw = (px) => (px / 375) * 100 + 'vw';
+    const wxOpenLaunchWeapp = (html, mid, sid) =>
+      `<wx-open-launch-weapp 
+        username="gh_7ffa23a2dcd1" 
+        path="pages/perimeter/favourableDetails/index.html?merchantId=${mid}&specialActivityId=${sid}">
+        <script type="text/wxtag-template">${html}<\\/script>
+      </wx-open-launch-weapp>`;
     document.getElementById(id).innerHTML = `<div style="padding: ${vw(4)} ${vw(12)} ${vw(16)}">
 ${source
-  .map(
-    (
-      item,
-    ) => `<div class="handleGoNative"  data-key="specialActivityId,merchantId" data-specialActivityId=${
+  .map((item) => {
+    const cellDom = `<div class="handleGoNative"  data-key="specialActivityId,merchantId" data-specialActivityId=${
       item.specialGoodsId
     } data-merchantId=${
       item.ownerIdString
@@ -97,13 +103,15 @@ ${source
     }</span></div><div style="height: ${vw(16)};border-radius: ${vw(8)};margin-top: ${vw(
       6,
     )};display: inline-flex;align-items: center;overflow: hidden;position: relative;">
-      <div style="font-size: ${vw(10)};padding-left: ${vw(4)};padding-right: ${vw(3)};height: ${vw(
+        <div style="font-size: ${vw(10)};padding-left: ${vw(4)};padding-right: ${vw(
+      3,
+    )};height: ${vw(
       16,
     )};background: #ef476f;display: flex;align-items: center;color: #ffffff;;z-index: 1;width: max-content;">卡豆再省</div>
-      <div style="width: 0;height: 0;border-top: ${vw(16)} solid #ef476f;border-right:${vw(
+        <div style="width: 0;height: 0;border-top: ${vw(16)} solid #ef476f;border-right:${vw(
       2,
     )} solid transparent;;z-index: 1"></div>
-      <div style="font-size: ${vw(12)};border-radius: 0 ${vw(50)} ${vw(50)} 0;padding-right: ${vw(
+        <div style="font-size: ${vw(12)};border-radius: 0 ${vw(50)} ${vw(50)} 0;padding-right: ${vw(
       4,
     )};font-weight: bold;color: #ef476f;background: #ffffff;padding-left: ${vw(
       10,
@@ -119,10 +127,14 @@ ${source
     )};font-size: ${vw(
       14,
     )};background: #EF476F;color: #FFFFFF;display: flex;align-items: center;justify-content: center;line-height: normal;white-space: nowrap;">
-    ${
-      shareC ? `分享赚￥${computedPrice(item.realPrice - item.merchantPrice, shareC)}` : '抢购'
-    }</div></div></div></div>`,
-  )
+      ${
+        shareC ? `分享赚￥${computedPrice(item.realPrice - item.merchantPrice, shareC)}` : '抢购'
+      }</div></div></div></div>`;
+    if (native.getPhone() === 'wxChatWebView') {
+      return wxOpenLaunchWeapp(cellDom, item.ownerIdString, item.specialGoodsId);
+    }
+    return cellDom;
+  })
   .join('')}</div>`;
   }
 }.toString());
