@@ -74,7 +74,7 @@ const DrawerCondition = (props) => {
       footerBlock = dom_footer;
     }
     // 根据按钮个数显示骨架框个数
-    const some_button = footerBlock.map((item, i) => <Skeleton.Button active key={i} />);
+    const some_button = footerBlock.map((item, i) => <Skeleton.Button active key={`${i + 1}`} />);
     return skeletonType || loading ? some_button : footer;
   };
 
