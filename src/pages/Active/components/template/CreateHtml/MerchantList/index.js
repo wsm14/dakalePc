@@ -4,10 +4,25 @@ export default (function (list, id) {
   // 默认50%
   function showList(source) {
     const vw = (px) => (px / 375) * 100 + 'vw';
+    const getUrlParam = (shareKey) => {
+      const query = window.location.search.substring(1);
+      const vars = query.split('&');
+      for (let i = 0; i < vars.length; i++) {
+        const pair = vars[i].split('=');
+        if (pair[0] == shareKey) {
+          return pair[1];
+        }
+      }
+      return '';
+    };
     const wxOpenLaunchWeapp = (html, merchantType, id) => {
       const path = {
-        group: `pages/perimeter/kaMerchantDetails/index.html?merchantGroupId=${id}`,
-        merchant: `pages/perimeter/merchantDetails/index.html?shopId=${id}`,
+        group: `pages/perimeter/kaMerchantDetails/index.html?merchantGroupId=${id}&shareUserId=${getUrlParam(
+          'shareUserId',
+        )}&shareUserType=${getUrlParam('shareUserType')}`,
+        merchant: `pages/perimeter/merchantDetails/index.html?shopId=${id}&shareUserId=${getUrlParam(
+          'shareUserId',
+        )}&shareUserType=${getUrlParam('shareUserType')}`,
       }[merchantType];
       return `<wx-open-launch-weapp 
         username="gh_7ffa23a2dcd1" 

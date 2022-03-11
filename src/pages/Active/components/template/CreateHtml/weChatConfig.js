@@ -1,7 +1,8 @@
 export default `var evn = native.getPhone();
   if (evn === 'wxChatWebView') {
   HTTP_GET('/user/wechat/fetchWechatTicket', { url: location.href.split('#')[0] })
-    .then((data) => {
+    .then((res) => {
+      const data = res.content;
       wx.config({
         debug: false, // 如果分享失败，把0改成1开启错误提示看看
         appId: data.appId,

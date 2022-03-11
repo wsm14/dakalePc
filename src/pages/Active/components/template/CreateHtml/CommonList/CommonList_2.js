@@ -59,10 +59,23 @@ export default (function (list, id) {
   // 默认50%
   function showList(source, payC = 50, shareC) {
     const vw = (px) => (px / 375) * 100 + 'vw';
+    const getUrlParam = (shareKey) => {
+      const query = window.location.search.substring(1);
+      const vars = query.split('&');
+      for (let i = 0; i < vars.length; i++) {
+        const pair = vars[i].split('=');
+        if (pair[0] == shareKey) {
+          return pair[1];
+        }
+      }
+      return '';
+    };
     const wxOpenLaunchWeapp = (html, mid, sid) =>
       `<wx-open-launch-weapp 
         username="gh_7ffa23a2dcd1" 
-        path="pages/perimeter/favourableDetails/index.html?merchantId=${mid}&specialActivityId=${sid}">
+        path="pages/perimeter/favourableDetails/index.html?merchantId=${mid}&specialActivityId=${sid}&shareUserId=${getUrlParam(
+        'shareUserId',
+      )}&shareUserType=${getUrlParam('shareUserType')}"">
         <script type="text/wxtag-template">${html}<\\/script>
       </wx-open-launch-weapp>`;
     document.getElementById(
