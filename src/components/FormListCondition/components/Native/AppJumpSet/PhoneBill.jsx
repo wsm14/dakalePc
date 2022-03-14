@@ -36,7 +36,7 @@ const PhoneBill = ({ form, paramKey, showApi, virtualList, loading, dispatch }) 
         ...data,
       },
     });
-  }, 100);
+  }, 500);
 
   return (
     <FormItem
@@ -50,6 +50,11 @@ const PhoneBill = ({ form, paramKey, showApi, virtualList, loading, dispatch }) 
         placeholder={'请输入搜索'}
         select={virtualList}
         loading={loading}
+        onSelect={(val, option) => {
+          form.setFieldsValue({
+            preferentialActivityId: option.option.preferentialActivityId,
+          });
+        }}
         onSearch={(activityName) => fetchClassifyGetMre(activityName ? { activityName } : '')}
       ></Select>
     </FormItem>

@@ -312,3 +312,10 @@ export function fetchGlobalListPartner(params) {
     params,
   });
 }
+
+//资源位内容配置-  分页列表
+export function fetchPageResourceTemplateContent(params) {
+  return request('/admin/resourceTemplateContent/pageResourceTemplateContent', {
+    params,
+  });
+}

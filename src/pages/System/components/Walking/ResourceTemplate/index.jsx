@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
+import PreviewDrawer from './PreviewDrawer';
 
 const ResourceTemplate = (props) => {
   const { dispatch, loading, resourceTemplateList } = props;
@@ -46,22 +47,29 @@ const ResourceTemplate = (props) => {
       payload: {
         resourceTemplateId,
       },
+      callback: (detail) => {
+        setVisible({ show: true, detail });
+      },
     });
   };
 
   return (
-    <TableDataBlock
-      order
-      cardProps={{ title: '资源位模板预览' }}
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      pagination={false}
-      rowKey={(record) => `${record.resourceTemplateId}`}
-      params={{ deleteFlag: 1 }}
-      dispatchType="walkingManage/fetchListResourceTemplate"
-      {...resourceTemplateList}
-    />
+    <>
+      <TableDataBlock
+        order
+        cardProps={{ title: '资源位模板预览' }}
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        pagination={false}
+        rowKey={(record) => `${record.resourceTemplateId}`}
+        params={{ deleteFlag: 1 }}
+        dispatchType="walkingManage/fetchListResourceTemplate"
+        {...resourceTemplateList}
+      />
+      {/* 预览 */}
+      <PreviewDrawer visible={visible} onClose={() => setVisible(false)}></PreviewDrawer>
+    </>
   );
 };
 

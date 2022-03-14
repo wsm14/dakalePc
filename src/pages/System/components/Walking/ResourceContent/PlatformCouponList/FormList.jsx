@@ -14,6 +14,11 @@ const FormList = (props) => {
   const [visible, setVisible] = useState(false); // 权益商品 弹窗
   const [dataObj, setDataObj] = useState({});
 
+  useEffect(() => {
+    const obj = form.getFieldValue(name)[field.name]?.platformCouponId || {};
+    setDataObj(obj);
+  }, []);
+
   const uploadImg = async (index, val) => {
     let imgUrl = await aliOssUpload(val);
     // 获取数据数组
@@ -48,7 +53,7 @@ const FormList = (props) => {
           1,
           {
             ...dataList[field.name],
-            platformCouponId: obj?.specialGoodsId,
+            platformCouponId: obj?.platformCouponId,
           },
         ],
       ],

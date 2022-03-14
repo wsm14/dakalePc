@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Form } from 'antd';
+import debounce from 'lodash/debounce';
+import { Select } from '@/components/FormCondition/formModule';
 import { MARKET_JUMP_TYPE } from '@/common/constant';
 import { Radio } from '@/components/FormCondition/formModule';
 import NewJumpTypeBlock from './components/Native/NewJumpTypeBlock';
@@ -24,6 +26,8 @@ const NewNativeFormSet = ({
   getJumpType,
   form,
   dispatch,
+  virtualList,
+  loading,
 }) => {
   const [showUrl, setShowUrl] = useState(false); // 链接类型 h5 native
   const [showApi, setShowApi] = useState(false); // 打开的页面类型
@@ -33,6 +37,10 @@ const NewNativeFormSet = ({
     fetchGetJumpNative(); // 获取后端配置的 app打开的页面类型 和 参数键值对
     fetchWalkManageNavigation(); // 获取风向标
   }, []);
+
+  useEffect(() => {
+    form.setFieldsValue({ preferentialActivityId: undefined });
+  }, [showUrl, showApi]);
 
   // 获取后端配置的 app打开的页面类型 和 参数键值对
   const fetchGetJumpNative = () => {
@@ -52,6 +60,19 @@ const NewNativeFormSet = ({
       type: 'walkingManage/fetchWalkManageNavigation',
     });
   };
+
+  // 搜索卡豆抵扣比例
+  const fetchClassifyGetMre = debounce((data) => {
+    if (!data) return;
+    dispatch({
+      type: 'baseData/fetchPagePreferentialActivity',
+      payload: {
+        type: 'assembly',
+        preferentialDefaultType: 'defaultIdentification',
+        ...data,
+      },
+    });
+  }, 100);
 
   return (
     <>
@@ -87,8 +108,27 @@ const NewNativeFormSet = ({
       ></NewJumpTypeBlock>
       {/* 跳转原生页面表单 */}
       <AppJumpSet form={form} showApi={showApi} paramKey={paramKey}></AppJumpSet>
+      {/* 优惠活动名称 */}
+      {showUrl && (
+        <FormItem
+          label="选择优惠比例"
+          name="preferentialActivityId"
+          rules={[{ required: true, message: `请选择优惠比例` }]}
+          hidden={['phoneBill', 'memberRecharge'].includes(showApi)}
+        >
+          <Select
+            placeholder={'请输入搜索'}
+            select={virtualList}
+            loading={loading}
+            onSearch={(activityName) => fetchClassifyGetMre(activityName ? { activityName } : '')}
+          ></Select>
+        </FormItem>
+      )}
     </>
   );
 };
 
-export default connect()(NewNativeFormSet);
+export default connect(({ baseData, loading }) => ({
+  virtualList: baseData.virtualList.list,
+  loading: loading.effects['baseData/fetchPagePreferentialActivity'],
+}))(NewNativeFormSet);

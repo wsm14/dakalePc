@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { Form } from 'antd';
+import debounce from 'lodash/debounce';
 import { Input, Select } from '@/components/FormCondition/formModule';
 
 const FormItem = Form.Item;
@@ -19,8 +20,11 @@ const JumpTypeBlock = ({
   detail = {},
   setShowApi,
   setParamKey = {},
+  resourceList,
+  loading,
+  dispatch,
 }) => {
-  if (!['无', 'h5', 'native', 'inside'].includes(showUrl)) return null;
+  if (!['无', 'h5', 'native', 'inside', 'template'].includes(showUrl)) return null;
 
   useEffect(() => {
     // 跳转app 修改回显
@@ -37,6 +41,17 @@ const JumpTypeBlock = ({
       }); // 表单回填参数 app 跳转需要的参数键
     }
   }, []);
+
+  // 搜索卡豆抵扣比例
+  const fetchContentList = debounce((data) => {
+    if (!data) return;
+    dispatch({
+      type: 'baseData/fetchPageResourceTemplateContent',
+      payload: {
+        ...data,
+      },
+    });
+  }, 500);
 
   return {
     无: null,
@@ -78,8 +93,24 @@ const JumpTypeBlock = ({
         ></Select>
       </FormItem>
     ),
+    template: (
+      <FormItem
+        label="资源位内容"
+        name="resourceTemplateContentId"
+        rules={[{ required: true, message: `请选择资源位内容` }]}
+      >
+        <Select
+          placeholder={'请选择'}
+          select={resourceList}
+          loading={loading}
+          onSearch={(templateName) => fetchContentList(templateName ? { templateName } : '')}
+        ></Select>
+      </FormItem>
+    ),
   }[showUrl];
 };
-export default connect(({ baseData }) => ({
+export default connect(({ baseData, loading }) => ({
+  resourceList: baseData.resourceList,
   nativeList: baseData.nativeList,
+  loading: loading.effects['baseData/fetchPageResourceTemplateContent'],
 }))(JumpTypeBlock);

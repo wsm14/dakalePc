@@ -105,6 +105,7 @@ const ResourceContent = (props) => {
         dispatchType="walkingManage/fetchPageResourceTemplateContent"
         {...resourceList}
       />
+      {/* 新增 详情 */}
       <ResourceContentDrawer
         childRef={childRef}
         visible={visible}
