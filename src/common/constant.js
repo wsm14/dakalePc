@@ -525,6 +525,12 @@ export const COUPON_TIME_TYPE = { '00:00-23:59': '全天', part: '固定时间' 
 
 // 优惠券管理 - 购买规则
 export const COUPON_BUY_RULE = { unlimited: '不限', personLimit: '每人限制', dayLimit: '每天限制' };
+// 优惠券管理 - 发送方式
+export const COUPON_GIVE_TYPE = {
+  manual: '手动领取',
+  auto: '自动发放',
+  system: '系统发放',
+};
 
 // 优惠券管理 - 优惠券类型
 export const COUPON_ACTIVE_TYPE = { fixed: '固定时间', infinite: '长期' };
@@ -847,7 +853,35 @@ export const TAB_INDEX_TYPE = { iOS: 'iOS', android: 'Android', weChat: '小程�
 export const BOTTOM_ICON_TYPE = { iOS: 'iOS', android: 'Android' };
 
 // 全局配置 - 虚拟商品优惠比例配置
-export const VIRTUAL_CONFIG_TYPE = { phoneBill: '话费优惠', memberRecharge: '会员优惠' };
+export const VIRTUAL_CONFIG_TYPE = {
+  default: {
+    default: '默认配置',
+    phoneBill: '话费优惠',
+    memberRecharge: '会员优惠',
+    scanPay: '扫码付优惠',
+    assembly: '组件优惠 ',
+  },
+  other: {
+    phoneBill: '话费优惠',
+    memberRecharge: '会员优惠',
+    scanPay: '扫码付优惠',
+    assembly: '组件优惠 ',
+  },
+};
+
+// 全局配置 - 下单方式名称
+export const VIRTUAL_ORDER_TYPE = {
+  memberDefault: '会员默认',
+  phoneDefault: '话费默认',
+  scanDefault: '扫码默认',
+  videoDefault: '视频默认',
+  communityDefault: '团购默认 ',
+  otherDefault: '其他场景默认',
+  defaultIdentification: '全局默认',
+};
+
+//全局配置-节日配置-顶部动效图高度
+export const VIRTUAL_TOP_HEIGHT = { 400: '日常高度', 500: '节日高度' };
 
 // 全局配置 - 首页tab配置 - 标签类型
 export const TABINDEX_VIDEO_TYPE = {
