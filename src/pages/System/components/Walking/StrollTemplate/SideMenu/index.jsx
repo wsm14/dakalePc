@@ -14,14 +14,6 @@ const SideMenu = (props) => {
   // active 创建
   const fetchSaveModuleData = () => {
     const newData = moduleData.dataList.filter((item) => item.moduleName); // 空数据不进入
-    console.log(
-      {
-        configWanderAroundModuleId,
-        flag: 'updateModule',
-        wanderAroundModuleObjects: newData,
-      },
-      'newData',
-    );
     dispatch({
       type: 'walkingManage/fetchUpdateWanderAroundModule',
       payload: {

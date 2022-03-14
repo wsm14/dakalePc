@@ -623,3 +623,27 @@ export function fetchGetConfigBottomCenterIconById(params) {
 }
 
 // 全局配置 end
+
+// 资源位内容配置
+
+//资源位模板-  不分页列表\查询
+export function fetchListResourceTemplate(params) {
+  return request('/admin/resourceTemplate/listResourceTemplate', {
+    params,
+  });
+}
+
+//资源位模板-  详情、获取配置
+export function fetchGetResourceTemplateById(params) {
+  return request('/admin/resourceTemplate/getResourceTemplateById', {
+    params,
+  });
+}
+
+//资源位内容配置-  分页列表
+export function fetchPageResourceTemplateContent(params) {
+  return request('/admin/resourceTemplateContent/pageResourceTemplateContent', {
+    params,
+  });
+}
+// 资源位内容配置 end

@@ -1,12 +1,13 @@
 import React from 'react';
+import showImg from '../panel.config';
 
 /**
  * 显示dom
- * @param {Array} cell 当前数据
+ * @param {Array} moduleName 当前数据名称
  * @returns
  */
-export default ({ cell }) => {
-  const { defaultImg } = cell;
+export default ({ moduleName }) => {
+  const { defaultImg } = showImg[moduleName];
 
   // 无数据时展示
   return <img src={defaultImg} style={{ width: '100%' }} />;

@@ -3,9 +3,8 @@ import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const ResourceTemplate = (props) => {
-  const { dispatch, loading, editionList } = props;
+  const { dispatch, loading, resourceTemplateList } = props;
   const [visible, setVisible] = useState(false);
-  const [tabKey, setTabKey] = useState('iOS');
 
   const childRef = useRef();
 
@@ -13,38 +12,42 @@ const ResourceTemplate = (props) => {
     {
       title: '模板名称',
       align: 'center',
-      dataIndex: 'version',
+      dataIndex: 'templateName',
     },
     {
       title: '最低支持版本-iOS',
       align: 'center',
-      dataIndex: 'version',
+      dataIndex: 'versionIos',
     },
     {
       title: '最低支持版本-Android',
       align: 'center',
-      dataIndex: 'version',
+      dataIndex: 'versionAndroid',
     },
     {
       type: 'handle',
       // align: 'center',
-      dataIndex: 'configWanderAroundModuleId',
+      dataIndex: 'resourceTemplateId',
       render: (val, row) => [
         {
-          type: 'edit',
-          title: '编辑详情',
+          type: 'preview',
           click: () => {
-            setVisible({
-              show: true,
-              type: 'edit',
-              detail: row,
-            });
+            handlePreview(val);
           },
           auth: true,
         },
       ],
     },
   ];
+
+  const handlePreview = (resourceTemplateId) => {
+    dispatch({
+      type: 'walkingManage/fetchGetResourceTemplateById',
+      payload: {
+        resourceTemplateId,
+      },
+    });
+  };
 
   return (
     <TableDataBlock
@@ -54,15 +57,15 @@ const ResourceTemplate = (props) => {
       loading={loading}
       columns={getColumns}
       pagination={false}
-      rowKey={(record) => `${record.configWanderAroundModuleId}`}
-      params={{ userOs: tabKey, area: 'all' }}
-      dispatchType="walkingManage/fetchAroundModuleList"
-      {...editionList}
+      rowKey={(record) => `${record.resourceTemplateId}`}
+      params={{ deleteFlag: 1 }}
+      dispatchType="walkingManage/fetchListResourceTemplate"
+      {...resourceTemplateList}
     />
   );
 };
 
 export default connect(({ loading, walkingManage }) => ({
-  editionList: walkingManage.editionList,
+  resourceTemplateList: walkingManage.resourceTemplateList,
   loading: loading.models.walkingManage,
 }))(ResourceTemplate);

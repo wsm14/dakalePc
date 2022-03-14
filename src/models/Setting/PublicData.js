@@ -326,6 +326,21 @@ export default {
         },
       });
     },
+    // 特惠商品 - 同特惠列表 - 字段较多
+    *fetchGetSpecialGoodsSelectList({ payload }, { call, put }) {
+      const response = yield call(fetchGetPlatformEquitySelect, {
+        activityType: 'specialGoods',
+        ...payload,
+      });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          specialGoods: { list: content.recordList, total: content.total },
+        },
+      });
+    },
     // 权益商品
     *fetchGetPlatformEquitySelect({ payload }, { call, put }) {
       const response = yield call(fetchGetPlatformEquitySelect, {
@@ -404,7 +419,6 @@ export default {
         },
       });
       callback && callback(content.recordList);
-     
     },
     *fetchGetExpertLevel({ payload }, { call, put }) {
       const response = yield call(fetchGetExpertLevel, payload);

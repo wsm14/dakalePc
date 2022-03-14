@@ -1055,3 +1055,14 @@ export const AGENCY_TYPE = {
   city: '市级代理',
   partner: '区县代理',
 };
+
+// 资源位模板名称
+export const RESOURCE_NAME = {
+  coupon: '券模板',
+  deduction: '抵扣专区模板',
+  hotBlending: '品模板-热兑模板',
+  flashSale: '品模板-秒杀模板',
+  listTemplate: '品模板-列表模板',
+  brand: '品模板-品牌模板',
+  travel: '品模板-旅游模板',
+};
