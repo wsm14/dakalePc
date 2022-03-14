@@ -26,6 +26,7 @@ import {
   fetchSaveConfigBottomCenterIcon,
   fetchUpdateConfigBottomCenterIcon,
   fetchGetConfigBottomCenterIconById,
+  fetchGetDefaultPreferentialActivity,
 } from '@/services/SystemServices';
 
 export default {
@@ -135,8 +136,15 @@ export default {
             wanderAObj.topBackground = wandItem.image;
             wanderAObj.topBackgroundId = wandItem.configFestivalDetailId;
             break;
+          case 'topEfficiency':
+            wanderAObj.topEfficiencyJson = wandItem.file;
+            wanderAObj.topEfficiencyHeight = wandItem.height;
+            wanderAObj.topEfficiencyImg = wandItem.image;
+            wanderAObj.topEfficiencyImgId = wandItem.configFestivalDetailId;
+            break;
         }
       });
+      console.log(wanderAObj);
 
       //tabbarIcon
       bottomIcon.map((tabItem) => {
@@ -347,6 +355,20 @@ export default {
       });
       callback();
     },
+    // get 默认卡豆比例
+    *fetchGetDefaultPreferentialActivity({ payload }, { call, put }) {
+      const response = yield call(fetchGetDefaultPreferentialActivity, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          virList: {
+            list: content.defaultPreferentialList,
+          },
+        },
+      });
+    },
     // get 虚拟商品优惠比例配置 -  分页列表
     *fetchPagePreferentialActivity({ payload }, { call, put }) {
       const response = yield call(fetchPagePreferentialActivity, payload);
@@ -393,6 +415,7 @@ export default {
         endDate,
         preferentialActivityRuleObject = {},
         status,
+        cityCode,
         ...other
       } = preferentialActivityDTO;
       const data = {
@@ -402,6 +425,7 @@ export default {
         maxBeanAndCoupon: (Number(preferentialActivityRuleObject?.maxBeanAndCoupon) * 100).toFixed(
           0,
         ),
+        cityCode: cityCode ? [cityCode.slice(0, 2), cityCode] : [],
         startDate,
         endDate,
         ruleType: preferentialActivityRuleObject.buyLimit == 0 ? '0' : '1',

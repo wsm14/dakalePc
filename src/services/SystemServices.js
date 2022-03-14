@@ -585,6 +585,13 @@ export function fetchSavePreferentialActivity(data) {
   });
 }
 
+//获取默认卡豆抵扣比例
+export function fetchGetDefaultPreferentialActivity(params) {
+  return request('/admin/preferentialActivity/getDefaultPreferentialActivity', {
+    params,
+  });
+}
+
 //底部中心icon配置 - 版本列表
 export function fetchListConfigBottomCenterIcon(params) {
   return request('/admin/configBottomCenterIcon/listConfigBottomCenterIcon', {

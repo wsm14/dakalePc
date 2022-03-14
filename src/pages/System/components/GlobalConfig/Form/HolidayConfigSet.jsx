@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import moment from 'moment';
 import { Form, Button } from 'antd';
 import { LEFT_TOP_ICON, RIGHT_COUNT_DWON, TOP_BGIMG, TABBAR_ICON } from '@/common/imgRatio';
+import { VIRTUAL_TOP_HEIGHT } from '@/common/constant';
 import { checkFileData } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
@@ -11,7 +12,6 @@ import aliOssUpload from '@/utils/aliOssUpload';
 const HolidayConfigSet = (props) => {
   const { visible, onClose, childRef, dispatch, loading } = props;
   const { show, type, initialValues = {} } = visible;
-  console.log(visible, 'visible');
   const [form] = Form.useForm();
 
   const {
@@ -21,6 +21,7 @@ const HolidayConfigSet = (props) => {
     wanderAround: wObj = {},
     topTab: tObj = {},
   } = initialValues;
+  console.log(initialValues, 'initialValues');
 
   const disabledDate = (current) => {
     return current && current < moment().endOf('day').subtract(1, 'day');
@@ -152,7 +153,7 @@ const HolidayConfigSet = (props) => {
       rules: [{ required: false }],
     },
     {
-      title: '逛逛',
+      title: '福利',
       label: '顶部背景',
       type: 'upload',
       maxFile: 1,
@@ -162,6 +163,29 @@ const HolidayConfigSet = (props) => {
       // labelCol: { span: 5 },
       // style: { flex: 1 },
       rules: [{ required: false }],
+    },
+    {
+      label: '顶部动效高度',
+      type: 'select',
+      name: ['wanderAround', 'topEfficiencyHeight'],
+      select: VIRTUAL_TOP_HEIGHT,
+      rules: [{ required: false }],
+    },
+    {
+      label: '顶部动效json文件',
+      type: 'otherUpload',
+      extra: '请上传动效zip文件',
+      name: ['wanderAround', 'topEfficiencyJson'],
+      rules: [{ required: false }],
+    },
+    {
+      label: '顶部动效图',
+      type: 'upload',
+      extra: `请上传100kb的png格式图片`,
+      maxSize: 100,
+      name: ['wanderAround', 'topEfficiencyImg'],
+      rules: [{ required: false }],
+      extra: '请上传100kb的png格式图片',
     },
     {
       title: '底部icon',
@@ -233,6 +257,8 @@ const HolidayConfigSet = (props) => {
       const pickBnamicimg = checkFileData(pickUpBeans.lowerRightCornerCountdownDynamic);
       const files = checkFileData(pickUpBeans.file);
       const wandTopImg = checkFileData(wanderAround.topBackground);
+      const wandTopJImg = checkFileData(wanderAround.topEfficiencyJson);
+      const wandTopDImg = checkFileData(wanderAround.topEfficiencyImg);
       const bottomPImg = checkFileData(bottomIcon.pickUpBeans);
       const bottomWImg = checkFileData(bottomIcon.wanderAround);
       const bottomOImg = checkFileData(bottomIcon.order);
@@ -258,6 +284,9 @@ const HolidayConfigSet = (props) => {
       const lowerRightCornerCountdownImg = await aliOssUpload(pickBimg);
       const fileFiles = await aliOssUpload(files);
       const topBackgroundImg = await aliOssUpload(wandTopImg);
+      const topEfficiencyJson = await aliOssUpload(wandTopJImg);
+      const topEfficiencyImg = await aliOssUpload(wandTopDImg);
+
       const pickUpBeansImg = await aliOssUpload(bottomPImg);
       const wanderAroundImg = await aliOssUpload(bottomWImg);
       const orderImg = await aliOssUpload(bottomOImg);
@@ -273,13 +302,14 @@ const HolidayConfigSet = (props) => {
       pickUpBeans.lowerRightCornerCountdown = lowerRightCornerCountdownImg?.toString();
       pickUpBeans.file = fileFiles?.toString();
       wanderAround.topBackground = topBackgroundImg?.toString();
+      wanderAround.topEfficiencyJson = topEfficiencyJson?.toString();
+      wanderAround.topEfficiencyImg = topEfficiencyImg?.toString();
       bottomIcon.pickUpBeans = pickUpBeansImg?.toString();
       bottomIcon.wanderAround = wanderAroundImg?.toString();
       bottomIcon.order = orderImg?.toString();
       bottomIcon.main = mainImg?.toString();
       pickUpBeans.lowerRightCornerCountdownDraw = lowerRightCornerCountdownDrawImg?.toString();
-      pickUpBeans.lowerRightCornerCountdownDynamic =
-        lowerRightCornerCountdownDynamicImg?.toString();
+      pickUpBeans.lowerRightCornerCountdownDynamic = lowerRightCornerCountdownDynamicImg?.toString();
       topTab.findFile = findFileFiles?.toString();
       topTab.find = findImg?.toString();
       topTab.lifeFile = lifeFileFiles?.toString();
@@ -310,7 +340,6 @@ const HolidayConfigSet = (props) => {
       ];
       // console.log(findArr);
       // return;
-
       const { file, imagePrefix, ...other } = pickUpBeans;
       const pickArr = Object.keys(other).map((key) => {
         const ids = `${key}Id`;
@@ -323,13 +352,16 @@ const HolidayConfigSet = (props) => {
           imagePrefix: key === 'lowerRightCornerCountdownDynamic' ? pickUpBeans.imagePrefix : '',
         };
       });
-      const wanderArr = Object.keys(wanderAround).map((key) => {
+      const { topEfficiencyHeight, topEfficiencyJson: topBacJson, ...val } = wanderAround;
+      const wanderArr = Object.keys(val).map((key) => {
         const ids = `${key}Id`;
         return {
           topType: 'wanderAround',
-          type: key,
+          type: key === 'topEfficiencyImg' ? 'topEfficiency' : key,
           configFestivalDetailId: wObj[ids],
           image: wanderAround[key],
+          file: key === 'topEfficiencyImg' ? wanderAround.topEfficiencyJson : '',
+          height: key === 'topEfficiencyImg' ? wanderAround.topEfficiencyHeight : '',
         };
       });
       const bottomArr = Object.keys(bottomIcon).map((key) => {
