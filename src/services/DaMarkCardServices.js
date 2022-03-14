@@ -100,3 +100,18 @@ export function fetchSetHittingReward(data) {
 }
 
 // 哒小卡点位管理 end
+
+//点未审核 start 
+export async function fetchGetListHittingAuditAdmin(params) {
+  return request('/admin/hitting/audit/listHittingAuditAdmin', {
+    params,
+  });
+}
+
+// 审核 
+export function fetchGetVerifyAudit(data) {
+  return request('/admin/hitting/audit/verifyAudit', {
+    method: 'POST',
+    data,
+  });
+}

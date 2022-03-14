@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import connect from 'umi';
 import { Button } from 'antd';
+import { VERIFY_STATUS_DOT, HITTING_TYPE } from '@/common/constant';
 import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import ExtraButton from '@/components/ExtraButton';
@@ -8,61 +9,66 @@ import CheckRefuseDraw from './CheckRefuseDraw';
 import RelevanceDot from './Form/RelevanceDot';
 
 const PointCheckDetail = (props) => {
-  const { visible = {}, onClose, total, getDetail, childRef } = props;
-  const { show = false, type, index, detail = {} } = visible;
+  const { visible = {}, onClose, childRef } = props;
+  const { show = false, type, detail = {} } = visible;
+
+  const { hittingAuditId } = detail;
 
   const [visibleRefuse, setVisibleRefuse] = useState(false);
   const [visibleDot, setVisibleDot] = useState(false); //关联点位
 
+  console.log(hittingAuditId, 'hittingAuditId');
   //关联点位
   const handleVerifyAllow = () => {
     setVisibleDot({
       show: true,
+      hittingAuditId,
     });
   };
 
   const formItems = [
     {
-      label: '点位ID',
-      name: 'couponDescString',
+      label: `${detail.verifyStatus=='1'?'点位ID':'审核ID'}`,
+      name: 'hittingAuditId',
     },
     {
       label: '点位名称',
-      name: 'couponDescString',
+      name: 'hittingName',
     },
     {
       label: '归属人姓名',
-      name: 'couponDescString',
+      name: 'submitterName',
     },
     {
       label: '归属人手机号',
-      name: 'couponDescString',
+      name: 'mobile',
     },
     {
       label: '点位地址',
-      name: 'couponDescString',
+      name: 'address',
     },
     {
       label: '类型',
-      name: 'couponDescString',
+      name: 'hittingType',
+      render: (val) => HITTING_TYPE[val],
     },
     {
       label: '申请原因',
-      name: 'couponDescString',
+      name: 'submitReason',
     },
     {
       label: '提交时间',
-      name: 'couponDescString',
+      name: 'createTime',
     },
   ];
   const userItems = [
     {
       label: '用户昵称',
-      name: 'couponDescString',
+      name: 'username',
     },
     {
       label: '注册手机号',
-      name: 'couponDescString',
+      name: 'userMobile',
     },
   ];
   const btnList = [
@@ -74,15 +80,11 @@ const PointCheckDetail = (props) => {
   ];
 
   const modalProps = {
-    title: '审核详情',
+    title: '点位信息',
     visible: show,
     onClose,
-    dataPage: {
-      current: index,
-      total,
-      onChange: (size) => getDetail(size, 'info'),
-    },
     footer: (
+      type == 'check' &&
       <ExtraButton list={btnList}>
         <Button
           style={{ marginLeft: 8 }}
@@ -91,6 +93,7 @@ const PointCheckDetail = (props) => {
             setVisibleRefuse({
               show: true,
               type: 'edit',
+              hittingAuditId, //审核Id
             })
           }
         >
@@ -125,6 +128,7 @@ const PointCheckDetail = (props) => {
         cRef={childRef}
         visible={visibleDot}
         onClose={() => setVisibleDot(false)}
+        onCloseF={onClose}
       ></RelevanceDot>
     </>
   );

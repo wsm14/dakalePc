@@ -9,7 +9,14 @@ import PointSet from './PointSet';
 const PointDrawer = (props) => {
   const { visible, dispatch, childRef, onClose, loading, loadingDetail } = props;
 
-  const { type = 'add', hittingId, show = false, detail = {} } = visible;
+  const {
+    type = 'add',
+    hittingId,
+    show = false,
+    detail = {},
+    pointSelect,
+    setPointSelect,
+  } = visible;
 
   const [form] = Form.useForm();
 
@@ -31,7 +38,13 @@ const PointDrawer = (props) => {
           cityCode: districtCode.slice(0, 4),
           districtCode,
         },
-        callback: () => {
+        callback: (content) => {
+          const data = {
+            name: values.name,
+            otherData: values.address,
+            value: content.hittingId,
+          };
+          setPointSelect([data]);
           onClose();
           childRef.current.fetchGetData();
         },

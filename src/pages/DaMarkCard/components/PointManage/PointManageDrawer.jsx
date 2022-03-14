@@ -10,15 +10,12 @@ import PointManageAwardSet from './Form/PointManageAwardSet';
 const PointManageDrawer = (props) => {
   const { visible, dispatch, childRef, onClose, loading, loadingDetail } = props;
 
-  const { type = 'info', show = false, detail = {}, hittingMainId } = visible;
+  const { type = 'info', show = false, detail = {}, hittingMainId, setBodySelect } = visible;
   const [form] = Form.useForm();
-
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
-      // return;
       const { districtCode, distanceFlag, range, ...other } = values;
-
       dispatch({
         type: {
           add: 'pointManage/fetchSaveHittingMain',
@@ -33,7 +30,8 @@ const PointManageDrawer = (props) => {
           distanceFlag,
           range: distanceFlag === '0' ? '999999999' : range,
         },
-        callback: () => {
+        callback: (content) => {
+          setBodySelect && setBodySelect([{ ...values, hittingMainId: content.hittingMainId }]);
           onClose();
           childRef.current.fetchGetData();
         },

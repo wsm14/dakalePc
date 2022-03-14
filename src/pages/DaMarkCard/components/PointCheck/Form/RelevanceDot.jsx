@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import debounce from 'lodash/debounce';
 import { Button, Form, Space, Modal } from 'antd';
@@ -12,8 +12,8 @@ import PointDrawer from '../../PointManage/Detail/Point/PointDrawer';
 import '../components/index.less';
 
 const RelevanceDot = (props) => {
-  const { bodyList = [], pointList = [], dispatch, visible = {}, onClose, cRef } = props;
-  const { show = false } = visible;
+  const { bodyList = [], pointList = [], dispatch, visible = {}, onClose, onCloseF, cRef } = props;
+  const { show = false, hittingAuditId = '' } = visible;
   const [bodySelect, setBodySelect] = useState([]); //选中的主体
   const [pointSelect, setPointSelect] = useState([]); //选中的点位
   const [showPoint, setShowPoint] = useState(false);
@@ -21,8 +21,21 @@ const RelevanceDot = (props) => {
   const [visiblePoint, setVisiblePoint] = useState(false); //新增点位
   const [visibleSet, setVisibleSet] = useState(false); //主体奖励配置，首刷广告，新增
   const [bodyId, setBodyId] = useState(''); //单选 选中的主体id
-  const [PointID, setPointID] = useState([]); //多选选中平的点位Id
+  const [PointID, setPointID] = useState(''); //多选选中平的点位Id
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    form.setFieldsValue({ body: bodySelect });
+    const ids = bodySelect.map((itemid) => itemid.hittingMainId);
+    setBodyId(ids?.toString());
+    setPointSelect([]);
+    form.setFieldsValue({ hittingId: [] });
+  }, [bodySelect]);
+
+  useEffect(() => {
+    const idH = pointSelect.map((itemH) => itemH.value);
+    form.setFieldsValue({ hittingId: idH });
+  }, [pointSelect]);
 
   // 搜索主体
   const handleSearch = debounce((name) => {
@@ -52,20 +65,22 @@ const RelevanceDot = (props) => {
   //选中 option,替换
   const onChangeBody = (val) => {
     const selectBodys = bodyList.filter((item) => val === item.hittingMainId);
+    console.log(val, 'selectBodys');
     setBodyId(val);
     setBodySelect(selectBodys);
-    form.setFieldsValue({body:selectBodys})
+    form.setFieldsValue({ body: selectBodys });
     //切换后点位列表清空
     setPointSelect([]);
-    form.setFieldsValue({dot:[]})
-    setPointID([]);
+    form.setFieldsValue({ hittingId: '' });
+    setPointID('');
     setShowBody(false);
   };
   const onChangePoint = (val) => {
-    const selectPoints = pointList.filter((item) => val.includes(item.value));
+    const selectPoints = pointList.filter((item) => val === item.value);
     setPointSelect(selectPoints);
-    form.setFieldsValue({dot:selectPoints})
+    form.setFieldsValue({ hittingId: val });
     setPointID(val);
+    setShowPoint(false);
   };
 
   // 获取主体详情
@@ -102,7 +117,10 @@ const RelevanceDot = (props) => {
             >
               请选择主体
             </Button>
-            <Button type="link" onClick={() => setVisibleSet({ type: 'add', show: true })}>
+            <Button
+              type="link"
+              onClick={() => setVisibleSet({ type: 'add', show: true, setBodySelect })}
+            >
               +新增
             </Button>
           </Space>
@@ -125,7 +143,7 @@ const RelevanceDot = (props) => {
                 item={{ name: mItem.name, address: mItem.address, id: mItem.hittingMainId }}
                 onDel={() => {
                   setBodySelect([]);
-                  form.setFieldsValue({body:''})
+                  form.setFieldsValue({ body: '' });
                   setBodyId('');
                 }}
               ></CommonList>
@@ -148,8 +166,8 @@ const RelevanceDot = (props) => {
     {
       label: `关联点位`,
       type: 'formItem',
-      name: 'dot',
-      visible: bodyId,
+      name: 'hittingId',
+      visible: bodyId?.length > 0,
       rules: [{ required: true }],
       formItem: (
         <>
@@ -161,20 +179,29 @@ const RelevanceDot = (props) => {
             >
               请选择点位
             </Button>
-            <Button type="link" onClick={() => setVisiblePoint({ type: 'add', show: true })}>
+            <Button
+              type="link"
+              onClick={() =>
+                setVisiblePoint({
+                  type: 'add',
+                  show: true,
+                  pointSelect,
+                  setPointSelect,
+                  detail: { mainId: bodyId },
+                })
+              }
+            >
               +新增
             </Button>
           </Space>
           {showPoint && (
             <div style={{ display: 'flex', alignItems: 'center', marginTop: 20 }}>
               <Select
-                type="multiple" //多选
                 placeholder="输入点位名称/ID"
                 onSearch={fetchGetMre}
                 onChange={onChangePoint}
                 maxTagTextLength={5}
                 value={PointID}
-                onBlur={() => setShowPoint(false)}
                 select={pointList}
               ></Select>
             </div>
@@ -184,14 +211,14 @@ const RelevanceDot = (props) => {
               <CommonList
                 item={{ name: item1.name, address: item1.otherData, id: item1.value }}
                 onDel={() => {
-                  setPointSelect(pointSelect.filter((ids) => ids.value != item1.value));
-                  setPointID(PointID.filter((ID) => ID !== item1.value));
-                  form.setFieldsValue({dot:''})
+                  setPointSelect([]);
+                  setPointID('');
+                  form.setFieldsValue({ hittingId: '' });
                 }}
               ></CommonList>
               <div className="bottomCon">
                 <span>每人每天打卡次数</span>
-                <span>1次</span>
+                <span>{item1.dayCount}次</span>
               </div>
             </div>
           ))}
@@ -203,19 +230,21 @@ const RelevanceDot = (props) => {
   //审核通过
   const handleCheck = () => {
     form.validateFields().then((values) => {
+      console.log(values, '2121');
       Modal.confirm({
         okText: '确定',
         cancelText: '取消',
         content: '审核通过后主体和点位则绑定成功且不可更改，确定审核通过吗?',
         onOk: () => {
-          // dispatch({
-          //   type: 'businessList/fetchSetStatus',
-          //   payload: { merchantId, ...payload },
-          //   callback: () => {
-          //     onClose();
-          //     cRef.current.fetchGetData();
-          //   },
-          // });
+          dispatch({
+            type: 'pointCheck/fetchGetVerifyAudit',
+            payload: { hittingAuditId, hittingId: values.hittingId[0] },
+            callback: () => {
+              onClose();
+              onCloseF();
+              cRef.current.fetchGetData();
+            },
+          });
         },
       });
     });
@@ -231,10 +260,12 @@ const RelevanceDot = (props) => {
 
   const modalProps = {
     title: '关联点位',
-    visible: true,
+    visible: show,
     onClose,
     footer: <ExtraButton list={btnList}></ExtraButton>,
   };
+
+  console.log(pointList, 'pointListpointListpointList');
   return (
     <>
       <DrawerCondition {...modalProps}>

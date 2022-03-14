@@ -1,4 +1,4 @@
-const target = 'https://devgateway.dakale.net';
+// const target = 'https://devgateway.dakale.net';
 // const target = 'https://pregateway.dakale.net';
 // const target = 'http://192.168.0.188:6020'
 // const target = 'http://192.168.0.103:6020';
@@ -6,6 +6,7 @@ const target = 'https://devgateway.dakale.net';
 // const target = 'http://192.168.0.62:6020';
 // const target = 'https://gateway1.dakale.net';
 // const target = 'http://192.168.0.170:6020';
+const target = 'http://192.168.0.121:6020';
 
 export default {
   dev: {

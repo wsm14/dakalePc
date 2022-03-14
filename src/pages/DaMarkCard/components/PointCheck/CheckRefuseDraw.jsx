@@ -6,7 +6,7 @@ import { Button, Form } from 'antd';
 
 const CheckRefuseDraw = (props) => {
   const { visible = {}, onClose, dispatch, onCloseF, cRef, loading } = props;
-  const { show = false, auditId, ownerId, type, detail } = visible;
+  const { show = false, hittingAuditId, type, detail } = visible;
 
   const [form] = Form.useForm();
 
@@ -18,14 +18,14 @@ const CheckRefuseDraw = (props) => {
       maxLength: 200,
     },
   ];
+
   const handleReject = () => {
     form.validateFields().then((values) => {
       dispatch({
-        type: 'specialGoodsCheck/fetchSpecialGoodsAuditReject',
+        type: 'pointCheck/fetchGetVerifyAudit',
         payload: {
           ...values,
-          auditId,
-          ownerId,
+          hittingAuditId,
         },
         callback: () => {
           onClose();
@@ -54,5 +54,5 @@ const CheckRefuseDraw = (props) => {
   );
 };
 export default connect(({ loading }) => ({
-  loading: loading.effects['specialGoodsCheck/fetchSpecialGoodsAuditReject'],
+  loading: loading.effects['pointCheck/fetchGetVerifyAudit'],
 }))(CheckRefuseDraw);

@@ -62,11 +62,12 @@ export default {
     *fetchSaveHittingMain({ payload, callback }, { call }) {
       const response = yield call(fetchSaveHittingMain, payload);
       if (!response) return;
+      const {content} = response
       notification.success({
         message: '温馨提示',
         description: '主体新增成功',
       });
-      callback && callback();
+      callback && callback(content);
     },
     // 哒小卡点位主体-编辑
     *fetchUpdateHittingMain({ payload, callback }, { call }) {
@@ -120,11 +121,12 @@ export default {
     *fetchSaveHitting({ payload, callback }, { call }) {
       const response = yield call(fetchSaveHitting, payload);
       if (!response) return;
+      const { content = {} } = response;
       notification.success({
         message: '温馨提示',
         description: '点位新增成功',
       });
-      callback && callback();
+      callback && callback(content);
     },
     // 哒小卡点位-编辑
     *fetchUpdateHitting({ payload, callback }, { call }) {
