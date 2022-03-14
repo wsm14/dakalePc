@@ -985,6 +985,12 @@ export const MARK_CARD_MAIN_TYPE = {
   officeBuilding: '写字楼',
   factory: '工厂',
   enterprise: '企业',
+  expressageState:'快递驿站',
+  houseEstate:'小区',
+  apartment:'公寓',
+  merchant:'商户',
+  market:'商场',
+  other:'其他'
 };
 
 // 哒小卡 - 点位管理 - 启用状态

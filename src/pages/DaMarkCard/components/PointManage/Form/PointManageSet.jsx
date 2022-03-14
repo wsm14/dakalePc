@@ -193,7 +193,6 @@ const PlatformSet = (props) => {
           value: item.userIdString,
           otherData: `${item.beanCode}`,
         }));
-        console.log('list', list);
         setUserList(list);
       },
     });
