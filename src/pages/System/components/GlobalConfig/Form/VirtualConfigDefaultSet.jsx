@@ -28,7 +28,7 @@ const VirtualConfigDefaultSet = (props) => {
       addonAfter: '%',
       precision: 0,
       min: 0,
-      max: 99,
+      max: 100,
       disabled: type === 'info',
       render: (val) => `${val}%`,
     },
