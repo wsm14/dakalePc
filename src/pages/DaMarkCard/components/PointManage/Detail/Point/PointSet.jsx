@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
-import { AMAP_KEY } from '@/common/constant';
+import { AMAP_KEY, DAY_COUNT_NUM } from '@/common/constant';
 import debounce from 'lodash/debounce';
 import { Map, Marker } from 'react-amap';
 import { Select, Button, Space, Spin, Empty, message } from 'antd';
@@ -9,7 +9,7 @@ import { MARK_CARD_OPEN_STATE } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 
 const PointSet = (props) => {
-  const { dispatch, form, initialValues = {} } = props;
+  const { dispatch, form, initialValues = {dayCount:'1'} } = props;
 
   const [ampShow, setAmpShow] = useState(false); // 地图是否显示
   const [location, setLocation] = useState([120, 30]); // 地图显示 [经度, 纬度]
@@ -93,8 +93,6 @@ const PointSet = (props) => {
             }
             onSearch={onSearchAddress}
             onChange={(val, option) => {
-              console.log('onChange的val', val.split('+')[0].split(','));
-              console.log('onChange的option', option);
               setLocation(val.split('+')[0].split(','));
               setSelectLocal(option.children[1].props.children);
             }}
@@ -176,6 +174,12 @@ const PointSet = (props) => {
       label: '经度',
       name: 'lnt',
       hidden: true,
+    },
+    {
+      label: '每人每天打卡次数',
+      name: 'dayCount',
+      type: 'radio',
+      select: DAY_COUNT_NUM,
     },
     {
       label: '区县',

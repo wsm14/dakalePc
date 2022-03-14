@@ -151,7 +151,6 @@ const PointList = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.hittingId}`}
-        params={{ mainId: '1498190607441383425' }}
         dispatchType="pointManage/fetchListHitting"
         {...pointList}
       ></TableDataBlock>

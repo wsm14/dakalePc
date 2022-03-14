@@ -993,6 +993,12 @@ export const MARK_CARD_MAIN_TYPE = {
   other:'其他'
 };
 
+export const DAY_COUNT_NUM={
+  999:'不限',
+  1:'每天限1次',
+  2:'每天限2次'
+}
+
 // 哒小卡 - 点位管理 - 启用状态
 export const MARK_CARD_OPEN_STATE = ['停用', '启用'];
 

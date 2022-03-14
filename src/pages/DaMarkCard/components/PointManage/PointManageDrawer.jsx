@@ -31,7 +31,7 @@ const PointManageDrawer = (props) => {
           range: distanceFlag === '0' ? '999999999' : range,
         },
         callback: (content) => {
-          setBodySelect && setBodySelect([{ ...values, hittingMainId: content.hittingMainId }]);
+          setBodySelect && setBodySelect([{ ...values, hittingMainId: content?.hittingMainId }]);
           onClose();
           childRef.current.fetchGetData();
         },

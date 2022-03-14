@@ -185,7 +185,6 @@ const RelevanceDot = (props) => {
                 setVisiblePoint({
                   type: 'add',
                   show: true,
-                  pointSelect,
                   setPointSelect,
                   detail: { mainId: bodyId },
                 })
@@ -218,7 +217,7 @@ const RelevanceDot = (props) => {
               ></CommonList>
               <div className="bottomCon">
                 <span>每人每天打卡次数</span>
-                <span>{item1.dayCount}次</span>
+                <span>{item1.dayCount == '999' ? '不限' : item.dayCount}次</span>
               </div>
             </div>
           ))}
