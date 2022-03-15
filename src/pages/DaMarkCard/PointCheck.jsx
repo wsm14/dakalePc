@@ -19,6 +19,7 @@ const tabList = [
 
 const PointCheck = (props) => {
   const { pointCheck, loading, dispatch } = props;
+  const { list = [] } = pointCheck;
   const [visible, setVisible] = useState(false);
 
   const childRef = useRef();
@@ -134,12 +135,12 @@ const PointCheck = (props) => {
         return [
           {
             type: 'check', //审核
-            click: () => fetchcheckDetail(record, 'check'),
+            click: () => fetchcheckDetail(index, 'check'),
             visible: tabKey === '0',
           },
           {
             type: 'info',
-            click: () => fetchcheckDetail(record, 'info'),
+            click: () => fetchcheckDetail(index, 'info'),
             visible: tabKey != '0',
           },
           // {
@@ -154,11 +155,13 @@ const PointCheck = (props) => {
   ];
 
   //详情
-  const fetchcheckDetail = (record, type) => {
+  const fetchcheckDetail = (index, type) => {
+    const detail = list[index];
     setVisible({
       type,
       show: true,
-      detail: record,
+      index,
+      detail,
     });
   };
 
@@ -180,9 +183,12 @@ const PointCheck = (props) => {
         params={{ verifyStatus: tabKey }}
         {...pointCheck}
       ></TableDataBlock>
+      {/* 详情 */}
       <PointCheckDetail
         childRef={childRef}
         visible={visible}
+        total={list.length}
+        getDetail={fetchcheckDetail}
         onClose={() => setVisible(false)}
       ></PointCheckDetail>
     </>

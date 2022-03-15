@@ -9,8 +9,8 @@ import CheckRefuseDraw from './CheckRefuseDraw';
 import RelevanceDot from './Form/RelevanceDot';
 
 const PointCheckDetail = (props) => {
-  const { visible = {}, onClose, childRef } = props;
-  const { show = false, type, detail = {} } = visible;
+  const { visible = {}, onClose, childRef, total, getDetail } = props;
+  const { show = false, type, detail = {}, index } = visible;
 
   const { hittingAuditId } = detail;
 
@@ -27,8 +27,8 @@ const PointCheckDetail = (props) => {
 
   const formItems = [
     {
-      label: `${detail.verifyStatus=='0'?'审核ID':'点位ID'}`,
-      name: `${detail.verifyStatus=='0'?'hittingAuditId':'hittingId'}`,
+      label: `${detail.verifyStatus == '0' ? '审核ID' : '点位ID'}`,
+      name: `${detail.verifyStatus == '0' ? 'hittingAuditId' : 'hittingId'}`,
     },
     {
       label: '点位名称',
@@ -82,8 +82,12 @@ const PointCheckDetail = (props) => {
     title: '点位信息',
     visible: show,
     onClose,
-    footer: (
-      type == 'check' &&
+    dataPage: {
+      current: index,
+      total,
+      onChange: (size) => getDetail(size,type),
+    },
+    footer: type == 'check' && (
       <ExtraButton list={btnList}>
         <Button
           style={{ marginLeft: 8 }}
