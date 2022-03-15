@@ -12,8 +12,12 @@ const tabList = [
     tab: '待审核',
   },
   {
-    key: '1,2',
-    tab: '已审核',
+    key: '1',
+    tab: '已通过',
+  },
+  {
+    key: '2',
+    tab: '已驳回',
   },
 ];
 
@@ -54,14 +58,14 @@ const PointCheck = (props) => {
     },
   ];
 
-  const AuditItem = [
-    {
-      label: '审核类型',
-      name: 'verifyStatus',
-      type: 'select',
-      select: VERIFY_STATUS_DOT,
-    },
-  ];
+  // const AuditItem = [
+  //   {
+  //     label: '审核类型',
+  //     name: 'verifyStatus',
+  //     type: 'select',
+  //     select: VERIFY_STATUS_DOT,
+  //   },
+  // ];
 
   const getColumns = [
     {
@@ -126,7 +130,7 @@ const PointCheck = (props) => {
     {
       title: '驳回原因',
       dataIndex: 'rejectReason',
-      show: tabKey != '0',
+      show: tabKey === '2',
     },
     {
       type: 'handle',
@@ -177,7 +181,7 @@ const PointCheck = (props) => {
         }}
         loading={loading}
         columns={getColumns}
-        searchItems={tabKey === '0' ? searchItems : [...searchItems, ...AuditItem]}
+        searchItems={searchItems}
         rowKey={(record) => `${record.hittingAuditId}`}
         dispatchType="pointCheck/fetchGetList"
         params={{ verifyStatus: tabKey }}
