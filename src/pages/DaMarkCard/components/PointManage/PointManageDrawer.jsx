@@ -6,36 +6,51 @@ import DrawerCondition from '@/components/DrawerCondition';
 import PointManageSet from './Form/PointManageSet';
 import PointManageVideoSet from './Form/PointManageVideoSet';
 import PointManageAwardSet from './Form/PointManageAwardSet';
+import ConfirmModal from './Detail/Point/ConfirmModal';
 
 const PointManageDrawer = (props) => {
   const { visible, dispatch, childRef, onClose, loading, loadingDetail } = props;
 
   const { type = 'info', show = false, detail = {}, hittingMainId, setBodySelect } = visible;
   const [form] = Form.useForm();
+  const [visibleModal, setVisibleModal] = useState(false);
+
+  const handleOk = (values) => {
+    const { districtCode, distanceFlag, range, status, ...other } = values;
+    dispatch({
+      type: {
+        add: 'pointManage/fetchSaveHittingMain',
+        edit: 'pointManage/fetchUpdateHittingMain',
+      }[type],
+      payload: {
+        hittingMainId,
+        ...other,
+        provinceCode: districtCode.slice(0, 2),
+        cityCode: districtCode.slice(0, 4),
+        districtCode,
+        distanceFlag,
+        range: distanceFlag === '0' ? '999999999' : range,
+        status,
+      },
+      callback: (content) => {
+        setBodySelect && setBodySelect([{ ...values, hittingMainId: content?.hittingMainId }]);
+        setVisibleModal(false);
+        onClose();
+
+        childRef.current.fetchGetData();
+      },
+    });
+  };
+
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
-      const { districtCode, distanceFlag, range, ...other } = values;
-      dispatch({
-        type: {
-          add: 'pointManage/fetchSaveHittingMain',
-          edit: 'pointManage/fetchUpdateHittingMain',
-        }[type],
-        payload: {
-          hittingMainId,
-          ...other,
-          provinceCode: districtCode.slice(0, 2),
-          cityCode: districtCode.slice(0, 4),
-          districtCode,
-          distanceFlag,
-          range: distanceFlag === '0' ? '999999999' : range,
-        },
-        callback: (content) => {
-          setBodySelect && setBodySelect([{ ...values, hittingMainId: content?.hittingMainId }]);
-          onClose();
-          childRef.current.fetchGetData();
-        },
-      });
+      if (values.status === '0') {
+        //停用
+        setVisibleModal(true);
+      } else {
+        handleOk(values);
+      }
     });
   };
 
@@ -198,7 +213,16 @@ const PointManageDrawer = (props) => {
     ) : null,
   };
 
-  return <DrawerCondition {...modalProps}>{drawerProps.children}</DrawerCondition>;
+  return (
+    <>
+      <DrawerCondition {...modalProps}>{drawerProps.children}</DrawerCondition>
+      <ConfirmModal
+        visible={visibleModal}
+        handleOk={() => handleOk(form.getFieldsValue())}
+        onClose={() => setVisibleModal(false)}
+      ></ConfirmModal>
+    </>
+  );
 };
 
 export default connect(({ loading }) => ({
