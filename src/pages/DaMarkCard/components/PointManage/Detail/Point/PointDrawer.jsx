@@ -3,13 +3,14 @@ import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import PointSet from './PointSet';
+import PointDetail from './PointDetail';
 
 // 哒小卡点位   新增/编辑
 
 const PointDrawer = (props) => {
-  const { visible, dispatch, childRef, onClose, loading, loadingDetail } = props;
+  const { visible, dispatch, childRef, onClose, loading, loadingDetail, total, getDetail } = props;
 
-  const { type = 'add', hittingId, show = false, detail = {}, setPointSelect } = visible;
+  const { type = 'add', hittingId, show = false, index, detail = {}, setPointSelect } = visible;
 
   const [form] = Form.useForm();
 
@@ -49,18 +50,20 @@ const PointDrawer = (props) => {
     });
   };
 
-  const listProp = {};
   // 统一处理弹窗
   const drawerProps = {
+    info: {
+      title: '新增点位',
+      children: <PointDetail initialValues={detail}></PointDetail>,
+    },
     add: {
       title: '新增点位',
-      children: <PointSet {...listProp} form={form}></PointSet>,
+      children: <PointSet form={form}></PointSet>,
     },
     edit: {
       title: '编辑点位',
       children: (
         <PointSet
-          {...listProp}
           form={form}
           initialValues={{ ...detail, dayCount: detail.dayCount + '' }}
         ></PointSet>
@@ -74,6 +77,11 @@ const PointDrawer = (props) => {
     visible: show,
     onClose,
     loading: loadingDetail,
+    dataPage: type === 'info' && {
+      current: index,
+      total,
+      onChange: (size) => getDetail(size, 'info'),
+    },
     footer: ['add', 'edit'].includes(type) && (
       <Button onClick={handleUpAudit} type="primary" loading={loading}>
         保存

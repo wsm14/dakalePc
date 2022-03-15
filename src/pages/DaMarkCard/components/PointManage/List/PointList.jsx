@@ -12,6 +12,8 @@ import PointManageModal from '../PointManageModal';
 // 点位列表
 const PointList = (props) => {
   const { pointList, loading, dispatch, bodyList = [], tabKey, detail = {} } = props;
+
+  const { list = [] } = pointList;
   const childRef = useRef();
   // 操作弹窗{ type: info 详情 show 显示隐藏  }
   const [visible, setVisible] = useState(false);
@@ -83,11 +85,15 @@ const PointList = (props) => {
     {
       type: 'handle',
       dataIndex: 'hittingId',
-      render: (hittingId, record) => {
+      render: (hittingId, record, index) => {
         return [
           {
+            type: 'info',
+            click: () => fetchPointDetail(index, 'info'),
+          },
+          {
             type: 'edit',
-            click: () => fetchPointDetail(hittingId, 'edit'),
+            click: () => fetchPointDetail(index, 'edit'),
           },
           {
             title: '下载打卡码',
@@ -106,14 +112,19 @@ const PointList = (props) => {
   ];
 
   // 获取点位详情
-  const fetchPointDetail = (hittingId, type) => {
+  const fetchPointDetail = (index, type) => {
+    const { hittingId } = list[index];
     dispatch({
       type: 'pointManage/fetchGetHittingById',
       payload: {
         hittingId,
       },
       callback: (detail) => {
-        setVisible({ type, show: true, detail, hittingId });
+        if (type === 'info') {
+          setVisible({ type, show: true, index, detail, hittingId });
+        } else {
+          setVisible({ type, show: true, detail, hittingId });
+        }
       },
     });
   };
@@ -146,6 +157,8 @@ const PointList = (props) => {
       <PointDrawer
         childRef={childRef}
         visible={visible}
+        total={list.length}
+        getDetail={fetchPointDetail}
         onClose={() => setVisible(false)}
       ></PointDrawer>
       <PointQrCode visible={visibleQrCode} onClose={() => setVisibleQrCode(false)}></PointQrCode>

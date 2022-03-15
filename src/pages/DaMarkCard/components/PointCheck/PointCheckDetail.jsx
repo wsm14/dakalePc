@@ -27,8 +27,8 @@ const PointCheckDetail = (props) => {
 
   const formItems = [
     {
-      label: `${detail.verifyStatus=='1'?'点位ID':'审核ID'}`,
-      name: 'hittingAuditId',
+      label: `${detail.verifyStatus=='0'?'审核ID':'点位ID'}`,
+      name: `${detail.verifyStatus=='0'?'hittingAuditId':'hittingId'}`,
     },
     {
       label: '点位名称',
