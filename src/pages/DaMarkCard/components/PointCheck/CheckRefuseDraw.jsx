@@ -26,6 +26,7 @@ const CheckRefuseDraw = (props) => {
         payload: {
           ...values,
           hittingAuditId,
+          verifyStatus:2
         },
         callback: () => {
           onClose();

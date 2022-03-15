@@ -1036,7 +1036,7 @@ export const AGENCY_TYPE = {
 
 
 //点位审核状态 审核状态0-待审核 1-已审核 2-拒绝
-export const VERIFY_STATUS_DOT=['待审核','已审核','拒绝']
+export const VERIFY_STATUS_DOT=[false,'已通过','已驳回']
 
 //点位审核类型 hittingType personal-个人 merchant-商家
 export const HITTING_TYPE={

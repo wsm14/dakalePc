@@ -16,10 +16,11 @@ const PointCheck = (props) => {
       tab: '待审核',
     },
     {
-      key: '1',
+      key: '1,2',
       tab: '已审核',
     },
   ];
+
 
   const childRef = useRef();
   const [tabKey, setTabKey] = useState('0');
@@ -32,12 +33,6 @@ const PointCheck = (props) => {
     {
       label: '归属人手机号',
       name: 'mobile',
-    },
-    {
-      label: '审核类型',
-      name: 'verifyStatus',
-      type: 'select',
-      select: VERIFY_STATUS_DOT,
     },
     {
       label: '用户昵称',
@@ -55,12 +50,21 @@ const PointCheck = (props) => {
     },
   ];
 
+  const AuditItem = [
+    {
+      label: '审核类型',
+      name: 'verifyStatus',
+      type: 'select',
+      select: VERIFY_STATUS_DOT,
+    },
+  ];
+
   const getColumns = [
     {
       title: '点位ID',
       fixed: 'left',
       dataIndex: 'hittingId',
-      show: tabKey === '1',
+      show: tabKey != '0',
     },
     {
       title: '点位名称',
@@ -104,26 +108,21 @@ const PointCheck = (props) => {
       title: '提交时间',
       dataIndex: 'createTime',
     },
-    // {
-    //   title: '审核类型',
-    //   dataIndex: 'name',
-    //   show: tabKey === '1',
-    // },
     {
       title: '审核时间',
       dataIndex: 'updateTime',
-      show: tabKey === '1',
+      show: tabKey != '0',
     },
     {
       title: '审核结果',
       dataIndex: 'verifyStatus',
       render: (val) => VERIFY_STATUS_DOT[val],
-      show: tabKey === '1',
+      show: tabKey != '0',
     },
     {
       title: '驳回原因',
       dataIndex: 'rejectReason',
-      show: tabKey === '1',
+      show: tabKey != '0',
     },
     {
       type: 'handle',
@@ -138,7 +137,7 @@ const PointCheck = (props) => {
           {
             type: 'info',
             click: () => fetchcheckDetail(record, 'info'),
-            visible: tabKey === '1',
+            visible: tabKey != '0',
           },
           // {
           //   type: 'close', //关闭
@@ -175,7 +174,7 @@ const PointCheck = (props) => {
         }}
         loading={loading}
         columns={getColumns}
-        searchItems={searchItems}
+        searchItems={tabKey === '0' ? searchItems : [...searchItems, ...AuditItem]}
         rowKey={(record) => `${record.hittingAuditId}`}
         dispatchType="pointCheck/fetchGetList"
         {...pointCheck}

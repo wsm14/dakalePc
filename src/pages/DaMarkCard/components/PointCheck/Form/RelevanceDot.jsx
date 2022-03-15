@@ -265,7 +265,7 @@ const RelevanceDot = (props) => {
         onOk: () => {
           dispatch({
             type: 'pointCheck/fetchGetVerifyAudit',
-            payload: { hittingAuditId, hittingId: values.hittingId[0] },
+            payload: { hittingAuditId, hittingId: values.hittingId[0], verifyStatus: 1 },
             callback: () => {
               onClose();
               onCloseF();
