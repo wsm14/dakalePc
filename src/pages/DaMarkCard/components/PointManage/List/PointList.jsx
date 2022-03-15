@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import moment from 'moment';
+import debounce from 'lodash/debounce';
 import Ellipsis from '@/components/Ellipsis';
+import { HITTING_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import { checkCityName } from '@/utils/utils';
 import PointQrCode from '../Detail/Point/PointQrCode';
@@ -10,27 +11,36 @@ import PointManageModal from '../PointManageModal';
 
 // 点位列表
 const PointList = (props) => {
-  const { pointList, loading, dispatch } = props;
+  const { pointList, loading, dispatch, bodyList = [], tabKey, detail = {} } = props;
   const childRef = useRef();
   // 操作弹窗{ type: info 详情 show 显示隐藏  }
   const [visible, setVisible] = useState(false);
   const [visibleQrCode, setVisibleQrCode] = useState(false); // 二维码
   const [visibleModalDrawer, setVisibleModalDrawer] = useState(false);
+  console.log(detail, '23232323');
+  // 搜索主体
+  const fetchGetMre = debounce((name) => {
+    if (!name.replace(/'/g, '')) return;
+    dispatch({
+      type: 'baseData/fetchListHittingMain',
+      payload: {
+        name: name.replace(/'/g, ''),
+      },
+    });
+  }, 500);
 
   // z主体搜索参数
   const searchItems = [
     {
-      label: '点位',
+      label: '点位名称',
       name: 'name',
     },
     {
-      label: '归属人手机号',
-      name: 'mobile',
-    },
-    {
-      label: '点位类型',
-      name: 'type',
+      label: '关联主体',
+      name: 'mainId',
       type: 'select',
+      select: bodyList,
+      onSearch: fetchGetMre,
     },
     {
       label: '点位地区',
@@ -38,10 +48,6 @@ const PointList = (props) => {
       type: 'cascader',
       changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-    },
-    {
-      label: '用户手机号',
-      name: 'phone',
     },
   ];
 
@@ -62,32 +68,12 @@ const PointList = (props) => {
       ),
     },
     {
-      title: '归属人姓名',
-      dataIndex: 'name',
-    },
-    {
-      title: '归属人手机号',
-      dataIndex: 'name',
-    },
-    {
       title: '点位地址',
       dataIndex: 'address',
     },
     {
-      title: '类型',
-      dataIndex: 'distanceFlag',
-    },
-    {
-      title: '用户昵称',
-      dataIndex: 'username',
-    },
-    {
-      title: '用户手机号',
-      dataIndex: 'name',
-    },
-    {
       title: '关联主体',
-      dataIndex: 'name',
+      dataIndex: 'mainName',
     },
     {
       title: '状态',
@@ -112,7 +98,8 @@ const PointList = (props) => {
           },
           {
             type: 'signDetail', //打卡明细
-            click: () => setVisibleModalDrawer({ show: true, detail: record, type: 'signDetail' }),
+            click: () =>
+              setVisibleModalDrawer({ show: true, detail: record, type: 'signDetail', tabKey }),
           },
         ];
       },
@@ -137,7 +124,8 @@ const PointList = (props) => {
     {
       text: '新增',
       auth: 'save',
-      onClick: () => setVisible({ type: 'add', show: true }),
+      show: detail?.status !== '0',
+      onClick: () => setVisible({ type: 'add', show: true, detail }),
     },
   ];
   return (
@@ -152,6 +140,7 @@ const PointList = (props) => {
         searchItems={searchItems}
         rowKey={(record) => `${record.hittingId}`}
         dispatchType="pointManage/fetchListHitting"
+        params={{ mainId: detail?.hittingMainId }}
         {...pointList}
       ></TableDataBlock>
       {/* 新增 编辑 详情 */}
@@ -169,7 +158,8 @@ const PointList = (props) => {
     </>
   );
 };
-export default connect(({ pointManage, loading }) => ({
+export default connect(({ pointManage, baseData, loading }) => ({
   pointList: pointManage.pointList,
+  bodyList: baseData.bodyList,
   loading: loading.effects['pointManage/fetchListHitting'],
 }))(PointList);

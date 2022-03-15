@@ -5,7 +5,7 @@ import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const MarkInfoModal = (props) => {
-  const { loading, markInfoList, detail, pointList, loadingSearch, dispatch } = props;
+  const { loading, markInfoList, detail, pointList, loadingSearch, dispatch, tabKey } = props;
 
   // 搜索打卡点位
   const fetchGetMre = debounce((name) => {
@@ -102,7 +102,10 @@ const MarkInfoModal = (props) => {
       searchItems={searchItems}
       rowKey={(record) => `${record.hittingRewardRecordId}`}
       dispatchType="pointManage/fetchListHittingRecordManagement"
-      params={{ mainId: detail.hittingMainId }}
+      params={{
+        [{ 0: 'mainId', 1: 'hittingId' }[tabKey]]:
+          tabKey === '1' ? detail.hittingId : detail.hittingMainId,
+      }}
       {...markInfoList}
     />
   );

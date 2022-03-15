@@ -13,6 +13,7 @@ import {
   fetchSetStrapContent,
   fetchSetHittingReward,
   fetchGetHittingRewardByMainId,
+  fetchGetHasHitting,
 } from '@/services/DaMarkCardServices';
 
 export default {
@@ -62,7 +63,7 @@ export default {
     *fetchSaveHittingMain({ payload, callback }, { call }) {
       const response = yield call(fetchSaveHittingMain, payload);
       if (!response) return;
-      const {content} = response
+      const { content } = response;
       notification.success({
         message: '温馨提示',
         description: '主体新增成功',
@@ -206,6 +207,13 @@ export default {
       };
 
       callback && callback(data || {});
+    },
+    //点击奖励按钮，判断是否该主体是否已关联点位
+    *fetchGetHasHitting({ payload, callback }, { call }) {
+      const response = yield call(fetchGetHasHitting, payload);
+      if (!response) return;
+      const {content={}}=response
+      callback && callback(content.hasHitting );
     },
   },
 };

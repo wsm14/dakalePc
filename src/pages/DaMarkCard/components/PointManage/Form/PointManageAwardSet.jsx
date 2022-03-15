@@ -37,7 +37,7 @@ const PlatformSet = (props) => {
       ),
     },
     {
-      label: '每日打赏次数',
+      label: '每日卡豆打赏次数',
       name: 'dayCount',
       addonAfter: '次',
     },

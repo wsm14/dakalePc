@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import debounce from 'lodash/debounce';
-import { Button, Form, Space, Modal } from 'antd';
+import { Button, Form, Space, Modal, notification } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import { Select } from '@/components/FormCondition/formModule';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -28,8 +28,10 @@ const RelevanceDot = (props) => {
     form.setFieldsValue({ body: bodySelect });
     const ids = bodySelect.map((itemid) => itemid.hittingMainId);
     setBodyId(ids?.toString());
+    //切换主体清空点位选中内容
     setPointSelect([]);
-    form.setFieldsValue({ hittingId: [] });
+    setPointID('');
+    form.setFieldsValue({ hittingId: '' });
   }, [bodySelect]);
 
   useEffect(() => {
@@ -65,7 +67,6 @@ const RelevanceDot = (props) => {
   //选中 option,替换
   const onChangeBody = (val) => {
     const selectBodys = bodyList.filter((item) => val === item.hittingMainId);
-    console.log(val, 'selectBodys');
     setBodyId(val);
     setBodySelect(selectBodys);
     form.setFieldsValue({ body: selectBodys });
@@ -85,20 +86,47 @@ const RelevanceDot = (props) => {
 
   // 获取主体详情
   const fetchCouponDetail = (hittingMainId, type) => {
-    dispatch({
-      type:
-        type === 'advert'
-          ? 'pointManage/fetchGetStrapContent'
-          : type === 'award'
-          ? 'pointManage/fetchGetHittingRewardByMainId'
-          : 'pointManage/fetchGetHittingMainById',
-      payload: {
-        hittingMainId,
-      },
-      callback: (detail) => {
-        setVisibleSet({ type, show: true, detail, hittingMainId });
-      },
-    });
+    if (type === 'award') {
+      //点击奖励按钮，判断是否该主体是否已关联点位，
+      dispatch({
+        type: 'pointManage/fetchGetHasHitting',
+        payload: {
+          hittingMainId,
+        },
+        callback: (hasHitting) => {
+          if (hasHitting === '1') {
+            dispatch({
+              type: 'pointManage/fetchGetHittingRewardByMainId',
+              payload: {
+                hittingMainId,
+              },
+              callback: (detail) => {
+                setVisibleSet({ type, show: true, detail, hittingMainId });
+              },
+            });
+          } else {
+            notification.warning({
+              message: '温馨提示',
+              description: '请先关联点位',
+            });
+            return;
+          }
+        },
+      });
+    } else {
+      dispatch({
+        type:
+          type === 'advert'
+            ? 'pointManage/fetchGetStrapContent'
+            : 'pointManage/fetchGetHittingMainById',
+        payload: {
+          hittingMainId,
+        },
+        callback: (detail) => {
+          setVisibleSet({ type, show: true, detail, hittingMainId });
+        },
+      });
+    }
   };
 
   const formItems = [
@@ -217,7 +245,7 @@ const RelevanceDot = (props) => {
               ></CommonList>
               <div className="bottomCon">
                 <span>每人每天打卡次数</span>
-                <span>{item1.dayCount == '999' ? '不限' : item.dayCount}次</span>
+                <span>{item1.dayCount == '999' ? '不限' : item1.dayCount}次</span>
               </div>
             </div>
           ))}
@@ -261,10 +289,11 @@ const RelevanceDot = (props) => {
     title: '关联点位',
     visible: show,
     onClose,
+    destroyOnClose: true,
+    afterCallBack: () => {},
     footer: <ExtraButton list={btnList}></ExtraButton>,
   };
 
-  console.log(pointList, 'pointListpointListpointList');
   return (
     <>
       <DrawerCondition {...modalProps}>

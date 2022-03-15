@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
 import Ellipsis from '@/components/Ellipsis';
+import { notification } from 'antd';
 import { checkCityName } from '@/utils/utils';
 import { MARK_CARD_MAIN_TYPE, MARK_CARD_OPEN_STATE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -10,7 +11,7 @@ import PointManageModal from '../PointManageModal';
 
 // 主体列表
 const BodyList = (props) => {
-  const { pointManageList, loading, dispatch } = props;
+  const { pointManageList, loading, dispatch,tabKey } = props;
   const childRef = useRef();
   // 操作弹窗{ type: info 详情 show 显示隐藏 detail 详情 }
   const [visible, setVisible] = useState(false);
@@ -110,8 +111,8 @@ const BodyList = (props) => {
             click: () => fetchCouponDetail(hittingMainId, 'edit'),
           },
           {
-            type: 'signDetail',//打卡明细
-            click: () => setVisibleModalDrawer({ show: true, detail: record, type: 'signDetail' }),
+            type: 'signDetail', //打卡明细
+            click: () => setVisibleModalDrawer({ show: true, detail: record, type: 'signDetail' ,tabKey}),
           },
         ];
       },
@@ -120,20 +121,47 @@ const BodyList = (props) => {
 
   // 获取主体详情
   const fetchCouponDetail = (hittingMainId, type) => {
-    dispatch({
-      type:
-        type === 'advert'
-          ? 'pointManage/fetchGetStrapContent'
-          : type === 'award'
-          ? 'pointManage/fetchGetHittingRewardByMainId'
-          : 'pointManage/fetchGetHittingMainById',
-      payload: {
-        hittingMainId,
-      },
-      callback: (detail) => {
-        setVisible({ type, show: true, detail, hittingMainId });
-      },
-    });
+    if (type === 'award') {
+      //点击奖励按钮，判断是否该主体是否已关联点位，
+      dispatch({
+        type: 'pointManage/fetchGetHasHitting',
+        payload: {
+          hittingMainId,
+        },
+        callback: (hasHitting) => {
+          if (hasHitting === '1') {
+            dispatch({
+              type: 'pointManage/fetchGetHittingRewardByMainId',
+              payload: {
+                hittingMainId,
+              },
+              callback: (detail) => {
+                setVisible({ type, show: true, detail, hittingMainId });
+              },
+            });
+          } else {
+            notification.warning({
+              message: '温馨提示',
+              description: '请先关联点位',
+            });
+            return;
+          }
+        },
+      });
+    } else {
+      dispatch({
+        type:
+          type === 'advert'
+            ? 'pointManage/fetchGetStrapContent'
+            : 'pointManage/fetchGetHittingMainById',
+        payload: {
+          hittingMainId,
+        },
+        callback: (detail) => {
+          setVisible({ type, show: true, detail, hittingMainId });
+        },
+      });
+    }
   };
 
   // 权限按钮

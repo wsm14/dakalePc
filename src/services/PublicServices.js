@@ -285,6 +285,13 @@ export function fetchListHitting(params) {
   });
 }
 
+// get 哒小卡主体点位管理 - 列表
+export async function fetchListHittingMain(params) {
+  return request('/admin/hittingMain/listHittingMain', {
+    params,
+  });
+}
+
 //get 虚拟商品优惠比例配置-分页列表
 export function fetchPagePreferentialActivity(params) {
   return request('/admin/preferentialActivity/pagePreferentialActivity', {

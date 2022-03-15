@@ -8,7 +8,6 @@ import PointCheckDetail from './components/PointCheck/PointCheckDetail';
 
 const PointCheck = (props) => {
   const { pointCheck, loading, dispatch } = props;
-  console.log(pointCheck, 'pointCheck');
   const [visible, setVisible] = useState(false);
 
   const tabList = [
@@ -87,6 +86,11 @@ const PointCheck = (props) => {
     {
       title: '申请原因',
       dataIndex: 'submitReason',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
       title: '用户昵称',
@@ -97,7 +101,7 @@ const PointCheck = (props) => {
       dataIndex: 'userMobile',
     },
     {
-      title: '最新提交时间',
+      title: '提交时间',
       dataIndex: 'createTime',
     },
     // {
@@ -107,7 +111,7 @@ const PointCheck = (props) => {
     // },
     {
       title: '审核时间',
-      dataIndex: 'name',
+      dataIndex: 'updateTime',
       show: tabKey === '1',
     },
     {
@@ -166,7 +170,7 @@ const PointCheck = (props) => {
           activeTabKey: tabKey,
           onTabChange: (key) => {
             setTabKey(key);
-            childRef.current.fetchGetData({verifyStatus: key, page: 1 });
+            childRef.current.fetchGetData({ verifyStatus: key, page: 1 });
           },
         }}
         loading={loading}

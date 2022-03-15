@@ -36,6 +36,7 @@ const PointDrawer = (props) => {
             const data = {
               name: values.name,
               otherData: values.address,
+              dayCount:values.dayCount,
               value: content?.hittingId,
             };
             setPointSelect([data]);

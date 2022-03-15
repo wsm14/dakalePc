@@ -42,6 +42,7 @@ import {
   fetchListConfigGoodsTag,
   fetchGlobalListCity,
   fetchGlobalListPartner,
+  fetchListHittingMain,
 } from '@/services/PublicServices';
 
 export default {
@@ -71,6 +72,7 @@ export default {
     EquityCoupon: { list: [], total: 0 },
     PlatformCoupon: { list: [], total: 0 },
     pointList: { list: [], total: 0 },
+    bodyList: { list: [], total: 0 },
     virtualList: { list: [], total: 0 },
     allCouponList: { list: [], total: 0 },
     configGoodsTagList: [],
@@ -404,7 +406,6 @@ export default {
         },
       });
       callback && callback(content.recordList);
-     
     },
     *fetchGetExpertLevel({ payload }, { call, put }) {
       const response = yield call(fetchGetExpertLevel, payload);
@@ -614,7 +615,27 @@ export default {
             list: content.recordList.map((item) => ({
               name: `${item.name}`,
               value: item.hittingId,
-              otherData:item.address
+              otherData: item.address,
+              dayCount: item.dayCount,
+            })),
+            total: content.total,
+          },
+        },
+      });
+    },
+    //  哒小卡点位主体-列表
+    *fetchListHittingMain({ payload }, { call, put }) {
+      const response = yield call(fetchListHittingMain, { page: 1, limit: 999, payload });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          bodyList: {
+            list: content.recordList.map((item) => ({
+              name: `${item.name}-${item.hittingMainId}`,
+              value: item.hittingMainId,
+              otherData: item.address,
             })),
             total: content.total,
           },
