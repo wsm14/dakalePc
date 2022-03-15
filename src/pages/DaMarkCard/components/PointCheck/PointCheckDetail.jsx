@@ -17,7 +17,6 @@ const PointCheckDetail = (props) => {
   const [visibleRefuse, setVisibleRefuse] = useState(false);
   const [visibleDot, setVisibleDot] = useState(false); //关联点位
 
-  console.log(hittingAuditId, 'hittingAuditId');
   //关联点位
   const handleVerifyAllow = () => {
     setVisibleDot({

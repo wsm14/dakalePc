@@ -257,7 +257,6 @@ const RelevanceDot = (props) => {
   //审核通过
   const handleCheck = () => {
     form.validateFields().then((values) => {
-      console.log(values, '2121');
       Modal.confirm({
         okText: '确定',
         cancelText: '取消',
@@ -290,7 +289,10 @@ const RelevanceDot = (props) => {
     visible: show,
     onClose,
     destroyOnClose: true,
-    afterCallBack: () => {},
+    afterCallBack: () => {
+      setBodyId('');
+      setBodySelect([]);
+    },
     footer: <ExtraButton list={btnList}></ExtraButton>,
   };
 

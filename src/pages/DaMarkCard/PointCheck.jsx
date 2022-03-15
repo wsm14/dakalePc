@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import Ellipsis from '@/components/Ellipsis';
 import { checkCityName } from '@/utils/utils';
@@ -6,24 +6,27 @@ import { VERIFY_STATUS_DOT, HITTING_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import PointCheckDetail from './components/PointCheck/PointCheckDetail';
 
+const tabList = [
+  {
+    key: '0',
+    tab: '待审核',
+  },
+  {
+    key: '1,2',
+    tab: '已审核',
+  },
+];
+
 const PointCheck = (props) => {
   const { pointCheck, loading, dispatch } = props;
   const [visible, setVisible] = useState(false);
 
-  const tabList = [
-    {
-      key: '0',
-      tab: '待审核',
-    },
-    {
-      key: '1,2',
-      tab: '已审核',
-    },
-  ];
-
-
   const childRef = useRef();
   const [tabKey, setTabKey] = useState('0');
+
+  useEffect(() => {
+    childRef.current.fetchGetData({ verifyStatus: tabKey, page: 1 });
+  }, [tabKey]);
 
   const searchItems = [
     {
@@ -167,16 +170,14 @@ const PointCheck = (props) => {
         cardProps={{
           tabList: tabList,
           activeTabKey: tabKey,
-          onTabChange: (key) => {
-            setTabKey(key);
-            childRef.current.fetchGetData({ verifyStatus: key, page: 1 });
-          },
+          onTabChange: setTabKey,
         }}
         loading={loading}
         columns={getColumns}
         searchItems={tabKey === '0' ? searchItems : [...searchItems, ...AuditItem]}
         rowKey={(record) => `${record.hittingAuditId}`}
         dispatchType="pointCheck/fetchGetList"
+        params={{ verifyStatus: tabKey }}
         {...pointCheck}
       ></TableDataBlock>
       <PointCheckDetail
