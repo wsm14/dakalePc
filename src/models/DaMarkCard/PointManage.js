@@ -212,8 +212,8 @@ export default {
     *fetchGetHasHitting({ payload, callback }, { call }) {
       const response = yield call(fetchGetHasHitting, payload);
       if (!response) return;
-      const {content={}}=response
-      callback && callback(content.hasHitting );
+      const { content = {} } = response;
+      callback && callback(content.hasHitting);
     },
   },
 };

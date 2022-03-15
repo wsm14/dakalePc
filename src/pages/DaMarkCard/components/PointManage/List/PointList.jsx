@@ -17,7 +17,6 @@ const PointList = (props) => {
   const [visible, setVisible] = useState(false);
   const [visibleQrCode, setVisibleQrCode] = useState(false); // 二维码
   const [visibleModalDrawer, setVisibleModalDrawer] = useState(false);
-  console.log(detail, '23232323');
   // 搜索主体
   const fetchGetMre = debounce((name) => {
     if (!name.replace(/'/g, '')) return;

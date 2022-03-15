@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -36,7 +36,7 @@ const PointDrawer = (props) => {
             const data = {
               name: values.name,
               otherData: values.address,
-              dayCount:values.dayCount,
+              dayCount: values.dayCount,
               value: content?.hittingId,
             };
             setPointSelect([data]);
@@ -58,7 +58,13 @@ const PointDrawer = (props) => {
     },
     edit: {
       title: '编辑点位',
-      children: <PointSet {...listProp} form={form} initialValues={detail}></PointSet>,
+      children: (
+        <PointSet
+          {...listProp}
+          form={form}
+          initialValues={{ ...detail, dayCount: detail.dayCount + '' }}
+        ></PointSet>
+      ),
     },
   }[type];
 

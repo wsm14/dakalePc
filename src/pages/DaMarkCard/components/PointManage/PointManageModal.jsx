@@ -8,7 +8,6 @@ import PointList from './List/PointList';
 const PointManageModal = (props) => {
   const { loading, visible, onClose } = props;
   const { type = 'signDetail', show = false, detail = {}, tabKey } = visible;
-  console.log(detail, 'deeeeeeee');
   // 统一处理弹窗
   const drawerProps = {
     // 打卡明细
