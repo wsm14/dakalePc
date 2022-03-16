@@ -147,22 +147,29 @@ const VirtualConfigSet = (props) => {
   const handleSave = () => {
     form.validateFields().then(async (values) => {
       const { buyLimit = 0, maxBeanAndCoupon, activityDate, ruleType, cityCode, ...other } = values;
+      let formData = {
+        preferentialActivityId: initialValues?.preferentialActivityId,
+        ...other,
+        preferentialActivityRuleObject: {
+          buyLimit,
+          maxBeanAndCoupon: Number((maxBeanAndCoupon / 100).toFixed(2)),
+        },
+        startDate: activityDate && activityDate[0].format('YYYY-MM-DD'),
+        endDate: activityDate && activityDate[1].format('YYYY-MM-DD'),
+        cityCode: cityCode && cityCode[1],
+      };
+      //当是扫码付和组件优惠的时候 status为1  时间也发生变化
+      if (['scanPay', 'assembly'].includes(tabKey)) {
+        formData.status = 1;
+        formData.startDate = '2022-01-01';
+        formData.endDate = '2099-01-01';
+      }
       dispatch({
         type: {
           add: 'globalConfig/fetchSavePreferentialActivity',
           edit: 'globalConfig/fetchUpdatePreferentialActivity',
         }[type],
-        payload: {
-          preferentialActivityId: initialValues?.preferentialActivityId,
-          ...other,
-          preferentialActivityRuleObject: {
-            buyLimit,
-            maxBeanAndCoupon: Number((maxBeanAndCoupon / 100).toFixed(2)),
-          },
-          startDate: activityDate && activityDate[0].format('YYYY-MM-DD'),
-          endDate: activityDate && activityDate[1].format('YYYY-MM-DD'),
-          cityCode: cityCode && cityCode[1],
-        },
+        payload: formData,
         callback: () => {
           onClose();
           childRef.current.fetchGetData();
