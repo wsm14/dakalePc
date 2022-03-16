@@ -16,8 +16,14 @@ import newProductRecommend from './Img/newProductRecommend.png';
 import beanSpecialArea from './Img/beanSpecialArea.png';
 import commerceGoods from './Img/commerceGoods.png';
 import beanEducation from './Img/beanEducation.png';
+import sixPalaceLattice from './Img/sixPalaceLattice.png';
 import specialAndSelfTourAndCommerce from './Img/specialAndSelfTourAndCommerce.png';
 import selfTourAndCommerce from './Img/selfTourAndCommerce.png';
+import beanDeductionZone from './Img/beanDeductionZone.png';
+import fieldResource from './Img/fieldResource.png';
+import timeLimitedCoupon from './Img/timeLimitedCoupon.png';
+import limitedTimeHotMixing from './Img/limitedTimeHotMixing.png';
+import signInModule from './Img/signInModule.png';
 
 /**
  * 组件库
@@ -26,139 +32,171 @@ import selfTourAndCommerce from './Img/selfTourAndCommerce.png';
  * @param {String} moduleName  组件类型
  * @param {Boolean} drop 是否可拖拽 如果是不可拖拽的模块 全局唯一只能存在一个
  * @param {ReactDOM} defaultImg 拖拽后默认显示占位图片
+ * @param {Boolean} editFormFlag 是否存在编辑表单
  */
 export default {
   mainBanner: {
     name: '主banner位',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'mainBanner',
     drop: true,
     defaultImg: mainBanner,
+    editFormFlag: true,
+  },
+  signInModule: {
+    name: '签到入口',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    drop: true,
+    defaultImg: signInModule,
   },
   capsulePosition: {
     name: '胶囊位',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'capsulePosition',
     drop: true,
     defaultImg: capsulePosition,
   },
   recharge: {
     name: '逛逛话费充值',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'recharge',
     drop: true,
     defaultImg: recharge,
   },
   beanSpecialArea: {
     name: '逛逛卡豆位',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'beanSpecialArea',
     drop: true,
     defaultImg: beanSpecialArea,
   },
   notify: {
     name: '通知位',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'notify',
     drop: true,
     defaultImg: notify,
   },
   windVane: {
     name: '风向标',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'windVane',
     drop: true,
     defaultImg: windVane,
   },
   resource: {
     name: '逛逛资源位',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'resource',
     drop: true,
     defaultImg: resource,
+    editFormFlag: true,
   },
   limitedTimeAndExplosive: {
     name: '限时+爆品',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'limitedTimeAndExplosive',
     drop: true,
     defaultImg: limitedTimeAndExplosive,
+    editFormFlag: true,
   },
   limitedTime: {
     name: '限时抢购',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'limitedTime',
     drop: true,
     defaultImg: limitedTime,
+    editFormFlag: true,
   },
   explosive: {
     name: '爆品福利',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'explosive',
     drop: true,
     defaultImg: explosive,
+    editFormFlag: true,
   },
   member: {
     name: '会员充值',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'member',
     drop: true,
     defaultImg: member,
   },
   selfTour: {
     name: '自我游',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'selfTour',
     drop: true,
     defaultImg: selfTour,
+    editFormFlag: true,
   },
   specialRecommend: {
     name: '特惠推荐',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'specialRecommend',
     drop: true,
     defaultImg: specialRecommend,
+    editFormFlag: true,
   },
   selfTourResource: {
     name: '自我游',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'selfTourResource',
     drop: true,
     defaultImg: selfTourResource,
+    editFormFlag: true,
   },
   newProductRecommend: {
     name: '新品推荐',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'newProductRecommend',
     drop: true,
     defaultImg: newProductRecommend,
+    editFormFlag: true,
   },
   commerceGoods: {
     name: '电商品',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'commerceGoods',
     drop: true,
     defaultImg: commerceGoods,
+    editFormFlag: true,
   },
   beanEducation: {
-    name: '卡豆教育',
+    name: '四宫格',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'beanEducation',
     drop: true,
     defaultImg: beanEducation,
+  },
+  sixPalaceLattice: {
+    name: '六宫格',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    drop: true,
+    defaultImg: sixPalaceLattice,
   },
   specialAndSelfTourAndCommerce: {
     name: '特惠+自我游+电商品',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'specialAndSelfTourAndCommerce',
     drop: true,
     defaultImg: specialAndSelfTourAndCommerce,
+    editFormFlag: true,
   },
   selfTourAndCommerce: {
     name: '自我游+电商品',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'selfTourAndCommerce',
     drop: true,
     defaultImg: selfTourAndCommerce,
+    editFormFlag: true,
+  },
+  beanDeductionZone: {
+    name: '卡豆超值抵扣专区',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    drop: true,
+    defaultImg: beanDeductionZone,
+  },
+  fieldResource: {
+    name: '田字资源位',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    drop: true,
+    defaultImg: fieldResource,
+  },
+  timeLimitedCoupon: {
+    name: '限时神券',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    drop: true,
+    defaultImg: timeLimitedCoupon,
+    editFormFlag: true,
+  },
+  limitedTimeHotMixing: {
+    name: '限时热兑',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    drop: true,
+    defaultImg: limitedTimeHotMixing,
+    editFormFlag: true,
   },
 };

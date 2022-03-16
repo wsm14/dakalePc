@@ -48,6 +48,11 @@ export const RIGHT_COUNT_DWON = 84 / 84;
 // 顶部背景
 export const TOP_BGIMG = 750 / 360;
 
+//小程序顶部背景
+export const TOP_BGIMG_WECHAT = 750 / 400;
+
+export const TOP_BGIMG_WECHAT2 = 750 / 500;
+
 export const TABBAR_ICON = 88 / 88;
 
 //标签图片

@@ -36,12 +36,12 @@ const PhoneBill = ({ form, paramKey, showApi, virtualList, loading, dispatch }) 
         ...data,
       },
     });
-  }, 100);
+  }, 500);
 
   return (
     <FormItem
       key={`identification`}
-      label="优惠活动名称"
+      label="优惠活动比例"
       name={['param', paramKey[0]]}
       rules={[{ required: true, message: `请选择优惠活动名称` }]}
       style={{ maxWidth: '100%' }}
@@ -50,6 +50,11 @@ const PhoneBill = ({ form, paramKey, showApi, virtualList, loading, dispatch }) 
         placeholder={'请输入搜索'}
         select={virtualList}
         loading={loading}
+        onSelect={(val, option) => {
+          form.setFieldsValue({
+            preferentialActivityId: option.option.preferentialActivityId,
+          });
+        }}
         onSearch={(activityName) => fetchClassifyGetMre(activityName ? { activityName } : '')}
       ></Select>
     </FormItem>

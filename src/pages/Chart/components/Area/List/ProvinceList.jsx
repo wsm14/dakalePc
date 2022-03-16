@@ -105,6 +105,7 @@ const ProvinceTotalComponent = (props) => {
       params={{ bucket: tabkey }}
       rowKey={(record) => `${record.bucket}`}
       dispatchType="areaTotal/fetchGetList"
+      pagination={false}
       list={list}
     ></TableDataBlock>
   );

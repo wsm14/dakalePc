@@ -8,12 +8,19 @@ export default [
   {
     header: '广告营销',
     type: 'public',
-    children: ['mainBanner', 'capsulePosition', 'recharge', 'beanSpecialArea', 'notify'],
+    children: [
+      'mainBanner',
+      'capsulePosition',
+      'recharge',
+      'beanSpecialArea',
+      'notify',
+      'signInModule',
+    ],
   },
   {
     header: '功能区',
     type: 'img',
-    children: ['windVane', 'resource', 'beanEducation'],
+    children: ['windVane', 'resource', 'beanEducation', 'sixPalaceLattice'],
   },
   {
     header: '商品推荐',
@@ -25,6 +32,10 @@ export default [
       'member',
       'selfTourResource',
       'newProductRecommend',
+      'beanDeductionZone',
+      'fieldResource',
+      'timeLimitedCoupon',
+      'limitedTimeHotMixing',
     ],
   },
   {

@@ -1,5 +1,10 @@
 import React from 'react';
-import { PLATFORM_TICKET_SCENE, PLATFORM_TICKET_TYPE, CONPON_RULES_TYPE } from '@/common/constant';
+import {
+  PLATFORM_TICKET_SCENE,
+  PLATFORM_TICKET_TYPE,
+  CONPON_RULES_TYPE,
+  COUPON_GIVE_TYPE,
+} from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
@@ -68,6 +73,11 @@ const GoodsDetail = (props) => {
           personLimit: `每人限制领取${row.personLimit}张`,
           dayLimit: `每人每天限制领取${row.dayMaxBuyAmount}张`,
         }[val]),
+    },
+    {
+      label: '发放方式',
+      name: 'giveType',
+      render: (val, row) => COUPON_GIVE_TYPE[val],
     },
     {
       label: '是否可膨胀',

@@ -228,6 +228,11 @@ const VaneDrawer = (props) => {
       imgRatio: VANE_BANNER,
       visible: showUrl === 'trade',
     },
+    {
+      label: '关联优惠活动',
+      name: 'activityName',
+      visible: false,
+    },
   ];
 
   const modalProps = {

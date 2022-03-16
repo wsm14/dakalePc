@@ -2,20 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
 import { Form, Button } from 'antd';
+import { getCityName } from '@/utils/utils';
 import { VIRTUAL_CONFIG_TYPE, VIR_OPEN_STATE, VIR_OPEN_TYPE } from '@/common/constant';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const VirtualConfigSet = (props) => {
-  const { visible, onClose, childRef, dispatch, loading } = props;
+  const { visible, onClose, childRef, dispatch, loading, tabKey } = props;
   const { show, type, initialValues = {} } = visible;
 
   const [ruleTypes, setRuleTypes] = useState('0'); // 优惠次数类型
+  const [tabType, setTabType] = useState('');
 
   const [form] = Form.useForm();
-
-  console.log(initialValues);
 
   useEffect(() => {
     if (type === 'edit' || type === 'info') {
@@ -23,14 +23,17 @@ const VirtualConfigSet = (props) => {
     }
   }, [type]);
 
-  const formItems = [
+  const oldFormItems = [
     {
       label: '优惠类型',
       name: 'type',
       type: 'select',
-      select: VIRTUAL_CONFIG_TYPE,
-      disabled: type === 'info' || type === 'edit',
-      render: (val) => VIRTUAL_CONFIG_TYPE[val],
+      select: VIRTUAL_CONFIG_TYPE['other'],
+      disabled: true,
+      render: (val) => VIRTUAL_CONFIG_TYPE['other'][val],
+      onChange: (e) => {
+        setTabType(e);
+      },
     },
     {
       label: '优惠活动名称',
@@ -38,12 +41,13 @@ const VirtualConfigSet = (props) => {
       disabled: type === 'info',
     },
     {
-      label: '最高优惠比例',
+      label: '最高抵扣比例',
       name: 'maxBeanAndCoupon',
       type: 'number',
       addonAfter: '%',
       min: 0,
-      max: 99,
+      max: 100,
+      precision: 0,
       disabled: type === 'info' || type === 'edit',
       render: (val) => `${val}%`,
     },
@@ -91,11 +95,58 @@ const VirtualConfigSet = (props) => {
       render: (val) => VIR_OPEN_STATE[val],
     },
   ];
+  const newFormItems = [
+    {
+      label: '优惠类型',
+      name: 'type',
+      type: 'select',
+      select: VIRTUAL_CONFIG_TYPE['other'],
+      disabled: true,
+      render: (val) => VIRTUAL_CONFIG_TYPE['other'][val],
+      onChange: (e) => {
+        setTabType(e);
+      },
+    },
+    {
+      label: '优惠活动名称',
+      name: 'activityName',
+      disabled: type === 'info',
+      visible: ['assembly'].includes(tabType),
+      show: ['assembly'].includes(tabType),
+    },
+    {
+      label: '地区',
+      name: 'cityCode',
+      type: 'cascader',
+      cityType: 'city',
+      visible: ['scanPay'].includes(tabType),
+      show: ['scanPay'].includes(tabType),
+      render: (val) => getCityName(val[1]) || '--',
+    },
+    {
+      label: '最高抵扣比例',
+      name: 'maxBeanAndCoupon',
+      type: 'number',
+      addonAfter: '%',
+      min: 0,
+      max: 100,
+      precision: 0,
+      disabled: type === 'info',
+      render: (val) => `${val}%`,
+    },
+  ];
+
+  const formItems = {
+    phoneBill: oldFormItems,
+    memberRecharge: oldFormItems,
+    scanPay: newFormItems,
+    assembly: newFormItems,
+  }[tabType];
 
   //   提交
   const handleSave = () => {
     form.validateFields().then(async (values) => {
-      const { buyLimit = 0, maxBeanAndCoupon, activityDate, ruleType, ...other } = values;
+      const { buyLimit = 0, maxBeanAndCoupon, activityDate, ruleType, cityCode, ...other } = values;
       dispatch({
         type: {
           add: 'globalConfig/fetchSavePreferentialActivity',
@@ -108,8 +159,9 @@ const VirtualConfigSet = (props) => {
             buyLimit,
             maxBeanAndCoupon: Number((maxBeanAndCoupon / 100).toFixed(2)),
           },
-          startDate: activityDate[0].format('YYYY-MM-DD'),
-          endDate: activityDate[1].format('YYYY-MM-DD'),
+          startDate: activityDate && activityDate[0].format('YYYY-MM-DD'),
+          endDate: activityDate && activityDate[1].format('YYYY-MM-DD'),
+          cityCode: cityCode && cityCode[1],
         },
         callback: () => {
           onClose();
@@ -124,6 +176,9 @@ const VirtualConfigSet = (props) => {
     visible: show,
     width: 700,
     onClose,
+    afterCallBack: () => {
+      setTabType(tabKey);
+    },
     closeCallBack: () => {
       setRuleTypes('0');
     },

@@ -585,6 +585,13 @@ export function fetchSavePreferentialActivity(data) {
   });
 }
 
+//获取默认卡豆抵扣比例
+export function fetchGetDefaultPreferentialActivity(params) {
+  return request('/admin/preferentialActivity/getDefaultPreferentialActivity', {
+    params,
+  });
+}
+
 //底部中心icon配置 - 版本列表
 export function fetchListConfigBottomCenterIcon(params) {
   return request('/admin/configBottomCenterIcon/listConfigBottomCenterIcon', {
@@ -616,3 +623,59 @@ export function fetchGetConfigBottomCenterIconById(params) {
 }
 
 // 全局配置 end
+
+// 资源位内容配置
+
+//资源位模板-  不分页列表\查询
+export function fetchListResourceTemplate(params) {
+  return request('/admin/resourceTemplate/listResourceTemplate', {
+    params,
+  });
+}
+
+//资源位模板-  详情、获取配置
+export function fetchGetResourceTemplateById(params) {
+  return request('/admin/resourceTemplate/getResourceTemplateById', {
+    params,
+  });
+}
+
+//资源位内容配置-  分页列表
+export function fetchPageResourceTemplateContent(params) {
+  return request('/admin/resourceTemplateContent/pageResourceTemplateContent', {
+    params,
+  });
+}
+
+//资源位内容配置 - 新增
+export function fetchSaveResourceTemplateContent(data) {
+  return request('/admin/resourceTemplateContent/saveResourceTemplateContent', {
+    method: 'POST',
+    data,
+  });
+}
+
+//资源位内容配置 - 编辑
+export function fetchUpdateResourceTemplateContent(data) {
+  return request('/admin/resourceTemplateContent/updateResourceTemplateContent', {
+    method: 'POST',
+    data,
+  });
+}
+
+//资源位内容配置 - 删除
+export function fetchDeleteResourceTemplateContent(data) {
+  return request('/admin/resourceTemplateContent/deleteResourceTemplateContent', {
+    method: 'POST',
+    data,
+  });
+}
+
+//资源位内容配置-  详情
+export function fetchGetResourceTemplateContentById(params) {
+  return request('/admin/resourceTemplateContent/getResourceTemplateContentById', {
+    params,
+  });
+}
+
+// 资源位内容配置 end

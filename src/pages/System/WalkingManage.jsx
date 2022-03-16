@@ -8,6 +8,8 @@ import GratiaClassManage from './components/Walking/GratiaClass';
 import GatherPage from './components/Walking/GatherPage';
 import StrollAround from './components/Walking/StrollAround';
 import SelfTour from './components/Walking/SelfTour';
+import ResourceTemplate from './components/Walking/ResourceTemplate';
+import ResourceContent from './components/Walking/ResourceContent';
 import styles from './index.less';
 
 const WalkingManage = () => {
@@ -53,20 +55,30 @@ const WalkingManage = () => {
       block: <StrollAround></StrollAround>,
     },
     {
+      type: 'resourceTemplate',
+      menuName: '资源位模板预览',
+      block: <ResourceTemplate></ResourceTemplate>,
+    },
+    {
+      type: 'resourceContent',
+      menuName: '资源位内容配置',
+      block: <ResourceContent></ResourceContent>,
+    },
+    {
       type: 'vaneManage',
       menuName: '风向标配置',
       block: <VaneManage></VaneManage>,
     },
-    {
-      type: 'navigationManage',
-      menuName: '导航类目页面配置',
-      block: <NavigationManage></NavigationManage>,
-    },
-    {
-      type: 'gratiaClassManage',
-      menuName: '特惠商品类目配置',
-      block: <GratiaClassManage></GratiaClassManage>,
-    },
+    // {
+    //   type: 'navigationManage',
+    //   menuName: '导航类目页面配置',
+    //   block: <NavigationManage></NavigationManage>,
+    // },
+    // {
+    //   type: 'gratiaClassManage',
+    //   menuName: '特惠商品类目配置',
+    //   block: <GratiaClassManage></GratiaClassManage>,
+    // },
     {
       type: 'gatherPage',
       menuName: '集合页配置',
@@ -77,11 +89,11 @@ const WalkingManage = () => {
       menuName: '热门城市配置',
       block: <HotCityPage></HotCityPage>,
     },
-    {
-      type: 'selfTour',
-      menuName: '自我游',
-      block: <SelfTour></SelfTour>,
-    },
+    // {
+    //   type: 'selfTour',
+    //   menuName: '自我游',
+    //   block: <SelfTour></SelfTour>,
+    // },
   ];
 
   // 显示内容判断
