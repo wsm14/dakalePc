@@ -78,11 +78,6 @@ const FormList = (props) => {
             onRemove={() => uploadImg(field.name, undefined)}
           ></Upload>
         </Form.Item>
-        {/* <Form.Item label="大牌商品" name={[field.name, 'activityGoodsList']}>
-          <Button type="link" onClick={() => setVisible(true)}>
-            +新增
-          </Button>
-        </Form.Item> */}
         <Form.Item label="大牌商品" required={true}>
           <Button type="link" onClick={() => setVisible(true)}>
             +选择

@@ -101,7 +101,6 @@ const ResourceContentForm = (props) => {
         value: 'resourceTemplateId',
       },
       onChange: (id) => {
-        console.log(id, '111');
         handleSelectTemplate(id);
       },
       disabled: type === 'edit',

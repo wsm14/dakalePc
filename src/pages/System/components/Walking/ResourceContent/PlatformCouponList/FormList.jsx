@@ -107,7 +107,7 @@ const FormList = (props) => {
         <Form.Item
           label="上传券商品图片"
           name={[field.name, 'platformCouponImg']}
-          rules={[{ required: true, message: '请上传品牌图片' }]}
+          rules={[{ required: true, message: '请上传券商品图片' }]}
         >
           <Upload
             name={[name, field.name, 'platformCouponImg']}
