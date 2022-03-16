@@ -29,7 +29,7 @@ const VirtualConfigSet = (props) => {
       name: 'type',
       type: 'select',
       select: VIRTUAL_CONFIG_TYPE['other'],
-      disabled: type === 'info' || type === 'edit',
+      disabled: true,
       render: (val) => VIRTUAL_CONFIG_TYPE['other'][val],
       onChange: (e) => {
         setTabType(e);
@@ -101,7 +101,7 @@ const VirtualConfigSet = (props) => {
       name: 'type',
       type: 'select',
       select: VIRTUAL_CONFIG_TYPE['other'],
-      disabled: type === 'info' || type === 'edit',
+      disabled: true,
       render: (val) => VIRTUAL_CONFIG_TYPE['other'][val],
       onChange: (e) => {
         setTabType(e);
