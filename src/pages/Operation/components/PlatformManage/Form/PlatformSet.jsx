@@ -256,6 +256,7 @@ const CouponSet = (props) => {
       onChange: (e) => {
         setGrantType(e.target.value);
       },
+      disabled: type === 'edit',
       extra: {
         manual:
           '支持在资源位中投放，并会在商品详情页自动展示手动发放的券，用户通过手动领取后获得该券',
