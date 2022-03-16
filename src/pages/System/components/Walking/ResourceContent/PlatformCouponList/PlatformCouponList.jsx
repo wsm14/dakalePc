@@ -5,7 +5,7 @@ import FormList from './FormList';
 import './coupon.less';
 
 const ShareCoupon = (props) => {
-  const { type = '', form, initialValues } = props;
+  const { type = '', form } = props;
 
   return (
     <>
@@ -34,7 +34,7 @@ const ShareCoupon = (props) => {
                   field={field}
                   remove={remove}
                   move={move}
-                  initialValues={initialValues}
+                  initialValues={form.getFieldsValue(true)}
                 ></FormList>
               ))}
               <Form.Item>
