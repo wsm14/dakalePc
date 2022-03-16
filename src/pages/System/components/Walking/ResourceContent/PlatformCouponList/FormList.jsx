@@ -66,7 +66,7 @@ const FormList = (props) => {
   return (
     <div key={field.key}>
       <Card
-        title={`品牌${field.name + 1}`}
+        title={`券${field.name + 1}`}
         size="small"
         style={{ marginBottom: '10px' }}
         extra={
@@ -112,6 +112,7 @@ const FormList = (props) => {
           <Upload
             name={[name, field.name, 'platformCouponImg']}
             maxFile={3}
+            drop={false}
             initialvalues={initialValues}
             onChange={(val) => uploadImg(field.name, val)}
             onRemove={() => uploadImg(field.name, undefined)}
