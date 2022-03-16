@@ -53,18 +53,6 @@ const RelevanceDot = (props) => {
       });
     }, 500);
 
-  // // 搜索主体
-  // const handleSearch = debounce((name) => {
-  //   if (!name.replace(/'/g, '')) return;
-  //   dispatch({
-  //     type: 'pointManage/fetchGetList',
-  //     payload: {
-  //       name: name.replace(/'/g, ''),
-  //       page: 1,
-  //       limit: 999,
-  //     },
-  //   });
-  // }, 500);
 
   const getPoint = debounce((mainId, name) => {
     dispatch({
