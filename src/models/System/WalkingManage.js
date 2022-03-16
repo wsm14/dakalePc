@@ -35,6 +35,10 @@ import {
   fetchPageResourceTemplateContent,
   fetchListResourceTemplate,
   fetchGetResourceTemplateById,
+  fetchSaveResourceTemplateContent,
+  fetchUpdateResourceTemplateContent,
+  fetchDeleteResourceTemplateContent,
+  fetchGetResourceTemplateContentById,
 } from '@/services/SystemServices';
 import { fetchAddNewActivityDetailCheck } from '@/services/MarketServices';
 export default {
@@ -563,6 +567,59 @@ export default {
       const { content } = response;
 
       callback && callback(content.resourceTemplateDTO);
+    },
+    //资源位内容配置 - 新增
+    *fetchSaveResourceTemplateContent({ payload, callback }, { call }) {
+      const response = yield call(fetchSaveResourceTemplateContent, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增成功',
+      });
+      callback && callback();
+    },
+    //资源位内容配置 - 编辑
+    *fetchUpdateResourceTemplateContent({ payload, callback }, { call }) {
+      const response = yield call(fetchUpdateResourceTemplateContent, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '编辑成功',
+      });
+      callback && callback();
+    },
+    //资源位内容配置 - 删除
+    *fetchDeleteResourceTemplateContent({ payload, callback }, { call }) {
+      const response = yield call(fetchDeleteResourceTemplateContent, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '删除成功',
+      });
+      callback && callback();
+    },
+    //资源位内容配置  -  详情
+    *fetchGetResourceTemplateContentById({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetResourceTemplateContentById, payload);
+      if (!response) return;
+      const { content } = response;
+      const { resourceTemplateContentDTO = {} } = content;
+      const { contentInfo = {}, ...other } = resourceTemplateContentDTO;
+      const { couponList, ...otherInfo } = contentInfo;
+
+      const data = {
+        ...other,
+        ...otherInfo,
+        couponList: couponList.map((item) => ({
+          platformCouponId: item,
+          platformCouponImg: item.platformCouponImg,
+        })),
+      };
+
+      // console.log(data, 'data');
+      // return;
+
+      callback && callback(data);
     },
   },
 };

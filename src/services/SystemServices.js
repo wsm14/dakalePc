@@ -646,4 +646,36 @@ export function fetchPageResourceTemplateContent(params) {
     params,
   });
 }
+
+//资源位内容配置 - 新增
+export function fetchSaveResourceTemplateContent(data) {
+  return request('/admin/resourceTemplateContent/saveResourceTemplateContent', {
+    method: 'POST',
+    data,
+  });
+}
+
+//资源位内容配置 - 编辑
+export function fetchUpdateResourceTemplateContent(data) {
+  return request('/admin/resourceTemplateContent/updateResourceTemplateContent', {
+    method: 'POST',
+    data,
+  });
+}
+
+//资源位内容配置 - 删除
+export function fetchDeleteResourceTemplateContent(data) {
+  return request('/admin/resourceTemplateContent/deleteResourceTemplateContent', {
+    method: 'POST',
+    data,
+  });
+}
+
+//资源位内容配置-  详情
+export function fetchGetResourceTemplateContentById(params) {
+  return request('/admin/resourceTemplateContent/getResourceTemplateContentById', {
+    params,
+  });
+}
+
 // 资源位内容配置 end

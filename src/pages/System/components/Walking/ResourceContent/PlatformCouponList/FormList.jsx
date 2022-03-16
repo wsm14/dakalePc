@@ -44,7 +44,7 @@ const FormList = (props) => {
   const onOk = (obj) => {
     setDataObj(obj);
     // 获取数据数组
-    const dataList = form.getFieldValue('platformCouponList');
+    const dataList = form.getFieldValue(name);
     // 更新数据数组
     const newData = update(dataList, {
       $splice: [
@@ -59,7 +59,7 @@ const FormList = (props) => {
       ],
     });
     form.setFieldsValue({
-      platformCouponList: newData,
+      [name]: newData,
     });
   };
 
@@ -110,7 +110,7 @@ const FormList = (props) => {
           rules={[{ required: true, message: '请上传品牌图片' }]}
         >
           <Upload
-            name={['brandModuleList', field.name, 'platformCouponImg']}
+            name={[name, field.name, 'platformCouponImg']}
             maxFile={3}
             initialvalues={initialValues}
             onChange={(val) => uploadImg(field.name, val)}

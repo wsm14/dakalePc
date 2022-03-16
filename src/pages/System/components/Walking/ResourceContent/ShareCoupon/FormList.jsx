@@ -24,7 +24,6 @@ const FormList = (props) => {
 
       {(() => {
         const goodsItem = form.getFieldValue(type)[field.name];
-        console.log('goodsItem', goodsItem);
         return {
           specialGoods: goodsDom(goodsItem, goodsItem?.activityGoodsId), // 特惠，自我游
           commerceGoods: commerceDom(goodsItem, goodsItem?.activityGoodsId), // 电商品

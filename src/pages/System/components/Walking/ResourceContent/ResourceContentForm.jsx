@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tabs } from 'antd';
 import reactCSS from 'reactcss';
@@ -11,12 +11,21 @@ import PlatformCouponList from './PlatformCouponList/PlatformCouponList';
 const { TabPane } = Tabs;
 
 const ResourceContentForm = (props) => {
-  const { initialValues, form, resourceTemplateList, dispatch } = props;
+  const { initialValues, form, resourceTemplateList, dispatch, type = 'add' } = props;
+  const { backgroundColor = '' } = initialValues;
 
   const [displayColorPicker, setDisplayColorPicker] = useState(false); //  背景色状态
   const [color, setColor] = useState(''); //  背景色状态
   const [typeList, setTypeList] = useState([]);
 
+  useEffect(() => {
+    if (initialValues.resourceTemplateContentId) {
+      handleSelectTemplate(initialValues.templateId);
+      setColor(backgroundColor);
+    }
+  }, [initialValues]);
+
+  // 搜索模板类型
   const handleSelectTemplate = (resourceTemplateId) => {
     dispatch({
       type: 'walkingManage/fetchGetResourceTemplateById',
@@ -25,6 +34,9 @@ const ResourceContentForm = (props) => {
       },
       callback: (obj) => {
         setTypeList(obj.typeList);
+        form.setFieldsValue({
+          templateType: obj.templateType,
+        });
       },
     });
   };
@@ -89,8 +101,15 @@ const ResourceContentForm = (props) => {
         value: 'resourceTemplateId',
       },
       onChange: (id) => {
+        console.log(id, '111');
         handleSelectTemplate(id);
       },
+      disabled: type === 'edit',
+    },
+    {
+      label: `模板类型`,
+      name: 'templateType',
+      hidden: true,
     },
     {
       label: `上传顶图`,
@@ -138,13 +157,13 @@ const ResourceContentForm = (props) => {
     },
     {
       label: `商品列表类型`,
-      name: 'activityGoodsList',
+      name: 'mixedList',
       type: 'formItem',
       required: true,
       visible: typeList.includes('mixedList'),
       formItem: (
         <>
-          <ShareCoupon type="activityGoodsList" form={form}></ShareCoupon>
+          <ShareCoupon type="mixedList" form={form}></ShareCoupon>
         </>
       ),
     },
@@ -187,7 +206,7 @@ const ResourceContentForm = (props) => {
           <Tabs tabPosition="left">
             <TabPane tab="自我游" key="3">
               <div style={{ overflow: 'auto' }}>
-                <ShareCoupon type="selfTourGoodsList" form={form}></ShareCoupon>
+                <ShareCoupon type="selfTourGoods" form={form}></ShareCoupon>
               </div>
             </TabPane>
           </Tabs>
@@ -200,14 +219,26 @@ const ResourceContentForm = (props) => {
       type: 'formItem',
       visible: typeList.includes('brandSelfTravel'),
       required: true,
-      formItem: <BrandModuleList type="brandModuleList" form={form}></BrandModuleList>,
+      formItem: (
+        <BrandModuleList
+          initialValues={initialValues}
+          type="brandSelfTravel"
+          form={form}
+        ></BrandModuleList>
+      ),
     },
     {
       label: `券列表`,
       type: 'formItem',
       visible: typeList.includes('couponList'),
       required: true,
-      formItem: <PlatformCouponList type="platformCouponList" form={form}></PlatformCouponList>,
+      formItem: (
+        <PlatformCouponList
+          initialValues={initialValues}
+          type="couponList"
+          form={form}
+        ></PlatformCouponList>
+      ),
     },
   ];
 
@@ -216,4 +247,6 @@ const ResourceContentForm = (props) => {
   );
 };
 
-export default connect(({}) => ({}))(ResourceContentForm);
+export default connect(({ walkingManage }) => ({
+  resourceTemplateList: walkingManage.resourceTemplateList.list,
+}))(ResourceContentForm);
