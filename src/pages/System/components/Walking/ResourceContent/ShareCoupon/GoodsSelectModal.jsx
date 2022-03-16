@@ -19,7 +19,7 @@ const GoodsSelectModal = (props) => {
     visible,
     onClose,
     loading,
-    typeList = 'activityGoodsList',
+    typeList = 'mixedList',
   } = props;
 
   const [selectItem, setSelectItem] = useState([]); // 当前选择项
@@ -30,7 +30,7 @@ const GoodsSelectModal = (props) => {
       fetchSpecialGoodsList();
       if (typeList === 'selfTourGoodsList') {
         setTabKey('selfTourGoods');
-      } else if (typeList !== 'activityGoodsList') {
+      } else if (typeList !== 'mixedList') {
         setTabKey(typeList);
       }
     }

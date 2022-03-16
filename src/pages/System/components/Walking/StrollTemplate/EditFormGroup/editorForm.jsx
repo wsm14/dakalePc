@@ -195,7 +195,7 @@ const FormCondition = ({
 
     formItems.forEach((item, i) => {
       const {
-        label = '',
+        label: plabel,
         name = '',
         type = 'input',
         select = [],
@@ -204,13 +204,15 @@ const FormCondition = ({
         maxLength,
         visible = true,
         hidden = false,
+        fieldNames = {},
       } = item;
+      const { label = 'name', value = 'value', tip = 'otherData' } = fieldNames;
 
       let { extra } = item;
 
       let initialValue = {};
       let rules = [{ required: item.required }];
-      const placeholder = item.placeholder || `请输入${label}`;
+      const placeholder = item.placeholder || `请输入${plabel}`;
 
       const dataNum =
         maxLength &&
@@ -257,18 +259,19 @@ const FormCondition = ({
             defaultActiveFirstOption={false}
             onSearch={item.onSearch}
             onChange={item.onChange}
-            placeholder={item.placeholder || `请选择${label}`}
+            placeholder={item.placeholder || `请选择${plabel}`}
             style={{ width: '100%' }}
           >
             {select.map((data, j) => {
               if (data) {
+                const nameD = data[label];
                 // 兼容数组
-                const value = !data.value ? `${j}` : data.value;
-                const name = data.name ? data.name : data;
-                const otherData = data.otherData ? data.otherData : '';
+                const valueData = !data[value] ? `${j}` : data[value];
+                const nameData = nameD ? nameD : data;
+                const otherData = data[tip] ? data[tip] : '';
                 return (
-                  <Option key={data.key || j} value={value} option={data}>
-                    {name}
+                  <Option key={valueData} value={valueData} option={data}>
+                    {nameData}
                     {otherData && <div style={{ fontSize: 12, color: '#989898' }}>{otherData}</div>}
                   </Option>
                 );
@@ -343,10 +346,10 @@ const FormCondition = ({
       children.push(
         visible && (
           <FormItem
-            label={label}
+            label={plabel}
             name={name}
             extra={extra}
-            key={`${label}${name}`}
+            key={`${plabel}${name}`}
             rules={[...rules, ...(addRules || [])]}
             valuePropName={valuePropName}
             {...initialValue}

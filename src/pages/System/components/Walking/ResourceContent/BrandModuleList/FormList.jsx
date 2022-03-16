@@ -71,7 +71,7 @@ const FormList = (props) => {
           rules={[{ required: true, message: '请上传品牌图片' }]}
         >
           <Upload
-            name={['brandModuleList', field.name, 'brandImg']}
+            name={[name, field.name, 'brandImg']}
             maxFile={1}
             initialvalues={initialValues}
             onChange={(val) => uploadImg(field.name, val)}
@@ -133,7 +133,7 @@ const FormList = (props) => {
         indexNum={field.name}
         onSumbit={(list) => {
           // 获取数据数组
-          const dataList = form.getFieldValue('brandModuleList');
+          const dataList = form.getFieldValue(name);
           // 更新数据数组
           const newData = update(dataList, {
             $splice: [
@@ -148,7 +148,7 @@ const FormList = (props) => {
             ],
           });
 
-          form.setFieldsValue({ brandModuleList: newData });
+          form.setFieldsValue({ [name]: newData });
         }}
         onClose={() => setVisible(false)}
       ></GoodsSelectModal>

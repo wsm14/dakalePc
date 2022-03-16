@@ -61,18 +61,18 @@ const NewNativeFormSet = ({
     });
   };
 
-  // 搜索卡豆抵扣比例
+  // 搜索选择优惠比例
   const fetchClassifyGetMre = debounce((data) => {
     if (!data) return;
     dispatch({
       type: 'baseData/fetchPagePreferentialActivity',
       payload: {
         type: 'assembly',
-        preferentialDefaultType: 'defaultIdentification',
+        preferentialDefaultType: 'otherDefault',
         ...data,
       },
     });
-  }, 100);
+  }, 500);
 
   return (
     <>

@@ -42,12 +42,13 @@ const JumpTypeBlock = ({
     }
   }, []);
 
-  // 搜索卡豆抵扣比例
+  // 搜索资源位内容
   const fetchContentList = debounce((data) => {
     if (!data) return;
     dispatch({
       type: 'baseData/fetchPageResourceTemplateContent',
       payload: {
+        deleteFlag: 1,
         ...data,
       },
     });
@@ -103,7 +104,7 @@ const JumpTypeBlock = ({
           placeholder={'请选择'}
           select={resourceList}
           loading={loading}
-          onSearch={(templateName) => fetchContentList(templateName ? { templateName } : '')}
+          onSearch={(name) => fetchContentList(name ? { name } : '')}
         ></Select>
       </FormItem>
     ),

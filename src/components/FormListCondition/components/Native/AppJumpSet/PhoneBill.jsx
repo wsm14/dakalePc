@@ -41,7 +41,7 @@ const PhoneBill = ({ form, paramKey, showApi, virtualList, loading, dispatch }) 
   return (
     <FormItem
       key={`identification`}
-      label="优惠活动名称"
+      label="优惠活动比例"
       name={['param', paramKey[0]]}
       rules={[{ required: true, message: `请选择优惠活动名称` }]}
       style={{ maxWidth: '100%' }}

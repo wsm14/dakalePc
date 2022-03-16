@@ -36,6 +36,7 @@ const FreeContactSelectModal = (props) => {
       payload: {
         ...data,
         couponStatus: 1,
+        giveType: 'manual',
         page: 1,
         limit: 999,
       },
