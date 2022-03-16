@@ -8,7 +8,10 @@ import VaneDrawer from './components/VaneDrawer';
 
 const tabList = [
   { key: 'windVane', tab: '风向标' },
-  { key: 'beanEducation', tab: '卡豆教育' },
+  { key: 'beanEducation', tab: '四宫格' },
+  { key: 'sixPalaceLattice', tab: '六宫格' },
+  { key: 'beanDeductionZone', tab: '卡豆抵扣专区' },
+  { key: 'fieldResource', tab: '田字资源位' },
 ];
 
 const VaneManage = (props) => {

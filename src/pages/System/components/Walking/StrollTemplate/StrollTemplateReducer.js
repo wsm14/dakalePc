@@ -38,6 +38,17 @@ export const fetchReducerEdit = (state, action) => {
         ...state,
         ...payload,
       };
+    case 'showEditor':
+      return {
+        ...state,
+        showEditor: action.payload,
+      };
+    case 'closeEditor':
+      return {
+        ...state,
+        showPanel: null,
+        showEditor: { moduleName: '' },
+      };
     case 'showPanel':
       return {
         ...state,

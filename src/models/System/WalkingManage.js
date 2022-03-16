@@ -32,6 +32,13 @@ import {
   fetchSaveConfigSpecialGoodsCategory,
   fetchUpdateConfigSpecialGoodsCategory,
   fetchGetConfigSpecialGoodsCategoryById,
+  fetchPageResourceTemplateContent,
+  fetchListResourceTemplate,
+  fetchGetResourceTemplateById,
+  fetchSaveResourceTemplateContent,
+  fetchUpdateResourceTemplateContent,
+  fetchDeleteResourceTemplateContent,
+  fetchGetResourceTemplateContentById,
 } from '@/services/SystemServices';
 import { fetchAddNewActivityDetailCheck } from '@/services/MarketServices';
 export default {
@@ -55,6 +62,8 @@ export default {
     gratiaClassList: { list: [] },
     gratiaClassCityList: { list: [] },
     gratiaClassInfoList: { list: [] },
+    resourceTemplateList: { list: [] },
+    resourceList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -521,6 +530,96 @@ export default {
       if (!response) return;
       const { content } = response;
       callback && callback(content.configSpecialGoodsCategoryDTO);
+    },
+    //资源位内容配置-  分页列表
+    *fetchPageResourceTemplateContent({ payload }, { call, put }) {
+      const response = yield call(fetchPageResourceTemplateContent, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          resourceList: {
+            list: content.recordList,
+            total: content.total,
+          },
+        },
+      });
+    },
+    //资源位模板-  不分页列表\查询
+    *fetchListResourceTemplate({ payload }, { call, put }) {
+      const response = yield call(fetchListResourceTemplate, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          resourceTemplateList: {
+            list: content.resourceTemplates,
+          },
+        },
+      });
+    },
+    //资源位模板-  详情、获取配置
+    *fetchGetResourceTemplateById({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetResourceTemplateById, payload);
+      if (!response) return;
+      const { content } = response;
+
+      callback && callback(content.resourceTemplateDTO);
+    },
+    //资源位内容配置 - 新增
+    *fetchSaveResourceTemplateContent({ payload, callback }, { call }) {
+      const response = yield call(fetchSaveResourceTemplateContent, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增成功',
+      });
+      callback && callback();
+    },
+    //资源位内容配置 - 编辑
+    *fetchUpdateResourceTemplateContent({ payload, callback }, { call }) {
+      const response = yield call(fetchUpdateResourceTemplateContent, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '编辑成功',
+      });
+      callback && callback();
+    },
+    //资源位内容配置 - 删除
+    *fetchDeleteResourceTemplateContent({ payload, callback }, { call }) {
+      const response = yield call(fetchDeleteResourceTemplateContent, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '删除成功',
+      });
+      callback && callback();
+    },
+    //资源位内容配置  -  详情
+    *fetchGetResourceTemplateContentById({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetResourceTemplateContentById, payload);
+      if (!response) return;
+      const { content } = response;
+      const { resourceTemplateContentDTO = {} } = content;
+      const { contentInfo = {}, ...other } = resourceTemplateContentDTO;
+      const { couponList, ...otherInfo } = contentInfo;
+
+      const data = {
+        ...other,
+        ...otherInfo,
+        couponList: couponList.map((item) => ({
+          platformCouponId: item,
+          platformCouponImg: item.platformCouponImg,
+        })),
+      };
+
+      // console.log(data, 'data');
+      // return;
+
+      callback && callback(data);
     },
   },
 };

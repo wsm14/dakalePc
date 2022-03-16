@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useDrag } from 'react-dnd';
 import { Collapse } from 'antd';
 import panelItem from '../panelItem';
-import showImg from '../showImg';
+import showImg from '../panel.config';
 import styles from './style.less';
 
 const { Panel } = Collapse;
@@ -28,10 +28,11 @@ const ModuleDrawer = (props) => {
   );
 
   // 拖拽项目
-  const dropItem = (cell) => {
+  const dropItem = (moduleName) => {
+    const cell = showImg[moduleName];
     // 可拖拽组件
     const [, drag] = useDrag({
-      item: { ...cell, type: 'Card' },
+      item: { ...cell, moduleName, type: 'Card' },
       // 开始拖拽 显示放置位置
       begin() {
         setStyBasket(true);
@@ -50,7 +51,7 @@ const ModuleDrawer = (props) => {
         {panelItem.map((item) => (
           <Panel forceRender header={item.header} key={item.type}>
             <div className={styles.module_group}>
-              {item.children.map((editorType) => dropItem(showImg[editorType]))}
+              {item.children.map((editorType) => dropItem(editorType))}
             </div>
           </Panel>
         ))}

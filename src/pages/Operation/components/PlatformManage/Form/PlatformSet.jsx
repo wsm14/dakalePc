@@ -3,12 +3,12 @@ import moment from 'moment';
 import { connect } from 'umi';
 import { Radio, Form, Row, Col, Select, Button, Cascader, InputNumber } from 'antd';
 import {
-  COUPON_BUY_RULE,
   PLATFORM_TICKET_TYPE,
   PLATFORM_USERTIME_TYPE,
   PLATFORM_INCREASE_RULE,
   CONPON_RULES_TYPE,
   PLATFORM_TICKET_SCENE,
+  COUPON_GIVE_TYPE,
 } from '@/common/constant';
 import { NUM_ALL, NUM_INT } from '@/common/regExp';
 import PopImgShow from '@/components/PopImgShow';
@@ -30,6 +30,12 @@ const CouponSet = (props) => {
   });
   const [ruleList, setRuleList] = useState([]); // 暂存所选规则
   const [visible, setVisible] = useState(false); // 选择规则的modal
+  const [buyRule, setBuyRule] = useState([
+    { name: '不限', value: 'unlimited', disabled: false },
+    { name: '每人限制', value: 'personLimit', disabled: false },
+    { name: '每天限制', value: 'dayLimit', disabled: false },
+  ]);
+  const [grantType, setGrantType] = useState(); //发放方式
 
   const { useScenesType, useTimeRule, ruleType, increaseRule, ruleList: ruleLists } = initialValues;
 
@@ -44,6 +50,19 @@ const CouponSet = (props) => {
       });
     }
   }, [initialValues]);
+
+  useEffect(() => {
+    console.log(grantType, 'grantType');
+    if (grantType === 'manual') {
+      buyRule[0].disabled = true;
+      if (radioData.getLimit === 'unlimited') {
+        form.setFieldsValue({ ruleType: '' });
+      }
+    } else {
+      buyRule[0].disabled = false;
+    }
+    setBuyRule([...buyRule]);
+  }, [grantType]);
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
 
@@ -230,10 +249,26 @@ const CouponSet = (props) => {
       extra: '修改优惠券总量时只能增加不能减少，请谨慎设置',
     },
     {
+      label: '发放方式',
+      type: 'radio',
+      name: 'giveType',
+      select: COUPON_GIVE_TYPE,
+      onChange: (e) => {
+        setGrantType(e.target.value);
+      },
+      disabled: type === 'edit',
+      extra: {
+        manual:
+          '支持在资源位中投放，并会在商品详情页自动展示手动发放的券，用户通过手动领取后获得该券',
+        auto: '支持通过设定业务条件（例支付成功）自动发放的券，用户符合领取条件自动领取该券',
+        system: '支持在运营后台选择指定用户进行发放',
+      }[grantType],
+    },
+    {
       label: '领取上限',
       type: 'radio',
       name: 'ruleType',
-      select: COUPON_BUY_RULE, // { unlimited: '不限', personLimit: '每人限制', dayLimit: '每天限制' };
+      select: buyRule, // { unlimited: '不限', personLimit: '每人限制', dayLimit: '每天限制' };
       onChange: (e) => saveSelectData({ getLimit: e.target.value }),
     },
     {

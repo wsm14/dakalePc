@@ -2,7 +2,12 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
 import { Tag } from 'antd';
-import { COUPON_STATUS, PLATFORM_TICKET_TYPE, PLATFORM_TICKET_SCENE } from '@/common/constant';
+import {
+  COUPON_STATUS,
+  PLATFORM_TICKET_TYPE,
+  PLATFORM_TICKET_SCENE,
+  COUPON_GIVE_TYPE,
+} from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import PlatformDrawer from './components/PlatformManage/PlatformDrawer';
@@ -91,6 +96,11 @@ const PlatformManage = (props) => {
           return `领取后${delayDays}天生效\n有效期${activeDays}天`;
         }
       },
+    },
+    {
+      title: '发放方式',
+      dataIndex: 'giveType',
+      render: (val) => COUPON_GIVE_TYPE[val],
     },
     {
       title: '剩余数量',

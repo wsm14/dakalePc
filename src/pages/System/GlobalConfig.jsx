@@ -74,7 +74,7 @@ const GlobalConfig = (props) => {
     },
     {
       type: 'virtualRatioConfig',
-      menuName: '虚拟商品优惠比例配置',
+      menuName: '卡豆抵扣比例配置',
       block: <VirtualRatioConfig></VirtualRatioConfig>,
     },
     {
