@@ -79,7 +79,7 @@ const PointList = (props) => {
     {
       title: '每人每天打卡次数',
       dataIndex: 'dayCount',
-      render:(val)=>val=='999'?'不限':`${val}次`
+      render: (val) => (val == '999' ? '不限' : `${val}次`),
     },
     {
       title: '状态',
@@ -177,6 +177,6 @@ const PointList = (props) => {
 };
 export default connect(({ pointManage, baseData, loading }) => ({
   pointList: pointManage.pointList,
-  bodyList: baseData.bodyList,
+  bodyList: baseData.bodyList.list,
   loading: loading.effects['pointManage/fetchListHitting'],
 }))(PointList);
