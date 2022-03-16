@@ -102,6 +102,7 @@
 | isCut    | 是否选择时裁剪                           | boolean        | false  |
 | imgRatio | 裁剪图片比例                             | number         | -      |
 | onChange | 选择回调                                 | function(file) | -      |
+| drop     | 是否可以拖动排序                         | boolean        | true   |
 
 ---
 
@@ -138,6 +139,10 @@
 | format | 展示的时间格式 | string | 'HH:mm' |
 
 ## 更新日志
+
+- ### 2022 年 3 月 16 日 16:41:35 Dong
+
+> - `Upload/Img` 增加 `drop` 是否可以拖动
 
 - ### 2021 年 10 月 28 日 10:32:42 Dong
 

@@ -231,13 +231,7 @@ const ResourceContentForm = (props) => {
       type: 'formItem',
       visible: typeList.includes('couponList'),
       required: true,
-      formItem: (
-        <PlatformCouponList
-          initialValues={initialValues}
-          type="couponList"
-          form={form}
-        ></PlatformCouponList>
-      ),
+      formItem: <PlatformCouponList type="couponList" form={form}></PlatformCouponList>,
     },
   ];
 
