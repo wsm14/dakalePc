@@ -53,7 +53,7 @@ const PointDrawer = (props) => {
   // 统一处理弹窗
   const drawerProps = {
     info: {
-      title: '新增点位',
+      title: '点位详情',
       children: <PointDetail initialValues={detail}></PointDetail>,
     },
     add: {

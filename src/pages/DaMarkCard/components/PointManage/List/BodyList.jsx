@@ -119,40 +119,14 @@ const BodyList = (props) => {
     },
   ];
 
-  // 获取主体详情
-  const fetchCouponDetail = (hittingMainId, type) => {
-    if (type === 'award') {
-      //点击奖励按钮，判断是否该主体是否已关联点位，
-      dispatch({
-        type: 'pointManage/fetchGetHasHitting',
-        payload: {
-          hittingMainId,
-        },
-        callback: (hasHitting) => {
-          if (hasHitting === '1') {
-            dispatch({
-              type: 'pointManage/fetchGetHittingRewardByMainId',
-              payload: {
-                hittingMainId,
-              },
-              callback: (detail) => {
-                setVisible({ type, show: true, detail, hittingMainId });
-              },
-            });
-          } else {
-            notification.warning({
-              message: '温馨提示',
-              description: '请先关联点位',
-            });
-            return;
-          }
-        },
-      });
-    } else {
+    // 获取主体详情
+    const fetchCouponDetail = (hittingMainId, type) => {
       dispatch({
         type:
           type === 'advert'
             ? 'pointManage/fetchGetStrapContent'
+            : type === 'award'
+            ? 'pointManage/fetchGetHittingRewardByMainId'
             : 'pointManage/fetchGetHittingMainById',
         payload: {
           hittingMainId,
@@ -161,8 +135,8 @@ const BodyList = (props) => {
           setVisible({ type, show: true, detail, hittingMainId });
         },
       });
-    }
-  };
+    };
+  
 
   // 权限按钮
   const btnList = [

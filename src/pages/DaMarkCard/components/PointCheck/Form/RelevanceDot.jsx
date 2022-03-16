@@ -28,13 +28,12 @@ const RelevanceDot = (props) => {
     form.setFieldsValue({ body: bodySelect });
     const ids = bodySelect.map((itemid) => itemid.value);
     setBodyId(ids?.toString());
-     //获取点位列表
-     getPoint(ids?.toString());
+    //获取点位列表
+    getPoint(ids?.toString());
     //切换主体清空点位选中内容
     setPointSelect([]);
     setPointID('');
     form.setFieldsValue({ hittingId: '' });
-   
   }, [bodySelect]);
 
   useEffect(() => {
@@ -42,17 +41,16 @@ const RelevanceDot = (props) => {
     form.setFieldsValue({ hittingId: idH });
   }, [pointSelect]);
 
-    // 搜索主体
-    const handleSearch = debounce((name) => {
-      if (!name.replace(/'/g, '')) return;
-      dispatch({
-        type: 'baseData/fetchListHittingMain',
-        payload: {
-          name: name?.replace(/'/g, ''),
-        },
-      });
-    }, 500);
-
+  // 搜索主体
+  const handleSearch = debounce((name) => {
+    if (!name.replace(/'/g, '')) return;
+    dispatch({
+      type: 'baseData/fetchListHittingMain',
+      payload: {
+        name: name?.replace(/'/g, ''),
+      },
+    });
+  }, 500);
 
   const getPoint = debounce((mainId, name) => {
     dispatch({
@@ -93,47 +91,20 @@ const RelevanceDot = (props) => {
 
   // 获取主体详情
   const fetchCouponDetail = (hittingMainId, type) => {
-    if (type === 'award') {
-      //点击奖励按钮，判断是否该主体是否已关联点位，
-      dispatch({
-        type: 'pointManage/fetchGetHasHitting',
-        payload: {
-          hittingMainId,
-        },
-        callback: (hasHitting) => {
-          if (hasHitting === '1') {
-            dispatch({
-              type: 'pointManage/fetchGetHittingRewardByMainId',
-              payload: {
-                hittingMainId,
-              },
-              callback: (detail) => {
-                setVisibleSet({ type, show: true, detail, hittingMainId });
-              },
-            });
-          } else {
-            notification.warning({
-              message: '温馨提示',
-              description: '请先关联点位',
-            });
-            return;
-          }
-        },
-      });
-    } else {
-      dispatch({
-        type:
-          type === 'advert'
-            ? 'pointManage/fetchGetStrapContent'
-            : 'pointManage/fetchGetHittingMainById',
-        payload: {
-          hittingMainId,
-        },
-        callback: (detail) => {
-          setVisibleSet({ type, show: true, detail, hittingMainId });
-        },
-      });
-    }
+    dispatch({
+      type:
+        type === 'advert'
+          ? 'pointManage/fetchGetStrapContent'
+          : type === 'award'
+          ? 'pointManage/fetchGetHittingRewardByMainId'
+          : 'pointManage/fetchGetHittingMainById',
+      payload: {
+        hittingMainId,
+      },
+      callback: (detail) => {
+        setVisibleSet({ type, show: true, detail, hittingMainId });
+      },
+    });
   };
 
   const formItems = [
@@ -186,10 +157,7 @@ const RelevanceDot = (props) => {
                 <Button type="link" onClick={() => fetchCouponDetail(mItem.value, 'award')}>
                   +奖励配置
                 </Button>
-                <Button
-                  type="link"
-                  onClick={() => fetchCouponDetail(mItem.value, 'advert')}
-                >
+                <Button type="link" onClick={() => fetchCouponDetail(mItem.value, 'advert')}>
                   +首刷广告
                 </Button>
               </Space>
@@ -323,10 +291,9 @@ const RelevanceDot = (props) => {
     </>
   );
 };
-export default connect(({ baseData, loading, pointManage }) => ({
+export default connect(({ baseData, loading }) => ({
   selectList: baseData.goodsList,
   pointList: baseData.pointList.list,
-  // bodyList: pointManage.list.list,
   bodyList: baseData.bodyList.list,
   loading: loading.effects['baseData/fetchGetGoodsSearch'],
 }))(RelevanceDot);
