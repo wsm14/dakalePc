@@ -114,7 +114,8 @@ const ResourceContent = (props) => {
   const btnList = [
     {
       text: '新增',
-      auth: 'save',
+      type: 'save',
+      auth: true,
       onClick: () => setVisible({ type: 'add', show: true }),
     },
   ];

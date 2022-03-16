@@ -23,21 +23,16 @@ const GoodsSelectModal = (props) => {
   } = props;
 
   const [selectItem, setSelectItem] = useState([]); // 当前选择项
-  const [tabKey, setTabKey] = useState('specialGoods'); // tab类型
+  const [tabKey, setTabKey] = useState(''); // tab类型
 
   useEffect(() => {
     if (visible) {
-      fetchSpecialGoodsList();
-      if (typeList === 'selfTourGoodsList') {
-        setTabKey('selfTourGoods');
-      } else if (typeList !== 'mixedList') {
-        setTabKey(typeList);
-      }
+      setTabKey(typeList == 'mixedList' ? 'specialGoods' : typeList);
     }
   }, [visible]);
 
   useEffect(() => {
-    fetchSpecialGoodsList();
+    visible && tabKey && fetchSpecialGoodsList();
   }, [tabKey]);
 
   // 搜索参数
@@ -110,7 +105,7 @@ const GoodsSelectModal = (props) => {
   };
 
   const listDom = (
-    <Spin spinning={!!listProps.loading}>
+    <Spin spinning={!!listProps?.loading}>
       {listProps?.list?.length ? (
         <div className="share_select_list">
           {listProps?.list.map(

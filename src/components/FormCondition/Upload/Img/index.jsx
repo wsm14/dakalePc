@@ -136,6 +136,7 @@ const UploadBlock = (props) => {
     onChange = undefined,
     onRemove,
     isCut,
+    drop = true,
     imgRatio,
     disabled,
     multiple = true,
@@ -296,6 +297,7 @@ const UploadBlock = (props) => {
           maxCount={maxFile}
           {...handleUpProps()}
           itemRender={(originNode, file, currFileList) => {
+            if (!drop) return originNode;
             return (
               <DragableUploadListItem
                 originNode={originNode}

@@ -101,7 +101,6 @@ const ResourceContentForm = (props) => {
         value: 'resourceTemplateId',
       },
       onChange: (id) => {
-        console.log(id, '111');
         handleSelectTemplate(id);
       },
       disabled: type === 'edit',
@@ -232,13 +231,7 @@ const ResourceContentForm = (props) => {
       type: 'formItem',
       visible: typeList.includes('couponList'),
       required: true,
-      formItem: (
-        <PlatformCouponList
-          initialValues={initialValues}
-          type="couponList"
-          form={form}
-        ></PlatformCouponList>
-      ),
+      formItem: <PlatformCouponList type="couponList" form={form}></PlatformCouponList>,
     },
   ];
 

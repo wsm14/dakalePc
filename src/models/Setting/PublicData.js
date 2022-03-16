@@ -736,7 +736,7 @@ export default {
         type: 'save',
         payload: {
           resourceList: content.recordList.map((item) => ({
-            name: item.templateName,
+            name: item.name,
             value: item.templateId,
           })),
         },

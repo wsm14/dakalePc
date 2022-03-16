@@ -605,12 +605,12 @@ export default {
       const { content } = response;
       const { resourceTemplateContentDTO = {} } = content;
       const { contentInfo = {}, ...other } = resourceTemplateContentDTO;
-      const { couponList, ...otherInfo } = contentInfo;
+      const { couponList = [], ...otherInfo } = contentInfo;
 
       const data = {
         ...other,
         ...otherInfo,
-        couponList: couponList.map((item) => ({
+        couponList: couponList?.map((item) => ({
           platformCouponId: item,
           platformCouponImg: item.platformCouponImg,
         })),
