@@ -33,7 +33,10 @@ const PointManageDrawer = (props) => {
         status,
       },
       callback: (content) => {
-        setBodySelect && setBodySelect([{ ...values, hittingMainId: content?.hittingMainId }]);
+        setBodySelect &&
+          setBodySelect([
+            { name: values.name, value: content?.hittingMainId, otherData: values.address },
+          ]);
         setVisibleModal(false);
         onClose();
 

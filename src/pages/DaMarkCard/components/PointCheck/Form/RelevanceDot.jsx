@@ -26,7 +26,7 @@ const RelevanceDot = (props) => {
 
   useEffect(() => {
     form.setFieldsValue({ body: bodySelect });
-    const ids = bodySelect.map((itemid) => itemid.hittingMainId);
+    const ids = bodySelect.map((itemid) => itemid.value);
     setBodyId(ids?.toString());
      //获取点位列表
      getPoint(ids?.toString());
@@ -42,18 +42,29 @@ const RelevanceDot = (props) => {
     form.setFieldsValue({ hittingId: idH });
   }, [pointSelect]);
 
-  // 搜索主体
-  const handleSearch = debounce((name) => {
-    if (!name.replace(/'/g, '')) return;
-    dispatch({
-      type: 'pointManage/fetchGetList',
-      payload: {
-        name: name.replace(/'/g, ''),
-        page: 1,
-        limit: 999,
-      },
-    });
-  }, 500);
+    // 搜索主体
+    const handleSearch = debounce((name) => {
+      if (!name.replace(/'/g, '')) return;
+      dispatch({
+        type: 'baseData/fetchListHittingMain',
+        payload: {
+          name: name?.replace(/'/g, ''),
+        },
+      });
+    }, 500);
+
+  // // 搜索主体
+  // const handleSearch = debounce((name) => {
+  //   if (!name.replace(/'/g, '')) return;
+  //   dispatch({
+  //     type: 'pointManage/fetchGetList',
+  //     payload: {
+  //       name: name.replace(/'/g, ''),
+  //       page: 1,
+  //       limit: 999,
+  //     },
+  //   });
+  // }, 500);
 
   const getPoint = debounce((mainId, name) => {
     dispatch({
@@ -73,7 +84,7 @@ const RelevanceDot = (props) => {
 
   //选中 option,替换
   const onChangeBody = (val) => {
-    const selectBodys = bodyList.filter((item) => val === item.hittingMainId);
+    const selectBodys = bodyList.filter((item) => val === item.value);
     setBodyId(val);
     setBodySelect(selectBodys);
     form.setFieldsValue({ body: selectBodys });
@@ -168,15 +179,15 @@ const RelevanceDot = (props) => {
                 onChange={onChangeBody}
                 maxTagTextLength={5}
                 value={bodyId}
-                fieldNames={{ label: 'name', value: 'hittingMainId', tip: 'address' }}
+                // fieldNames={{ label: 'name', value: 'hittingMainId', tip: 'address' }}
                 select={bodyList}
               ></Select>
             </div>
           )}
           {bodySelect.map((mItem) => (
-            <div key={mItem.hittingMainId} style={{ marginTop: 10 }}>
+            <div key={mItem.value} style={{ marginTop: 10 }}>
               <CommonList
-                item={{ name: mItem.name, address: mItem.address, id: mItem.hittingMainId }}
+                item={{ name: mItem.name, address: mItem.otherData, id: mItem.value }}
                 onDel={() => {
                   setBodySelect([]);
                   form.setFieldsValue({ body: '' });
@@ -184,12 +195,12 @@ const RelevanceDot = (props) => {
                 }}
               ></CommonList>
               <Space className="bottomCon">
-                <Button type="link" onClick={() => fetchCouponDetail(mItem.hittingMainId, 'award')}>
+                <Button type="link" onClick={() => fetchCouponDetail(mItem.value, 'award')}>
                   +奖励配置
                 </Button>
                 <Button
                   type="link"
-                  onClick={() => fetchCouponDetail(mItem.hittingMainId, 'advert')}
+                  onClick={() => fetchCouponDetail(mItem.value, 'advert')}
                 >
                   +首刷广告
                 </Button>
@@ -327,6 +338,7 @@ const RelevanceDot = (props) => {
 export default connect(({ baseData, loading, pointManage }) => ({
   selectList: baseData.goodsList,
   pointList: baseData.pointList.list,
-  bodyList: pointManage.list.list,
+  // bodyList: pointManage.list.list,
+  bodyList: baseData.bodyList.list,
   loading: loading.effects['baseData/fetchGetGoodsSearch'],
 }))(RelevanceDot);
