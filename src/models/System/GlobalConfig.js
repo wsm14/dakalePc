@@ -142,6 +142,10 @@ export default {
             wanderAObj.topEfficiencyImg = wandItem.image;
             wanderAObj.topEfficiencyImgId = wandItem.configFestivalDetailId;
             break;
+          case 'topBackgroundWeChat':
+            wanderAObj.topBackgroundWeChat = wandItem.image;
+            wanderAObj.topBackgroundWeChatId = wandItem.configFestivalDetailId;
+            break;
         }
       });
       console.log(wanderAObj);

@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
 import { Form, Button } from 'antd';
-import { LEFT_TOP_ICON, RIGHT_COUNT_DWON, TOP_BGIMG, TABBAR_ICON } from '@/common/imgRatio';
+import {
+  LEFT_TOP_ICON,
+  RIGHT_COUNT_DWON,
+  TOP_BGIMG,
+  TABBAR_ICON,
+  TOP_BGIMG_WECHAT,
+  TOP_BGIMG_WECHAT2,
+} from '@/common/imgRatio';
 import { VIRTUAL_TOP_HEIGHT } from '@/common/constant';
 import { checkFileData } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -12,6 +19,7 @@ import aliOssUpload from '@/utils/aliOssUpload';
 const HolidayConfigSet = (props) => {
   const { visible, onClose, childRef, dispatch, loading } = props;
   const { show, type, initialValues = {} } = visible;
+  const [wechatTopHeight, setWechatTopHeight] = useState(400);
   const [form] = Form.useForm();
 
   const {
@@ -26,7 +34,6 @@ const HolidayConfigSet = (props) => {
   const disabledDate = (current) => {
     return current && current < moment().endOf('day').subtract(1, 'day');
   };
-
   const formItems = [
     {
       label: '节日名称',
@@ -165,18 +172,21 @@ const HolidayConfigSet = (props) => {
       rules: [{ required: false }],
     },
     {
-      label: '顶部动效高度',
-      type: 'select',
-      name: ['wanderAround', 'topEfficiencyHeight'],
-      select: VIRTUAL_TOP_HEIGHT,
-      rules: [{ required: false }],
-    },
-    {
       label: '顶部动效json文件',
       type: 'otherUpload',
       extra: '请上传动效zip文件',
       name: ['wanderAround', 'topEfficiencyJson'],
       rules: [{ required: false }],
+    },
+    {
+      label: '顶部动效高度',
+      type: 'select',
+      name: ['wanderAround', 'topEfficiencyHeight'],
+      select: VIRTUAL_TOP_HEIGHT,
+      rules: [{ required: false }],
+      onChange: (val) => {
+        setWechatTopHeight(val);
+      },
     },
     {
       label: '顶部动效图',
@@ -186,6 +196,15 @@ const HolidayConfigSet = (props) => {
       name: ['wanderAround', 'topEfficiencyImg'],
       rules: [{ required: false }],
       extra: '请上传100kb的png格式图片',
+    },
+    {
+      label: '小程序顶部背景',
+      type: 'upload',
+      maxFile: 1,
+      extra: '请上传750*400/500px的png格式图片',
+      imgRatio: { 400: TOP_BGIMG_WECHAT, 500: TOP_BGIMG_WECHAT2 }[wechatTopHeight],
+      name: ['wanderAround', 'topBackgroundWeChat'],
+      rules: [{ required: false }],
     },
     {
       title: '底部icon',
@@ -258,6 +277,8 @@ const HolidayConfigSet = (props) => {
       const files = checkFileData(pickUpBeans.file);
       const wandTopImg = checkFileData(wanderAround.topBackground);
       const wandTopJImg = checkFileData(wanderAround.topEfficiencyJson);
+      const wandTopWImg = checkFileData(wanderAround.topBackgroundWeChat);
+
       const wandTopDImg = checkFileData(wanderAround.topEfficiencyImg);
       const bottomPImg = checkFileData(bottomIcon.pickUpBeans);
       const bottomWImg = checkFileData(bottomIcon.wanderAround);
@@ -284,6 +305,7 @@ const HolidayConfigSet = (props) => {
       const lowerRightCornerCountdownImg = await aliOssUpload(pickBimg);
       const fileFiles = await aliOssUpload(files);
       const topBackgroundImg = await aliOssUpload(wandTopImg);
+      const topBackgroundWeChat = await aliOssUpload(wandTopWImg);
       const topEfficiencyJson = await aliOssUpload(wandTopJImg);
       const topEfficiencyImg = await aliOssUpload(wandTopDImg);
 
@@ -302,6 +324,7 @@ const HolidayConfigSet = (props) => {
       pickUpBeans.lowerRightCornerCountdown = lowerRightCornerCountdownImg?.toString();
       pickUpBeans.file = fileFiles?.toString();
       wanderAround.topBackground = topBackgroundImg?.toString();
+      wanderAround.topBackgroundWeChat = topBackgroundWeChat?.toString();
       wanderAround.topEfficiencyJson = topEfficiencyJson?.toString();
       wanderAround.topEfficiencyImg = topEfficiencyImg?.toString();
       bottomIcon.pickUpBeans = pickUpBeansImg?.toString();
