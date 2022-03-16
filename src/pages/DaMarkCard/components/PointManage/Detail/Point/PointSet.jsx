@@ -10,6 +10,7 @@ import FormCondition from '@/components/FormCondition';
 
 const PointSet = (props) => {
   const { dispatch, form, initialValues = { dayCount: '1' }, bodyList = [], detail = {} } = props;
+  console.log(detail, '这是点位新增页面');
 
   const [ampShow, setAmpShow] = useState(false); // 地图是否显示
   const [location, setLocation] = useState([120, 30]); // 地图显示 [经度, 纬度]

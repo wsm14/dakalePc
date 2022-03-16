@@ -187,7 +187,7 @@ const PointCheck = (props) => {
         params={{ verifyStatus: tabKey }}
         {...pointCheck}
       ></TableDataBlock>
-      {/* 详情 */}
+      {/*审核 详情 */}
       <PointCheckDetail
         childRef={childRef}
         visible={visible}

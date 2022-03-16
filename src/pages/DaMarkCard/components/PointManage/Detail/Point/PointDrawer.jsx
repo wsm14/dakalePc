@@ -8,9 +8,10 @@ import PointDetail from './PointDetail';
 // 哒小卡点位   新增/编辑
 
 const PointDrawer = (props) => {
-  const { visible, dispatch, childRef, onClose, loading, loadingDetail, total, getDetail } = props;
+  const { visible, dispatch, childRef, onClose, loading, loadingDetail, total, getDetail ,initialValues={}} = props;
 
   const { type = 'add', hittingId, show = false, index, detail = {}, setPointSelect } = visible;
+  console.log(detail, 'pointDrawer');
 
   const [form] = Form.useForm();
 
@@ -57,15 +58,20 @@ const PointDrawer = (props) => {
       children: <PointDetail initialValues={detail}></PointDetail>,
     },
     add: {
-      title: '新增点位',
-      children: <PointSet form={form} detail={detail}></PointSet>,
+      title: '新增点位',//initialValues审核时新增点位带上点位信息
+      children: <PointSet form={form} detail={detail} initialValues={initialValues}></PointSet>,
     },
     edit: {
       title: '编辑点位',
       children: (
         <PointSet
           form={form}
-          initialValues={{ ...detail, dayCount: detail.dayCount + '' }}
+          detail={{ hittingMainId: detail.mainId}}
+          initialValues={{
+            ...detail,
+            hittingMainId: detail.mainId,
+            dayCount: detail.dayCount + '',
+          }}
         ></PointSet>
       ),
     },

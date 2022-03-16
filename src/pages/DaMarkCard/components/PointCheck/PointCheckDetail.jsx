@@ -22,6 +22,7 @@ const PointCheckDetail = (props) => {
     setVisibleDot({
       show: true,
       hittingAuditId,
+      initialValues: detail,
     });
   };
 

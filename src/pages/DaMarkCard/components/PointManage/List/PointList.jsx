@@ -12,6 +12,7 @@ import PointManageModal from '../PointManageModal';
 // 点位列表
 const PointList = (props) => {
   const { pointList, loading, dispatch, bodyList = [], tabKey, detail = {} } = props;
+  console.log(detail,'pointList')
 
   const { list = [] } = pointList;
   const childRef = useRef();

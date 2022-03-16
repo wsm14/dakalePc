@@ -51,6 +51,7 @@ export const EXPORT_TYPE = {
   darenList: '哒人列表',
   userRegistration: '用户注册明细',
   merchantMark: '到店打卡明细',
+  communityGoodsStatistic: '团购商品统计',
 };
 
 // 导出excel枚举 - 列表枚举映射

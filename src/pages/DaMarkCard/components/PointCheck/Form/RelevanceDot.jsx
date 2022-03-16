@@ -13,7 +13,7 @@ import '../components/index.less';
 
 const RelevanceDot = (props) => {
   const { bodyList = [], pointList = [], dispatch, visible = {}, onClose, onCloseF, cRef } = props;
-  const { show = false, hittingAuditId = '' } = visible;
+  const { show = false, hittingAuditId = '', initialValues = {} } = visible;
   const [bodySelect, setBodySelect] = useState([]); //选中的主体
   const [pointSelect, setPointSelect] = useState([]); //选中的点位
   const [showPoint, setShowPoint] = useState(false);
@@ -189,7 +189,7 @@ const RelevanceDot = (props) => {
                   type: 'add',
                   show: true,
                   setPointSelect,
-                  detail: { mainId: bodyId },
+                  detail: { hittingMainId: bodyId },
                 })
               }
             >
@@ -287,6 +287,7 @@ const RelevanceDot = (props) => {
         childRef={cRef}
         visible={visiblePoint}
         onClose={() => setVisiblePoint(false)}
+        initialValues={{ ...initialValues, name: initialValues.hittingName, dayCount: '1' }}
       ></PointDrawer>
     </>
   );
