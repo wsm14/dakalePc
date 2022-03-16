@@ -27,8 +27,8 @@ const PointCheckDetail = (props) => {
 
   const formItems = [
     {
-      label: `${detail.verifyStatus == '0' ? '审核ID' : '点位ID'}`,
-      name: `${detail.verifyStatus == '0' ? 'hittingAuditId' : 'hittingId'}`,
+      label: `${detail.verifyStatus != '1' ? '审核ID' : '点位ID'}`,
+      name: `${detail.verifyStatus != '1' ? 'hittingAuditId' : 'hittingId'}`,
     },
     {
       label: '点位名称',
@@ -85,7 +85,7 @@ const PointCheckDetail = (props) => {
     dataPage: {
       current: index,
       total,
-      onChange: (size) => getDetail(size,type),
+      onChange: (size) => getDetail(size, type),
     },
     footer: type == 'check' && (
       <ExtraButton list={btnList}>

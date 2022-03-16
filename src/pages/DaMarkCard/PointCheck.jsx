@@ -72,7 +72,7 @@ const PointCheck = (props) => {
       title: '点位ID',
       fixed: 'left',
       dataIndex: 'hittingId',
-      show: tabKey != '0',
+      show: tabKey == '1',
     },
     {
       title: '点位名称',
