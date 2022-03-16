@@ -28,10 +28,13 @@ const RelevanceDot = (props) => {
     form.setFieldsValue({ body: bodySelect });
     const ids = bodySelect.map((itemid) => itemid.hittingMainId);
     setBodyId(ids?.toString());
+     //获取点位列表
+     getPoint(ids?.toString());
     //切换主体清空点位选中内容
     setPointSelect([]);
     setPointID('');
     form.setFieldsValue({ hittingId: '' });
+   
   }, [bodySelect]);
 
   useEffect(() => {
@@ -52,16 +55,20 @@ const RelevanceDot = (props) => {
     });
   }, 500);
 
-  // 搜索打卡点位根据选中的主体获取点位列表
-  const fetchGetMre = debounce((name) => {
-    if (!name) return;
+  const getPoint = debounce((mainId, name) => {
     dispatch({
       type: 'baseData/fetchListHitting',
       payload: {
-        mainId: bodyId,
+        mainId,
         name,
       },
     });
+  }, 500);
+
+  // 搜索打卡点位根据选中的主体获取点位列表
+  const fetchGetMre = debounce((name) => {
+    if (!name) return;
+    getPoint(bodyId, name);
   }, 500);
 
   //选中 option,替换
@@ -75,6 +82,7 @@ const RelevanceDot = (props) => {
     form.setFieldsValue({ hittingId: '' });
     setPointID('');
     setShowBody(false);
+    getPoint(val);
   };
   const onChangePoint = (val) => {
     const selectPoints = pointList.filter((item) => val === item.value);

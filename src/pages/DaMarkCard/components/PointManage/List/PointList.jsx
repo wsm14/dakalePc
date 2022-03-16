@@ -77,6 +77,11 @@ const PointList = (props) => {
       dataIndex: 'mainName',
     },
     {
+      title: '每人每天打卡次数',
+      dataIndex: 'dayCount',
+      render:(val)=>val=='999'?'不限':`${val}次`
+    },
+    {
       title: '状态',
       align: 'center',
       dataIndex: 'status',

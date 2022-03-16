@@ -103,8 +103,8 @@ const MarkInfoModal = (props) => {
       rowKey={(record) => `${record.hittingRewardRecordId}`}
       dispatchType="pointManage/fetchListHittingRecordManagement"
       params={{
-        [{ 0: 'mainId', 1: 'hittingId' }[tabKey]]:
-          tabKey === '1' ? detail.hittingId : detail.hittingMainId,
+        hittingId: detail?.hittingId,
+        mainId: detail?.hittingMainId,
       }}
       {...markInfoList}
     />
