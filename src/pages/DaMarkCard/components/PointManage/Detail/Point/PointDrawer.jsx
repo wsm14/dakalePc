@@ -58,7 +58,7 @@ const PointDrawer = (props) => {
     },
     add: {
       title: '新增点位',
-      children: <PointSet form={form}></PointSet>,
+      children: <PointSet form={form} detail={detail}></PointSet>,
     },
     edit: {
       title: '编辑点位',
