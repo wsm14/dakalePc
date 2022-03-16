@@ -28,7 +28,9 @@ const GoodsSelectModal = (props) => {
   useEffect(() => {
     if (visible) {
       fetchSpecialGoodsList();
-      if (typeList !== 'activityGoodsList') {
+      if (typeList === 'selfTourGoodsList') {
+        setTabKey('selfTourGoods');
+      } else if (typeList !== 'activityGoodsList') {
         setTabKey(typeList);
       }
     }

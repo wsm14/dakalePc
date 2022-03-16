@@ -187,7 +187,7 @@ const ResourceContentForm = (props) => {
           <Tabs tabPosition="left">
             <TabPane tab="自我游" key="3">
               <div style={{ overflow: 'auto' }}>
-                <ShareCoupon type="selfTourGoods" form={form}></ShareCoupon>
+                <ShareCoupon type="selfTourGoodsList" form={form}></ShareCoupon>
               </div>
             </TabPane>
           </Tabs>

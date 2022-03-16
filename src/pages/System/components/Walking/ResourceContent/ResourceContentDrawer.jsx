@@ -24,6 +24,7 @@ const CouponDrawer = (props) => {
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
+      const {} = values;
       console.log('提交', values);
     });
   };

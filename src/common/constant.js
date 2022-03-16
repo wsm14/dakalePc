@@ -226,7 +226,12 @@ export const MARKET_MODAL_TYPE = { image: '图片', url: '链接' };
 export const MARKET_STATUS_TYPE = ['即将开始', '展示中', '已结束'];
 
 //全局弹窗配置 - 跳转类型
-export const MARKET_JUMP_TYPE = { '': '无', h5: 'H5', native: '原生页面' };
+export const MARKET_JUMP_TYPE = {
+  '': '无',
+  h5: 'H5',
+  native: '原生页面',
+  template: '跳转模板内容',
+};
 
 // 全局弹窗配置 - 可见范围
 export const MARKET_LOOK_AREA = {
@@ -473,7 +478,12 @@ export const MASTER_TYPE = { user: '用户', merchant: '店铺' };
 export const GOODS_CLASS_TYPE = { single: '单品', package: '套餐' };
 
 // 风向标跳转类型
-export const VANE_URL_TYPE = { h5: '跳转至URL', trade: '按行业显示', native: '原生页面' };
+export const VANE_URL_TYPE = {
+  h5: '跳转至URL',
+  trade: '按行业显示',
+  native: '原生页面',
+  template: '跳转模板内容',
+};
 
 // 分享设置 - 区域类型
 export const SHARE_AREA_TYPE = {

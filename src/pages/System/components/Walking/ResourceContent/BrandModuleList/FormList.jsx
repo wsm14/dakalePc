@@ -10,7 +10,7 @@ import FormCondition from '@/components/FormCondition';
 import styles from './index.less';
 
 import GoodsSelectModal from './GoodsSelectModal';
-import { goodsDom } from '../ShareCoupon/CouponFreeDom';
+import { goodsDom, commerceDom } from '../ShareCoupon/CouponFreeDom';
 
 const FormList = (props) => {
   const { name, form, field, remove, move, initialValues } = props;
@@ -112,7 +112,10 @@ const FormList = (props) => {
                       {(() => {
                         const item =
                           form.getFieldValue(name)[field.name]['activityGoodsList'][field2.name];
-                        return goodsDom(item, item.activityGoodsId);
+                        return {
+                          specialGoods: goodsDom(item, item?.activityGoodsId), // 特惠，自我游
+                          commerceGoods: commerceDom(item, item?.activityGoodsId), // 电商品
+                        }[item.activityType];
                       })()}
                       <DeleteOutlined onClick={() => remove(field2.name)} />
                     </Space>
