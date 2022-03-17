@@ -11,7 +11,7 @@ const EditorPanel = ({ context }) => {
   const { dispatchData, showEditor, showPanel, moduleData } = useContext(context);
 
   const { dataList } = moduleData;
-  const { id, moduleName, drop, only = false, index, ...other } = showEditor;
+  const { timestame, moduleName, drop, only = false, index, ...other } = showEditor;
 
   const [form] = Form.useForm();
 
@@ -20,8 +20,8 @@ const EditorPanel = ({ context }) => {
 
   // 每次重置数据显示
   useEffect(() => {
-    if (id) form.setFieldsValue(other);
-  }, [id]);
+    if (timestame) form.setFieldsValue(other);
+  }, [timestame]);
   /**
    * 保存事件
    * 判断是否可拖拽组件 drop 如果不是则数据唯一存在对象外围
@@ -29,7 +29,7 @@ const EditorPanel = ({ context }) => {
    * 如果是 则保存在 moduleData 的 dataList[] 内
    */
   const handleSaveData = () => {
-    const params = { id, moduleName };
+    const params = { timestame, moduleName };
     cRef.current
       .getContent()
       .then((content) => {
@@ -78,7 +78,7 @@ const EditorPanel = ({ context }) => {
       <div className={styles.content}>
         <div className={styles.previewer_active_editor}>
           {checkForm ? (
-            <FormDom id={id} form={form} cRef={cRef} value={other}></FormDom>
+            <FormDom id={timestame} form={form} cRef={cRef} value={other}></FormDom>
           ) : (
             '控件暂未配置'
           )}
