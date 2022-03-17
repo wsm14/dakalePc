@@ -2,7 +2,14 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { VANE_URL_TYPE } from '@/common/constant';
-import { VANE_ICON, VANE_BANNER, VANE_BEAN_ICON } from '@/common/imgRatio';
+import {
+  VANE_ICON,
+  VANE_BANNER,
+  VANE_BEAN_ICON,
+  VANE_SIX_ICON,
+  VANE_BEANDEDUCTION_ICON,
+  VANE_FIELD_ICON,
+} from '@/common/imgRatio';
 import { checkFileData } from '@/utils/utils';
 import { NewNativeFormSet } from '@/components/FormListCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -118,11 +125,20 @@ const VaneDrawer = (props) => {
       type: 'upload',
       name: 'image',
       maxFile: 1,
-      extra:
-        tabKey === 'windVane'
-          ? '请上传80*80尺寸png、jpeg格式图片'
-          : '请上传335*160尺寸png、jpeg、gif格式图片',
-      imgRatio: tabKey === 'windVane' ? VANE_ICON : VANE_BEAN_ICON,
+      extra: {
+        windVane: '请上传80*80尺寸png、jpeg格式图片',
+        beanEducation: '请上传335*160尺寸png、jpeg、gif格式图片',
+        sixPalaceLattice: '请上传226*176尺寸png、jpeg格式图片',
+        beanDeductionZone: '请上传202*250尺寸png、jpeg格式图片',
+        fieldResource: '请上传298*208尺寸png、jpeg格式图片',
+      }[tabKey],
+      imgRatio: {
+        windVane: VANE_ICON,
+        beanEducation: VANE_BEAN_ICON,
+        sixPalaceLattice: VANE_SIX_ICON,
+        beanDeductionZone: VANE_BEANDEDUCTION_ICON,
+        fieldResource: VANE_FIELD_ICON,
+      }[tabKey],
     },
     {
       label: '显示气泡',

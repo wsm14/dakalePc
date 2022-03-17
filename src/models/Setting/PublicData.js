@@ -737,7 +737,7 @@ export default {
         payload: {
           resourceList: content.recordList.map((item) => ({
             name: item.name,
-            value: item.templateId,
+            value: item.resourceTemplateContentId,
           })),
         },
       });

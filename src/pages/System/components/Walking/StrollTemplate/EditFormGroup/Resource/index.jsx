@@ -1,4 +1,4 @@
-import React, { useImperativeHandle } from 'react';
+import React, { useImperativeHandle, useEffect } from 'react';
 import { connect } from 'umi';
 import debounce from 'lodash/debounce';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -19,6 +19,10 @@ const Resource = (props) => {
     },
   }));
 
+  useEffect(() => {
+    console.log('value', value);
+  }, []);
+
   // 搜索资源位内容
   const fetchContentList = debounce((data) => {
     if (!data) return;
@@ -32,7 +36,7 @@ const Resource = (props) => {
   }, 500);
 
   // 搜索选择优惠比例
-  const fetchClassifyGetMre = debounce((data) => {
+  const fetchPagePreferentialActivity = debounce((data) => {
     if (!data) return;
     dispatch({
       type: 'baseData/fetchPagePreferentialActivity',
@@ -67,7 +71,7 @@ const Resource = (props) => {
         value: 'preferentialActivityId',
       },
       onSearch: (activityName) => {
-        fetchClassifyGetMre(activityName ? { activityName } : '');
+        fetchPagePreferentialActivity(activityName ? { activityName } : '');
       },
     },
   ];
