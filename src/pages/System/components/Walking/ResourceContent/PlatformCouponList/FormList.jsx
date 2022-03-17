@@ -53,7 +53,7 @@ const FormList = (props) => {
           1,
           {
             ...dataList[field.name],
-            platformCouponId: obj?.platformCouponId,
+            platformCouponId: obj,
           },
         ],
       ],
