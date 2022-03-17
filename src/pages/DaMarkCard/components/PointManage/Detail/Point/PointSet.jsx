@@ -34,6 +34,12 @@ const PointSet = (props) => {
   };
   useEffect(() => {
     getMain();
+  // 获取城市code
+    if (initialValues?.lnt) {
+      const { lnt = '', lat = '' } = initialValues;
+      const lntLat = `${lnt},${lat}`;
+      handleGetDistrictCode(lntLat);
+    }
   }, []);
 
   // 获取城市code
