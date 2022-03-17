@@ -21,7 +21,6 @@ const PointDrawer = (props) => {
   } = props;
 
   const { type = 'add', hittingId, show = false, index, detail = {}, setPointSelect } = visible;
-  console.log(detail, 'pointDrawer');
 
   const [form] = Form.useForm();
 
