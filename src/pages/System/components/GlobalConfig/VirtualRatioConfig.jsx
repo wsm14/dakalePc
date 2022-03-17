@@ -52,7 +52,7 @@ const TabConfigure = (props) => {
       align: 'center',
       dataIndex: 'startDate',
       render: (val, row) => `${val}~${row.endDate}`,
-      show: ['phoneBill', 'memberRecharge'].includes(tabKey),
+      show: !['default'].includes(tabKey),
     },
     {
       title: '更新人',
@@ -69,7 +69,7 @@ const TabConfigure = (props) => {
       align: 'center',
       dataIndex: 'status',
       render: (val) => VIR_OPEN_STATE[val],
-      show: ['phoneBill', 'memberRecharge'].includes(tabKey),
+      show: !['default'].includes(tabKey),
     },
     {
       type: 'handle',
