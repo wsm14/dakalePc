@@ -36,10 +36,13 @@ const NewNativeFormSet = ({
   useEffect(() => {
     fetchGetJumpNative(); // 获取后端配置的 app打开的页面类型 和 参数键值对
     fetchWalkManageNavigation(); // 获取风向标
+
+    detail.preferentialActivityId &&
+      fetchPagePreferentialActivity({ preferentialActivityId: detail.preferentialActivityId });
   }, []);
 
   useEffect(() => {
-    form.setFieldsValue({ preferentialActivityId: undefined });
+    // form.setFieldsValue({ preferentialActivityId: undefined });
   }, [showUrl, showApi]);
 
   // 获取后端配置的 app打开的页面类型 和 参数键值对
@@ -62,7 +65,7 @@ const NewNativeFormSet = ({
   };
 
   // 搜索选择优惠比例
-  const fetchClassifyGetMre = debounce((data) => {
+  const fetchPagePreferentialActivity = debounce((data) => {
     if (!data) return;
     dispatch({
       type: 'baseData/fetchPagePreferentialActivity',
@@ -118,9 +121,16 @@ const NewNativeFormSet = ({
         >
           <Select
             placeholder={'请输入搜索'}
+            fieldNames={{
+              label: 'name',
+              value: 'preferentialActivityId',
+            }}
+            filterOption={false}
             select={virtualList}
             loading={loading}
-            onSearch={(activityName) => fetchClassifyGetMre(activityName ? { activityName } : '')}
+            onSearch={(activityName) =>
+              fetchPagePreferentialActivity(activityName ? { activityName } : '')
+            }
           ></Select>
         </FormItem>
       )}

@@ -83,7 +83,7 @@ const ActiveTemplateIframe = (props) => {
       type: 'showEditor',
       payload: {
         ...ohter,
-        id: cell?.id || new Date().getTime(), // 需要编辑的组件id
+        timestame: cell?.timestame || new Date().getTime(), // 需要编辑的组件id
         index,
         ...defaultData,
       },

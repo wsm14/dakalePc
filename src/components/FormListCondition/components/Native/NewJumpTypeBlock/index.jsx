@@ -40,6 +40,8 @@ const JumpTypeBlock = ({
         return nativeList[nativeIndex]?.paramKey || [];
       }); // 表单回填参数 app 跳转需要的参数键
     }
+    detail.resourceTemplateContentId &&
+      fetchContentList({ resourceTemplateContentId: detail.resourceTemplateContentId });
   }, []);
 
   // 搜索资源位内容
