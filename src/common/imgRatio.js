@@ -27,13 +27,13 @@ export const VANE_ICON = 80 / 80;
 export const VANE_BEAN_ICON = 335 / 160;
 
 // 风向标中六宫格
-export const VANE_SIX_ICON = 335 / 160;
+export const VANE_SIX_ICON = 226 / 176;
 
 // 风向标中卡豆抵扣专区
-export const VANE_BEANDEDUCTION_ICON = 335 / 160;
+export const VANE_BEANDEDUCTION_ICON = 202 / 250;
 
 // 风向标中田字资源位
-export const VANE_FIELD_ICON = 335 / 160;
+export const VANE_FIELD_ICON = 298 / 208;
 
 // 商圈
 export const CIRCLE_ICON = 750 / 460;
