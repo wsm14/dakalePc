@@ -203,6 +203,7 @@ const PointSet = (props) => {
     {
       label: '区县',
       name: 'districtCode',
+      rules: [{ required: false }],
       hidden: true,
     },
     {

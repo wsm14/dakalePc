@@ -8,7 +8,17 @@ import PointDetail from './PointDetail';
 // 哒小卡点位   新增/编辑
 
 const PointDrawer = (props) => {
-  const { visible, dispatch, childRef, onClose, loading, loadingDetail, total, getDetail ,initialValues={}} = props;
+  const {
+    visible,
+    dispatch,
+    childRef,
+    onClose,
+    loading,
+    loadingDetail,
+    total,
+    getDetail,
+    initialValues = {},
+  } = props;
 
   const { type = 'add', hittingId, show = false, index, detail = {}, setPointSelect } = visible;
   console.log(detail, 'pointDrawer');
@@ -18,7 +28,7 @@ const PointDrawer = (props) => {
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
-      const { districtCode, ...other } = values;
+      const { districtCode = '', ...other } = values;
 
       dispatch({
         type: {
@@ -29,8 +39,8 @@ const PointDrawer = (props) => {
           mainId: detail.mainId || detail.hittingMainId,
           hittingId,
           ...other,
-          provinceCode: districtCode.slice(0, 2),
-          cityCode: districtCode.slice(0, 4),
+          provinceCode: districtCode?.slice(0, 2),
+          cityCode: districtCode?.slice(0, 4),
           districtCode,
         },
         callback: (content) => {
@@ -58,7 +68,7 @@ const PointDrawer = (props) => {
       children: <PointDetail initialValues={detail}></PointDetail>,
     },
     add: {
-      title: '新增点位',//initialValues审核时新增点位带上点位信息
+      title: '新增点位', //initialValues审核时新增点位带上点位信息
       children: <PointSet form={form} detail={detail} initialValues={initialValues}></PointSet>,
     },
     edit: {
@@ -66,7 +76,7 @@ const PointDrawer = (props) => {
       children: (
         <PointSet
           form={form}
-          detail={{ hittingMainId: detail.mainId}}
+          detail={{ hittingMainId: detail.mainId }}
           initialValues={{
             ...detail,
             hittingMainId: detail.mainId,
