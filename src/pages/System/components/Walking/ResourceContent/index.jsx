@@ -26,7 +26,7 @@ const ResourceContent = (props) => {
     },
     {
       label: '关联模板名称',
-      name: 'resourceTemplateId',
+      name: 'templateId',
       type: 'select',
       select: resourceTemplateList,
       fieldNames: {
