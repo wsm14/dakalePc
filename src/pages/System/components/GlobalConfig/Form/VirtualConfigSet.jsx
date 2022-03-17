@@ -37,6 +37,7 @@ const VirtualConfigSet = (props) => {
       name: 'cityCode',
       type: 'cascader',
       cityType: 'city',
+      disabled: true,
       visible: ['scanPay'].includes(tabKey),
       render: (val) => getCityName(val[1]) || '--',
     },
