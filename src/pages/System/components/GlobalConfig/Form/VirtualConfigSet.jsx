@@ -55,7 +55,7 @@ const VirtualConfigSet = (props) => {
       min: 0,
       max: 100,
       precision: 0,
-      disabled: type === 'info' || type === 'edit',
+      disabled: type === 'info',
       render: (val) => `${val}%`,
     },
     {
