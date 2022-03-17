@@ -17,10 +17,10 @@ const VirtualConfigSet = (props) => {
   const [timeData, setTimeData] = useState();
 
   const [form] = Form.useForm();
-
   useEffect(() => {
     if (type === 'edit' || type === 'info') {
       setRuleTypes(initialValues?.ruleType);
+      setTimeData(initialValues?.activityDate);
     }
   }, [type]);
   const formItems = [
