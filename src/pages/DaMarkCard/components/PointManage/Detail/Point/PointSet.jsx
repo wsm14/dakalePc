@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
-import { AMAP_KEY } from '@/common/constant';
+import { AMAP_KEY, DAY_COUNT_NUM } from '@/common/constant';
 import debounce from 'lodash/debounce';
 import { Map, Marker } from 'react-amap';
 import { Select, Button, Space, Spin, Empty, message } from 'antd';
@@ -9,13 +9,37 @@ import { MARK_CARD_OPEN_STATE } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 
 const PointSet = (props) => {
-  const { dispatch, form, initialValues = {} } = props;
+  const { dispatch, form, initialValues = { dayCount: '1' }, bodyList = [], detail = {} } = props;
 
   const [ampShow, setAmpShow] = useState(false); // 地图是否显示
   const [location, setLocation] = useState([120, 30]); // 地图显示 [经度, 纬度]
   const [fetching, setFetching] = useState(false); // 查找地址等待状态
   const [localList, setLocalList] = useState([]); // 可选地址列表
   const [selectLocal, setSelectLocal] = useState(''); // 已选地址
+
+  // 搜索主体
+  const fetchGetMre = debounce((name) => {
+    if (!name.replace(/'/g, '')) return;
+    getMain();
+  }, 500);
+
+  const getMain = (name) => {
+    dispatch({
+      type: 'baseData/fetchListHittingMain',
+      payload: {
+        name: name?.replace(/'/g, ''),
+      },
+    });
+  };
+  useEffect(() => {
+    getMain();
+  // 获取城市code
+    if (initialValues?.lnt) {
+      const { lnt = '', lat = '' } = initialValues;
+      const lntLat = `${lnt},${lat}`;
+      handleGetDistrictCode(lntLat);
+    }
+  }, []);
 
   // 获取城市code
   const handleGetDistrictCode = (lnglat) => {
@@ -93,8 +117,6 @@ const PointSet = (props) => {
             }
             onSearch={onSearchAddress}
             onChange={(val, option) => {
-              console.log('onChange的val', val.split('+')[0].split(','));
-              console.log('onChange的option', option);
               setLocation(val.split('+')[0].split(','));
               setSelectLocal(option.children[1].props.children);
             }}
@@ -178,10 +200,26 @@ const PointSet = (props) => {
       hidden: true,
     },
     {
+      label: '每人每天打卡次数',
+      name: 'dayCount',
+      type: 'radio',
+      select: DAY_COUNT_NUM,
+    },
+    {
       label: '区县',
       name: 'districtCode',
+      rules: [{ required: false }],
       hidden: true,
     },
+    {
+      label: '关联主体',
+      name: 'mainId',
+      type: 'select',
+      select: bodyList,
+      onSearch: fetchGetMre,
+      visible: !detail.hittingMainId,
+    },
+
     {
       label: '启用状态',
       name: 'status',
@@ -203,5 +241,6 @@ const PointSet = (props) => {
 
 export default connect(({ baseData, loading }) => ({
   groupMreList: baseData.groupMreList,
+  bodyList: baseData.bodyList.list,
   loading,
 }))(PointSet);

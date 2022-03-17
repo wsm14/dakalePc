@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import moment from 'moment';
 import { connect } from 'umi';
 import { AMAP_KEY } from '@/common/constant';
 import debounce from 'lodash/debounce';
@@ -193,7 +192,6 @@ const PlatformSet = (props) => {
           value: item.userIdString,
           otherData: `${item.beanCode}`,
         }));
-        console.log('list', list);
         setUserList(list);
       },
     });

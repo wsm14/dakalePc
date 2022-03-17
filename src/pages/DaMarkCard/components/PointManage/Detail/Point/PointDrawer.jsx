@@ -1,22 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import PointSet from './PointSet';
+import PointDetail from './PointDetail';
 
 // 哒小卡点位   新增/编辑
 
 const PointDrawer = (props) => {
-  const { visible, dispatch, childRef, onClose, loading, loadingDetail } = props;
+  const {
+    visible,
+    dispatch,
+    childRef,
+    onClose,
+    loading,
+    loadingDetail,
+    total,
+    getDetail,
+    initialValues = {},
+  } = props;
 
-  const { type = 'add', hittingId, show = false, detail = {} } = visible;
+  const { type = 'add', hittingId, show = false, index, detail = {}, setPointSelect } = visible;
 
   const [form] = Form.useForm();
 
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
-      const { districtCode, ...other } = values;
+      const { districtCode = '', ...other } = values;
 
       dispatch({
         type: {
@@ -27,11 +38,21 @@ const PointDrawer = (props) => {
           mainId: detail.mainId || detail.hittingMainId,
           hittingId,
           ...other,
-          provinceCode: districtCode.slice(0, 2),
-          cityCode: districtCode.slice(0, 4),
+          provinceCode: districtCode?.slice(0, 2),
+          cityCode: districtCode?.slice(0, 4),
           districtCode,
         },
-        callback: () => {
+        callback: (content) => {
+          if (setPointSelect && type === 'add') {
+            const data = {
+              name: values.name,
+              otherData: values.address,
+              dayCount: values.dayCount,
+              value: content?.hittingId,
+            };
+            setPointSelect([data]);
+          }
+
           onClose();
           childRef.current.fetchGetData();
         },
@@ -39,16 +60,29 @@ const PointDrawer = (props) => {
     });
   };
 
-  const listProp = {};
   // 统一处理弹窗
   const drawerProps = {
+    info: {
+      title: '点位详情',
+      children: <PointDetail initialValues={detail}></PointDetail>,
+    },
     add: {
-      title: '新增点位',
-      children: <PointSet {...listProp} form={form}></PointSet>,
+      title: '新增点位', //initialValues审核时新增点位带上点位信息
+      children: <PointSet form={form} detail={detail} initialValues={initialValues}></PointSet>,
     },
     edit: {
       title: '编辑点位',
-      children: <PointSet {...listProp} form={form} initialValues={detail}></PointSet>,
+      children: (
+        <PointSet
+          form={form}
+          detail={{ hittingMainId: detail.mainId }}
+          initialValues={{
+            ...detail,
+            hittingMainId: detail.mainId,
+            dayCount: detail.dayCount + '',
+          }}
+        ></PointSet>
+      ),
     },
   }[type];
 
@@ -58,6 +92,11 @@ const PointDrawer = (props) => {
     visible: show,
     onClose,
     loading: loadingDetail,
+    dataPage: type === 'info' && {
+      current: index,
+      total,
+      onChange: (size) => getDetail(size, 'info'),
+    },
     footer: ['add', 'edit'].includes(type) && (
       <Button onClick={handleUpAudit} type="primary" loading={loading}>
         保存

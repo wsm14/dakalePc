@@ -51,6 +51,7 @@ export const EXPORT_TYPE = {
   darenList: '哒人列表',
   userRegistration: '用户注册明细',
   merchantMark: '到店打卡明细',
+  communityGoodsStatistic: '团购商品统计',
 };
 
 // 导出excel枚举 - 列表枚举映射
@@ -1029,6 +1030,18 @@ export const MARK_CARD_MAIN_TYPE = {
   officeBuilding: '写字楼',
   factory: '工厂',
   enterprise: '企业',
+  expressageState: '快递驿站',
+  houseEstate: '小区',
+  apartment: '公寓',
+  merchant: '商户',
+  market: '商场',
+  other: '其他',
+};
+
+export const DAY_COUNT_NUM = {
+  999: '不限',
+  1: '每天限1次',
+  2: '每天限2次',
 };
 
 // 哒小卡 - 点位管理 - 启用状态
@@ -1064,4 +1077,13 @@ export const AGENCY_TYPE = {
   province: '省级代理',
   city: '市级代理',
   partner: '区县代理',
+};
+
+//点位审核状态 审核状态0-待审核 1-已审核 2-拒绝
+export const VERIFY_STATUS_DOT = [false, '已通过', '已驳回'];
+
+//点位审核类型 hittingType personal-个人 merchant-商家
+export const HITTING_TYPE = {
+  personal: '个人',
+  merchant: '商家',
 };

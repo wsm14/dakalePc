@@ -99,4 +99,26 @@ export function fetchSetHittingReward(data) {
   });
 }
 
+// 点击奖励按钮，判断是否该主体是否已关联点位
+export async function fetchGetHasHitting(params) {
+  return request('/admin/hittingMain/hasHitting', {
+    params,
+  });
+}
+
 // 哒小卡点位管理 end
+
+//点未审核 start
+export async function fetchGetListHittingAuditAdmin(params) {
+  return request('/admin/hitting/audit/listHittingAuditAdmin', {
+    params,
+  });
+}
+
+// 审核
+export function fetchGetVerifyAudit(data) {
+  return request('/admin/hitting/audit/verifyAudit', {
+    method: 'POST',
+    data,
+  });
+}
