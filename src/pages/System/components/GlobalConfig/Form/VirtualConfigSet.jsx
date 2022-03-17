@@ -39,6 +39,7 @@ const VirtualConfigSet = (props) => {
       cityType: 'city',
       disabled: type === 'edit',
       visible: ['scanPay'].includes(tabKey),
+      show: ['scanPay'].includes(tabKey),
       render: (val) => getCityName(val[1]) || '--',
     },
     {
@@ -46,6 +47,7 @@ const VirtualConfigSet = (props) => {
       name: 'activityName',
       disabled: type === 'info',
       visible: !['scanPay'].includes(tabKey),
+      show: !['scanPay'].includes(tabKey),
     },
     {
       label: '最高抵扣比例',
@@ -67,6 +69,7 @@ const VirtualConfigSet = (props) => {
         setRuleTypes(e.target.value);
       },
       visible: ['phoneBill', 'memberRecharge'].includes(tabKey),
+      show: ['phoneBill', 'memberRecharge'].includes(tabKey),
       disabled: type === 'info' || type === 'edit',
       render: (val) => VIR_OPEN_TYPE[val],
     },
@@ -74,11 +77,11 @@ const VirtualConfigSet = (props) => {
       label: '每人限优惠次数',
       name: 'buyLimit',
       type: 'number',
-      visible: ruleTypes !== '0',
       addonAfter: '次',
       min: 1,
       disabled: type === 'info' || type === 'edit',
       visible: ['phoneBill', 'memberRecharge'].includes(tabKey) && ruleTypes !== '0',
+      show: ['phoneBill', 'memberRecharge'].includes(tabKey) && ruleTypes !== '0',
       render: (val) => `${val}次`,
     },
     {
