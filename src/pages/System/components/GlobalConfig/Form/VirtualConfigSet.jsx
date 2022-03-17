@@ -98,11 +98,11 @@ const VirtualConfigSet = (props) => {
               onChange={(val) => {
                 setTimeData(val);
               }}
-              disabled={[
-                type === 'info' ||
-                  (type === 'edit' && !moment().isBefore(initialValues?.startDate)),
-                type === 'info',
-              ]}
+              // disabled={[
+              //   type === 'info' ||
+              //     (type === 'edit' && !moment().isBefore(initialValues?.startDate)),
+              //   type === 'info',
+              // ]}
             />
           </Form.Item>
           <Typography.Link
