@@ -147,6 +147,7 @@ export default {
         jumpUrlType: {
           native: nativeJumpType === 'windVaneCategory' ? 'trade' : 'native',
           h5: jumpUrlType,
+          template: jumpUrlType,
         }[jumpUrlType],
         param: JSON.parse(param || '{}'),
         windVaneParamObject: JSON.parse(param || '{}'),
