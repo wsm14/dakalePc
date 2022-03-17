@@ -21,6 +21,10 @@ const Resource = (props) => {
 
   useEffect(() => {
     console.log('value', value);
+    value.preferentialActivityId &&
+      fetchPagePreferentialActivity({ preferentialActivityId: value.preferentialActivityId });
+    value.resourceTemplateContentId &&
+      fetchContentList({ resourceTemplateContentId: value.resourceTemplateContentId });
   }, []);
 
   // 搜索资源位内容
