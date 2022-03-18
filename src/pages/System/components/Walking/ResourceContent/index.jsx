@@ -132,7 +132,7 @@ const ResourceContent = (props) => {
         loading={loading}
         searchItems={searchItems}
         columns={getColumns}
-        rowKey={(record) => `${record.templateId}`}
+        rowKey={(record) => `${record.resourceTemplateContentId}`}
         params={{ deleteFlag: 1 }}
         dispatchType="walkingManage/fetchPageResourceTemplateContent"
         {...resourceList}

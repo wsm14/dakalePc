@@ -13,9 +13,13 @@ const FormItem = Form.Item;
  */
 const PhoneBill = ({ form, paramKey, showApi, virtualList, loading, dispatch }) => {
   useEffect(() => {
+    dispatch({ type: 'baseData/clearVirtual' });
     return () => {
       dispatch({ type: 'baseData/clearVirtual' });
-      form.setFieldsValue({ param: { [paramKey[0]]: undefined } });
+      form.setFieldsValue({
+        param: { [paramKey[0]]: undefined },
+        preferentialActivityId: undefined,
+      });
     };
   }, []);
 
