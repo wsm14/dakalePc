@@ -892,7 +892,10 @@ export const VIRTUAL_ORDER_TYPE = {
 };
 
 //全局配置-节日配置-顶部动效图高度
-export const VIRTUAL_TOP_HEIGHT = { 400: '日常高度', 500: '节日高度' };
+export const VIRTUAL_TOP_HEIGHT = {
+  400: '日常高度',
+  // 500: '节日高度',
+};
 
 // 全局配置 - 首页tab配置 - 标签类型
 export const TABINDEX_VIDEO_TYPE = {
