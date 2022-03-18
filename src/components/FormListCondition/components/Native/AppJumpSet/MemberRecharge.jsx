@@ -37,6 +37,7 @@ const MemberRecharge = ({ form, paramKey, showApi, virtualList, loading, dispatc
       type: 'baseData/fetchPagePreferentialActivity',
       payload: {
         type: showApi,
+        preferentialDefaultType: 'memberDefault',
         ...data,
       },
     });

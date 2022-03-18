@@ -37,6 +37,7 @@ const PhoneBill = ({ form, paramKey, showApi, virtualList, loading, dispatch }) 
       type: 'baseData/fetchPagePreferentialActivity',
       payload: {
         type: showApi,
+        preferentialDefaultType: 'phoneDefault',
         ...data,
       },
     });
