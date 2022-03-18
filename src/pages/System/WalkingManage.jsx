@@ -89,11 +89,11 @@ const WalkingManage = () => {
       menuName: '热门城市配置',
       block: <HotCityPage></HotCityPage>,
     },
-    // {
-    //   type: 'selfTour',
-    //   menuName: '自我游',
-    //   block: <SelfTour></SelfTour>,
-    // },
+    {
+      type: 'selfTour',
+      menuName: '自我游',
+      block: <SelfTour></SelfTour>,
+    },
   ];
 
   // 显示内容判断
