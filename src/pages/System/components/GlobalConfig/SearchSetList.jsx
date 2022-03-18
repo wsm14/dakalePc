@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
-import SearchSetModal from './components/SearchSet/SearchSetModal';
+import SearchSetModal from '../SearchSet/SearchSetModal';
 
 const SearchSetList = (props) => {
   const { loading, dispatch } = props;
@@ -47,6 +47,7 @@ const SearchSetList = (props) => {
         columns={getColumns}
         rowKey={(record) => `${record.title}`}
         list={[{ title: '热门搜索' }]}
+        pagination={false}
       ></TableDataBlock>
       <SearchSetModal
         visible={visible}

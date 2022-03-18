@@ -698,7 +698,7 @@ export default [
         path: '/system/globalConfig',
         name: '全局配置',
         component: './System/GlobalConfig',
-        buttons: ['down', 'edit', 'save', 'info'],
+        buttons: ['down', 'edit', 'save', 'info','searchSet'],
       },
       {
         path: '/system/pageset',
@@ -717,12 +717,12 @@ export default [
         component: './System/ExpertAllocation',
         buttons: ['save', 'edit'],
       },
-      {
-        path: '/market/search',
-        name: '搜索配置',
-        component: './System/SearchSetList',
-        buttons: ['searchSet'],
-      },
+      // {
+      //   path: '/market/search',
+      //   name: '搜索配置',
+      //   component: './System/SearchSetList',
+      //   buttons: ['searchSet'],
+      // },
       {
         path: '/operation/walking',
         name: '逛逛页面配置',
