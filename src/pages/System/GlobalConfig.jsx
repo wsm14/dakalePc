@@ -16,7 +16,7 @@ const GlobalConfig = (props) => {
   let main = undefined;
 
   const [mode, setMode] = useState('inline'); // 菜单显示状态
-  const [menuKey, setMenuKey] = useState('holidayConfig'); // menu key
+  const [menuKey, setMenuKey] = useState('videoConfig'); // menu key 
 
   useEffect(() => {
     // 监听窗口大小变化

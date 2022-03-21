@@ -16,6 +16,7 @@ export const ROLE_BUTTON_TYPE = {
   award: '奖励',
   advert: '广告',
   addPlace: '新增位置',
+  adVideo_edit:"视频广告编辑",
 
   BDSet: '关联BD',
   batchEdit: '批量修改',
@@ -77,6 +78,7 @@ export const ROLE_BUTTON_TYPE = {
   markTextAdd: '新增分享文案',
   markImgEdit: '修改打卡图片',
   markTextEdit: '修改打卡文案',
+  merchantVideo_edit:'商家视频编辑',
 
   noticeAdd: '公告新增',
   noticeEdit: '公告修改',
@@ -156,6 +158,7 @@ export const ROLE_BUTTON_TYPE = {
   userEdit: '用户编辑',
   userStatus: '用户状态',
   useInfo: '使用情况',
+  UGCVideo_edit:"UCG视频编辑",
 
   videoAd: '视频广告',
 

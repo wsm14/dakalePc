@@ -13,7 +13,6 @@ import VideoSet from './components/VideoPlatform/VideoSet';
 import RewarInfo from './components/VideoPlatform/RewardSet/RewarInfo';
 import ShareWeightSet from './components/VideoPlatform/ShareWeightSet';
 import ShareDetail from './components/VideoPlatform/Detail/ShareDetail';
-import UGCDrawer from './components/VideoPlatform/UGCDrawer';
 
 const VideoPlatformUGC = (props) => {
   const {
@@ -21,9 +20,7 @@ const VideoPlatformUGC = (props) => {
     loadingTab,
     loadingRefuse,
     dispatch,
-    videoBeanRules,
     tabs,
-    videoRules,
     UGCList,
   } = props;
   const { list } = UGCList;
@@ -32,7 +29,6 @@ const VideoPlatformUGC = (props) => {
   const [form] = Form.useForm();
   const [tabKey, setTabKey] = useState(null); // tab
   const [visible, setVisible] = useState(false); // 详情+分享配置
-  const [visibleShare, setVisibleShare] = useState(false); // 配置
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
   const [visibleSet, setVisibleSet] = useState(false); // 设置
   const [visibleReward, setVisibleReward] = useState(false); // 打赏明细
@@ -263,17 +259,6 @@ const VideoPlatformUGC = (props) => {
     });
   };
 
-  const extraBtn = [
-    {
-      auth: 'config',
-      text: '配置',
-      // show: tabKey === '0',
-      onClick: () => {
-        setVisibleShare({ videoRules: videoRules, videoBeanRules: videoBeanRules, show: true });
-      },
-    },
-  ];
-
   return (
     <>
       <TableDataBlock
@@ -288,7 +273,6 @@ const VideoPlatformUGC = (props) => {
             setTabKey(key);
           },
         }}
-        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
@@ -301,8 +285,7 @@ const VideoPlatformUGC = (props) => {
         dispatchType="videoPlatform/fetchUGCVideoList"
         {...UGCList}
       ></TableDataBlock>
-      {/* UGC配置 */}
-      <UGCDrawer visible={visibleShare} onClose={() => setVisibleShare(false)}></UGCDrawer>
+     
       {/* 详情 修改 编辑画像 带货设置 分享配置*/}
       <ShareDetail
         childRef={childRef}

@@ -106,7 +106,7 @@ export default {
           rootCount: content,
         },
       });
-      callback();
+      callback(content);
     },
     *fetchVideoAdvertRootCountSet({ payload, callback }, { call }) {
       const response = yield call(fetchVideoAdvertRootCountSet, payload);

@@ -94,7 +94,7 @@ export default {
           adRoot: { data: content.dictionary, dataValue },
         },
       });
-      callback();
+      callback({ data: content.dictionary, dataValue });
     },
     *fetchPuzzleAdRootSet({ payload, callback }, { call }) {
       const response = yield call(fetchPuzzleAdRootSet, payload);
