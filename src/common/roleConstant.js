@@ -1,7 +1,6 @@
 // 权限按钮映射 和 HandleSetTable 对应
 export const ROLE_BUTTON_TYPE = {
   again: '重新发布',
-  adRoot: '广告配置',
   action: '使用规则',
   activate: '激活',
   actionDel: '删除行为',

@@ -13,7 +13,6 @@ import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import WeightSet from './components/WeightSet';
-import VideoAdRoot from './components/VideoAdRoot';
 import VideoSetDrawer from './components/VideoSetDrawer';
 import VideoDetail from './components/Detail/VideoDetail';
 import RewardSet from '@/pages/Operation/components/VideoPlatform/RewardSet';
@@ -27,7 +26,6 @@ const ShareManage = (props) => {
   const childRef = useRef();
   const [visible, setVisible] = useState(false); // 新增
   const [visibleDetail, setVisibleDetail] = useState(false); // 详情 编辑
-  const [visibleRoot, setVisibleRoot] = useState(false); // 广告设置
   const [visibleReward, setVisibleReward] = useState(false); // 打赏设置
   const [visibleSet, setVisibleSet] = useState(false); // 设置
   const [visiblePeas, setVisiblePeas] = useState(false); // 领豆明细
@@ -263,20 +261,7 @@ const ShareManage = (props) => {
     });
   };
 
-  // 获取广告配置详情
-  const fetchVideoAdvertRootCount = () => {
-    dispatch({
-      type: 'videoAdvert/fetchVideoAdvertRootCount',
-      callback: () => setVisibleRoot(true),
-    });
-  };
-
   const extraBtn = [
-    {
-      text: '配置',
-      auth: 'adRoot',
-      onClick: fetchVideoAdvertRootCount,
-    },
     {
       auth: 'save',
       text: '新增',
@@ -297,8 +282,6 @@ const ShareManage = (props) => {
         dispatchType="videoAdvert/fetchGetList"
         {...videoAdvert}
       ></TableDataBlock>
-      {/* 配置 */}
-      <VideoAdRoot visible={visibleRoot} onClose={() => setVisibleRoot(false)}></VideoAdRoot>
       {/* 新增 */}
       <VideoSetDrawer
         childRef={childRef}

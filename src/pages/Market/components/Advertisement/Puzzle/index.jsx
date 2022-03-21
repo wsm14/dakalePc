@@ -4,14 +4,12 @@ import { Tooltip } from 'antd';
 import { PUZZLE_AD_TYPE, PUZZLE_AD_STATUS, BANNER_AREA_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import PuzzleAdSet from './components/PuzzleAdSet';
-import PuzzleAdRoot from './components/PuzzleAdRoot';
 
 const PuzzleAdvertisement = (props) => {
   const { puzzleAd, loading, dispatch } = props;
 
   const childRef = useRef();
   const [visibleSet, setVisibleSet] = useState({ show: false, info: '' }); // 拼图广告设置
-  const [visibleRoot, setVisibleRoot] = useState(false); // 拼图广告设置
 
   // 搜索参数
   const searchItems = [
@@ -116,19 +114,8 @@ const PuzzleAdvertisement = (props) => {
     });
   };
 
-  // 获取广告配置详情
-  const fetchAdRootDetail = () => {
-    dispatch({
-      type: 'puzzleAd/fetchPuzzleAdRoot',
-      callback: () => setVisibleRoot(true),
-    });
-  };
+
   const extraBtn = [
-    {
-      text: '广告配置',
-      auth: 'adRoot',
-      onClick: fetchAdRootDetail,
-    },
     {
       auth: 'save',
       onClick: () => setVisibleSet({ type: 'add', show: true, info: '' }),
@@ -153,8 +140,6 @@ const PuzzleAdvertisement = (props) => {
         visible={visibleSet}
         onClose={() => setVisibleSet({ show: false, info: '' })}
       ></PuzzleAdSet>
-      {/* 广告配置 */}
-      <PuzzleAdRoot visible={visibleRoot} onClose={() => setVisibleRoot(false)}></PuzzleAdRoot>
     </>
   );
 };

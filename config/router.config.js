@@ -442,7 +442,6 @@ export default [
           'info',
           'up',
           'down',
-          'adRoot',
           'rewardPeo',
           'peasDetail',
         ],
