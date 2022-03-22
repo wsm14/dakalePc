@@ -14,7 +14,6 @@ export const ROLE_BUTTON_TYPE = {
   addnum: '增加数量',
   award: '奖励',
   advert: '广告',
-  addPlace: '新增位置',
   adVideo_edit: '视频广告编辑',
 
   BDSet: '关联BD',
