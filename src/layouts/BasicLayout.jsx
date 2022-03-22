@@ -68,12 +68,12 @@ const BasicLayout = (props) => {
       .map((item) => {
         if (
           (item.name && item.name.includes(keyWord)) ||
-          filterByMenuDate(item.children || [], keyWord)?.length > 0
+          filterByMenuDate(item.routes || [], keyWord)?.length > 0
         ) {
           return {
             ...item,
             path: item.path.split('/').length - 1 > 1 ? item.path : null,
-            children: filterByMenuDate(item.children || [], keyWord),
+            routes: filterByMenuDate(item.routes || [], keyWord),
           };
         }
         return undefined;
