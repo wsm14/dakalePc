@@ -91,8 +91,8 @@ export default [
 
       {
         name: '营销管理',
-        path:'market',
-        routes:[
+        path: '/market',
+        routes: [
           {
             path: '/market/platformEquity',
             name: '平台权益',
@@ -163,17 +163,137 @@ export default [
             component: './Market/SpecialGoodsResource',
             buttons: ['cancleRecommend', 'configCondit'],
           },
-        
-        ]
+        ],
+      },
+      {
+        name: '视频管理',
+        path: '/video',
+        routes: [
+          {
+            path: '/video/videoplatform',
+            name: '商家视频',
+            component: './Video/VideoPlatform',
+            buttons: [
+              'set',
+              'save',
+              'del',
+              'edit',
+              'down',
+              'info',
+              'rewardPeo',
+              'shareImg',
+              'commerceSet',
+              'portraitEdit',
+              'peasDetail',
+            ],
+          },
+          {
+            path: '/video/videoplatformUGC',
+            name: 'UGC视频',
+            component: './Video/VideoPlatformUGC',
+            buttons: [
+              // 'save',
+              'set',
+              'del',
+              'edit',
+              'down',
+              'info',
+              'rewardPeo',
+              'rewardInfo',
+              'shareImg',
+              'commerceSet',
+              'portraitEdit',
+            ],
+          },
+          {
+            path: '/video/videoCheck',
+            name: '视频审核',
+            component: './Video/VideoCheck',
+            buttons: ['info', 'check', 'close'],
+          },
+          {
+            path: '/video/advertisement',
+            name: '广告投放管理',
+            component: './Video/Advertisement',
+            buttons: [
+              'videoAd',
+              'openAd',
+              'puzzleAd',
+              'save',
+              'del',
+              'edit',
+              'set',
+              'info',
+              'up',
+              'down',
+              'rewardPeo',
+              'peasDetail',
+            ],
+          },
+          {
+            path: '/video/videoAd',
+            name: '新手视频',
+            component: './Video/NoviceAdvert',
+            buttons: ['save', 'info', 'down', 'peasDetail', 'again', 'diary'],
+          },
+        ],
+      },
+      // 店铺管理 business
+      {
+        name: '店铺管理',
+        path: '/business',
+        routes: [
+          {
+            path: '/business/register',
+            name: '注册列表',
+            component: './Business/BusinessRegister',
+          },
+          {
+            path: '/business/bankChangeCheck',
+            name: '银行卡变更审核',
+            component: './Business/BankChangeCheck',
+            buttons: ['info', 'check'],
+          },
+          {
+            path: '/business/audit',
+            name: '新店审核',
+            component: './Business/BusinessAudit',
+            buttons: ['checkDetail', 'check'],
+          },
+          {
+            path: '/business/list',
+            name: '店铺列表',
+            component: './Business/BusinessList',
+            buttons: [
+              'edit',
+              'info',
+              'setMreCord',
+              'exportList',
+              'qrCode',
+              'status',
+              'bussinessStatus',
+              'diary',
+              'rate',
+              'shareImg',
+            ],
+          },
+          {
+            path: '/business/group',
+            name: '集团管理',
+            component: './Business/GroupList',
+            buttons: ['save', 'edit', 'info', 'activate', 'storeList', 'rate'],
+          },
+          {
+            path: '/business/settled',
+            name: '入驻绑定查询',
+            component: './Business/BusinessSettled',
+            buttons: ['exportList'],
+          },
+        ],
       },
 
 
-
-    
-
-    
-
-     
+      
       // 账户管理 account
       {
         path: '/account/user',
@@ -265,54 +385,6 @@ export default [
         path: '/password',
         component: './Base/PassWord',
       },
-      // 店铺管理 business
-      {
-        path: '/business/register',
-        name: '注册列表',
-        component: './Business/BusinessRegister',
-      },
-      {
-        path: '/business/bankChangeCheck',
-        name: '银行卡变更审核',
-        component: './Business/BankChangeCheck',
-        buttons: ['info', 'check'],
-      },
-      {
-        path: '/business/audit',
-        name: '新店审核',
-        component: './Business/BusinessAudit',
-        buttons: ['checkDetail', 'check'],
-      },
-      {
-        path: '/business/list',
-        name: '店铺列表',
-        component: './Business/BusinessList',
-        buttons: [
-          'edit',
-          'info',
-          'setMreCord',
-          'exportList',
-          'qrCode',
-          'status',
-          'bussinessStatus',
-          'diary',
-          'rate',
-          'shareImg',
-        ],
-      },
-      {
-        path: '/business/group',
-        name: '集团管理',
-        component: './Business/GroupList',
-        buttons: ['save', 'edit', 'info', 'activate', 'storeList', 'rate'],
-      },
-      {
-        path: '/business/settled',
-        name: '入驻绑定查询',
-        component: './Business/BusinessSettled',
-        buttons: ['exportList'],
-      },
-      // 数据统计 chart
 
       // 加盟管理 cityom
       {
@@ -389,9 +461,7 @@ export default [
         component: './Expert/ExpertRecommend',
         buttons: ['info', 'down', 'handle', 'reportCenter'],
       },
-     
-   
-     
+
       {
         path: '/expert/trainee',
         name: '实习豆长',
@@ -452,7 +522,7 @@ export default [
         buttons: ['info', 'check'],
       },
       // 广告营销 market
-     
+
       {
         path: '/market/areaQuery',
         name: '合伙查询系统',
@@ -498,25 +568,6 @@ export default [
           'markTextEdit',
         ],
       },
-      {
-        path: '/market/advertisement',
-        name: '广告投放管理',
-        component: './Market/Advertisement',
-        buttons: [
-          'videoAd',
-          'openAd',
-          'puzzleAd',
-          'save',
-          'del',
-          'edit',
-          'set',
-          'info',
-          'up',
-          'down',
-          'rewardPeo',
-          'peasDetail',
-        ],
-      },
 
       {
         path: '/market/markConfigure',
@@ -558,15 +609,9 @@ export default [
           'newWinAdd',
         ],
       },
-      {
-        path: '/market/videoAd',
-        name: '新手视频',
-        component: './Market/NoviceAdvert',
-        buttons: ['save', 'info', 'down', 'peasDetail', 'again', 'diary'],
-      },
+
       // 店铺运营 operation
-     
-     
+
       // 视频管理    video
       {
         path: '/operation/share',
@@ -574,48 +619,7 @@ export default [
         component: './Operation/ShareManage',
         buttons: ['save', 'info', 'down', 'check', 'diary', 'peasDetail', 'set', 'rewardPeo'],
       },
-      {
-        path: '/operation/videoplatform',
-        name: '商家视频',
-        component: './Operation/VideoPlatform',
-        buttons: [
-          'set',
-          'save',
-          'del',
-          'edit',
-          'down',
-          'info',
-          'rewardPeo',
-          'shareImg',
-          'commerceSet',
-          'portraitEdit',
-          'peasDetail',
-        ],
-      },
-      {
-        path: '/operation/videoplatformUGC',
-        name: 'UGC视频',
-        component: './Operation/VideoPlatformUGC',
-        buttons: [
-          // 'save',
-          'set',
-          'del',
-          'edit',
-          'down',
-          'info',
-          'rewardPeo',
-          'rewardInfo',
-          'shareImg',
-          'commerceSet',
-          'portraitEdit',
-        ],
-      },
-      {
-        path: '/operation/videoCheck',
-        name: '视频审核',
-        component: './Operation/VideoCheck',
-        buttons: ['info', 'check', 'close'],
-      },
+
       {
         path: '/operation/goods',
         name: '商品管理',
@@ -664,7 +668,7 @@ export default [
           'getRecord',
         ],
       },
-      
+
       {
         path: '/operation/platformEquityOrder',
         name: '权益订单',
@@ -702,7 +706,7 @@ export default [
         component: './Operation/CouponCheck',
         buttons: ['info', 'check', 'close'],
       },
-    
+
       // 客服中心 service
       {
         path: '/service/news',
@@ -722,7 +726,7 @@ export default [
         component: './Service/ServiceFeedBack',
         buttons: ['eye', 'replay', 'config'],
       },
-      
+
       {
         path: '/service/faq',
         name: '常见问题',
@@ -815,7 +819,6 @@ export default [
         component: './User/BdLimitPop',
         buttons: ['save'],
       },
-     
     ],
   },
 ];

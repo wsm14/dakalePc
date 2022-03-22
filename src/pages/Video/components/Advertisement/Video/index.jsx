@@ -15,8 +15,8 @@ import TableDataBlock from '@/components/TableDataBlock';
 import WeightSet from './components/WeightSet';
 import VideoSetDrawer from './components/VideoSetDrawer';
 import VideoDetail from './components/Detail/VideoDetail';
-import RewardSet from '@/pages/Operation/components/VideoPlatform/RewardSet';
-import VideoSet from '@/pages/Operation/components/VideoPlatform/VideoSet';
+import RewardSet from '../../VideoPlatform/RewardSet';
+import VideoSet from '../../VideoPlatform/VideoSet';
 import VideoPeasDetail from './components/Detail/VideoPeasDetail';
 
 const ShareManage = (props) => {
