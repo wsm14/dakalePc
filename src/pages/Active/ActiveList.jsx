@@ -4,9 +4,11 @@ import { Button, Popover, message } from 'antd';
 import QRCode from 'qrcode.react';
 import { ACTIVE_TEMPLATE_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
+import ExtraButton from '@/components/ExtraButton';
 import ActiveTemplateEdit from './components/template/ActiveTemplateEdit';
 import ActiveTemplateNameSet from './components/template/ActiveTemplateNameSet';
 import ShareImg from './components/ShareImg';
+import ModalTemplate from './components/Active/ModalTemplate';
 
 const ActiveListComponent = (props) => {
   const { activeList, loading, dispatch } = props;
@@ -16,6 +18,7 @@ const ActiveListComponent = (props) => {
   const [visible, setVisible] = useState({ show: false, info: {} });
   const [visibleName, setVisibleName] = useState({ show: false, info: { activityName: '' } });
   const [visibleShare, setVisibleShare] = useState(false);
+  const [visibleModal, setVisibleModal] = useState(false);
 
   // table 表头
   const getColumns = [
@@ -144,6 +147,14 @@ const ActiveListComponent = (props) => {
     tab: ACTIVE_TEMPLATE_TYPE[item],
   }));
 
+  const btnList = [
+    {
+      auth: 'activeTemplate',
+      onClick: () => setVisibleModal(true),
+      text: '活动模板',
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
@@ -154,6 +165,7 @@ const ActiveListComponent = (props) => {
             setTabKey(key);
             childRef.current.fetchGetData({ templateType: key, page: 1 });
           },
+          tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
         }}
         cRef={childRef}
         loading={loading}
@@ -177,6 +189,7 @@ const ActiveListComponent = (props) => {
       ></ActiveTemplateEdit>
       {/* 分享图 */}
       <ShareImg visible={visibleShare} onClose={() => setVisibleShare(false)}></ShareImg>
+      <ModalTemplate visible={visibleModal} onClose={() => setVisibleModal(false)}></ModalTemplate>
     </>
   );
 };

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Card, Row, Col } from 'antd';
-import template1 from './components/Img/template1.png';
-import template2 from './components/Img/template2.png';
-import template3 from './components/Img/template3.png';
-import ActiveTemplateEdit from './components/template/ActiveTemplateEdit';
-import ActiveTemplateNameSet from './components/template/ActiveTemplateNameSet';
+import template1 from '../Img/template1.png';
+import template2 from '../Img/template2.png';
+import template3 from '../Img/template3.png';
+import ActiveTemplateEdit from './ActiveTemplateEdit';
+import ActiveTemplateNameSet from './ActiveTemplateNameSet';
 
 const ActiveTemplate = () => {
   const [visible, setVisible] = useState({ show: false, info: {} });

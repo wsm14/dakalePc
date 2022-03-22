@@ -16,16 +16,16 @@ export default [
     component: '../layouts/BasicLayout',
     routes: [
       // 活动设置 active
-      {
-        path: '/active/template',
-        name: '营销活动模版',
-        component: './Active/ActiveTemplate',
-      },
+      // {
+      //   path: '/active/template',
+      //   name: '营销活动模版',
+      //   component: './Active/ActiveTemplate',
+      // },
       {
         path: '/active/list',
         name: '活动列表',
         component: './Active/ActiveList',
-        buttons: ['edit', 'copy', 'shareImg', 'del'],
+        buttons: ['edit', 'copy', 'shareImg', 'del','activeTemplate'],
       },
       // {
       //   path: '/active/materialConfig',

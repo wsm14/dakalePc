@@ -15,6 +15,7 @@ export const ROLE_BUTTON_TYPE = {
   award: '奖励',
   advert: '广告',
   adVideo_edit: '视频广告编辑',
+  activeTemplate:'活动模板',
 
   BDSet: '关联BD',
   batchEdit: '批量修改',
