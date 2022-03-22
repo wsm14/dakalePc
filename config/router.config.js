@@ -292,10 +292,10 @@ export default [
         ],
       },
       // 用户/哒人管理
-      { 
+      {
         path: '/user',
         name: '用户/哒人管理',
-        routes:[
+        routes: [
           {
             path: '/user/list',
             name: '用户数据',
@@ -326,12 +326,27 @@ export default [
             component: './User/ExpertTempList',
             buttons: ['save', 'cancelTemp'],
           },
-
-        ]
-
+        ],
       },
-
-
+      // 哒小卡 daMarkCard
+      {
+        path: '/daMarkCard',
+        name: '哒小卡管理',
+        routes: [
+          {
+            path: '/daMarkCard/pointManage',
+            name: '点位管理',
+            component: './DaMarkCard/PointManage',
+            buttons: ['point', 'award', 'advert', 'info', 'edit', 'signDetail', 'save', 'qrCode'],
+          },
+          {
+            path: '/daMarkCard/pointCheck',
+            name: '点位审核',
+            component: './DaMarkCard/PointCheck',
+            buttons: ['check', 'info'],
+          },
+        ],
+      },
 
       // 账户管理 account
       {
@@ -456,21 +471,9 @@ export default [
         component: './Cityom/SaleAccount',
         buttons: ['save', 'edit', 'info', 'status', 'relieve'],
       },
-      // 哒小卡 daMarkCard
-      {
-        path: '/daMarkCard/pointManage',
-        name: '点位管理',
-        component: './DaMarkCard/PointManage',
-        buttons: ['point', 'award', 'advert', 'info', 'edit', 'signDetail', 'save', 'qrCode'],
-      },
-      {
-        path: '/daMarkCard/pointCheck',
-        name: '点位管理',
-        component: './DaMarkCard/PointCheck',
-        buttons: ['check', 'info'],
-      },
+
       // 哒人管理 expert
-     
+
       {
         path: '/expert/level',
         name: '等级设置',
@@ -496,7 +499,6 @@ export default [
         buttons: ['info', 'down', 'handle', 'reportCenter'],
       },
 
-     
       // 财务管理 finance
       {
         path: '/finance/subsidy',
@@ -830,7 +832,6 @@ export default [
         component: './System/CommissionTempate',
       },
       // 用户管理 user
-     
     ],
   },
 ];
