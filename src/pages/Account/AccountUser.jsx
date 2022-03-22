@@ -134,7 +134,8 @@ const AccountUserList = (props) => {
 
   return (
     <>
-      <UserTotalInfo></UserTotalInfo>
+    {/* 统计数据 */}
+      {/* <UserTotalInfo></UserTotalInfo> */}
       <TableDataBlock
         keepData
         loading={loading}

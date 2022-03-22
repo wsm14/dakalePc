@@ -160,14 +160,13 @@ const UserListComponent = (props) => {
 
   return (
     <>
-      <Card bordered={false} style={{ marginBottom: 16 }}>
-        {/* 搜索框 */}
+      {/* <Card bordered={false} style={{ marginBottom: 16 }}>
         <SearchCard setSearchData={setCityData}></SearchCard>
-      </Card>
+      </Card> */}
       {/* 用户数统计 */}
-      <UserListTotalInfo cityData={cityData}></UserListTotalInfo>
+      {/* <UserListTotalInfo cityData={cityData}></UserListTotalInfo> */}
       {/* 用户chart统计 */}
-      <UserTotalSpread></UserTotalSpread>
+      {/* <UserTotalSpread></UserTotalSpread> */}
       <TableDataBlock
         keepData
         cRef={childRef}

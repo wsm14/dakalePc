@@ -99,7 +99,7 @@ const CircleMasterList = (props) => {
 
   return (
     <>
-      <MasterTotalInfo />
+      {/* <MasterTotalInfo /> //顶部统计数据 */}
       <TableDataBlock
         keepData
         loading={loading}

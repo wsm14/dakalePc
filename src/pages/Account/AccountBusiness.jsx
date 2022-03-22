@@ -150,7 +150,8 @@ const AccountBusinessList = (props) => {
 
   return (
     <>
-      <BusinessTotalInfo></BusinessTotalInfo>
+    {/* 统计数据图 */}
+      {/* <BusinessTotalInfo></BusinessTotalInfo> */}
       <TableDataBlock
         keepData
         loading={loading}
