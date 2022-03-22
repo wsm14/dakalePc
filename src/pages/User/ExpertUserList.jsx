@@ -2,12 +2,12 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { EXPERT_USER_STATUS, EXPERT_LIST_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
-import CloseExpert from './components/UserList/CloseExpert';
-import ExpertUserLog from './components/UserList/ExpertUserLog';
-import SubCommissionStatistics from './components/UserList/SubCommissionStatistics';
-import RecommendModal from './components/UserList/RecommendModal';
-import BDSet from './components/UserList/BDSet';
-import DarenTagSet from './components/UserList/DarenTagSet';
+import CloseExpert from './components/ExpertUserList/CloseExpert';
+import ExpertUserLog from './components/ExpertUserList/ExpertUserLog';
+import SubCommissionStatistics from './components/ExpertUserList/SubCommissionStatistics';
+import RecommendModal from './components/ExpertUserList/RecommendModal';
+import BDSet from './components/ExpertUserList/BDSet';
+import DarenTagSet from './components/ExpertUserList/DarenTagSet';
 import { checkCityName } from '@/utils/utils';
 
 const ExpertUserList = (props) => {

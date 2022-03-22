@@ -291,9 +291,48 @@ export default [
           },
         ],
       },
+      // 用户/哒人管理
+      { 
+        path: '/user',
+        name: '用户/哒人管理',
+        routes:[
+          {
+            path: '/user/list',
+            name: '用户数据',
+            component: './User/UserList',
+            buttons: ['info', 'status'],
+          },
+          {
+            path: '/user/master',
+            name: '家主列表',
+            component: './User/CircleMasterList',
+            buttons: ['income'],
+          },
+          {
+            path: '/user/bdlimitPop',
+            name: 'BD白名单',
+            component: './User/BdLimitPop',
+            buttons: ['save'],
+          },
+          {
+            path: '/user/uaerlist',
+            name: '哒人列表',
+            component: './User/ExpertUserList',
+            buttons: ['status', 'recommendList', 'statistics', 'BDSet', 'diary', 'set'],
+          },
+          {
+            path: '/user/trainee',
+            name: '实习豆长',
+            component: './User/ExpertTempList',
+            buttons: ['save', 'cancelTemp'],
+          },
+
+        ]
+
+      },
 
 
-      
+
       // 账户管理 account
       {
         path: '/account/user',
@@ -431,12 +470,7 @@ export default [
         buttons: ['check', 'info'],
       },
       // 哒人管理 expert
-      {
-        path: '/expert/uaerlist',
-        name: '哒人列表',
-        component: './Expert/ExpertUserList',
-        buttons: ['status', 'recommendList', 'statistics', 'BDSet', 'diary', 'set'],
-      },
+     
       {
         path: '/expert/level',
         name: '等级设置',
@@ -462,12 +496,7 @@ export default [
         buttons: ['info', 'down', 'handle', 'reportCenter'],
       },
 
-      {
-        path: '/expert/trainee',
-        name: '实习豆长',
-        component: './Expert/ExpertTempList',
-        buttons: ['save', 'cancelTemp'],
-      },
+     
       // 财务管理 finance
       {
         path: '/finance/subsidy',
@@ -801,24 +830,7 @@ export default [
         component: './System/CommissionTempate',
       },
       // 用户管理 user
-      {
-        path: '/user/list',
-        name: '用户数据',
-        component: './User/UserList',
-        buttons: ['info', 'status'],
-      },
-      {
-        path: '/user/master',
-        name: '家主列表',
-        component: './User/CircleMasterList',
-        buttons: ['income'],
-      },
-      {
-        path: '/user/bdlimitPop',
-        name: 'BD白名单',
-        component: './User/BdLimitPop',
-        buttons: ['save'],
-      },
+     
     ],
   },
 ];
