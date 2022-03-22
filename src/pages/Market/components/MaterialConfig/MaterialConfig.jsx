@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'umi';
-import { handleZipDown } from './components/MaterialConfig/downZip';
+import { handleZipDown } from './downZip';
 import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
-import CodeDrawerSet from './components/MaterialConfig/Form/CodeDrawerSet';
+import CodeDrawerSet from './Form/CodeDrawerSet';
 
 const tabList = [
   {
@@ -50,7 +50,8 @@ const MaterialConfig = ({ materialConfig, loading }) => {
       dataIndex: 'url',
       render: (val) => [
         {
-          type: 'download',
+          title:'下载',
+          type: 'materialConfigDownLoad',
           click: () => handleZipDown(val),
         },
       ],
@@ -68,7 +69,7 @@ const MaterialConfig = ({ materialConfig, loading }) => {
   const cardBtnList = [
     {
       text: '新增',
-      auth: 'save',
+      auth: 'materialConfigAdd',
       onClick: handleUpdateSet,
     },
   ];

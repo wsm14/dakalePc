@@ -5,6 +5,7 @@ import { BLINDBOX_PRIZE_TYPE, DAREN_TEMP_FLAG } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import ConfigureFrawerSet from './Form/ConfigureFrawerSet';
+import ExtraButton from '@/components/ExtraButton';
 const Jackpot = (props) => {
   const { blindBox, loading, dispatch } = props;
 
@@ -56,7 +57,8 @@ const Jackpot = (props) => {
       dataIndex: 'luckPrizeIdStr',
       render: (val, row) => [
         {
-          type: 'edit',
+          title: '编辑',
+          type: 'blindEdit',
           auth: true,
           click: () =>
             setVisible({
@@ -66,7 +68,8 @@ const Jackpot = (props) => {
             }),
         },
         {
-          type: 'del',
+          title: '删除',
+          type: 'blindDel',
           auth: true,
           click: () => fetchDeletePrizePool({ luckPrizeIdStr: val }),
         },
@@ -81,6 +84,14 @@ const Jackpot = (props) => {
       callback: tableRef.current.fetchGetData,
     });
   };
+
+  const btnExtra = [
+    {
+      text: '新增',
+      auth: 'blindAdd',
+      onClick: () => setVisible({ show: true }),
+    },
+  ];
   return (
     <>
       <TableDataBlock
@@ -88,9 +99,7 @@ const Jackpot = (props) => {
           title: '盲盒奖池配置',
           bordered: false,
           extra: (
-            <Button type="primary" onClick={() => setVisible({ show: true })}>
-              新增
-            </Button>
+            <ExtraButton list={btnExtra}></ExtraButton>
           ),
         }}
         cRef={tableRef}

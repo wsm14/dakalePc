@@ -24,7 +24,7 @@ const CityTable = (props) => {
       dataIndex: 'configFloatingWindowId',
       render: (_, row) => [
         {
-          type: 'edit',
+          type: 'floatEdit',
           title: '编辑',
           click: () => handleEdit(row),
           auth: true,
@@ -43,7 +43,7 @@ const CityTable = (props) => {
 
   const cardBtnList = [
     {
-      auth: true,
+      auth: "floatAddCity",
       text: '新增城市',
       className: 'dkl_blue_btn',
       onClick: () => {

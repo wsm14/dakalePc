@@ -68,7 +68,7 @@ const CityGlobalModal = (props) => {
   const cardBtnList = [
     {
       text: '编辑',
-      auth: 'edit',
+      auth: 'weekEdit',
       className: '',
       typeBtn: 'link',
       onClick: handleAdd,

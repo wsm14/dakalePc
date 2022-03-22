@@ -5,6 +5,11 @@ import GlobalModal from './components/Configure/GlobalModal';
 import FloatModal from './components/Configure/FloatModal';
 import NewWelfareModal from './components/Configure/NewWelfareModal';
 import WeeksCard from './components/Configure/WeeksCard';
+import Jackpot from './components/PrizeConfig/Jackpot';
+import RuleManage from './components/PrizeConfig/Rule';
+import NoobJackPot from './components/PrizeConfig/NoobJackPot';
+import AppSetTabList from './components/App/AppSetTabList';
+import MaterialConfig from './components/MaterialConfig/MaterialConfig';
 
 import styles from './styles.less';
 
@@ -51,6 +56,12 @@ const MarkConfigure = () => {
       block: <GlobalModal></GlobalModal>,
     },
     {
+      type: 'appSetTabList',
+      menuName: 'banner配置',
+      block: <AppSetTabList></AppSetTabList>,
+    },
+
+    {
       type: 'floatModal',
       menuName: '浮窗配置',
       block: <FloatModal></FloatModal>,
@@ -64,6 +75,26 @@ const MarkConfigure = () => {
       type: 'weeksCard',
       menuName: '周卡配置',
       block: <WeeksCard></WeeksCard>,
+    },
+    {
+      type: 'materialConfig',
+      menuName: '营销物料配置',
+      block: <MaterialConfig></MaterialConfig>,
+    },
+    {
+      type: 'jackpot',
+      menuName: '盲盒奖池配置',
+      block: <Jackpot></Jackpot>,
+    },
+    {
+      type: 'rule',
+      menuName: 'APP盲盒规则配置',
+      block: <RuleManage></RuleManage>,
+    },
+    {
+      type: 'noob',
+      menuName: '新手必中奖池',
+      block: <NoobJackPot></NoobJackPot>,
     },
   ];
 

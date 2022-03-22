@@ -4,6 +4,7 @@ import { Button } from 'antd';
 import { BLINDBOX_PRIZE_TYPE } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
 import PrizeSelectModal from './PrizeSelectModal';
+import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const NoobJackPot = (props) => {
@@ -47,8 +48,8 @@ const NoobJackPot = (props) => {
       render: (val, row) => {
         return [
           {
-            type: 'del',
-            auth: true,
+            type: 'newWinDel',
+            title: '删除',
             click: () =>
               handleBlindConfigSet(
                 list.filter((item) => item.luckPrizeIdStr !== row.luckPrizeIdStr),
@@ -72,6 +73,14 @@ const NoobJackPot = (props) => {
     });
   };
 
+  const btnExtra = [
+    {
+      text: '新增',
+      auth: 'newWinAdd',
+      onClick: () => setVisible(true),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
@@ -79,9 +88,7 @@ const NoobJackPot = (props) => {
           title: '新手必中奖池',
           bordered: false,
           extra: (
-            <Button type="primary" onClick={() => setVisible(true)}>
-              新增
-            </Button>
+            <ExtraButton list={btnExtra}></ExtraButton>
           ),
         }}
         cRef={childRef}

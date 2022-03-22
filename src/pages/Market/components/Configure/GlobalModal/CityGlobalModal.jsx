@@ -96,17 +96,20 @@ const CityGlobalModal = (props) => {
         const status = changeTime(row);
         return [
           {
-            type: 'edit',
+            title:'编辑',
+            type: 'globalPopEdit',
             visible: status !== 2,
             click: () => handleEdit(val),
           },
           {
-            type: 'down',
+            title:'下架',
+            type: 'globalPopDown',
             visible: status !== 2,
             click: () => handleDown(val),
           },
           {
-            type: 'del',
+            title:'删除',
+            type: 'globalPopDel',
             visible: status === 2,
             click: () => handleDelete(val),
           },
@@ -176,7 +179,7 @@ const CityGlobalModal = (props) => {
   const cardBtnList = [
     {
       text: '新增',
-      auth: 'save',
+      auth: 'globalPopAdd',
       className: 'dkl_blue_btn',
       onClick: handleAdd,
     },

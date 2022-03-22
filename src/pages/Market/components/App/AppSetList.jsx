@@ -129,22 +129,26 @@ const AppSetList = (props) => {
       dataIndex: 'bannerIdString',
       render: (val, record) => [
         {
-          type: 'down',
+          type: 'bannerDown',
+          title: '下架',
           visible: record.bannerStatus === '1',
           click: () => fetchBannerStatus({ bannerId: val, bannerStatus: 0 }),
         },
         {
-          type: 'up',
+          title: '上架',
+          type: 'bannerUp',
           visible: record.bannerStatus === '0',
           // click: () => fetchBannerStatus({ bannerId: val, bannerStatus: 1 }),
           click: () => fetchBannerDetail({ bannerId: val, type: 'up' }),
         },
         {
-          type: 'edit',
+          title: '编辑',
+          type: 'bannerEdit ',
           click: () => fetchBannerDetail({ bannerId: val, type: 'edit' }),
         },
         {
-          type: 'del',
+          title: '删除',
+          type: 'bannerDel',
           visible: record.bannerStatus === '0',
           click: () => fetchBannerStatus({ bannerId: val, deleteFlag: 0 }),
         },
@@ -184,10 +188,12 @@ const AppSetList = (props) => {
   const btnList = [
     {
       text: '新增位置',
-      auth: 'addPlace',
+      auth: 'banneraddPlace',
       onClick: () => setVisibleAddImg(true),
     },
     {
+      text: '新增',
+      auth: 'bannerAdd',
       onClick: () => {
         const type = tabKey === 'mark' ? 'markMain' : null;
         setVisibleSet({

@@ -69,17 +69,20 @@ const CityGlobalModal = (props) => {
         const status = changeTime(row);
         return [
           {
-            type: 'edit',
+            type: 'floatEdit',
+            title:'编辑',
             visible: status !== 2,
             click: () => handleEdit(val),
           },
           {
-            type: 'down',
+            title:'下架',
+            type: 'floatDown',
             visible: status !== 2,
             click: () => handleDown(val),
           },
           {
-            type: 'del',
+            title:'删除',
+            type: 'floatDel',
             visible: status === 2,
             click: () => handleDelete(val),
           },
@@ -139,7 +142,7 @@ const CityGlobalModal = (props) => {
   const cardBtnList = [
     {
       text: '新增',
-      auth: 'save',
+      auth: 'floatAdd',
       className: 'dkl_blue_btn',
       onClick: handleAdd,
     },

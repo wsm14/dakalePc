@@ -26,7 +26,7 @@ const Index = (props) => {
       dataIndex: 'configGlobalPopUpId',
       render: (val, row) => [
         {
-          type: 'edit',
+          type: 'globalPopEdit',
           title: '编辑详情',
           click: () => {
             setVisible({
@@ -35,10 +35,9 @@ const Index = (props) => {
               detail: row,
             });
           },
-          auth: true,
         },
         {
-          type: 'edit',
+          type: 'globalUpVersion',
           title: '修改版本',
           click: () => {
             setVisibleEdition({
@@ -47,7 +46,6 @@ const Index = (props) => {
               detail: row,
             });
           },
-          auth: true,
         },
       ],
     },
@@ -55,7 +53,7 @@ const Index = (props) => {
 
   const cardBtnList = [
     {
-      auth: true,
+      auth: 'globalAddVersion',
       text: '新增版本',
       className: 'dkl_blue_btn',
       onClick: () => {

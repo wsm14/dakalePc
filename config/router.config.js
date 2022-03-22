@@ -27,24 +27,24 @@ export default [
         component: './Active/ActiveList',
         buttons: ['edit', 'copy', 'shareImg', 'del'],
       },
-      {
-        path: '/active/materialConfig',
-        name: '营销物料配置',
-        component: './Active/MaterialConfig',
-        buttons: ['save', 'download'],
-      },
+      // {
+      //   path: '/active/materialConfig',
+      //   name: '营销物料配置',
+      //   component: './Active/MaterialConfig',
+      //   buttons: ['save', 'download'],
+      // },
       {
         path: '/active/assistance',
         name: '助力记录',
         component: './Active/Assistance',
         buttons: ['assistanceInfo'],
       },
-      {
-        path: '/active/prizeConfig',
-        name: '抽奖配置',
-        component: './Active/PrizeConfig',
-        buttons: ['del', 'edit'],
-      },
+      // {
+      //   path: '/active/prizeConfig',
+      //   name: '抽奖配置',
+      //   component: './Active/PrizeConfig',
+      //   buttons: ['del', 'edit'],
+      // },
       {
         path: '/active/boxLottery',
         name: '盲盒抽奖记录',
@@ -446,17 +446,17 @@ export default [
           'peasDetail',
         ],
       },
-      {
-        path: '/market/appset',
-        name: 'Banner管理',
-        component: './Market/AppSetTabList',
-        buttons: ['save', 'del', 'edit', 'up', 'down', 'addPlace'],
-      },
+      // {
+      //   path: '/market/appset',
+      //   name: 'Banner管理',
+      //   component: './Market/AppSetTabList',
+      //   buttons: ['save', 'del', 'edit', 'up', 'down', 'addPlace'],
+      // },
       {
         path: '/market/markConfigure',
         name: '营销功能配置',
         component: './Market/MarketConfigure',
-        buttons: ['save', 'del', 'edit', 'up', 'down'],
+        buttons: ['globalPopEdit','globalUpVersion','globalAddVersion','globalPopAdd','globalPopDel','globalPopDown','globalAddCity','bannerEdit','bannerUpVersion','bannerAddVersion','bannerDown','bannerUp','bannerDel','bannerAdd','banneraddPlace','floatEdit', 'floatEditVersion', 'floatAddVersion', 'floatAddCity','floatAdd','floatDown','floatDel','newWelfareAdd','newWelfareEdit','weekEdit','materialConfigDownLoad','materialConfigAdd','blindEdit','blindDel','blindAdd','blindConfigEdit','newWinDel','newWinAdd'],
       },
       {
         path: '/market/videoAd',

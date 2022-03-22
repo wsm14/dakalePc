@@ -26,7 +26,7 @@ const Index = (props) => {
       dataIndex: 'configFloatingWindowId',
       render: (val, row) => [
         {
-          type: 'edit',
+          type: 'floatEdit',
           title: '编辑详情',
           click: () => {
             setVisible({
@@ -38,7 +38,7 @@ const Index = (props) => {
           auth: true,
         },
         {
-          type: 'edit',
+          type: 'floatEditVersion',
           title: '修改版本',
           click: () => {
             setVisibleEdition({
@@ -55,7 +55,7 @@ const Index = (props) => {
 
   const cardBtnList = [
     {
-      auth: true,
+      auth: 'floatAddVersion',
       text: '新增版本',
       className: 'dkl_blue_btn',
       onClick: () => {

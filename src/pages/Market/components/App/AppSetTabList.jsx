@@ -3,9 +3,9 @@ import { connect } from 'umi';
 import { Card } from 'antd';
 import { BANNER_PORT_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
-import EditionModal from './components/App/EditionModal';
-import AppSetModal from './components/App/AppSetModal';
-import AppSetList from './components/App/AppSetList';
+import EditionModal from './EditionModal';
+import AppSetModal from './AppSetModal';
+import AppSetList from './AppSetList';
 
 const AppSetTabList = (props) => {
   const { dispatch, loading, sysAppList } = props;
@@ -27,7 +27,7 @@ const AppSetTabList = (props) => {
       dataIndex: 'bannerIdString',
       render: (val, row) => [
         {
-          type: 'edit',
+          type: 'bannerEdit',
           title: '编辑详情',
           click: () => {
             setVisible({
@@ -39,7 +39,7 @@ const AppSetTabList = (props) => {
           auth: true,
         },
         {
-          type: 'edit',
+          type: 'bannerUpVersion',
           title: '修改版本',
           click: () => {
             setVisibleEdition({
@@ -56,7 +56,7 @@ const AppSetTabList = (props) => {
 
   const cardBtnList = [
     {
-      auth: true,
+      auth: 'bannerAddVersion',
       text: '新增版本',
       className: 'dkl_blue_btn',
       onClick: () => {

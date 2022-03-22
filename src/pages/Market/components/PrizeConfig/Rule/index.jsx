@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { Card, Tabs, Button } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
+import ExtraButton from '@/components/ExtraButton';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import { BLINDBOX_PRIZE_TYPE, DAREN_TEMP_FLAG } from '@/common/constant';
 
@@ -30,20 +31,30 @@ const Rule = (props) => {
     });
     setKeyType(key);
   };
+
+  // const editRule = () => {
+  //   setVisible(true);
+  // };
+
+  const btnExtra = [
+    {
+      text: '编辑规则',
+      auth: 'blindConfigEdit',
+      onClick: () => setVisible(true),
+    },
+  ];
   // 编辑规则按钮
   const operations = (
-    <Button
-      type="link"
-      onClick={() => {
-        editRule();
-      }}
-    >
-      编辑规则
-    </Button>
+    <ExtraButton list={btnExtra}></ExtraButton>
+    // <Button
+    //   type="link"
+    //   onClick={() => {
+    //     editRule();
+    //   }}
+    // >
+    //   编辑规则
+    // </Button>
   );
-  const editRule = () => {
-    setVisible(true);
-  };
 
   // table 表头
   const getColumns = [
@@ -85,7 +96,7 @@ const Rule = (props) => {
     {
       title: '抽中概率',
       dataIndex: 'probability',
-      render: (val) => `${val*100}%`,
+      render: (val) => `${val * 100}%`,
     },
     {
       title: '是否真实奖品',

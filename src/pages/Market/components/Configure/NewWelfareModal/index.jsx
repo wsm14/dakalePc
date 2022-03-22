@@ -71,7 +71,8 @@ const CityGlobalModal = (props) => {
         const status = changeTime(row);
         return [
           {
-            type: 'edit',
+            title:'编辑',
+            type: 'newWelfareEdit',
             click: () => handleEdit(val),
           },
         ];
@@ -107,7 +108,7 @@ const CityGlobalModal = (props) => {
   const cardBtnList = [
     {
       text: '新增',
-      auth: 'save',
+      auth: 'newWelfareAdd',
       className: 'dkl_blue_btn',
       onClick: handleAdd,
     },
