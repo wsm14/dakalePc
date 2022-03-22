@@ -4,7 +4,7 @@ import ExtraButton from '@/components/ExtraButton';
 import { FESTIVAL_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import HolidayConfigSet from './Form/HolidayConfigSet';
-import { handleZipDown } from '@/pages/Active/components/MaterialConfig/downZip';
+import { handleZipDown } from '@/pages/Market/components/MaterialConfig/downZip';
 
 const HolidayConfig = (props) => {
   const { dispatch, loading, festivalConfigList } = props;

@@ -189,6 +189,7 @@ const ActiveListComponent = (props) => {
       ></ActiveTemplateEdit>
       {/* 分享图 */}
       <ShareImg visible={visibleShare} onClose={() => setVisibleShare(false)}></ShareImg>
+      {/* 活动模板 */}
       <ModalTemplate visible={visibleModal} onClose={() => setVisibleModal(false)}></ModalTemplate>
     </>
   );

@@ -15,27 +15,165 @@ export default [
     path: '/',
     component: '../layouts/BasicLayout',
     routes: [
-      
       {
-        path: '/active/list',
-        name: '活动列表',
-        component: './Active/ActiveList',
-        buttons: ['edit', 'copy', 'shareImg', 'del','activeTemplate'],
+        path: '/chart',
+        name: '数据统计',
+        routes: [
+          {
+            path: '/chart/area',
+            name: '区域战报',
+            component: './Chart/AreaTotal',
+          },
+          {
+            path: '/chart/sale',
+            name: '运营数据',
+            component: './Chart/SaleBlock',
+          },
+          {
+            path: '/chart/block',
+            name: '数据概况',
+            component: './Chart/ChartBlock',
+          },
+          {
+            path: '/chart/videoBoard',
+            name: '视频看板',
+            component: './Chart/VideoBoard',
+          },
+        ],
       },
-   
+      // 数据报表
       {
-        path: '/active/assistance',
-        name: '助力记录',
-        component: './Active/Assistance',
-        buttons: ['assistanceInfo'],
+        name: '数据报表',
+        path: '/dataStatement',
+        routes: [
+          {
+            path: '/dataStatement/dataGatherExport',
+            name: '数据明细查询',
+            component: './DataStatement/DataGatherExport',
+          },
+          {
+            path: '/dataStatement/achievementTotal',
+            name: '哒人业绩统计',
+            component: './DataStatement/ExpertUserAchievementTotal',
+            buttons: ['exportList'],
+          },
+          {
+            path: '/dataStatement/combineBuyAchievementTotal',
+            name: '团购业绩',
+            component: './DataStatement/CombineBuyAchievementTotal',
+            buttons: ['exportList'],
+          },
+          {
+            path: '/dataStatement/beanRedEnvelopes',
+            name: '卡豆红包',
+            component: './DataStatement/BeanRedEnvelopes',
+            buttons: ['authEdit', 'getRecord', 'del'],
+          },
+          {
+            path: '/dataStatement/assistance',
+            name: '助力记录',
+            component: './DataStatement/Assistance',
+            buttons: ['assistanceInfo'],
+          },
+          {
+            path: '/dataStatement/boxLottery',
+            name: '盲盒抽奖记录',
+            component: './DataStatement/BoxLottery',
+            buttons: ['goodsDeliver', 'goodsView', 'exportList'],
+          },
+          {
+            path: '/dataStatement/distribution',
+            name: '哒人分销明细',
+            component: './DataStatement/ExpertUserDistribution',
+          },
+        ],
       },
+
+      {
+        name: '营销管理',
+        path:'market',
+        routes:[
+          {
+            path: '/market/platformEquity',
+            name: '平台权益',
+            component: './Market/PlatformEquity',
+            buttons: [
+              'equityCoupon',
+              'equityGoods',
+              'equityCommerceGoods',
+              'save',
+              'edit',
+              'down',
+              'info',
+              'givePrize',
+              'again',
+              'againUp',
+              'addRemain',
+              'diary',
+            ],
+          },
+          {
+            path: '/market/msg',
+            name: '消息推送',
+            component: './Market/MessagePush',
+            buttons: ['userOs', 'mreOs', 'save', 'del', 'edit', 'eye', 'copy', 'push', 'revoke'],
+          },
+          {
+            path: '/market/platformTicketManage',
+            name: '平台券管理',
+            component: './Market/PlatformTicketManage',
+            buttons: ['addnum', 'info', 'edit', 'down', 'save', 'up'],
+          },
+          {
+            path: '/market/spreeManage',
+            name: '礼包管理',
+            component: './Market/SpreeManage',
+            buttons: ['addnum', 'info', 'edit', 'down', 'save', 'up', 'set', 'getRecord'],
+          },
+          {
+            path: '/market/couponRulesManage',
+            name: '券规则管理',
+            component: './Market/CouponRulesManage',
+            buttons: ['info', 'save', 'status', 'eye'],
+          },
+          {
+            path: '/market/list',
+            name: '活动列表',
+            component: './Market/ActiveList',
+            buttons: ['edit', 'copy', 'shareImg', 'del', 'activeTemplate'],
+          },
+          {
+            path: '/market/addNewActivity',
+            name: '拉新活动',
+            component: './Market/AddNewActivity',
+            buttons: [
+              'save',
+              'eye',
+              'edit',
+              'down',
+              'couponAdd',
+              'destoryDetail',
+              'orderDetail',
+              'couponDetail',
+            ],
+          },
+          {
+            path: '/market/specialGoodsResource',
+            name: '资源位配置',
+            component: './Market/SpecialGoodsResource',
+            buttons: ['cancleRecommend', 'configCondit'],
+          },
+        
+        ]
+      },
+
+
+
+    
+
+    
+
      
-      {
-        path: '/active/boxLottery',
-        name: '盲盒抽奖记录',
-        component: './Active/BoxLottery',
-        buttons: ['goodsDeliver', 'goodsView', 'exportList'],
-      },
       // 账户管理 account
       {
         path: '/account/user',
@@ -175,31 +313,7 @@ export default [
         buttons: ['exportList'],
       },
       // 数据统计 chart
-      {
-        path: '/chart/area',
-        name: '区域战报',
-        component: './Chart/AreaTotal',
-      },
-      {
-        path: '/chart/sale',
-        name: '运营数据',
-        component: './Chart/SaleBlock',
-      },
-      {
-        path: '/chart/block',
-        name: '数据概况',
-        component: './Chart/ChartBlock',
-      },
-      {
-        path: '/chart/videoBoard',
-        name: '视频看板',
-        component: './Chart/VideoBoard',
-      },
-      {
-        path: '/chart/dataGatherExport',
-        name: '数据明细查询',
-        component: './Chart/DataGatherExport',
-      },
+
       // 加盟管理 cityom
       {
         path: '/cityom/provCo',
@@ -275,23 +389,9 @@ export default [
         component: './Expert/ExpertRecommend',
         buttons: ['info', 'down', 'handle', 'reportCenter'],
       },
-      {
-        path: '/expert/achievementTotal',
-        name: '哒人业绩统计',
-        component: './Expert/ExpertUserAchievementTotal',
-        buttons: ['exportList'],
-      },
-      {
-        path: '/expert/combineBuyAchievementTotal',
-        name: '团购业绩',
-        component: './Expert/CombineBuyAchievementTotal',
-        buttons: ['exportList'],
-      },
-      {
-        path: '/expert/distribution',
-        name: '哒人分销明细',
-        component: './Expert/ExpertUserDistribution',
-      },
+     
+   
+     
       {
         path: '/expert/trainee',
         name: '实习豆长',
@@ -352,21 +452,7 @@ export default [
         buttons: ['info', 'check'],
       },
       // 广告营销 market
-      {
-        path: '/market/addNewActivity',
-        name: '拉新活动',
-        component: './Market/AddNewActivity',
-        buttons: [
-          'save',
-          'eye',
-          'edit',
-          'down',
-          'couponAdd',
-          'destoryDetail',
-          'orderDetail',
-          'couponDetail',
-        ],
-      },
+     
       {
         path: '/market/areaQuery',
         name: '合伙查询系统',
@@ -431,12 +517,46 @@ export default [
           'peasDetail',
         ],
       },
-     
+
       {
         path: '/market/markConfigure',
         name: '营销功能配置',
         component: './Market/MarketConfigure',
-        buttons: ['globalPopEdit','globalUpVersion','globalAddVersion','globalPopAdd','globalPopDel','globalPopDown','globalAddCity','bannerEdit','bannerUpVersion','bannerAddVersion','bannerDown','bannerUp','bannerDel','bannerAdd','bannerAddPlace','floatEdit', 'floatEditVersion', 'floatAddVersion', 'floatAddCity','floatAdd','floatDown','floatDel','newWelfareAdd','newWelfareEdit','weekEdit','materialConfigDownLoad','materialConfigAdd','blindEdit','blindDel','blindAdd','blindConfigEdit','newWinDel','newWinAdd'],
+        buttons: [
+          'globalPopEdit',
+          'globalUpVersion',
+          'globalAddVersion',
+          'globalPopAdd',
+          'globalPopDel',
+          'globalPopDown',
+          'globalAddCity',
+          'bannerEdit',
+          'bannerUpVersion',
+          'bannerAddVersion',
+          'bannerDown',
+          'bannerUp',
+          'bannerDel',
+          'bannerAdd',
+          'bannerAddPlace',
+          'floatEdit',
+          'floatEditVersion',
+          'floatAddVersion',
+          'floatAddCity',
+          'floatAdd',
+          'floatDown',
+          'floatDel',
+          'newWelfareAdd',
+          'newWelfareEdit',
+          'weekEdit',
+          'materialConfigDownLoad',
+          'materialConfigAdd',
+          'blindEdit',
+          'blindDel',
+          'blindAdd',
+          'blindConfigEdit',
+          'newWinDel',
+          'newWinAdd',
+        ],
       },
       {
         path: '/market/videoAd',
@@ -445,24 +565,8 @@ export default [
         buttons: ['save', 'info', 'down', 'peasDetail', 'again', 'diary'],
       },
       // 店铺运营 operation
-      {
-        path: '/operation/couponRulesManage',
-        name: '券规则管理',
-        component: './Operation/CouponRulesManage',
-        buttons: ['info', 'save', 'status', 'eye'],
-      },
-      {
-        path: '/operation/spreeManage',
-        name: '礼包管理',
-        component: './Operation/SpreeManage',
-        buttons: ['addnum', 'info', 'edit', 'down', 'save', 'up', 'set', 'getRecord'],
-      },
-      {
-        path: '/operation/platformTicketManage',
-        name: '平台券管理',
-        component: './Operation/PlatformTicketManage',
-        buttons: ['addnum', 'info', 'edit', 'down', 'save', 'up'],
-      },
+     
+     
       // 视频管理    video
       {
         path: '/operation/share',
@@ -560,25 +664,7 @@ export default [
           'getRecord',
         ],
       },
-      {
-        path: '/operation/platformEquity',
-        name: '平台权益',
-        component: './Operation/PlatformEquity',
-        buttons: [
-          'equityCoupon',
-          'equityGoods',
-          'equityCommerceGoods',
-          'save',
-          'edit',
-          'down',
-          'info',
-          'givePrize',
-          'again',
-          'againUp',
-          'addRemain',
-          'diary',
-        ],
-      },
+      
       {
         path: '/operation/platformEquityOrder',
         name: '权益订单',
@@ -616,12 +702,7 @@ export default [
         component: './Operation/CouponCheck',
         buttons: ['info', 'check', 'close'],
       },
-      {
-        path: '/operation/specialGoodsResource',
-        name: '资源位配置',
-        component: './Operation/SpecialGoodsResource',
-        buttons: ['cancleRecommend', 'configCondit'],
-      },
+    
       // 客服中心 service
       {
         path: '/service/news',
@@ -641,12 +722,7 @@ export default [
         component: './Service/ServiceFeedBack',
         buttons: ['eye', 'replay', 'config'],
       },
-      {
-        path: '/service/msg',
-        name: '消息推送',
-        component: './Service/MessagePush',
-        buttons: ['userOs', 'mreOs', 'save', 'del', 'edit', 'eye', 'copy', 'push', 'revoke'],
-      },
+      
       {
         path: '/service/faq',
         name: '常见问题',
@@ -739,13 +815,7 @@ export default [
         component: './User/BdLimitPop',
         buttons: ['save'],
       },
-      // 卡豆红包明细
-      {
-        path: '/redEnvelopes/beanRedEnvelopes',
-        name: '卡豆红包',
-        component: './RedEnvelopes/BeanRedEnvelopes',
-        buttons: ['authEdit', 'getRecord', 'del'],
-      },
+     
     ],
   },
 ];

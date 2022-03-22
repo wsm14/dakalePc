@@ -14,7 +14,7 @@ import QuestionTooltip from '@/components/QuestionTooltip';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import ExtraButton from '@/components/ExtraButton';
-import GoodResourceSet from './components/SpecialGoods/GoodResourceSet';
+import GoodResourceSet from './components/GoodResourceSet';
 import WeightSet from './components/WeightSet';
 import { checkCityName } from '@/utils/utils';
 
