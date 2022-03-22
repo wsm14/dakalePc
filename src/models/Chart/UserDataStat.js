@@ -1,4 +1,4 @@
-import { fetchUserAnalysisReport } from '@/services/ChartServices';
+import { fetchUserAnalysisReport, fetchUserStatisticReport } from '@/services/ChartServices';
 import { USER_ANALYSIS_TYPE, PAY_USER_TYPE } from '@/common/constant';
 export default {
   namespace: 'userDataStat',
@@ -72,6 +72,32 @@ export default {
         payload: {
           newRegisterDataObj: { dataList: newArr, ...other },
         },
+      });
+    },
+    *fetchUserStatisticReportGender({ payload }, { call, put }) {
+      const response = yield call(fetchUserStatisticReport, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const { reportUserGenderList = [], ...other } = content;
+
+      console.log(reportUserGenderList);
+
+      yield put({
+        type: 'save',
+        payload: {},
+      });
+    },
+    *fetchUserStatisticReportAge({ payload }, { call, put }) {
+      const response = yield call(fetchUserStatisticReport, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const { reportUserGenderList = [], ...other } = content;
+
+      console.log(reportUserGenderList, 2);
+
+      yield put({
+        type: 'save',
+        payload: {},
       });
     },
   },

@@ -140,4 +140,11 @@ export function fetchUserAnalysisReport(params) {
   });
 }
 
+// get 用户数据统计 - 用户画像 - 性别及年龄分布
+export function fetchUserStatisticReport(params) {
+  return request('/admin/userReportManagement/userStatisticReport', {
+    params,
+  });
+}
+
 // 用户数据统计 end

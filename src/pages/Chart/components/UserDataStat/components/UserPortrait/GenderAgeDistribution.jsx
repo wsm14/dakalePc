@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'umi';
 import { Card } from 'antd';
 import moment from 'moment';
 import TimeSearch from './TimeSearch/TimeSearch';
 
-const GenderAgeDistribution = () => {
+const GenderAgeDistribution = (props) => {
+  const { dispatch } = props;
+
   const [genderData, setGenderData] = useState({
     startStatisticDay: moment().subtract(1, 'day').format('YYYY-MM-DD'),
     endStatisticDay: moment().subtract(1, 'day').format('YYYY-MM-DD'),
@@ -18,11 +21,17 @@ const GenderAgeDistribution = () => {
   });
 
   useEffect(() => {
-    console.log(1, genderData);
+    dispatch({
+      type: 'userDataStat/fetchUserStatisticReportGender',
+      payload: genderData,
+    });
   }, [genderData]);
 
   useEffect(() => {
-    console.log(2, ageData);
+    dispatch({
+      type: 'userDataStat/fetchUserStatisticReportAge',
+      payload: ageData,
+    });
   }, [ageData]);
 
   return (
@@ -37,4 +46,4 @@ const GenderAgeDistribution = () => {
   );
 };
 
-export default GenderAgeDistribution;
+export default connect(({}) => ({}))(GenderAgeDistribution);
