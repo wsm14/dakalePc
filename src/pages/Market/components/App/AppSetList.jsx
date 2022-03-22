@@ -188,7 +188,7 @@ const AppSetList = (props) => {
   const btnList = [
     {
       text: '新增位置',
-      auth: 'banneraddPlace',
+      auth: 'bannerAddPlace',
       onClick: () => setVisibleAddImg(true),
     },
     {

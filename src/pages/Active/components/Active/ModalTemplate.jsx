@@ -1,6 +1,5 @@
 import React from 'react';
-import { connect } from 'umi';
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
 import ActiveTemplate from '../template/ActiveTemplate';
 
 const ModalTemplate = (props) => {

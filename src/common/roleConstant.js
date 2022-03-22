@@ -29,7 +29,7 @@ export const ROLE_BUTTON_TYPE = {
   bannerUp: 'banner上架',
   bannerDel: 'banner删除',
   bannerAdd: 'banner新增',
-  banneraddPlace:"banner新增位置",
+  bannerAddPlace:"banner新增位置",
   blindEdit: '盲盒编辑',
   blindDel: '盲盒新增',
   blindAdd:'盲盒新增',
