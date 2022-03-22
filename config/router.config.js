@@ -196,6 +196,26 @@ export default [
         component: './Chart/AreaTotal',
       },
       {
+        path: '/chart/userDataStat',
+        name: '用户数据统计',
+        component: './Chart/UserDataStat',
+      },
+      {
+        path: '/chart/videoDataStat',
+        name: '视频数据统计',
+        component: './Chart/VideoDataStat',
+      },
+      {
+        path: '/chart/orderDataStat',
+        name: '订单数据统计',
+        component: './Chart/OrderDataStat',
+      },
+      {
+        path: '/chart/marketStatement',
+        name: '销售报表',
+        component: './Chart/MarketStatement',
+      },
+      {
         path: '/chart/sale',
         name: '运营数据',
         component: './Chart/SaleBlock',

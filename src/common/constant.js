@@ -1090,3 +1090,25 @@ export const HITTING_TYPE = {
   personal: '个人',
   merchant: '商家',
 };
+
+//用户数据统计 - 端口类型
+export const USER_ANALYSIS_TYPE = {
+  totalAppNum: 'APP',
+  totalWeChatNum: '小程序',
+  totalMarkNum: '哒小卡',
+  totalCommunityNum: '哒小团',
+};
+
+//用户数据统计 - 支付人数类型
+export const PAY_USER_TYPE = {
+  totalFirstPayUserNum: '首次支付人数',
+  totalPayUserNum: '总支付人数',
+};
+
+//用户数据统计端口类型
+export const USER_ANALYSIS_TYPES = [
+  { label: 'APP', value: 'app' },
+  { label: '小程序', value: 'weChat' },
+  { label: '哒小卡', value: 'mark' },
+  { label: '哒小团', value: 'communityWechat' },
+];

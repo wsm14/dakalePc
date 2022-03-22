@@ -130,3 +130,21 @@ export function fetchMomentKanBan(params) {
 }
 
 // 视频看板 end
+
+// 用户数据统计
+
+// get 用户数据统计 - 获取数据对象
+export function fetchUserAnalysisReport(params) {
+  return request('/admin/userReportManagement/userAnalysisReport', {
+    params,
+  });
+}
+
+// get 用户数据统计 - 用户画像 - 性别及年龄分布
+export function fetchUserStatisticReport(params) {
+  return request('/admin/userReportManagement/userStatisticReport', {
+    params,
+  });
+}
+
+// 用户数据统计 end
