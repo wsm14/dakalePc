@@ -6,6 +6,7 @@ const ColumnChart = (props) => {
     data,
     xyField = { xField: 'type', yField: 'value' },
     meta = { type: { alias: 'x轴' }, value: { alias: 'y轴' } },
+    ...other
   } = props;
   const config = {
     padding: 'auto',
@@ -25,6 +26,7 @@ const ColumnChart = (props) => {
         },
       },
     },
+    ...other,
   };
 
   return <Column {...config} />;
