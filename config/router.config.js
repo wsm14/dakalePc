@@ -534,6 +534,61 @@ export default [
           },
         ],
       },
+        // 客服中心 service
+      {
+        path: '/service',
+        name: '客服中心',
+        routes: [
+        
+          {
+            path: '/service/news',
+            name: '新闻动态',
+            component: './Service/ServiceNews',
+            buttons: ['save', 'edit', 'down'],
+          },
+          {
+            path: '/service/userFollow',
+            name: '用户跟进',
+            component: './Service/UserFollow',
+            buttons: ['save', 'edit', 'info', 'exportList', 'addTags'],
+          },
+          {
+            path: '/service/feedback',
+            name: '问题反馈',
+            component: './Service/ServiceFeedBack',
+            buttons: ['eye', 'replay', 'config'],
+          },
+
+          {
+            path: '/service/faq',
+            name: '常见问题',
+            component: './Service/ServiceFAQ',
+            buttons: [
+              'userOs',
+              'mreOs',
+              'sortFAQ',
+              'save',
+              'del',
+              'edit',
+              'sort',
+              'setLike',
+              'status',
+            ],
+          },
+          {
+            path: '/service/jobs',
+            name: '人才招聘',
+            component: './Service/SolicitJobs',
+            buttons: ['save', 'edit', 'down', 'jobClass'],
+          },
+          {
+            path: '/service/commentManage',
+            name: '评论管理',
+            component: './Service/CommentManage',
+            buttons: ['del', 'recover'],
+          },
+        ],
+      },
 
       {
         name: '修改密码',
@@ -567,7 +622,6 @@ export default [
         component: './Expert/ExpertRecommend',
         buttons: ['info', 'down', 'handle', 'reportCenter'],
       },
-
 
       // 广告营销 market
 
@@ -755,44 +809,6 @@ export default [
         buttons: ['info', 'check', 'close'],
       },
 
-      // 客服中心 service
-      {
-        path: '/service/news',
-        name: '新闻动态',
-        component: './Service/ServiceNews',
-        buttons: ['save', 'edit', 'down'],
-      },
-      {
-        path: '/service/userFollow',
-        name: '用户跟进',
-        component: './Service/UserFollow',
-        buttons: ['save', 'edit', 'info', 'exportList', 'addTags'],
-      },
-      {
-        path: '/service/feedback',
-        name: '问题反馈',
-        component: './Service/ServiceFeedBack',
-        buttons: ['eye', 'replay', 'config'],
-      },
-
-      {
-        path: '/service/faq',
-        name: '常见问题',
-        component: './Service/ServiceFAQ',
-        buttons: ['userOs', 'mreOs', 'sortFAQ', 'save', 'del', 'edit', 'sort', 'setLike', 'status'],
-      },
-      {
-        path: '/service/jobs',
-        name: '人才招聘',
-        component: './Service/SolicitJobs',
-        buttons: ['save', 'edit', 'down', 'jobClass'],
-      },
-      {
-        path: '/service/commentManage',
-        name: '评论管理',
-        component: './Service/CommentManage',
-        buttons: ['del', 'recover'],
-      },
       // 配置管理 system
       {
         path: '/system/city',
