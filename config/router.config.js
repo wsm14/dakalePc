@@ -34,11 +34,6 @@ export default [
             name: '数据概况',
             component: './Chart/ChartBlock',
           },
-          {
-            path: '/chart/videoBoard',
-            name: '视频看板',
-            component: './Chart/VideoBoard',
-          },
         ],
       },
       // 数据报表
@@ -322,7 +317,7 @@ export default [
           },
           {
             path: '/user/trainee',
-            name: '实习豆长',
+            name: '实习哒人设置',
             component: './User/ExpertTempList',
             buttons: ['save', 'cancelTemp'],
           },
@@ -464,6 +459,12 @@ export default [
             name: '销售系统管理',
             component: './Cityom/SaleAccount',
             buttons: ['save', 'edit', 'info', 'status', 'relieve'],
+          },
+          {
+            path: '/cityom/areaQuery',
+            name: '合伙查询系统',
+            component: './Cityom/AreaQuery',
+            buttons: ['set', 'edit'],
           },
         ],
       },
@@ -730,7 +731,7 @@ export default [
               'getRecord',
             ],
           },
-         
+
           {
             path: '/operation/special',
             name: '特惠商品',
@@ -762,6 +763,18 @@ export default [
             component: './Operation/CouponCheck',
             buttons: ['info', 'check', 'close'],
           },
+          {
+            path: '/operation/goods',
+            name: '商品管理',
+            component: './Operation/GoodsManage',
+            buttons: ['save', 'del', 'info', 'down', 'up', 'stockSet', 'handleDeatil'],
+          },
+          {
+            path: '/operation/classify',
+            name: '分类管理',
+            component: './Operation/ClassifyManage',
+            buttons: ['save', 'del', 'edit'],
+          },
         ],
       },
 
@@ -771,8 +784,11 @@ export default [
         component: './Base/PassWord',
       },
 
-      
-
+      {
+        path: '/chart/videoBoard',
+        name: '视频看板',
+        component: './Chart/VideoBoard',
+      },
       // 哒人管理 expert
       {
         path: '/expert/level',
@@ -800,12 +816,7 @@ export default [
       },
 
       // 广告营销 market
-      {
-        path: '/market/areaQuery',
-        name: '合伙查询系统',
-        component: './Market/AreaQuery',
-        buttons: ['set', 'edit'],
-      },
+   
 
       {
         path: '/market/cardpeaspark',
@@ -854,18 +865,7 @@ export default [
         buttons: ['save', 'info', 'down', 'check', 'diary', 'peasDetail', 'set', 'rewardPeo'],
       },
 
-      {
-        path: '/operation/goods',
-        name: '商品管理',
-        component: './Operation/GoodsManage',
-        buttons: ['save', 'del', 'info', 'down', 'up', 'stockSet', 'handleDeatil'],
-      },
-      {
-        path: '/operation/classify',
-        name: '分类管理',
-        component: './Operation/ClassifyManage',
-        buttons: ['save', 'del', 'edit'],
-      },
+    
       {
         path: '/operation/platformEquityOrder',
         name: '权益订单',
