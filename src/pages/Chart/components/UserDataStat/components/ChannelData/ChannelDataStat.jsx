@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Radio, Space, Select, DatePicker, Checkbox } from 'antd';
 import { connect } from 'umi';
 import moment from 'moment';
@@ -8,9 +8,10 @@ const disTime = moment('2020-03-01');
 
 const ChannelDataStat = (props) => {
   const { loading, channelList } = props;
+  const childRef = useRef();
 
   const [selectedTime, setSelectedTime] = useState([
-    moment().subtract(7, 'day'),
+    moment().subtract(1, 'day'),
     moment().subtract(1, 'day'),
   ]); // 暂存时间
 
@@ -20,36 +21,45 @@ const ChannelDataStat = (props) => {
 
   const getColumns = [
     {
-      title: '文件名',
+      title: '媒介',
       align: 'center',
-      dataIndex: 'fileName',
+      dataIndex: 'utmSource',
     },
     {
-      title: '类型',
+      title: '注册用户',
       align: 'center',
-      dataIndex: 'type',
+      dataIndex: 'totalRegisterNum',
+    },
+    {
+      title: '支付用户',
+      align: 'center',
+      dataIndex: 'totalPayNum',
     },
   ];
 
-  console.log(moment().subtract(1, 'day').format('YYYY-MM-DD'));
-
   return (
     <div>
-      <Space style={{ width: '100%' }}>
+      <Space style={{ width: '100%', margin: '15px 0' }}>
         <DatePicker.RangePicker
           allowClear={false}
           value={selectedTime}
           onChange={(val) => {
             setSelectedTime(val);
+            childRef.current.fetchGetData({
+              startStatisticDay: val[0].format('YYYY-MM-DD'),
+              endStatisticDay: val[1].format('YYYY-MM-DD'),
+            });
           }}
           disabledDate={disabledDate}
           style={{ width: 256 }}
         />
       </Space>
       <TableDataBlock
+        order={true}
         noCard={false}
         loading={loading}
         columns={getColumns}
+        cRef={childRef}
         rowKey={(row) => `${row.utmSource}${row.utmMedium}`}
         params={{
           startStatisticDay: selectedTime[0].format('YYYY-MM-DD'),
