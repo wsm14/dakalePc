@@ -38,8 +38,8 @@ const NewNativeFormSet = ({
     fetchWalkManageNavigation(); // 获取风向标
 
     detail.preferentialActivityId &&
-      showApi !== 'phoneBill' &&
-      showApi !== 'memberRecharge' &&
+      detail.nativeJumpType !== 'phoneBill' &&
+      detail.nativeJumpType !== 'memberRecharge' &&
       fetchPagePreferentialActivity({ preferentialActivityId: detail.preferentialActivityId });
   }, []);
 
