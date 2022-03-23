@@ -147,4 +147,25 @@ export function fetchUserStatisticReport(params) {
   });
 }
 
+// get 用户数据统计 - 用户画像 - 地区分布
+export function fetchUserPortraitAreaReport(params) {
+  return request('/admin/userReportManagement/userPortraitAreaReport', {
+    params,
+  });
+}
+
+// get 用户数据统计 - 累计数据
+export function fetchUserAccumulativeReport(params) {
+  return request('/admin/userReportManagement/userAccumulativeReport', {
+    params,
+  });
+}
+
+// get 用户数据统计 - 渠道统计
+export function fetchUserChannelStatisticsReport(params) {
+  return request('/admin/userReportManagement/userChannelStatisticsReport', {
+    params,
+  });
+}
+
 // 用户数据统计 end

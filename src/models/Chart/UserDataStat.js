@@ -1,10 +1,28 @@
-import { fetchUserAnalysisReport, fetchUserStatisticReport } from '@/services/ChartServices';
+import {
+  fetchUserAnalysisReport,
+  fetchUserStatisticReport,
+  fetchUserPortraitAreaReport,
+  fetchUserAccumulativeReport,
+  fetchUserChannelStatisticsReport,
+} from '@/services/ChartServices';
 import { USER_ANALYSIS_TYPE, PAY_USER_TYPE } from '@/common/constant';
+
+const totalNum = (list, key) => {
+  return list.reduce((preValue, curValue) => preValue + curValue[key], 0);
+};
+
 export default {
   namespace: 'userDataStat',
 
   state: {
     newRegisterDataObj: {},
+    genderList: [],
+    ageList: [],
+    provinceList: [],
+    cityList: [],
+    districtList: [],
+    addUpData: {},
+    channelList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -78,26 +96,141 @@ export default {
       const response = yield call(fetchUserStatisticReport, payload);
       if (!response) return;
       const { content = {} } = response;
-      const { reportUserGenderList = [], ...other } = content;
+      const { reportUserGenderList = [] } = content;
 
-      console.log(reportUserGenderList);
+      const genderList = reportUserGenderList.map((item) => ({
+        ...item,
+        gender: {
+          M: '男',
+          F: '女',
+        }[item.gender],
+        percentage: `${(
+          (item.totalGenderUserNum / totalNum(reportUserGenderList, 'totalGenderUserNum')) *
+          100
+        ).toFixed(2)}%`,
+      }));
 
       yield put({
         type: 'save',
-        payload: {},
+        payload: {
+          genderList,
+        },
       });
     },
     *fetchUserStatisticReportAge({ payload }, { call, put }) {
       const response = yield call(fetchUserStatisticReport, payload);
       if (!response) return;
       const { content = {} } = response;
-      const { reportUserGenderList = [], ...other } = content;
+      const { reportUserAgeList = [] } = content;
 
-      console.log(reportUserGenderList, 2);
+      const addNum = totalNum(reportUserAgeList, 'totalAgeUserNum');
+
+      const ageList = reportUserAgeList.map((item) => ({
+        ...item,
+        ageRange:
+          item.ageRange === '0-17'
+            ? '17岁以下'
+            : item.ageRange === '50-120'
+            ? '50岁以上'
+            : `${item.ageRange}岁`,
+        percentage: `${((item.totalAgeUserNum / addNum) * 100).toFixed(2)}%`,
+      }));
 
       yield put({
         type: 'save',
-        payload: {},
+        payload: {
+          ageList: ageList.sort((a, b) => b.totalAgeUserNum - a.totalAgeUserNum),
+        },
+      });
+    },
+
+    *fetchUserPortraitAreaReportProvince({ payload }, { call, put }) {
+      const response = yield call(fetchUserPortraitAreaReport, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const { reportUserPortraitAreaList = [] } = content;
+
+      const provinceList = reportUserPortraitAreaList.map((item) => ({
+        ...item,
+        provinceCode: `${item.provinceCode}0000`,
+        percentage: `${(
+          (item.totalAreaNum / totalNum(reportUserPortraitAreaList, 'totalAreaNum')) *
+          100
+        ).toFixed(2)}%`,
+      }));
+
+      yield put({
+        type: 'save',
+        payload: {
+          provinceList,
+        },
+      });
+    },
+    *fetchUserPortraitAreaReportCity({ payload }, { call, put }) {
+      const response = yield call(fetchUserPortraitAreaReport, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const { reportUserPortraitAreaList = [] } = content;
+
+      const cityList = reportUserPortraitAreaList.map((item) => ({
+        ...item,
+        cityCode: `${item.cityCode}00`,
+        percentage: `${(
+          (item.totalAreaNum / totalNum(reportUserPortraitAreaList, 'totalAreaNum')) *
+          100
+        ).toFixed(2)}%`,
+      }));
+
+      yield put({
+        type: 'save',
+        payload: {
+          cityList,
+        },
+      });
+    },
+    *fetchUserPortraitAreaReportDistrict({ payload }, { call, put }) {
+      const response = yield call(fetchUserPortraitAreaReport, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const { reportUserPortraitAreaList = [] } = content;
+
+      const districtList = reportUserPortraitAreaList.map((item) => ({
+        ...item,
+        percentage: `${(
+          (item.totalAreaNum / totalNum(reportUserPortraitAreaList, 'totalAreaNum')) *
+          100
+        ).toFixed(2)}%`,
+      }));
+
+      yield put({
+        type: 'save',
+        payload: {
+          districtList,
+        },
+      });
+    },
+    *fetchUserAccumulativeReport({ payload }, { call, put }) {
+      const response = yield call(fetchUserAccumulativeReport, payload);
+      if (!response) return;
+      const { content = {} } = response;
+
+      yield put({
+        type: 'save',
+        payload: {
+          addUpData: content,
+        },
+      });
+    },
+    *fetchUserChannelStatisticsReport({ payload }, { call, put }) {
+      const response = yield call(fetchUserChannelStatisticsReport, payload);
+      if (!response) return;
+      const { content = {} } = response;
+
+      yield put({
+        type: 'save',
+        payload: {
+          channelList: { list: content.recordList, total: content.total },
+        },
       });
     },
   },
