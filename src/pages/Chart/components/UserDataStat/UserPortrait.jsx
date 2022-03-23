@@ -18,11 +18,11 @@ const UserPortrait = () => {
       tab: '地区分布',
       content: <DistrictDistribution></DistrictDistribution>,
     },
-    {
-      key: '3',
-      tab: '终端及机型分布',
-      content: <TerminalDistribution></TerminalDistribution>,
-    },
+    // {
+    //   key: '3',
+    //   tab: '终端及机型分布',
+    //   content: <TerminalDistribution></TerminalDistribution>,
+    // },
   ];
 
   return (
