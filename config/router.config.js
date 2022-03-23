@@ -534,12 +534,11 @@ export default [
           },
         ],
       },
-        // 客服中心 service
+      // 客服中心 service
       {
         path: '/service',
         name: '客服中心',
         routes: [
-        
           {
             path: '/service/news',
             name: '新闻动态',
@@ -589,6 +588,182 @@ export default [
           },
         ],
       },
+      // 配置管理 system
+      {
+        name: '配置管理',
+        path: '/system',
+        routes: [
+          {
+            path: '/system/city',
+            name: '城市管理',
+            component: './System/ManageCity',
+            buttons: ['save', 'del', 'edit', 'status'],
+          },
+          {
+            path: '/system/globalConfig',
+            name: '全局配置',
+            component: './System/GlobalConfig',
+            buttons: [
+              'down',
+              'adVideo_edit',
+              'merchantVideo_edit',
+              'UGCVideo_edit',
+              'save',
+              'info',
+              'searchSet',
+            ],
+          },
+          {
+            path: '/system/pageset',
+            name: '菜单设置',
+            component: './System/MenuList',
+          },
+          {
+            path: '/system/welfare',
+            name: '新人福利配置',
+            component: './System/WelfareConfig',
+            buttons: ['edit', 'save', 'del'],
+          },
+          {
+            path: '/system/allocation',
+            name: '哒人配置',
+            component: './System/ExpertAllocation',
+            buttons: ['save', 'edit'],
+          },
+          {
+            path: '/system/walking',
+            name: '逛逛页面配置',
+            component: './System/WalkingManage',
+          },
+          {
+            path: '/system/withdrawRegular',
+            name: '提现规则',
+            component: './System/WithdrawRegular',
+            buttons: ['save', 'edit'],
+          },
+          {
+            path: '/system/commissionTempate',
+            name: '分佣模板',
+            buttons: ['save', 'edit', 'info'],
+            component: './System/CommissionTempate',
+          },
+          {
+            path: '/system/markConfigure',
+            name: '营销功能配置',
+            component: './System/MarketConfigure',
+            buttons: [
+              'globalPopEdit',
+              'globalUpVersion',
+              'globalAddVersion',
+              'globalPopAdd',
+              'globalPopDel',
+              'globalPopDown',
+              'globalAddCity',
+              'bannerEdit',
+              'bannerUpVersion',
+              'bannerAddVersion',
+              'bannerDown',
+              'bannerUp',
+              'bannerDel',
+              'bannerAdd',
+              'bannerAddPlace',
+              'floatEdit',
+              'floatEditVersion',
+              'floatAddVersion',
+              'floatAddCity',
+              'floatAdd',
+              'floatDown',
+              'floatDel',
+              'newWelfareAdd',
+              'newWelfareEdit',
+              'weekEdit',
+              'materialConfigDownLoad',
+              'materialConfigAdd',
+              'blindEdit',
+              'blindDel',
+              'blindAdd',
+              'blindConfigEdit',
+              'newWinDel',
+              'newWinAdd',
+            ],
+          },
+        ],
+      },
+      // 商品/订单管理
+      {
+        path: '/operation',
+        name: '商品/订单管理',
+        routes: [
+          {
+            path: '/operation/orders',
+            name: '订单列表',
+            component: './Operation/OrdersList',
+            buttons: ['info', 'exportList', 'goodsView', 'goodsDeliver', 'routing', 'batchRouting'],
+          },
+          {
+            path: '/operation/verificationList',
+            name: '核销列表',
+            component: './Operation/VerificationList',
+            buttons: ['exportList'],
+          },
+          {
+            path: '/operation/refund',
+            name: '退款管理',
+            component: './Operation/RefundOrder',
+            buttons: ['info'],
+          },
+          {
+            path: '/operation/coupon',
+            name: '优惠券管理',
+            component: './Operation/CouponManage',
+            buttons: [
+              'save',
+              'del',
+              'info',
+              'edit',
+              'down',
+              'again',
+              'exportList',
+              'diary',
+              'addRemain',
+              'shareImg',
+              'getRecord',
+            ],
+          },
+         
+          {
+            path: '/operation/special',
+            name: '特惠商品',
+            component: './Operation/SpecialGoods',
+            buttons: [
+              'save',
+              'edit',
+              'down',
+              'info',
+              'diary',
+              'again',
+              'recommendStatus',
+              'exportList',
+              'goodsCode',
+              'againUp',
+              'addRemain',
+              'shareImg',
+            ],
+          },
+          {
+            path: '/operation/specialGoodCheck',
+            name: '特惠商品审核',
+            component: './Operation/SpecialGoodCheck',
+            buttons: ['info', 'check', 'close'],
+          },
+          {
+            path: '/operation/couponCheck',
+            name: '券审核',
+            component: './Operation/CouponCheck',
+            buttons: ['info', 'check', 'close'],
+          },
+        ],
+      },
 
       {
         name: '修改密码',
@@ -596,8 +771,9 @@ export default [
         component: './Base/PassWord',
       },
 
-      // 哒人管理 expert
+      
 
+      // 哒人管理 expert
       {
         path: '/expert/level',
         name: '等级设置',
@@ -624,7 +800,6 @@ export default [
       },
 
       // 广告营销 market
-
       {
         path: '/market/areaQuery',
         name: '合伙查询系统',
@@ -671,50 +846,7 @@ export default [
         ],
       },
 
-      {
-        path: '/market/markConfigure',
-        name: '营销功能配置',
-        component: './Market/MarketConfigure',
-        buttons: [
-          'globalPopEdit',
-          'globalUpVersion',
-          'globalAddVersion',
-          'globalPopAdd',
-          'globalPopDel',
-          'globalPopDown',
-          'globalAddCity',
-          'bannerEdit',
-          'bannerUpVersion',
-          'bannerAddVersion',
-          'bannerDown',
-          'bannerUp',
-          'bannerDel',
-          'bannerAdd',
-          'bannerAddPlace',
-          'floatEdit',
-          'floatEditVersion',
-          'floatAddVersion',
-          'floatAddCity',
-          'floatAdd',
-          'floatDown',
-          'floatDel',
-          'newWelfareAdd',
-          'newWelfareEdit',
-          'weekEdit',
-          'materialConfigDownLoad',
-          'materialConfigAdd',
-          'blindEdit',
-          'blindDel',
-          'blindAdd',
-          'blindConfigEdit',
-          'newWinDel',
-          'newWinAdd',
-        ],
-      },
-
       // 店铺运营 operation
-
-      // 视频管理    video
       {
         path: '/operation/share',
         name: '视频管理',
@@ -735,135 +867,12 @@ export default [
         buttons: ['save', 'del', 'edit'],
       },
       {
-        path: '/operation/orders',
-        name: '订单列表',
-        component: './Operation/OrdersList',
-        buttons: ['info', 'exportList', 'goodsView', 'goodsDeliver', 'routing', 'batchRouting'],
-      },
-      {
-        path: '/operation/verificationList',
-        name: '核销列表',
-        component: './Operation/VerificationList',
-        buttons: ['exportList'],
-      },
-      {
-        path: '/operation/refund',
-        name: '退款管理',
-        component: './Operation/RefundOrder',
-        buttons: ['info'],
-      },
-      {
-        path: '/operation/coupon',
-        name: '优惠券管理',
-        component: './Operation/CouponManage',
-        buttons: [
-          'save',
-          'del',
-          'info',
-          'edit',
-          'down',
-          'again',
-          'exportList',
-          'diary',
-          'addRemain',
-          'shareImg',
-          'getRecord',
-        ],
-      },
-
-      {
         path: '/operation/platformEquityOrder',
         name: '权益订单',
         component: './Operation/PlatformEquityOrder',
         buttons: ['equityCoupon', 'equityGoods', 'equityDummy', 'info', 'exportList'],
       },
-      {
-        path: '/operation/special',
-        name: '特惠商品',
-        component: './Operation/SpecialGoods',
-        buttons: [
-          'save',
-          'edit',
-          'down',
-          'info',
-          'diary',
-          'again',
-          'recommendStatus',
-          'exportList',
-          'goodsCode',
-          'againUp',
-          'addRemain',
-          'shareImg',
-        ],
-      },
-      {
-        path: '/operation/specialGoodCheck',
-        name: '特惠商品审核',
-        component: './Operation/SpecialGoodCheck',
-        buttons: ['info', 'check', 'close'],
-      },
-      {
-        path: '/operation/couponCheck',
-        name: '券审核',
-        component: './Operation/CouponCheck',
-        buttons: ['info', 'check', 'close'],
-      },
 
-      // 配置管理 system
-      {
-        path: '/system/city',
-        name: '城市管理',
-        component: './System/ManageCity',
-        buttons: ['save', 'del', 'edit', 'status'],
-      },
-      {
-        path: '/system/globalConfig',
-        name: '全局配置',
-        component: './System/GlobalConfig',
-        buttons: [
-          'down',
-          'adVideo_edit',
-          'merchantVideo_edit',
-          'UGCVideo_edit',
-          'save',
-          'info',
-          'searchSet',
-        ],
-      },
-      {
-        path: '/system/pageset',
-        name: '菜单设置',
-        component: './System/MenuList',
-      },
-      {
-        path: '/system/welfare',
-        name: '新人福利配置',
-        component: './System/WelfareConfig',
-        buttons: ['edit', 'save', 'del'],
-      },
-      {
-        path: '/expert/allocation',
-        name: '哒人配置',
-        component: './System/ExpertAllocation',
-        buttons: ['save', 'edit'],
-      },
-      {
-        path: '/operation/walking',
-        name: '逛逛页面配置',
-        component: './System/WalkingManage',
-      },
-      {
-        path: '/system/withdrawRegular',
-        name: '提现规则',
-        component: './System/WithdrawRegular',
-        buttons: ['save', 'edit'],
-      },
-      {
-        path: '/system/commissionTempate',
-        name: '分佣模板',
-        buttons: ['save', 'edit', 'info'],
-        component: './System/CommissionTempate',
-      },
       // 用户管理 user
     ],
   },
