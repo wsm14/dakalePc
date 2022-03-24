@@ -113,6 +113,37 @@ const HolidayConfigSet = (props) => {
       // style: { width: '100%' },
       rules: [{ required: false }],
     },
+    {
+      label: '“哒人秀”动效json文件',
+      type: 'otherUpload',
+      extra: '请上传动效zip文件',
+      name: ['topTab', 'showFile'],
+      // labelCol: { span: 6 },
+      // style: { flex: 1 },
+      rules: [{ required: false }],
+    },
+    {
+      label: '“哒人秀”动效图宽度',
+      name: ['topTab', 'showWidth'],
+      type: 'number',
+      placeholder: '请输入数字',
+      precision: 0,
+      // labelCol: { span: 7 },
+      // style: { flex: 1 },
+      rules: [{ required: false }],
+      suffix: 'px',
+      extra: '请上传移动端UI尺寸宽度',
+    },
+    {
+      label: '“哒人秀”动效图',
+      type: 'upload',
+      extra: '请上传100kb的png格式图片',
+      maxSize: 100,
+      name: ['topTab', 'show'],
+      // labelCol: { span: 7 },
+      // style: { width: '100%' },
+      rules: [{ required: false }],
+    },
     // {
     //   title: '捡豆',
     //   label: '左上角',
@@ -288,6 +319,8 @@ const HolidayConfigSet = (props) => {
       const findImgs = checkFileData(topTab.find);
       const lifeFiles = checkFileData(topTab.lifeFile);
       const lifeImgs = checkFileData(topTab.life);
+      const showFiles = checkFileData(topTab.showFile);
+      const showImgs = checkFileData(topTab.show);
 
       // const res = await aliOssUpload([
       //   ...pickTopimg,
@@ -319,6 +352,8 @@ const HolidayConfigSet = (props) => {
       const findImg = await aliOssUpload(findImgs);
       const lifeFileFiles = await aliOssUpload(lifeFiles);
       const lifeImg = await aliOssUpload(lifeImgs);
+      const showFileFiles = await aliOssUpload(showFiles);
+      const showImg = await aliOssUpload(showImgs);
 
       // pickUpBeans.upperLeftCorner = await aliOssUpload(pickTopimg).toString();
       pickUpBeans.lowerRightCornerCountdown = lowerRightCornerCountdownImg?.toString();
@@ -337,6 +372,8 @@ const HolidayConfigSet = (props) => {
       topTab.find = findImg?.toString();
       topTab.lifeFile = lifeFileFiles?.toString();
       topTab.life = lifeImg?.toString();
+      topTab.showFile = showFileFiles?.toString();
+      topTab.show = showImg?.toString();
 
       // console.log(topTab.findFile);
       // return;
@@ -359,6 +396,18 @@ const HolidayConfigSet = (props) => {
           file: topTab.lifeFile,
           width: topTab.lifeWidth?.toString(),
           configFestivalDetailId: tObj.lifeId,
+        },
+      ];
+
+      //达人秀
+      const showArr = [
+        {
+          topType: 'topTab',
+          type: 'daRenShow',
+          image: topTab.show,
+          file: topTab.showFile,
+          width: topTab.showWidth?.toString(),
+          configFestivalDetailId: tObj.showId,
         },
       ];
       // console.log(findArr);
@@ -411,6 +460,7 @@ const HolidayConfigSet = (props) => {
           configFestivalDetailDTOS: [
             ...findArr,
             ...lifeArr,
+            ...showArr,
             ...pickArr,
             ...wanderArr,
             ...bottomArr,
