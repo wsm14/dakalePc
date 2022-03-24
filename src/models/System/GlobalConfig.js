@@ -186,6 +186,12 @@ export default {
             topTabObj.life = topItem.image;
             topTabObj.lifeId = topItem.configFestivalDetailId;
             break;
+          case 'daRenShow':
+            topTabObj.showFile = topItem.file;
+            topTabObj.showWidth = topItem.width;
+            topTabObj.show = topItem.image;
+            topTabObj.showId = topItem.configFestivalDetailId;
+            break;
         }
       });
 

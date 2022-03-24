@@ -34,6 +34,22 @@ export default [
             name: '数据概况',
             component: './Chart/ChartBlock',
           },
+          {
+            path: '/chart/userDataStat',
+            name: '用户数据统计',
+            component: './Chart/UserDataStat',
+          },
+          {
+            path: '/chart/videoDataStat',
+            name: '视频数据统计',
+            component: './Chart/VideoDataStat',
+          },
+          {
+            path: '/chart/orderDataStat',
+            name: '订单数据统计',
+            component: './Chart/OrderDataStat',
+          },
+         
         ],
       },
       // 数据报表
@@ -41,6 +57,11 @@ export default [
         name: '数据报表',
         path: '/dataStatement',
         routes: [
+          {
+            path: '/dataStatement/marketStatement',
+            name: '销售报表',
+            component: './DataStatement/MarketStatement',
+          },
           {
             path: '/dataStatement/dataGatherExport',
             name: '数据明细查询',

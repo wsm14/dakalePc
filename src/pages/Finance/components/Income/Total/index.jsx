@@ -91,6 +91,8 @@ const IncomeTotal = ({ totalBean, loading }) => {
     },
   };
 
+  console.log(chartData, '111111');
+
   return (
     <div style={{ marginBottom: 20, display: 'flex', alignItems: 'center' }}>
       <div>
