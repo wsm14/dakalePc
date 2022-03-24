@@ -126,6 +126,7 @@ const SubsidyShop = (props) => {
       <Card>
         <TableDataBlock
           order
+          keepData
           firstFetch={false}
           noCard={false}
           cRef={childRef}
