@@ -168,4 +168,61 @@ export function fetchUserChannelStatisticsReport(params) {
   });
 }
 
+// get 用户数据统计 - 渠道趋势-对比
+export function fetchUserChannelContrastReport(params) {
+  return request('/admin/userReportManagement/userChannelContrastReport', {
+    params,
+  });
+}
+
 // 用户数据统计 end
+
+// 视频数据统计
+
+// get 视频数据统计 - 趋势分析
+export function fetchMomentTrendAnalysisReport(params) {
+  return request('/admin/momentReportManagement/momentTrendAnalysisReport', {
+    params,
+  });
+}
+
+// get 视频数据统计 - 视频数量
+export function fetchMomentNumAnalysisReport(params) {
+  return request('/admin/momentReportManagement/momentNumAnalysisReport', {
+    params,
+  });
+}
+
+// get 视频数据统计 - 播放分析
+export function fetchMomentPlayAnalysisReport(params) {
+  return request('/admin/momentReportManagement/momentPlayAnalysisReport', {
+    params,
+  });
+}
+
+// get 视频数据统计 - UGC视频打赏情况
+export function fetchMomentRewardAnalysisReport(params) {
+  return request('/admin/momentReportManagement/momentRewardAnalysisReport', {
+    params,
+  });
+}
+
+// 视频数据统计 end
+
+// 订单数据统计
+
+// get 订单数据统计 - 趋势分析
+export function fetchOrderTrendAnalysisReport(params) {
+  return request('/admin/orderReportManagement/orderTrendAnalysisReport', {
+    params,
+  });
+}
+
+// get 订单数据统计 - 支付金额分析
+export function fetchOrderPayAnalysisReport(params) {
+  return request('/admin/orderReportManagement/orderPayAnalysisReport', {
+    params,
+  });
+}
+
+// 订单数据统计 end

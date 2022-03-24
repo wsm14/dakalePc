@@ -2,7 +2,14 @@ import React, { useEffect } from 'react';
 import { Card } from 'antd';
 import { connect } from 'umi';
 import QuestionTooltip from '@/components/QuestionTooltip';
-import appImg from './components/img/app.jpg';
+import appImg from './components/img/app.png';
+import weChatImg from './components/img/weChat.png';
+import markImg from './components/img/mark.png';
+import communityWechatImg from './components/img/communityWechat.png';
+import addUserImg from './components/img/addUser.png';
+import dakaUserImg from './components/img/dakaUser.png';
+import huoyueUserImg from './components/img/huoyueUser.png';
+import buyUserImg from './components/img/buyUser.png';
 
 const AccumulativeData = ({ dispatch, addUpData }) => {
   useEffect(() => {
@@ -29,25 +36,25 @@ const AccumulativeData = ({ dispatch, addUpData }) => {
       title: <div style={{ margin: '15px 0' }}>截止昨日24点</div>,
       showArr: [
         {
-          url: appImg,
+          url: addUserImg,
           title: '累计注册用户',
           tip: '指在全站累计注册的用户数',
           data: addUpData.accumulativeRegisterUser,
         },
         {
-          url: appImg,
+          url: buyUserImg,
           title: '累计支付用户',
           tip: '指在全站累计支付过的用户数，不论购买任何商品，只要发生或支付行为的都算',
           data: addUpData.accumulativePayUser,
         },
         {
-          url: appImg,
+          url: dakaUserImg,
           title: '累计打卡用户',
           tip: '指在全站累计打卡过的用户数，包括到店打卡或在哒小卡打卡。',
           data: addUpData.accumulativeMarkUser,
         },
         {
-          url: appImg,
+          url: huoyueUserImg,
           title: '近3个月活跃用户',
           tip: '指近3个月在全站有行为记录的用户数，包括消费、打卡、看视频、玩游戏等。',
           data: addUpData.accumulativeActiveUser,
@@ -63,17 +70,17 @@ const AccumulativeData = ({ dispatch, addUpData }) => {
           data: addUpData.accumulativeAppRegister,
         },
         {
-          url: appImg,
+          url: weChatImg,
           title: '哒小乐',
           data: addUpData.accumulativeWeChatRegister,
         },
         {
-          url: appImg,
+          url: communityWechatImg,
           title: '哒小团',
           data: addUpData.accumulativeCommunityRegister,
         },
         {
-          url: appImg,
+          url: markImg,
           title: '哒小卡',
           data: addUpData.accumulativeMarkRegister,
         },

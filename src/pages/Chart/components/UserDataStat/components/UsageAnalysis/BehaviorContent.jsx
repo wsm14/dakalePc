@@ -4,7 +4,7 @@ import { Spin } from 'antd';
 import moment from 'moment';
 import { Column, Line } from '@/components/Charts';
 import { USER_ANALYSIS_TYPES } from '@/common/constant';
-import SelectBlock from '../SearchBlock';
+import SearchBlock from '../../../SearchBlock';
 
 const BehaviorContent = (props) => {
   const { dispatch, loading, newRegisterDataObj } = props;
@@ -12,9 +12,22 @@ const BehaviorContent = (props) => {
     groupType: 'day',
     appType: 'app,weChat,mark,communityWechat',
     reportType: 'newRegister',
-    beginDate: moment().subtract(7, 'day').format('YYYY-MM-DD'),
-    endDate: moment().subtract(1, 'day').format('YYYY-MM-DD'),
+    startStatisticDay: moment().subtract(7, 'day').format('YYYY-MM-DD'),
+    endStatisticDay: moment().subtract(1, 'day').format('YYYY-MM-DD'),
   });
+
+  // 监听数据变化发送请求
+  useEffect(() => {
+    data && fetchSearch();
+  }, [data]);
+
+  // 请求接口
+  const fetchSearch = () => {
+    dispatch({
+      type: 'userDataStat/fetchUserAnalysisReport',
+      payload: data,
+    });
+  };
 
   const btnTypeProps = {
     newRegister: {
@@ -27,6 +40,7 @@ const BehaviorContent = (props) => {
           xyField={{ xField: 'statisticDay', yField: 'value' }}
           legend={false}
           seriesField="type"
+          isStack={true}
         />
       ),
     },
@@ -58,7 +72,7 @@ const BehaviorContent = (props) => {
 
   return (
     <div>
-      <SelectBlock
+      <SearchBlock
         data={data}
         setData={setData}
         btnObj={{
@@ -69,8 +83,7 @@ const BehaviorContent = (props) => {
         portTypeList={USER_ANALYSIS_TYPES}
         defaultPortType={['app', 'weChat', 'mark', 'communityWechat']}
         allText={btnTypeProps.allText}
-        dispatchType="userDataStat/fetchUserAnalysisReport"
-      ></SelectBlock>
+      ></SearchBlock>
       {/* 图表 */}
       <Spin spinning={loading}>{btnTypeProps.eCharts}</Spin>
     </div>

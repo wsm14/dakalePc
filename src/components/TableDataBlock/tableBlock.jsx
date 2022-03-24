@@ -61,6 +61,7 @@ const TableBlockComponent = (props) => {
     searchCallback,
     searchShowData,
     total,
+    sortConfig = null,
     order = false,
     tableSort = false,
     tableSize = 'default',
@@ -150,16 +151,30 @@ const TableBlockComponent = (props) => {
   };
 
   // table change
-  const tableChange = (page, filters, sorter) => {
+  const tableChange = (page, filters, sorter = {}) => {
     console.log(page, filters, sorter);
-    if (page.current !== tableParems.page || page.pageSize !== tableParems.limit)
+    const { defaultValue = '', sortConstant = {}, sortKey } = sortConfig || {};
+    // 是否存在自定义排序规则
+    const sortCheck = Object.keys(sorter).length && sortConfig;
+    if (
+      page.current !== tableParems.page || // 页数变化
+      page.pageSize !== tableParems.limit || // 条数变化
+      sortCheck // 自定义排序规则存在时排序变化
+    ) {
+      const sortData = sortCheck
+        ? {
+            [sortKey]: sorter.order ? sortConstant[sorter.field][sorter.order] : defaultValue,
+          }
+        : {};
       setTableParems({
         ...tableParems,
+        ...sortData,
         page: page.current, // 页码
         limit: page.pageSize, // 每页条数
-        // sortOrder: sorter.order, // 排序字段
-        // sortField: sorter.field, // 排序规则 升降
+        // sortOrder: sorter.order, // 排序规则 升降
+        // sortField: sorter.field, // 排序字段
       });
+    }
   };
 
   const tabContent = (
