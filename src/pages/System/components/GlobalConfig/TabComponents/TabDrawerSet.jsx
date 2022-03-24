@@ -74,17 +74,17 @@ const TabDrawerSet = (props) => {
       cityType: 'city',
       visible: areaType === 'detail',
     },
-    {
-      label: '选择标签（默认标签）',
-      name: 'defaultTags',
-      type: 'multiple',
-      select: defaultTagNames,
-      rules: [{ required: false }],
-      fieldNames: {
-        label: 'name',
-        value: 'configMomentTagId',
-      },
-    },
+    // {
+    //   label: '选择标签（默认标签）',
+    //   name: 'defaultTags',
+    //   type: 'multiple',
+    //   select: defaultTagNames,
+    //   rules: [{ required: false }],
+    //   fieldNames: {
+    //     label: 'name',
+    //     value: 'configMomentTagId',
+    //   },
+    // },
     {
       label: '选择标签（UCG标签）',
       name: 'tags',
