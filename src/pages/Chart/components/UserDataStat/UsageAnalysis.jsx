@@ -15,7 +15,7 @@ const UsageAnalysis = () => {
 
   return (
     <div>
-      <Tabs defaultActiveKey="1" onChange={() => console.log(1)}>
+      <Tabs defaultActiveKey="1" onChange={() => console.log(1)} destroyInactiveTabPane={true}>
         {radioGroupTypeList.map((item) => (
           <TabPane tab={item.tab} key={item.key}>
             {item.content}

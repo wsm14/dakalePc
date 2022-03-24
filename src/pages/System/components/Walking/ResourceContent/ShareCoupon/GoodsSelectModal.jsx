@@ -28,6 +28,7 @@ const GoodsSelectModal = (props) => {
   useEffect(() => {
     if (visible) {
       setTabKey(typeList == 'mixedList' ? 'specialGoods' : typeList);
+      setSelectItem(form.getFieldValue(typeList) || []);
     }
   }, [visible]);
 

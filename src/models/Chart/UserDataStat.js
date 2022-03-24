@@ -4,6 +4,7 @@ import {
   fetchUserPortraitAreaReport,
   fetchUserAccumulativeReport,
   fetchUserChannelStatisticsReport,
+  fetchUserChannelContrastReport,
 } from '@/services/ChartServices';
 import { USER_ANALYSIS_TYPE, PAY_USER_TYPE } from '@/common/constant';
 
@@ -23,6 +24,8 @@ export default {
     districtList: [],
     addUpData: {},
     channelList: { list: [], total: 0 },
+    channelListOne: [],
+    channelListTwo: [],
   },
 
   reducers: {
@@ -230,6 +233,50 @@ export default {
         type: 'save',
         payload: {
           channelList: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+    *fetchUserChannelContrastReportOne({ payload }, { call, put }) {
+      const response = yield call(fetchUserChannelContrastReport, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const { reportUserChannelList = [] } = content;
+
+      let channelListOne = reportUserChannelList.map((item) => {
+        const { statisticDay, statisticMonth, ...other } = item;
+        return {
+          ...other,
+          statisticDay: statisticDay || statisticMonth,
+          type: '渠道一',
+        };
+      });
+
+      yield put({
+        type: 'save',
+        payload: {
+          channelListOne,
+        },
+      });
+    },
+    *fetchUserChannelContrastReportTwo({ payload }, { call, put }) {
+      const response = yield call(fetchUserChannelContrastReport, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const { reportUserChannelList = [] } = content;
+
+      let channelListTwo = reportUserChannelList.map((item) => {
+        const { statisticDay, statisticMonth, ...other } = item;
+        return {
+          ...other,
+          statisticDay: statisticDay || statisticMonth,
+          type: '渠道二',
+        };
+      });
+
+      yield put({
+        type: 'save',
+        payload: {
+          channelListTwo,
         },
       });
     },

@@ -69,7 +69,7 @@ const DistrictDistribution = (props) => {
 
   const cityColumns = [
     {
-      title: '市',
+      title: <div>111</div>,
       dataIndex: 'cityCode',
       align: 'center',
       render: (val) => getCityName(val.slice(0, 4)),

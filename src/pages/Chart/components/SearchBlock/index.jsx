@@ -20,40 +20,30 @@ const disTime = moment('2020-03-01');
  * @param {*} defaultPortType 默认端口类型
  * @param {*} allText 总计均值文本
  * @param {*} dispatchType 请求路径
+ * @param {*} beginDateKey 开始时间搜索键值
+ * @param {*} endDateKey 结束时间搜索键值
  * @returns
  */
 
-const SelectBlock = ({
-  data,
+const SearchBlock = ({
   setData,
-  dispatch,
   btnObjKeyName = 'reportType',
   groupTypeName = 'groupType',
   appTypeName = 'appType',
+  beginDateKey = 'startStatisticDay',
+  endDateKey = 'endStatisticDay',
+  timeOk = true,
+  timeDayMonthOk = true,
   btnObj = {},
   portTypeList = [],
   defaultPortType,
   allText = '',
-  dispatchType = '',
 }) => {
   const [selectedTime, setSelectedTime] = useState([
     moment().subtract(7, 'day'),
     moment().subtract(1, 'day'),
   ]); // 暂存时间
   const [selectedTimeType, setSelectedTimeType] = useState('最近7日'); // 暂存时间类型
-
-  // 监听数据变化发送请求
-  useEffect(() => {
-    data && fetchSearch();
-  }, [data]);
-
-  // 请求接口
-  const fetchSearch = () => {
-    dispatch({
-      type: dispatchType,
-      payload: data,
-    });
-  };
 
   // 数据储存
   const saveData = (val) => {
@@ -79,11 +69,10 @@ const SelectBlock = ({
     if (val === '自定义') return;
     setSelectedTime(timeObj[val]);
     saveData({
-      beginDate: timeObj[val][0].format('YYYY-MM-DD'),
-      endDate: timeObj[val][1].format('YYYY-MM-DD'),
+      [beginDateKey]: timeObj[val][0].format('YYYY-MM-DD'),
+      [endDateKey]: timeObj[val][1].format('YYYY-MM-DD'),
     });
   };
-
   return (
     <Space direction="vertical" style={{ width: '100%' }}>
       {Object.keys(btnObj).length !== 0 && (
@@ -103,52 +92,59 @@ const SelectBlock = ({
           </Radio.Group>
         </div>
       )}
-      <div>
-        <Select value={selectedTimeType} style={{ width: 120 }} onChange={handleChangeDay}>
-          {Object.keys(timeObj).map((item) => {
-            return (
-              <Option key={item} value={item}>
-                {item}
-              </Option>
-            );
-          })}
-        </Select>
-        <DatePicker.RangePicker
-          allowClear={false}
-          value={selectedTime}
-          onChange={(val) =>
-            saveData({
-              beginDate: val[0].format('YYYY-MM-DD'),
-              endDate: val[1].format('YYYY-MM-DD'),
-            })
-          }
-          disabled={selectedTimeType !== '自定义'}
-          disabledDate={disabledDate}
-          style={{ width: 256 }}
-        />
-        <div className={styles.salesExtra} style={{ marginLeft: 60 }}>
-          {allText}
-        </div>
-        <div className={styles.salesExtra} style={{ float: 'right' }}>
-          <Select
-            defaultValue="day"
-            style={{ width: 120 }}
-            onChange={(val) => saveData({ [groupTypeName]: val })}
-          >
-            <Option value="day">日粒度</Option>
-            <Option value="month">月粒度</Option>
+      {timeOk && (
+        <div>
+          <Select value={selectedTimeType} style={{ width: 120 }} onChange={handleChangeDay}>
+            {Object.keys(timeObj).map((item) => {
+              return (
+                <Option key={item} value={item}>
+                  {item}
+                </Option>
+              );
+            })}
           </Select>
+          <DatePicker.RangePicker
+            allowClear={false}
+            value={selectedTime}
+            onChange={(val) => {
+              setSelectedTime(val);
+              saveData({
+                [beginDateKey]: val[0].format('YYYY-MM-DD'),
+                [endDateKey]: val[1].format('YYYY-MM-DD'),
+              });
+            }}
+            disabled={selectedTimeType !== '自定义'}
+            disabledDate={disabledDate}
+            style={{ width: 256 }}
+          />
+          <div className={styles.salesExtra} style={{ marginLeft: 30 }}>
+            {allText}
+          </div>
+          {timeDayMonthOk && (
+            <div className={styles.salesExtra} style={{ float: 'right' }}>
+              <Select
+                defaultValue="day"
+                style={{ width: 120 }}
+                onChange={(val) => saveData({ [groupTypeName]: val })}
+              >
+                <Option value="day">日粒度</Option>
+                <Option value="month">月粒度</Option>
+              </Select>
+            </div>
+          )}
         </div>
-      </div>
-      <div>
-        <Checkbox.Group
-          options={portTypeList}
-          defaultValue={defaultPortType}
-          onChange={(val) => saveData({ [appTypeName]: val.toString() })}
-        />
-      </div>
+      )}
+      {portTypeList.length !== 0 && (
+        <div>
+          <Checkbox.Group
+            options={portTypeList}
+            defaultValue={defaultPortType}
+            onChange={(val) => saveData({ [appTypeName]: val.toString() })}
+          />
+        </div>
+      )}
     </Space>
   );
 };
 
-export default connect(({}) => ({}))(SelectBlock);
+export default connect(({}) => ({}))(SearchBlock);
