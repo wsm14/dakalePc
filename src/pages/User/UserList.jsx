@@ -168,7 +168,7 @@ const UserListComponent = (props) => {
       {/* 用户chart统计 */}
       {/* <UserTotalSpread></UserTotalSpread> */}
       <TableDataBlock
-        keepData
+        
         cRef={childRef}
         loading={loading}
         columns={getColumns}

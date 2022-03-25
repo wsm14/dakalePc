@@ -42,7 +42,6 @@
     "qrcode.react": "^1.0.0",
     "qs": "^6.9.0",
     "react": "^16.8.6",
-    "react-activation": "^0.5.7",
     "react-amap": "^1.2.8",
     "react-color": "^2.19.3",
     "react-cropper": "^2.1.4",

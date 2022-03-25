@@ -103,7 +103,7 @@ const MarketCardActivity = (props) => {
         {
           home: (
             <TableDataBlock
-              keepData
+              
               cRef={childRef}
               loading={loading}
               btnExtra={btnExtra}

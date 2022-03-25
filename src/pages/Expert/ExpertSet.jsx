@@ -138,7 +138,7 @@ const ExpertSet = (props) => {
     <>
       <TableDataBlock
         btnExtra={extraBtn}
-        keepData
+        
         cRef={childRef}
         loading={loading}
         columns={getColumns}

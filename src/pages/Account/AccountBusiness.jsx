@@ -150,10 +150,9 @@ const AccountBusinessList = (props) => {
 
   return (
     <>
-    {/* 统计数据图 */}
+      {/* 统计数据图 */}
       {/* <BusinessTotalInfo></BusinessTotalInfo> */}
       <TableDataBlock
-        keepData
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}

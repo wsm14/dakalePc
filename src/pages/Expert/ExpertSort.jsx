@@ -40,7 +40,7 @@ const ExpertSort = (props) => {
   return (
     <>
       <TableDataBlock
-        keepData
+        
         cRef={childRef}
         loading={loading}
         columns={getColumns}

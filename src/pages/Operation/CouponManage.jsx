@@ -388,7 +388,7 @@ const CouponManageComponent = (props) => {
         <TableDataBlock
           order
           noCard={false}
-          keepData
+          
           btnExtra={btnList}
           cRef={childRef}
           loading={loading}

@@ -238,7 +238,7 @@ const ExpertUserList = (props) => {
     <>
       <TableDataBlock
         order
-        keepData
+        
         cRef={childRef}
         loading={loading}
         columns={getColumns}

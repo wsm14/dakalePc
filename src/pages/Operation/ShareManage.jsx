@@ -354,7 +354,7 @@ const ShareManage = (props) => {
   return (
     <>
       <TableDataBlock
-        keepData
+        
         btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}

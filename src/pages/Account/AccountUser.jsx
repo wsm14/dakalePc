@@ -134,10 +134,9 @@ const AccountUserList = (props) => {
 
   return (
     <>
-    {/* 统计数据 */}
+      {/* 统计数据 */}
       {/* <UserTotalInfo></UserTotalInfo> */}
       <TableDataBlock
-        keepData
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}

@@ -58,7 +58,7 @@ const ExpertLevel = (props) => {
   return (
     <>
       <TableDataBlock
-        keepData
+        
         cRef={childRef}
         loading={loading}
         columns={getColumns}

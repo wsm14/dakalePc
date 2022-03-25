@@ -205,7 +205,7 @@ const BusinessSettled = (props) => {
   return (
     <TableDataBlock
       order
-      keepData
+      
       btnExtra={btnExtra}
       params={{ sortField: '1' }}
       cRef={childRef}

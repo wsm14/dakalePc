@@ -14,7 +14,7 @@
 ### TableDataBlock
 
 | 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- |
 | list | 表格数据源`（必填）` | object[] | [] |
 | columns | 表头`（必填）` | object[] | - |
 | rowKey | 表格行 key 的取值，可以是字符串或一个函数`（必填）` | `string | function(record): string` | - |
@@ -24,7 +24,6 @@
 | dispatchType | 请求路径 | String | - |
 | order | 是否显示排序序号 | boolean | false |
 | firstFetch | 刚打开是否请求接口 | boolean | true |
-| keepData | 是否保持数据，true 的情况下顶部显示 tab 选项页（仅`运营` `销售`后台支持） | boolean | false |
 | loading | 表格页面是否加载中 loading | `boolean | object (更多)` | false |
 | noCard | 表格是否需要 Card 组件包裹 | boolean | true |
 | params | 搜索时默认参数 | Object | {} |
@@ -55,6 +54,10 @@
 ```
 
 ## 更新日志
+
+- ### 2022 年 3 月 25 日 11:59:35 Dong
+
+> - 移除 `keepData` 配置监听路有变化自动显示 tab 标签 不做状态保持
 
 - ### 2021 年 11 月 5 日 13:52:05 Dong
 

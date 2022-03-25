@@ -144,7 +144,7 @@ const ExpertUserDistribution = (props) => {
   return (
     <>
       <TableDataBlock
-        keepData
+        
         title={() => (
           <div style={{ textAlign: 'right', marginTop: -16 }}>
             推广者总佣金：
