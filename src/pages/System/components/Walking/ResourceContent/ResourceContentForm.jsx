@@ -175,17 +175,17 @@ const ResourceContentForm = (props) => {
       formItem: (
         <>
           <Tabs tabPosition="left">
-            <TabPane tab="特惠商品" key="1">
+            <TabPane tab="特惠商品" key="1" forceRender={true}>
               <div style={{ overflow: 'auto' }}>
                 <ShareCoupon type="specialGoods" form={form}></ShareCoupon>
               </div>
             </TabPane>
-            <TabPane tab="电商品" key="2">
+            <TabPane tab="电商品" key="2" forceRender={true}>
               <div style={{ overflow: 'auto' }}>
                 <ShareCoupon type="commerceGoods" form={form}></ShareCoupon>
               </div>
             </TabPane>
-            <TabPane tab="自我游" key="3">
+            <TabPane tab="自我游" key="3" forceRender={true}>
               <div style={{ overflow: 'auto' }}>
                 <ShareCoupon type="selfTourGoods" form={form}></ShareCoupon>
               </div>
@@ -203,7 +203,7 @@ const ResourceContentForm = (props) => {
       formItem: (
         <>
           <Tabs tabPosition="left">
-            <TabPane tab="自我游" key="3">
+            <TabPane tab="自我游" key="3" forceRender={true}>
               <div style={{ overflow: 'auto' }}>
                 <ShareCoupon type="selfTourGoods" form={form}></ShareCoupon>
               </div>

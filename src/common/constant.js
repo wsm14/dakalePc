@@ -1090,3 +1090,95 @@ export const HITTING_TYPE = {
   personal: '个人',
   merchant: '商家',
 };
+
+//用户数据统计 - 端口类型 - 数据枚举
+export const USER_ANALYSIS_TYPE = {
+  totalAppNum: 'APP',
+  totalWeChatNum: '哒小乐',
+  totalMarkNum: '哒小卡',
+  totalCommunityNum: '哒小团',
+};
+
+//用户数据统计 - 支付人数类型
+export const PAY_USER_TYPE = {
+  totalFirstPayUserNum: '首次支付人数',
+  totalPayUserNum: '总支付人数',
+};
+
+//用户数据统计 - 端口类型 - 入参筛选
+export const USER_ANALYSIS_TYPES = [
+  { label: 'APP', value: 'app' },
+  { label: '哒小乐', value: 'weChat' },
+  { label: '哒小卡', value: 'mark' },
+  { label: '哒小团', value: 'communityWechat' },
+];
+
+//用户数据统计 - 渠道类型
+export const CHANNEL_TYPE = {
+  applicationMarket: '应用市场',
+};
+
+//视频数据统计 - 视频类型
+export const VIDEO_DATA_TYPE = {
+  totalPgcNum: 'PGC视频',
+  totalUgcNum: 'UGC视频',
+  totalPlatformNum: '广告视频',
+  totalSdkNum: 'SDK视频',
+};
+
+//视频数据统计 - 视频数量 - PGC视频类型
+export const PGC_VIDEO_TYPE = {
+  lifeFunNum: '带货视频',
+  pickUpNum: '探店视频',
+};
+
+//视频数据统计 - 视频数量 - UGC视频类型
+export const UGC_VIDEO_TYPE = {
+  foodNum: '美食',
+  playNum: '潮玩',
+  plotNum: '剧情',
+};
+
+//订单数据统计 - 商品类型 - 数据枚举
+export const ORDER_GOODS_TYPE = {
+  totalChannelData: '渠道商品',
+  totalCommerceData: '电商商品',
+  totalCommunityData: '团购商品',
+  totalCouponData: '有价券',
+  totalGiftData: '礼包订单',
+  totalRightData: '权益品',
+  totalScanData: '扫码支付',
+  totalSpecialData: '特惠商品',
+  totalVirtualData: '虚拟商品',
+  totalWeeklyData: '周卡订单',
+};
+
+//订单数据统计 - 商品类型 - 入参筛选
+export const ORDER_GOODS_TYPES = [
+  { label: '扫码支付', value: 'scan' },
+  { label: '特惠商品', value: 'special' },
+  { label: '渠道商品', value: 'channel' },
+  { label: '有价券', value: 'coupon' },
+  { label: '权益品', value: 'right' },
+  { label: '虚拟商品', value: 'virtual' },
+  { label: '电商商品', value: 'commerce' },
+  { label: '团购商品', value: 'community' },
+  { label: '周卡订单', value: 'weekly' },
+  { label: '礼包订单', value: 'gift' },
+];
+
+//订单数据统计 - 端口类型 - 对应
+export const USER_ANALYSIS_CONTRAS = {
+  app: 'APP',
+  weChat: '哒小乐',
+  mark: '哒小卡',
+  communityWechat: '哒小团',
+};
+
+//订单数据统计 - 商品类型 - 对应
+export const ORDER_GOODS_CONTRAS = {
+  specialGoods: '特惠商品',
+  communityGoods: '电商品',
+  selfTour: '自我游',
+  other: '其他',
+};

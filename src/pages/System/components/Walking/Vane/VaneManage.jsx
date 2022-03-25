@@ -129,6 +129,15 @@ const VaneManage = (props) => {
       },
     },
   ];
+  const cardBtnFlag = () => {
+    if (['windVane', 'beanEducation', 'sixPalaceLattice'].includes(tabKey)) {
+      return cardBtnList;
+    } else if (['beanDeductionZone'].includes(tabKey) && list.list.length < 3) {
+      return cardBtnList;
+    } else if (['fieldResource'].includes(tabKey) && list.list.length < 4) {
+      return cardBtnList;
+    }
+  };
   const handleTabChange = (key) => {
     setTabKey(key);
     childRef?.current?.fetchGetData({
@@ -148,7 +157,7 @@ const VaneManage = (props) => {
           tableSort={{ key: 'configWindVaneId', onSortEnd: fetchDetailSort }}
           cardProps={{ tabList, activeTabKey: tabKey, onTabChange: handleTabChange }}
           cRef={childRef}
-          btnExtra={cardBtnList}
+          btnExtra={cardBtnFlag()}
           loading={loading}
           pagination={false}
           columns={getColumns}

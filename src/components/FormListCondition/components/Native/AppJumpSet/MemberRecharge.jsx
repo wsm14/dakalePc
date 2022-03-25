@@ -55,6 +55,11 @@ const MemberRecharge = ({ form, paramKey, showApi, virtualList, loading, dispatc
         placeholder={'请输入搜索'}
         select={virtualList}
         loading={loading}
+        onSelect={(val, option) => {
+          form.setFieldsValue({
+            preferentialActivityId: option.option.preferentialActivityId,
+          });
+        }}
         onSearch={(activityName) => fetchClassifyGetMre(activityName ? { activityName } : '')}
       ></Select>
     </FormItem>
