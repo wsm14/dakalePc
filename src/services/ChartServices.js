@@ -225,4 +225,18 @@ export function fetchOrderPayAnalysisReport(params) {
   });
 }
 
+// get 订单数据统计 - 交易转化分析
+export function fetchOrderConvertAnalysisReport(params) {
+  return request('/admin/orderReportManagement/orderConvertAnalysisReport', {
+    params,
+  });
+}
+
+// get 订单数据统计 - 卡豆抵扣情况
+export function fetchOrderBeanAnalysisReport(params) {
+  return request('/admin/orderReportManagement/orderBeanAnalysisReport', {
+    params,
+  });
+}
+
 // 订单数据统计 end

@@ -1,12 +1,15 @@
 import {
   fetchOrderTrendAnalysisReport,
   fetchOrderPayAnalysisReport,
+  fetchOrderConvertAnalysisReport,
+  fetchOrderBeanAnalysisReport,
 } from '@/services/ChartServices';
 import {
   ORDER_GOODS_TYPE,
   ORDER_GOODS_TYPES,
   USER_ANALYSIS_CONTRAS,
   ORDER_GOODS_CONTRAS,
+  GOODS_ORDER_CONTRAS,
 } from '@/common/constant';
 
 const totalNum = (list, key) => {
@@ -19,6 +22,8 @@ export default {
   state: {
     newRegisterDataObj: { dataList: [] },
     payList: [],
+    moneyData: {},
+    pieList: { list: [], allBeanMoney: 0, allBeanMoneyRatio: '' },
   },
 
   reducers: {
@@ -89,6 +94,51 @@ export default {
         type: 'save',
         payload: {
           payList: payList.sort((a, b) => b.value - a.value),
+        },
+      });
+    },
+    *fetchOrderConvertAnalysisReport({ payload }, { call, put }) {
+      const { subStatisticType = 'specialGoods' } = payload;
+      const response = yield call(fetchOrderConvertAnalysisReport, payload);
+      const { content = {} } = response;
+      const { placeOrder = {}, paidOrder = {} } = content;
+
+      // 订单均价
+      const paidAverage = (Number(paidOrder.totalOrderMoney) / paidOrder.totalOrderAmount).toFixed(
+        2,
+      );
+      // 支付转换率
+      const payPercent = `${(paidOrder.totalOrderAmount / placeOrder.totalOrderAmount).toFixed(
+        2,
+      )}%`;
+
+      yield put({
+        type: 'save',
+        payload: {
+          moneyData: { ...content, paidAverage, payPercent },
+        },
+      });
+    },
+    *fetchOrderBeanAnalysisReport({ payload }, { call, put }) {
+      const response = yield call(fetchOrderBeanAnalysisReport, payload);
+      const { content = {} } = response;
+      const { analysisList = [] } = content;
+
+      const list = analysisList.map((item) => ({
+        value: Number(
+          ((item.beanAmountSum / 100 / Number(item.totalMoneySum) || 0) * 100).toFixed(0),
+        ),
+        type: GOODS_ORDER_CONTRAS[item.placeType],
+        beanMoney: `￥${item.beanAmountSum / 100}`,
+      }));
+      const allBeanMoney = totalNum(analysisList, 'beanAmountSum') / 100;
+      const allMoney = totalNum(analysisList, 'totalMoneySum');
+      const allBeanMoneyRatio = `${((allBeanMoney / allMoney) * 100).toFixed(0)}%`;
+
+      yield put({
+        type: 'save',
+        payload: {
+          pieList: { list, allBeanMoney, allBeanMoneyRatio },
         },
       });
     },

@@ -1182,3 +1182,16 @@ export const ORDER_GOODS_CONTRAS = {
   selfTour: '自我游',
   other: '其他',
 };
+
+//订单数据统计 - 商品订单类型
+export const GOODS_ORDER_CONTRAS = {
+  scan: '扫码订单',
+  specialGoods: '特价商品订单',
+  reduceCoupon: '有价券订单',
+  communityGoods: '团购商品订单',
+  virtualProduct: '虚拟商品订单',
+  right: '权益商品',
+  platformGift: '平台礼包订单',
+  weeklyCard: '卡豆周卡订单',
+  channelGoods: '渠道商品',
+};
