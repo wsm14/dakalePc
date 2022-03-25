@@ -3,10 +3,10 @@ import { connect } from 'umi';
 import { Card } from 'antd';
 import ExtraButton from '@/components/ExtraButton';
 import { groupGoods } from '@/components/VideoSelectBindContent/CouponFreeDom';
-import GroupGoodsDraw from './GroupGoods/GroupGoodsDraw'
+import GroupGoodsDraw from './GroupGoods/GroupGoodsDraw';
 
 const GroupGoodsConfig = (props) => {
-  const { goodList = [] } = props;
+  const { goodList = [{ name: '21' }, { name: '12' }] } = props;
   const [visible, setVisible] = useState(false);
 
   const btnExtra = [
@@ -21,11 +21,15 @@ const GroupGoodsConfig = (props) => {
   return (
     <>
       <Card title="拼团商品配置" extra={<ExtraButton list={btnExtra}></ExtraButton>}>
-        <div style={{ margin: '5px' }}>
-          {goodList.map((item) => groupGoods(item, '', '', onDel))}
+        <div style={{ display: 'flex' }}>
+          {goodList.map((item, index) => (
+            <div style={{ margin: 5 }} key={index}>
+              {groupGoods(item)}
+            </div>
+          ))}
         </div>
       </Card>
-      <GroupGoodsDraw visible={visible} onClose={()=>setVisible(false)}></GroupGoodsDraw>
+      <GroupGoodsDraw visible={visible} onClose={() => setVisible(false)}></GroupGoodsDraw>
     </>
   );
 };

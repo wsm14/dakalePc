@@ -3,9 +3,11 @@ import { connect } from 'umi';
 import { Card, Button } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import ExtraButton from '@/components/ExtraButton';
+import { groupGoods } from '@/components/VideoSelectBindContent/CouponFreeDom';
+import DndDragContext from '@/components/DndDragContext';
 
 const GroupGoodsDraw = (props) => {
-  const { visible, onClose } = props;
+  const { visible, onClose, goodList = [{ name: '21' }, { name: '12' }] } = props;
   const modalProps = {
     title: '编辑',
     visible: visible,
@@ -22,7 +24,13 @@ const GroupGoodsDraw = (props) => {
   ];
   return (
     <DrawerCondition {...modalProps}>
-      <Card title={<ExtraButton typeBtn={'link'} list={btnExtra}></ExtraButton>}></Card>
+      <Card title={<ExtraButton typeBtn={'link'} list={btnExtra}></ExtraButton>}>
+        {goodList.map((item, index) => (
+          <div style={{ margin: 5 }} key={index}>
+            {groupGoods(item)}
+          </div>
+        ))}
+      </Card>
     </DrawerCondition>
   );
 };
