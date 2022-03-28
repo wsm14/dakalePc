@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
-import {DatePicker, Space, Button, Select } from 'antd';
+import { DatePicker, Space, Button, Select } from 'antd';
 const { Option } = Select;
 const disTime = moment('2020-03-01');
 
 // 数据概况 + 视频看板 公用
-const SearchCard = ({ timeData, setTimeData, handleSearch }) => {
+const SearchCard = ({ timeData, setTimeData }) => {
+  const [selectTime, setSelectTime] = useState('1');
   // 时间计算
   const returnDay = (day, type) => [moment().subtract(day, type), moment()];
 
@@ -17,18 +18,22 @@ const SearchCard = ({ timeData, setTimeData, handleSearch }) => {
     {
       name: '昨日',
       value: '1',
+      other: [moment().subtract(1, 'day'), moment().subtract(1, 'day')],
     },
     {
       name: '最近7天',
       value: '7',
+      other: returnDay(6, 'day'),
     },
     {
       name: '最近30天',
       value: '30',
+      other: returnDay(29, 'day'),
     },
     {
       name: '自定义',
       value: '0',
+      other: [],
     },
   ];
 
@@ -39,8 +44,11 @@ const SearchCard = ({ timeData, setTimeData, handleSearch }) => {
   // };
 
   // 选择时间
-  const handleSearchData = (time) => {};
+  const handleSearchData = (time) => {
+    setTimeData(time);
+  };
   const handleChange = (val) => {
+    setSelectTime(val);
     switch (val) {
       case '1':
         setTimeData([moment().subtract(1, 'day'), moment().subtract(1, 'day')]);
@@ -49,7 +57,7 @@ const SearchCard = ({ timeData, setTimeData, handleSearch }) => {
         setTimeData(returnDay(6, 'day'));
         break;
       case '30':
-        setTimeData(returnDay(30, 'day'));
+        setTimeData(returnDay(29, 'day'));
         break;
       case '0':
         setTimeData([]);
@@ -59,7 +67,7 @@ const SearchCard = ({ timeData, setTimeData, handleSearch }) => {
 
   return (
     <Space style={{ marginBottom: 30 }}>
-      <Select style={{ width: 200 }} onChange={handleChange}>
+      <Select style={{ width: 200 }} onChange={handleChange} value={selectTime}>
         {timeSelect.map((item) => (
           <Option value={item.value} key={item.name}>
             {item.name}
@@ -73,9 +81,6 @@ const SearchCard = ({ timeData, setTimeData, handleSearch }) => {
         disabledDate={disabledDate}
         style={{ width: 256 }}
       />
-      <Button type="primary" onClick={() => handleSearch(timeData)}>
-        搜索
-      </Button>
     </Space>
   );
 };

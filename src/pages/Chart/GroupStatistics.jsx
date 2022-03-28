@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
 import { Card, Statistic } from 'antd';
@@ -13,17 +13,16 @@ const tabList = [
   },
 ];
 const GroupStatistics = (props) => {
-  const [activeTabKey, setActiveTabKey] = useState('0');
+ 
 
   const [timeData, setTimeData] = useState([
     moment().subtract(1, 'day'),
     moment().subtract(1, 'day'),
   ]);
 
-  const handleSearch=(time)=>{
-
-  }
-
+  useEffect(() => {
+    //搜索
+  }, [timeData]);
 
   const cardPropsList = [
     {
@@ -61,7 +60,7 @@ const GroupStatistics = (props) => {
   return (
     <div className="wraperCon">
       <div>
-        <Card tabList={tabList} activeTabKey={activeTabKey}>
+        <Card tabList={tabList} activeTabKey={'0'}>
           <div className="groupStaticHead bgColor">
             <span>累计开团次数</span>
             <span className="fontWeight">1223</span>
@@ -91,7 +90,10 @@ const GroupStatistics = (props) => {
         </Card>
       </div>
       <div className="rightWrap">
-        <SearchCard setTimeData={setTimeData} timeData={timeData} handleSearch={handleSearch}></SearchCard>
+        <SearchCard
+          setTimeData={setTimeData}
+          timeData={timeData}
+        ></SearchCard>
         <div className="rightCon">
           {cardPropsList.map((item) => (
             <Card
