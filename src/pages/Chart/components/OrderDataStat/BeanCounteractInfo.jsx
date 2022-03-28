@@ -63,7 +63,7 @@ const BeanCounteractInfo = (props) => {
       <Spin spinning={loading}>
         <Row>
           {pieList.list.map((item) => (
-            <Col key={item.value} flex="20%">
+            <Col key={item.type} flex="20%">
               <Tooltip
                 title={
                   <div>

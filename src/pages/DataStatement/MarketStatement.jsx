@@ -117,8 +117,8 @@ const MarketStatement = (props) => {
             ></Empty>
           ),
         }}
-        content={`累计支付金额：￥${sum.totalPaidOrderFee} 累计卡豆抵扣金额：￥${
-          sum.totalBeanReduceAmount / 100
+        content={`累计支付金额：￥${sum.totalPaidOrderFee || '0.00'} 累计卡豆抵扣金额：￥${
+          sum.totalBeanReduceAmount / 100 || '0.00'
         }`}
         searchCallback={(obj) => setSearchData(obj)}
         params={{ limit: 50 }}
