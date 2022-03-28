@@ -49,6 +49,11 @@ export default [
             name: '订单数据统计',
             component: './Chart/OrderDataStat',
           },
+          {
+            path:'/chart/groupStatistics',
+            name: '拼团统计',
+            component:'./Chart/GroupStatistics'
+          }
          
         ],
       },
