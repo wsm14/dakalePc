@@ -140,7 +140,7 @@ const SearchBlock = ({
           <Checkbox.Group
             options={portTypeList}
             defaultValue={defaultPortType}
-            value={data[appTypeName]}
+            value={data[appTypeName].split(',')}
             onChange={(val) => saveData({ [appTypeName]: val.toString() })}
           />
         </div>

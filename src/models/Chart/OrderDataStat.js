@@ -147,7 +147,11 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          pieList: { list, allBeanMoney, allBeanMoneyRatio },
+          pieList: {
+            list: list.sort((a, b) => b.value - a.value),
+            allBeanMoney,
+            allBeanMoneyRatio,
+          },
         },
       });
     },
