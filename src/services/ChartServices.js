@@ -239,4 +239,11 @@ export function fetchOrderBeanAnalysisReport(params) {
   });
 }
 
+// get 订单数据统计 - 地区占比
+export function fetchOrderAreaAnalysisReport(params) {
+  return request('/admin/orderReportManagement/orderAreaAnalysisReport', {
+    params,
+  });
+}
+
 // 订单数据统计 end

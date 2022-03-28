@@ -36,11 +36,18 @@ const BehaviorContent = (props) => {
       }`,
       eCharts: (
         <Column
-          data={newRegisterDataObj.dataList || []}
+          data={
+            newRegisterDataObj.dataList.filter((item) =>
+              data.appType.split(',').includes(item.types),
+            ) || []
+          }
           xyField={{ xField: 'statisticDay', yField: 'value' }}
           legend={false}
           seriesField="type"
           isStack={true}
+          label={{
+            position: 'middle',
+          }}
         />
       ),
     },
