@@ -13,7 +13,6 @@ const ShareDrawer = (props) => {
   const { dispatch, visible, childRef, onClose, loading } = props;
 
   const { tabtype, show = false } = visible;
-  console.log(visible);
 
   const [form] = Form.useForm();
   const [current, setCurrent] = useState(0);
