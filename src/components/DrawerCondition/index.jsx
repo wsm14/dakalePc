@@ -77,7 +77,7 @@ const DrawerCondition = (props) => {
     const some_button = footerBlock.map((item, i) => <Skeleton.Button active key={`${i + 1}`} />);
     return skeletonType || loading ? some_button : footer;
   };
-  console.log(children, 'children');
+
   return (
     <Drawer
       {...modalProps}
@@ -100,9 +100,11 @@ const DrawerCondition = (props) => {
         </div>
       }
     >
-      {/* <Skeleton loading={skeletonType || loading} active> */}
-      {children}
-      {/* </Skeleton> */}
+      {skeletonType || loading ? (
+        <Skeleton loading={skeletonType || loading} active></Skeleton>
+      ) : (
+        children
+      )}
     </Drawer>
   );
 };
