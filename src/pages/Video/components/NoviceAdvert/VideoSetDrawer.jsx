@@ -16,6 +16,8 @@ const ShareDrawer = (props) => {
 
   const { type = 'add', show = false, detail = {} } = visible;
 
+  console.log(visible)
+
   const [form] = Form.useForm();
   const [current, setCurrent] = useState(0);
   const [dataStorage, setDataStorage] = useState({ userType: 'merchant' }); // 数据暂存
