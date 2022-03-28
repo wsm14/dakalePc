@@ -11,7 +11,7 @@ import PlatformCouponList from './PlatformCouponList/PlatformCouponList';
 const { TabPane } = Tabs;
 
 const ResourceContentForm = (props) => {
-  const { initialValues, form, resourceTemplateList, dispatch, type = 'add' } = props;
+  const { initialValues, form, resourceTemplateList, dispatch, type = 'add', giftTypeList } = props;
   const { backgroundColor = '' } = initialValues;
 
   const [displayColorPicker, setDisplayColorPicker] = useState(false); //  背景色状态
@@ -118,12 +118,24 @@ const ResourceContentForm = (props) => {
       visible: typeList.includes('topImg'),
     },
     {
-      label: `上传图片`,
-      name: 'image',
-      type: 'upload',
-      maxFile: 1,
-      visible: typeList.includes('image'),
+      label: `关联礼包类型`,
+      name: 'giftTypes',
+      type: 'select',
+      select: giftTypeList,
+      fieldNames: {
+        label: 'typeName',
+        value: 'giftTypeId',
+      },
+      mode: 'multiple',
+      // visible: typeList.includes('giftPackList'),
     },
+    // {
+    //   label: `上传图片`,
+    //   name: 'image',
+    //   type: 'upload',
+    //   maxFile: 1,
+    //   visible: typeList.includes('image'),
+    // },
     {
       label: `背景色`,
       name: 'backgroundColor',
@@ -240,6 +252,7 @@ const ResourceContentForm = (props) => {
   );
 };
 
-export default connect(({ walkingManage }) => ({
+export default connect(({ walkingManage, spreeManage }) => ({
+  giftTypeList: spreeManage.giftTypeList,
   resourceTemplateList: walkingManage.resourceTemplateList.list,
 }))(ResourceContentForm);
