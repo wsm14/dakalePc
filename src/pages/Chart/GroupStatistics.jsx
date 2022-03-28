@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { connect } from 'umi';
+import moment from 'moment';
 import { Card, Statistic } from 'antd';
 import QuestionTooltip from '@/components/QuestionTooltip';
 import SearchCard from './components/GroupStatistics/SearchCard';
+
 import './style.less';
 const tabList = [
   {
@@ -13,9 +15,15 @@ const tabList = [
 const GroupStatistics = (props) => {
   const [activeTabKey, setActiveTabKey] = useState('0');
 
-  const defaultSearch = {};
+  const [timeData, setTimeData] = useState([
+    moment().subtract(1, 'day'),
+    moment().subtract(1, 'day'),
+  ]);
 
-  const [searchData, setSearchData] = useState();
+  const handleSearch=(time)=>{
+
+  }
+
 
   const cardPropsList = [
     {
@@ -83,7 +91,7 @@ const GroupStatistics = (props) => {
         </Card>
       </div>
       <div className="rightWrap">
-        <SearchCard setSearchData={setSearchData}></SearchCard>
+        <SearchCard setTimeData={setTimeData} timeData={timeData} handleSearch={handleSearch}></SearchCard>
         <div className="rightCon">
           {cardPropsList.map((item) => (
             <Card

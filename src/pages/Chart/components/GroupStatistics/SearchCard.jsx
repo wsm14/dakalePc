@@ -1,25 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'umi';
+import React from 'react';
 import moment from 'moment';
-import { Tag, DatePicker, Space, Button, Select } from 'antd';
-import styles from './style.less';
+import {DatePicker, Space, Button, Select } from 'antd';
 const { Option } = Select;
 const disTime = moment('2020-03-01');
 
 // 数据概况 + 视频看板 公用
-const SearchCard = ({ setSearchData }) => {
-  const [selectedTime, setSelectedTime] = useState([
-    moment().subtract(1, 'day'),
-    moment().subtract(1, 'day'),
-  ]); // 暂存时间
-
+const SearchCard = ({ timeData, setTimeData, handleSearch }) => {
   // 时间计算
   const returnDay = (day, type) => [moment().subtract(day, type), moment()];
 
   // 禁止选择时间
   const disabledDate = (current) =>
     (current && current > moment().endOf('day').subtract(1, 'day')) || current < disTime;
-    
+
   const timeSelect = [
     {
       name: '昨日',
@@ -32,6 +25,10 @@ const SearchCard = ({ setSearchData }) => {
     {
       name: '最近30天',
       value: '30',
+    },
+    {
+      name: '自定义',
+      value: '0',
     },
   ];
 
@@ -46,13 +43,16 @@ const SearchCard = ({ setSearchData }) => {
   const handleChange = (val) => {
     switch (val) {
       case '1':
-        setSelectedTime([moment().subtract(1, 'day'), moment().subtract(1, 'day')]);
+        setTimeData([moment().subtract(1, 'day'), moment().subtract(1, 'day')]);
         break;
       case '7':
-        setSelectedTime(returnDay(6, 'day'));
+        setTimeData(returnDay(6, 'day'));
         break;
       case '30':
-        setSelectedTime(returnDay(30, 'day'));
+        setTimeData(returnDay(30, 'day'));
+        break;
+      case '0':
+        setTimeData([]);
         break;
     }
   };
@@ -68,11 +68,14 @@ const SearchCard = ({ setSearchData }) => {
       </Select>
       <DatePicker.RangePicker
         allowClear={false}
-        value={selectedTime}
+        value={timeData}
         onChange={(val) => handleSearchData(val)}
         disabledDate={disabledDate}
         style={{ width: 256 }}
       />
+      <Button type="primary" onClick={() => handleSearch(timeData)}>
+        搜索
+      </Button>
     </Space>
   );
 };
