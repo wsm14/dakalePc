@@ -27,7 +27,7 @@ const DealConversionAnalyse = ({ moneyData, dispatch, loading }) => {
   }, [data]);
 
   return (
-    <div style={{ paddingTop: 25 }}>
+    <div style={{ paddingTop: 25, minHeight: 570 }}>
       <SearchBlock
         data={data}
         setData={setData}
@@ -67,7 +67,8 @@ const DealConversionAnalyse = ({ moneyData, dispatch, loading }) => {
       ></SearchBlock>
       {/* 图表 */}
       <Spin spinning={loading}>
-        <div style={{ display: 'flex' }}>
+        {/* 下单和支付订单盒子 */}
+        <div style={{ display: 'flex', marginTop: 20 }}>
           <div className={styles.box} style={{ marginRight: -1 }}>
             <div className={styles.rowBox} style={{ backgroundColor: '#F2FAEB' }}>
               <div className={styles.box}>
@@ -101,52 +102,58 @@ const DealConversionAnalyse = ({ moneyData, dispatch, loading }) => {
             <div>{moneyData?.payPercent}</div>
           </div>
         </div>
-        <div style={{ display: 'flex' }}>
-          <div
-            className={styles.box}
-            style={{
-              marginRight: -1,
-              display: 'flex',
-              backgroundColor: '#EFFAFA',
-              paddingLeft: 10,
-            }}
-          >
-            <div className={styles.box}>
-              <div className={styles.marBox}>核销数</div>
-              <div>{moneyData?.verificationOrder?.totalOrderAmount}</div>
+        {city.length === 0 && (
+          <>
+            {/* 核销盒子 */}
+            <div style={{ display: 'flex', marginTop: 5 }}>
+              <div
+                className={styles.box}
+                style={{
+                  marginRight: -1,
+                  display: 'flex',
+                  backgroundColor: '#EFFAFA',
+                  paddingLeft: 10,
+                }}
+              >
+                <div className={styles.box}>
+                  <div className={styles.marBox}>核销数</div>
+                  <div>{moneyData?.verificationOrder?.totalOrderAmount}</div>
+                </div>
+                <div className={styles.box}>
+                  <div className={styles.marBox}>核销金额</div>
+                  <div>{moneyData?.verificationOrder?.totalOrderMoney}</div>
+                </div>
+                <div className={styles.box}></div>
+              </div>
+              <img src={cancelImg} />
+              <div style={{ width: 105 }}></div>
             </div>
-            <div className={styles.box}>
-              <div className={styles.marBox}>核销金额</div>
-              <div>{moneyData?.verificationOrder?.totalOrderMoney}</div>
+            {/* 退款盒子 */}
+            <div style={{ display: 'flex', marginTop: 5 }}>
+              <div
+                className={styles.box}
+                style={{
+                  marginRight: -1,
+                  display: 'flex',
+                  backgroundColor: '#FEEEF1',
+                  paddingLeft: 10,
+                }}
+              >
+                <div className={styles.box}>
+                  <div className={styles.marBox}>退款数</div>
+                  <div>{moneyData?.refundOrder?.totalOrderAmount}</div>
+                </div>
+                <div className={styles.box}>
+                  <div className={styles.marBox}>退款金额</div>
+                  <div>{moneyData?.refundOrder?.totalOrderMoney}</div>
+                </div>
+                <div className={styles.box}></div>
+              </div>
+              <img src={refundImg} />
+              <div style={{ width: 105 }}></div>
             </div>
-            <div className={styles.box} style={{ backgroundColor: '#EFFAFA' }}></div>
-          </div>
-          <img src={cancelImg} />
-          <div style={{ width: 105 }}></div>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <div
-            className={styles.box}
-            style={{
-              marginRight: -1,
-              display: 'flex',
-              backgroundColor: '#FEEEF1',
-              paddingLeft: 10,
-            }}
-          >
-            <div className={styles.box}>
-              <div className={styles.marBox}>退款数</div>
-              <div>{moneyData?.refundOrder?.totalOrderAmount}</div>
-            </div>
-            <div className={styles.box}>
-              <div className={styles.marBox}>退款金额</div>
-              <div>{moneyData?.refundOrder?.totalOrderMoney}</div>
-            </div>
-            <div className={styles.box} style={{ backgroundColor: '#EFFAFA' }}></div>
-          </div>
-          <img src={refundImg} />
-          <div style={{ width: 105 }}></div>
-        </div>
+          </>
+        )}
       </Spin>
     </div>
   );

@@ -10,7 +10,6 @@ import SearchBlock from '../SearchBlock';
 const BeanCounteractInfo = (props) => {
   const { dispatch, loading, pieList } = props;
 
-  console.log('pieList', pieList);
   const [data, setData] = useState({
     statisticType: 'orderBeanAnalysis',
     subStatisticType: 'beanReduce',
@@ -64,7 +63,7 @@ const BeanCounteractInfo = (props) => {
       <Spin spinning={loading}>
         <Row>
           {pieList.list.map((item) => (
-            <Col flex="20%">
+            <Col key={item.value} flex="20%">
               <Tooltip
                 title={
                   <div>

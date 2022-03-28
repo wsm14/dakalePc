@@ -6,7 +6,7 @@ import {
   fetchUserChannelStatisticsReport,
   fetchUserChannelContrastReport,
 } from '@/services/ChartServices';
-import { USER_ANALYSIS_TYPE, PAY_USER_TYPE } from '@/common/constant';
+import { USER_ANALYSIS_TYPE, PAY_USER_TYPE, USER_ANALYSIS_TYPES } from '@/common/constant';
 
 const totalNum = (list, key) => {
   return list.reduce((preValue, curValue) => preValue + curValue[key], 0);
@@ -16,7 +16,7 @@ export default {
   namespace: 'userDataStat',
 
   state: {
-    newRegisterDataObj: {},
+    newRegisterDataObj: { dataList: [] },
     genderList: [],
     ageList: [],
     provinceList: [],
@@ -54,6 +54,9 @@ export default {
               statisticDay: statisticDay || statisticMonth,
               value: other[cell],
               type: USER_ANALYSIS_TYPE[cell],
+              types: USER_ANALYSIS_TYPES.filter(
+                (item) => item.label === USER_ANALYSIS_TYPE[cell],
+              )[0].value,
             }),
           );
         });
