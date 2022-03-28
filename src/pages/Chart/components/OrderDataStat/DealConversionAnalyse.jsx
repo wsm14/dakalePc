@@ -102,7 +102,7 @@ const DealConversionAnalyse = ({ moneyData, dispatch, loading }) => {
             <div>{moneyData?.payPercent}</div>
           </div>
         </div>
-        {city.length === 0 && (
+        {['specialGoods', 'reduceCoupon'].includes(data.subStatisticType) && (
           <>
             {/* 核销盒子 */}
             <div style={{ display: 'flex', marginTop: 5 }}>

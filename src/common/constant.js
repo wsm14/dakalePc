@@ -1167,6 +1167,14 @@ export const ORDER_GOODS_TYPES = [
   { label: '礼包订单', value: 'gift' },
 ];
 
+//订单数据统计 - 商品类型 - 入参筛选
+export const AREA_ORDER_GOODS_TYPES = [
+  { label: '扫码支付', value: 'scan' },
+  { label: '特惠商品', value: 'special' },
+  { label: '有价券', value: 'coupon' },
+  { label: '权益品', value: 'right' },
+];
+
 //订单数据统计 - 端口类型 - 对应
 export const USER_ANALYSIS_CONTRAS = {
   app: 'APP',
@@ -1178,8 +1186,12 @@ export const USER_ANALYSIS_CONTRAS = {
 //订单数据统计 - 商品类型 - 对应
 export const ORDER_GOODS_CONTRAS = {
   specialGoods: '特惠商品',
-  communityGoods: '电商品',
+  commerceGoods: '电商品',
   selfTour: '自我游',
+  communityGoods: '团购商品',
+  scan: '扫码支付',
+  reduceCoupon: '有价券',
+  right: '权益商品',
   other: '其他',
 };
 
