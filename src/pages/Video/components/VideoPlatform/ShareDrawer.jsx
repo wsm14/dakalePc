@@ -168,6 +168,8 @@ const ShareDrawer = (props) => {
     ),
   };
 
+  console.log(steps, steps[current].content);
+
   return (
     <DrawerCondition {...modalProps}>
       <Steps current={current} style={{ marginBottom: 20 }}>
