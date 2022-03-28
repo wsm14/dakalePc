@@ -9,7 +9,7 @@ import SharePushSet from './SharePushForm/SharePushSet';
 
 const { Step } = Steps;
 
-const ShareDrawer = (props) => {
+const VideoPlatformDrawer = (props) => {
   const { dispatch, visible, childRef, onClose, loading } = props;
 
   const { tabtype, show = false } = visible;
@@ -168,8 +168,6 @@ const ShareDrawer = (props) => {
     ),
   };
 
-  console.log(steps, steps[current].content);
-
   return (
     <DrawerCondition {...modalProps}>
       <Steps current={current} style={{ marginBottom: 20 }}>
@@ -184,4 +182,4 @@ const ShareDrawer = (props) => {
 
 export default connect(({ loading }) => ({
   loading: loading.effects['videoPlatform/fetchNewSharePush'],
-}))(ShareDrawer);
+}))(VideoPlatformDrawer);
