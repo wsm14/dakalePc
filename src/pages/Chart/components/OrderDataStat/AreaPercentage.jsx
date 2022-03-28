@@ -57,6 +57,7 @@ const AreaPercentage = ({ areaData, dispatch, loading }) => {
         setData={setData}
         portTypeList={ORDER_AREA_TYPES}
         defaultPortType={['scan', 'specialGoods']}
+        appTypeName="subStatisticType"
         timeDayMonthOk={false}
       ></SearchBlock>
       {/* 图表 */}
