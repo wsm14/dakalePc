@@ -190,6 +190,7 @@ const AppSetList = (props) => {
       text: '新增位置',
       auth: 'bannerAddPlace',
       onClick: () => setVisibleAddImg(true),
+      show: ['weChat', 'mark', 'communityWechat'].includes(tabKey),
     },
     {
       text: '新增',
