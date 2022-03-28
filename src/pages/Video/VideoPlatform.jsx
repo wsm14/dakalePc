@@ -6,7 +6,6 @@ import {
   NEW_SHARE_STATUS,
   SUBMIT_TYPE_VIDEO,
   NEW_SHARE_OWNER,
-  NEW_SHARE_AWARD,
   BEANFLAG_TYPE,
 } from '@/common/constant';
 import { NUM_PATTERN } from '@/common/regExp';
@@ -362,7 +361,7 @@ const VideoPlatform = (props) => {
     <>
       <TableDataBlock
         firstFetch={false}
-        // 
+        //
         searchForm={form}
         cardProps={{
           tabList: tabList,

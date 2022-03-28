@@ -201,6 +201,8 @@ const ShareContentSet = (props) => {
     },
   ];
 
+  console.log(formItems);
+
   return <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>;
 };
 
