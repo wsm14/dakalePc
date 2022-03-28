@@ -79,7 +79,7 @@ const TabConfigure = (props) => {
       render: (val, row) => [
         {
           type: 'edit',
-          visible: row.status !== '2',
+          visible: ['scanPay'].includes(tabKey) ? true : row.status !== '2',
           click: () => {
             handleDetail(val, 'edit');
           },
