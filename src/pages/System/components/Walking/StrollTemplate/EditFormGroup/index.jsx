@@ -1,8 +1,8 @@
-import SolaImg from './SolaImg';
+// import SolaImg from './SolaImg'; // 示例
 import Resource from './Resource';
 
 export default {
-  mainBanner: SolaImg,
+  // mainBanner: SolaImg, // 示例
   limitedTimeHotMixing: Resource,
   limitedTimeAndExplosive: Resource,
   limitedTime: Resource,
