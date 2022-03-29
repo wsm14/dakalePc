@@ -17,7 +17,7 @@ const GLobalSetDetail = (props) => {
       label: '每看',
       name: 'preventSize',
       suffix: '个视频弹出广告',
-      render: (val) => val + '个视频弹出广告',
+      render: (val) => val + '个视频弹出拼图广告',
     },
   ];
 
