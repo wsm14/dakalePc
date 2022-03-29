@@ -81,7 +81,6 @@ const SearchBlock = ({
           <Radio.Group
             value={data[btnObjKeyName]}
             onChange={(e) => saveData({ [btnObjKeyName]: e.target.value })}
-            style={{ marginTop: 16 }}
           >
             {Object.keys(btnObj).map((item) => {
               return (

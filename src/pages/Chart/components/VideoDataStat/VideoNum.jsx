@@ -34,8 +34,8 @@ const VideoNum = ({ PGCList, UGCList, dispatch, loading }) => {
   };
 
   return (
-    <div>
-      <div style={{ marginTop: 25 }}>
+    <div style={{ paddingTop: 25 }}>
+      <div>
         <Cascader
           value={city}
           options={CITY.map((item) => ({

@@ -47,7 +47,7 @@ const MarketStatement = (props) => {
     },
     {
       title: '支付订单数',
-      dataIndex: 'totalPaidUserAmount',
+      dataIndex: 'totalPaidOrderAmount',
     },
     {
       title: '支付用户数',

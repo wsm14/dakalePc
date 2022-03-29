@@ -31,7 +31,7 @@ const TrendAnalysis = (props) => {
   };
 
   return (
-    <div>
+    <div style={{ paddingTop: 25 }}>
       <SearchBlock
         data={data}
         setData={setData}

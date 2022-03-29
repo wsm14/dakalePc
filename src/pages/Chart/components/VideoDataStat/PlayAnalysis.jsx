@@ -22,10 +22,8 @@ const PlayAnalysis = ({ playList, dispatch, loading }) => {
   }, [data]);
 
   return (
-    <div>
-      <div style={{ fontSize: 20, fontWeight: 600, marginTop: 25 }}>
-        各端口视频观看情况占比（完播）
-      </div>
+    <div style={{ paddingTop: 25 }}>
+      <div style={{ fontSize: 20, fontWeight: 600 }}>各端口视频观看情况占比（完播）</div>
       <SearchBlock
         data={data}
         setData={setData}
