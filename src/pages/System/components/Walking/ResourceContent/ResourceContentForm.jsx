@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Tabs } from 'antd';
+import { Tabs, Select } from 'antd';
 import reactCSS from 'reactcss';
 import { ChromePicker } from 'react-color';
 import FormCondition from '@/components/FormCondition';
@@ -11,12 +11,21 @@ import PlatformCouponList from './PlatformCouponList/PlatformCouponList';
 const { TabPane } = Tabs;
 
 const ResourceContentForm = (props) => {
-  const { initialValues, form, resourceTemplateList, dispatch, type = 'add', giftTypeList } = props;
+  const {
+    initialValues,
+    form,
+    resourceTemplateList,
+    dispatch,
+    type = 'add',
+    giftTypeList,
+    bannerTypeObj,
+  } = props;
   const { backgroundColor = '' } = initialValues;
 
   const [displayColorPicker, setDisplayColorPicker] = useState(false); //  背景色状态
   const [color, setColor] = useState(''); //  背景色状态
-  const [typeList, setTypeList] = useState([]);
+  const [typeList, setTypeList] = useState([]); // 礼包列表
+  const [giftSelect, setGiftSelect] = useState([]); // 已选的礼包类型
 
   useEffect(() => {
     if (initialValues.resourceTemplateContentId) {
@@ -120,22 +129,44 @@ const ResourceContentForm = (props) => {
     {
       label: `关联礼包类型`,
       name: 'giftTypes',
-      type: 'select',
-      select: giftTypeList,
-      fieldNames: {
-        label: 'typeName',
-        value: 'giftTypeId',
-      },
-      mode: 'multiple',
-      // visible: typeList.includes('giftPackList'),
+      type: 'formItem',
+      formItem: (
+        <Select
+          mode="multiple"
+          allowClear
+          placeholder="请选择关联礼包类型"
+          onChange={(val) => setGiftSelect(val)}
+        >
+          {giftTypeList.map((item) => {
+            return (
+              <Select.Option
+                disabled={giftSelect.length >= 3 && !giftSelect.includes(item.giftTypeId)}
+                key={item.giftTypeId}
+                value={item.giftTypeId}
+              >
+                {item.typeName}
+              </Select.Option>
+            );
+          })}
+        </Select>
+      ),
+      visible: typeList.includes('giftPackList'),
     },
-    // {
-    //   label: `上传图片`,
-    //   name: 'image',
-    //   type: 'upload',
-    //   maxFile: 1,
-    //   visible: typeList.includes('image'),
-    // },
+    {
+      label: `关联banner位置`,
+      name: 'bannerType',
+      type: 'select',
+      select: bannerTypeObj,
+      required: false,
+      visible: typeList.includes('banner'),
+    },
+    {
+      label: `上传图片`,
+      name: 'image',
+      type: 'upload',
+      maxFile: 1,
+      visible: typeList.includes('image'),
+    },
     {
       label: `背景色`,
       name: 'backgroundColor',
@@ -252,7 +283,8 @@ const ResourceContentForm = (props) => {
   );
 };
 
-export default connect(({ walkingManage, spreeManage }) => ({
+export default connect(({ walkingManage, spreeManage, sysAppList }) => ({
+  bannerTypeObj: sysAppList.bannerTypeObj,
   giftTypeList: spreeManage.giftTypeList,
   resourceTemplateList: walkingManage.resourceTemplateList.list,
 }))(ResourceContentForm);

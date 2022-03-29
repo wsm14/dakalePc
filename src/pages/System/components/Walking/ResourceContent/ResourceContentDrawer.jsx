@@ -14,8 +14,17 @@ const CouponDrawer = (props) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
+    // 获取礼包类型
     dispatch({
       type: 'spreeManage/fetchListGiftType',
+    });
+    // 获取banner位置
+    dispatch({
+      type: 'sysAppList/fetchBannerRatio',
+      payload: {
+        userType: 'user',
+        deleteFlag: 1,
+      },
     });
   }, []);
 
@@ -131,5 +140,6 @@ export default connect(({ loading }) => ({
     loading.effects['walkingManage/fetchUpdateResourceTemplateContent'],
   loadingDetail:
     loading.effects['walkingManage/fetchGetResourceTemplateContentById'] ||
-    loading.effects['spreeManage/fetchListGiftType'],
+    loading.effects['spreeManage/fetchListGiftType'] ||
+    loading.effects['sysAppList/fetchBannerRatio'],
 }))(CouponDrawer);
