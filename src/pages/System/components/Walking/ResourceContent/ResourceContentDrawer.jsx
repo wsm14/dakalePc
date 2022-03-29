@@ -13,6 +13,21 @@ const CouponDrawer = (props) => {
 
   const [form] = Form.useForm();
 
+  useEffect(() => {
+    // 获取礼包类型
+    dispatch({
+      type: 'spreeManage/fetchListGiftType',
+    });
+    // 获取banner位置
+    dispatch({
+      type: 'sysAppList/fetchBannerRatio',
+      payload: {
+        userType: 'user',
+        deleteFlag: 1,
+      },
+    });
+  }, []);
+
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
@@ -26,6 +41,7 @@ const CouponDrawer = (props) => {
         commerceGoods,
         selfTourGoods,
         brandSelfTravel,
+        giftTypes,
         ...other
       } = values;
       console.log('提交', values);
@@ -42,6 +58,7 @@ const CouponDrawer = (props) => {
         contentInfo: {
           topImg: topImgUrl.toString(),
           backgroundColor,
+          giftTypes: giftTypes.toString(),
           image: imageUrl.toString(),
           mixedList: mixedList?.map((item) => ({
             activityGoodsId: item.activityGoodsId,
@@ -121,5 +138,8 @@ export default connect(({ loading }) => ({
   loading:
     loading.effects['walkingManage/fetchSaveResourceTemplateContent'] ||
     loading.effects['walkingManage/fetchUpdateResourceTemplateContent'],
-  loadingDetail: loading.effects['walkingManage/fetchGetResourceTemplateContentById'],
+  loadingDetail:
+    loading.effects['walkingManage/fetchGetResourceTemplateContentById'] ||
+    loading.effects['spreeManage/fetchListGiftType'] ||
+    loading.effects['sysAppList/fetchBannerRatio'],
 }))(CouponDrawer);
