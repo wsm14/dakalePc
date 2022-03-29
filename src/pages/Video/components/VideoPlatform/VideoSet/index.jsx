@@ -101,11 +101,23 @@ const VideoSet = (props) => {
       maxSize: 128,
       isCut: false,
       rules: [{ required: false }],
+      visible: type !== 'videoAD',
       extra: (
         <>
           <span>{`请上传比例为 5 * 4，大小128kb以内的jpg图片（375 * 300以上`}</span>
-          <br />
-          <span>{`底部确认按钮只对微信好友分享图有效`}</span>
+          {/* <br /> */}
+          {/* <span>{`底部确认按钮只对微信好友分享图有效`}</span> */}
+        </>
+      ),
+    },
+    {
+      label: '分享赚',
+      name: 'shareEarnFlag',
+      type: 'switch',
+      visible: type !== 'ugc',
+      extra: (
+        <>
+          <span>{`底部确认按钮只对微信好友分享图及分享赚开关有效`}</span>
         </>
       ),
     },
@@ -113,13 +125,15 @@ const VideoSet = (props) => {
 
   const handleSave = () => {
     form.validateFields().then(async (values) => {
-      const { friendShareImg = '' } = values;
+      const { friendShareImg = '', shareEarnFlag } = values;
+
       const fImg = await aliOssUpload(friendShareImg);
       onSubmit(
         {
           momentId,
           ownerId,
-          friendShareImg: fImg.toString(),
+          friendShareImg: fImg.toString() || undefined,
+          shareEarnFlag,
         },
         () => {
           childRef.current.fetchGetData();
@@ -134,12 +148,11 @@ const VideoSet = (props) => {
     visible: show,
     onClose,
     width: 850,
-    footer:
-      type === 'videoAD' ? null : (
-        <Button type="primary" onClick={handleSave} loading={loading}>
-          确认
-        </Button>
-      ),
+    footer: (
+      <Button type="primary" onClick={handleSave} loading={loading}>
+        确认
+      </Button>
+    ),
   };
   return (
     <DrawerCondition {...modalProps}>
@@ -154,13 +167,11 @@ const VideoSet = (props) => {
           </div>
         ) : null,
       )}
-      {type === 'videoAD' ? null : (
-        <FormCondition
-          form={form}
-          formItems={formItems}
-          initialValues={initialValues}
-        ></FormCondition>
-      )}
+      <FormCondition
+        form={form}
+        formItems={formItems}
+        initialValues={initialValues}
+      ></FormCondition>
     </DrawerCondition>
   );
 };

@@ -282,6 +282,7 @@ const VideoPlatform = (props) => {
           ...record,
           ...detail,
           listPayload: payload,
+          shareEarnFlag: 0,
         };
         setVisibleSet({ type, show: true, initialValues });
       },
@@ -362,7 +363,7 @@ const VideoPlatform = (props) => {
     <>
       <TableDataBlock
         firstFetch={false}
-        // 
+        //
         searchForm={form}
         cardProps={{
           tabList: tabList,
