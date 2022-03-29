@@ -679,3 +679,11 @@ export function fetchGetResourceTemplateContentById(params) {
 }
 
 // 资源位内容配置 end
+
+
+//拼团配置 
+export function fetchGetListTogetherGroupConfig(params) {
+  return request('/admin/together/group/config/listTogetherGroupConfig', {
+    params,
+  });
+}

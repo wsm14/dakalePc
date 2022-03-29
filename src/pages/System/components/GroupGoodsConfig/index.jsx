@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Card } from 'antd';
 import ExtraButton from '@/components/ExtraButton';
@@ -8,7 +8,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const GroupGoodsConfig = (props) => {
-  const { goodList = [{ name: '21' }, { name: '12' }] } = props;
+  const { goodList = [{ name: '21' }, { name: '12' }], dispatch } = props;
   const [visible, setVisible] = useState(false);
 
   const btnExtra = [
@@ -18,23 +18,25 @@ const GroupGoodsConfig = (props) => {
       onClick: () => setVisible({ show: true }),
     },
   ];
-  const onDel = () => {};
+  useEffect(() => {
+    dispatch({
+      type: 'groupGoods/fetchGetList',
+    });
+  }, []);
 
   return (
     <>
-      <DndProvider backend={HTML5Backend}>
-        <Card title="拼团商品配置" extra={<ExtraButton list={btnExtra}></ExtraButton>}>
-          <div style={{ display: 'flex' }}>
-            {goodList.map((item, index) => (
-              <div style={{ margin: 5 }} key={index}>
-                {groupGoods(item)}
-              </div>
-            ))}
-          </div>
-        </Card>
-        <GroupGoodsDraw visible={visible} onClose={() => setVisible(false)}></GroupGoodsDraw>
-      </DndProvider>
+      <Card title="拼团商品配置" extra={<ExtraButton list={btnExtra}></ExtraButton>}>
+        <div style={{ display: 'flex' }}>
+          {goodList.map((item, index) => (
+            <div style={{ margin: 5 }} key={index}>
+              {groupGoods(item, '', '', '')}
+            </div>
+          ))}
+        </div>
+      </Card>
+      <GroupGoodsDraw visible={visible} onClose={() => setVisible(false)}></GroupGoodsDraw>
     </>
   );
 };
-export default GroupGoodsConfig;
+export default connect(({}) => ({}))(GroupGoodsConfig);

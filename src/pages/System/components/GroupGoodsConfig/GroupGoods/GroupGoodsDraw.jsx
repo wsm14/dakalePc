@@ -3,11 +3,18 @@ import { connect } from 'umi';
 import { Card, Button } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import ExtraButton from '@/components/ExtraButton';
-import { groupGoods } from './GroupGoods';
-
+import { groupGoods } from '@/components/VideoSelectBindContent/CouponFreeDom';
+import GroupGoodModal from './GroupGoodModal';
 
 const GroupGoodsDraw = (props) => {
-  const { visible, onClose, goodList = [{ name: '21' }, { name: '12' }] } = props;
+  const {
+    visible,
+    onClose,
+    goodList = [
+      { name: '21', id: '2323' },
+      { name: '12', id: '323' },
+    ],
+  } = props;
   const modalProps = {
     title: '编辑',
     visible: visible,
@@ -22,18 +29,21 @@ const GroupGoodsDraw = (props) => {
       //   onClick: () => setVisible({ show: true }),
     },
   ];
+
+  const onDel = () => {};
   return (
-    <DrawerCondition {...modalProps}>
-      <Card title={<ExtraButton typeBtn={'link'} list={btnExtra}></ExtraButton>}>
-      
+    <>
+      <DrawerCondition {...modalProps}>
+        <Card title={<ExtraButton typeBtn={'link'} list={btnExtra}></ExtraButton>}>
           {goodList.map((item, index) => (
             <div style={{ margin: 5 }} key={index}>
-              {groupGoods(item, '', '', '',index, item.id, goodList)}
+              {groupGoods(item, '', '', onDel)}
             </div>
           ))}
-        
-      </Card>
-    </DrawerCondition>
+        </Card>
+      </DrawerCondition>
+      <GroupGoodModal></GroupGoodModal>
+    </>
   );
 };
 export default GroupGoodsDraw;
