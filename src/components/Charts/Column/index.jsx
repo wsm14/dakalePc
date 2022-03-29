@@ -1,11 +1,13 @@
 import React from 'react';
 import { Column } from '@ant-design/charts';
+import Loading from '../Loading';
 
 const ColumnChart = (props) => {
   const {
     data,
     xyField = { xField: 'type', yField: 'value' },
     meta = { type: { alias: 'x轴' }, value: { alias: 'y轴' } },
+    loading = null,
     ...other
   } = props;
   const config = {
@@ -44,7 +46,13 @@ const ColumnChart = (props) => {
     ...other,
   };
 
-  return <Column {...config} />;
+  return typeof loading === 'boolean' ? (
+    <Loading loading={loading}>
+      <Column {...config} />
+    </Loading>
+  ) : (
+    <Column {...config} />
+  );
 };
 
 export default ColumnChart;

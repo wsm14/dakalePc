@@ -36,15 +36,14 @@ const UGCVideoCondition = ({ rewardList, dispatch, loading }) => {
       ></SearchBlock>
       {/* 图表 */}
       <div style={{ marginTop: 25 }}>
-        <Spin spinning={loading}>
-          <Column
-            data={rewardList.list || []}
-            xyField={{ xField: 'analysisDay', yField: 'value' }}
-            seriesField="type"
-            isGroup={true}
-            maxColumnWidth={40}
-          />
-        </Spin>
+        <Column
+          loading={loading}
+          data={rewardList.list || []}
+          xyField={{ xField: 'analysisDay', yField: 'value' }}
+          seriesField="type"
+          isGroup={true}
+          maxColumnWidth={40}
+        />
       </div>
     </div>
   );
