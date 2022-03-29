@@ -1193,6 +1193,7 @@ export const ORDER_GOODS_CONTRAS = {
   reduceCoupon: '有价券',
   rightGoods: '权益商品',
   rightCoupon: '权益券',
+  platformGift: '平台礼包',
   other: '其他',
 };
 

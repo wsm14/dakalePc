@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Empty } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import { SELL_ORDER_TYPE } from '@/common/constant';
 
 const MarketStatement = (props) => {
-  const { loading, orderList, sum } = props;
+  const { loading, orderList, sum, dispatch } = props;
   const [searchData, setSearchData] = useState({});
+
+  useEffect(() => {
+    dispatch({
+      type: 'marketStatement/clearOrderList',
+    });
+  }, []);
 
   // 搜索参数
   const searchItems = [
@@ -108,7 +114,7 @@ const MarketStatement = (props) => {
           emptyText: (
             <Empty
               description={
-                Object.keys(searchData).length !== 0 ? (
+                Object.keys(searchData).length > 1 ? ( // 因为有一个limit：50
                   '暂无数据'
                 ) : (
                   <div style={{ fontSize: 26 }}>请先筛选统计时间</div>

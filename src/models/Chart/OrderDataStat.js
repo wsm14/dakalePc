@@ -115,9 +115,9 @@ export default {
         Number(paidOrder.totalOrderMoney) / paidOrder.totalOrderAmount || 0
       ).toFixed(2);
       // 支付转换率
-      const payPercent = `${(paidOrder.totalOrderAmount / placeOrder.totalOrderAmount || 0).toFixed(
-        2,
-      )}%`;
+      const payPercent = `${(
+        (paidOrder.totalOrderAmount / placeOrder.totalOrderAmount || 0) * 100
+      ).toFixed(2)}%`;
 
       yield put({
         type: 'save',
