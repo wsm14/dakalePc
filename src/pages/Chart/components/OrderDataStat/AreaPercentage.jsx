@@ -68,8 +68,9 @@ const AreaPercentage = ({ areaData, dispatch, loading }) => {
               data={areaData.cityList}
               angleField="payMoneySum"
               title="支付金额"
-              innerRadius={0.6}
+              innerRadius={0.7}
               legend={false}
+              radius={0.8}
             />
           </Spin>
         </div>
