@@ -8,6 +8,8 @@ import {
   fetchVideoAdvertEdit,
   fetchVideoAdvertDetail,
   fetchVideoListMomentTag,
+  fetchVideoGetDictionaryAdmin,
+  fetchVideoSetShareEarnBeanRule,
 } from '@/services/MarketServices';
 
 import { fetchNewShareStatisticsList } from '@/services/OperationServices';
@@ -189,6 +191,21 @@ export default {
         ...editData,
       };
       callback(newObj);
+    },
+    *fetchVideoGetDictionaryAdmin({ payload, callback }, { call }) {
+      const response = yield call(fetchVideoGetDictionaryAdmin, payload);
+      if (!response) return;
+      const { content } = response;
+      callback({ ...content?.dictionary, ...JSON.parse(content?.dictionary?.extraParam) });
+    },
+    *fetchVideoSetShareEarnBeanRule({ payload, callback }, { call }) {
+      const response = yield call(fetchVideoSetShareEarnBeanRule, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `修改成功`,
+      });
+      callback();
     },
   },
 };

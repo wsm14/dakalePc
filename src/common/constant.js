@@ -540,7 +540,7 @@ export const COUPON_BUY_RULE = { unlimited: '不限', personLimit: '每人限制
 export const COUPON_GIVE_TYPE = {
   manual: '手动领取',
   auto: '自动发放',
-  // system: '系统发放',
+  system: '系统发放',
 };
 
 // 优惠券管理 - 优惠券类型
