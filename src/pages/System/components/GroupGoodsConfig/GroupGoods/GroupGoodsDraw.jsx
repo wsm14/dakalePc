@@ -3,8 +3,8 @@ import { connect } from 'umi';
 import { Card, Button } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import ExtraButton from '@/components/ExtraButton';
-import { groupGoods } from '@/components/VideoSelectBindContent/CouponFreeDom';
-import DndDragContext from '@/components/DndDragContext';
+import { groupGoods } from './GroupGoods';
+
 
 const GroupGoodsDraw = (props) => {
   const { visible, onClose, goodList = [{ name: '21' }, { name: '12' }] } = props;
@@ -25,11 +25,13 @@ const GroupGoodsDraw = (props) => {
   return (
     <DrawerCondition {...modalProps}>
       <Card title={<ExtraButton typeBtn={'link'} list={btnExtra}></ExtraButton>}>
-        {goodList.map((item, index) => (
-          <div style={{ margin: 5 }} key={index}>
-            {groupGoods(item)}
-          </div>
-        ))}
+      
+          {goodList.map((item, index) => (
+            <div style={{ margin: 5 }} key={index}>
+              {groupGoods(item, '', '', '',index, item.id, goodList)}
+            </div>
+          ))}
+        
       </Card>
     </DrawerCondition>
   );
