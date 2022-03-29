@@ -13,8 +13,6 @@ import styles from './style.less';
 const AreaPercentage = ({ areaData, dispatch, loading }) => {
   const childRef = useRef();
 
-  console.log('areaData', areaData);
-
   const [data, setData] = useState({
     groupBy: 'city',
     subStatisticType: 'scan,specialGoods',
@@ -26,10 +24,10 @@ const AreaPercentage = ({ areaData, dispatch, loading }) => {
 
   // 监听数据变化发送请求
   useEffect(() => {
-    setSelectRow(areaData.cityList[0]?.cityCode);
     dispatch({
       type: 'orderDataStat/fetchOrderAreaAnalysisReport',
       payload: data,
+      callback: (code) => setSelectRow(code),
     });
   }, [data]);
 
@@ -98,11 +96,10 @@ const AreaPercentage = ({ areaData, dispatch, loading }) => {
               }}
             ></TableDataBlock>
           </div>
-          {selectRow && (
-            <div style={{ flex: 1, marginLeft: 5 }}>
-              <DistrictList searchData={data} cityCode={selectRow}></DistrictList>
-            </div>
-          )}
+
+          <div style={{ flex: 1, marginLeft: 5 }}>
+            <DistrictList searchData={data} cityCode={selectRow}></DistrictList>
+          </div>
         </div>
       </div>
     </div>

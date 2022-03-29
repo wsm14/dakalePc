@@ -154,7 +154,7 @@ export default {
         },
       });
     },
-    *fetchOrderAreaAnalysisReport({ payload }, { call, put }) {
+    *fetchOrderAreaAnalysisReport({ payload, callback }, { call, put }) {
       const { groupBy = 'city', code = '', ...other } = payload;
 
       let areaData = {};
@@ -177,11 +177,19 @@ export default {
         areaData.cityList = cityList.sort((a, b) => b.payMoneySum - a.payMoneySum);
       }
       // 处理区级数据
-      if (groupBy === 'district') {
-        const districtCode = code;
+
+      // if (groupBy === 'district' || areaData.cityList.length !== 0) {
+      if (areaData.cityList && areaData.cityList.length === 0) {
+        areaData = {
+          cityList: [],
+          districtList: [],
+        };
+      } else {
         const response = yield call(fetchOrderAreaAnalysisReport, {
           groupBy: 'district',
-          code: districtCode,
+          code: code || (areaData.cityList && areaData.cityList[0]?.cityCode),
+          page: 1,
+          limit: 10,
           ...other,
         });
         if (!response) return;
@@ -197,11 +205,13 @@ export default {
         }));
         areaData.districtList = districtList.sort((a, b) => b.payMoneySum - a.payMoneySum);
       }
+      // }
 
       yield put({
         type: 'saveArea',
         payload: areaData,
       });
+      callback && callback(code || (areaData.cityList && areaData.cityList[0]?.cityCode));
     },
   },
 };
