@@ -98,6 +98,7 @@ export const ROLE_BUTTON_TYPE = {
   info: '详情',
   income: '收益明细',
   isWechat: '小程序展示控制',
+  immediateGroup:'立即成团',
 
   jobClass: '职位类别',
 

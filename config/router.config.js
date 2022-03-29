@@ -184,6 +184,12 @@ export default [
             component: './Market/SpecialGoodsResource',
             buttons: ['cancleRecommend', 'configCondit'],
           },
+          {
+            path: '/market/openGroup',
+            name: '开团列表',
+            component: './Market/OpenGroupList',
+            buttons: ['info', 'immediateGroup'],
+          },
         ],
       },
       {
