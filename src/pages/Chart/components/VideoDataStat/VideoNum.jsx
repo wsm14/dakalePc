@@ -35,7 +35,7 @@ const VideoNum = ({ PGCList, UGCList, dispatch, loading }) => {
 
   return (
     <div style={{ paddingTop: 25 }}>
-      <div>
+      <div style={{ marginBottom: 15 }}>
         <Cascader
           value={city}
           options={CITY.map((item) => ({
@@ -54,7 +54,10 @@ const VideoNum = ({ PGCList, UGCList, dispatch, loading }) => {
             <Tag.CheckableTag
               key={tag}
               checked={isCity(tag)}
-              onChange={() => setData((old) => ({ ...old, cityCode: tag[1] }))}
+              onChange={() => {
+                setCity(cityObj[tag]);
+                setData((old) => ({ ...old, cityCode: cityObj[tag][1] }));
+              }}
             >
               {tag}
             </Tag.CheckableTag>
