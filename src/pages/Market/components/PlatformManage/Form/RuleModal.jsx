@@ -6,8 +6,16 @@ import TableDataBlock from '@/components/TableDataBlock';
 import CouponRulesManageDrawer from '../../CouponRulesManage/CouponRulesManageDrawer';
 
 const RuleModal = (props) => {
-  const { visible, form, dispatch, onClose, loading, ruleByPagelist, ruleList, setRuleList } =
-    props;
+  const {
+    visible,
+    form,
+    dispatch,
+    onClose,
+    loading,
+    ruleByPagelist,
+    ruleList,
+    setRuleList,
+  } = props;
   const { show = false, useScenesType = '' } = visible;
 
   const [selectItem, setSelectItem] = useState([]); // 选中项
@@ -146,6 +154,11 @@ const RuleModal = (props) => {
               .filter((item) => item && allIdArr.includes(item['ruleId']));
             setSelectItem(newSelectList);
           },
+          getCheckboxProps: ({ ruleType, ruleId }) => ({
+            disabled: selectItem.some(
+              (item) => item.ruleType === ruleType && item.ruleId !== ruleId,
+            ),
+          }),
         }}
         loading={loading}
         searchItems={searchItems}

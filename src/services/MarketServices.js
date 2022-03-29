@@ -439,6 +439,21 @@ export function fetchVideoListMomentTag(params) {
   });
 }
 
+// get 视频广告 - 分享赚豆
+export function fetchVideoGetDictionaryAdmin(params) {
+  return request('/admin/dictionaryAdmin/getDictionaryAdmin', {
+    params,
+  });
+}
+
+// post 视频广告 - 分享赚豆 - 编辑
+export function fetchVideoSetShareEarnBeanRule(data) {
+  return request('/admin/marketing/moment/new/setShareEarnBeanRule', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 视频广告 end
 
 // 新手视频
