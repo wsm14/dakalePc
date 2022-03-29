@@ -626,7 +626,6 @@ export default [
             name: '全局配置',
             component: './System/GlobalConfig',
             buttons: [
-              'down',
               'adVideo_edit',
               'merchantVideo_edit',
               'UGCVideo_edit',
