@@ -26,6 +26,8 @@ const ColumnChart = (props) => {
         },
       },
     },
+    // colorField: 'type', // 部分图表使用 seriesField
+    // color: ['red', 'blue'],
     ...other,
   };
 

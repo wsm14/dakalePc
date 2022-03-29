@@ -106,17 +106,16 @@ export default {
       });
     },
     *fetchOrderConvertAnalysisReport({ payload }, { call, put }) {
-      const { subStatisticType = 'specialGoods' } = payload;
       const response = yield call(fetchOrderConvertAnalysisReport, payload);
       const { content = {} } = response;
       const { placeOrder = {}, paidOrder = {} } = content;
 
       // 订单均价
-      const paidAverage = (Number(paidOrder.totalOrderMoney) / paidOrder.totalOrderAmount).toFixed(
-        2,
-      );
+      const paidAverage = (
+        Number(paidOrder.totalOrderMoney) / paidOrder.totalOrderAmount || 0
+      ).toFixed(2);
       // 支付转换率
-      const payPercent = `${(paidOrder.totalOrderAmount / placeOrder.totalOrderAmount).toFixed(
+      const payPercent = `${(paidOrder.totalOrderAmount / placeOrder.totalOrderAmount || 0).toFixed(
         2,
       )}%`;
 

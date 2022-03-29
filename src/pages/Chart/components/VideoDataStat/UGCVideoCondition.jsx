@@ -42,6 +42,7 @@ const UGCVideoCondition = ({ rewardList, dispatch, loading }) => {
             xyField={{ xField: 'analysisDay', yField: 'value' }}
             seriesField="type"
             isGroup={true}
+            maxColumnWidth={40}
           />
         </Spin>
       </div>

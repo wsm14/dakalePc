@@ -56,6 +56,7 @@ const TrendAnalysis = (props) => {
           legend={false}
           seriesField="type"
           isStack={true}
+          maxColumnWidth={40}
         />
       </Spin>
     </div>
