@@ -31,7 +31,7 @@ const TrendAnalysis = (props) => {
   };
 
   return (
-    <div>
+    <div style={{ paddingTop: 25 }}>
       <SearchBlock
         data={data}
         setData={setData}
@@ -56,6 +56,7 @@ const TrendAnalysis = (props) => {
           legend={false}
           seriesField="type"
           isStack={true}
+          maxColumnWidth={40}
         />
       </Spin>
     </div>

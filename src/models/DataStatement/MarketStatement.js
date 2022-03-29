@@ -15,11 +15,20 @@ export default {
         ...payload,
       };
     },
+    clearOrderList(state, { payload }) {
+      return {
+        ...state,
+        orderList: { list: [], total: 0 },
+        sum: {},
+      };
+    },
   },
 
   effects: {
     *fetchOrderSalesAnalysisReport({ payload }, { call, put }) {
-      const response = yield call(fetchOrderSalesAnalysisReport, payload);
+      const { startStatisticDay = '' } = payload;
+      if (!startStatisticDay) return;
+      const response = yield call(fetchOrderSalesAnalysisReport, { ...payload, limit: 50 });
       if (!response) return;
       const { content = {} } = response;
       const { sum = {}, recordList = [], total = 0 } = content;

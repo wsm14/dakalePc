@@ -1191,7 +1191,9 @@ export const ORDER_GOODS_CONTRAS = {
   communityGoods: '团购商品',
   scan: '扫码支付',
   reduceCoupon: '有价券',
-  right: '权益商品',
+  rightGoods: '权益商品',
+  rightCoupon: '权益券',
+  platformGift: '平台礼包',
   other: '其他',
 };
 
