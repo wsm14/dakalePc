@@ -4,20 +4,30 @@ import { Modal, Button, Form } from 'antd';
 import { groupGoods } from '@/components/VideoSelectBindContent/CouponFreeDom';
 import Search from './Search';
 
-const GroupGoodModal = () => {
+const GroupGoodModal = ({ visible = {}, onClose }) => {
+  const { show = false } = visible;
   const [searchData, setSearchData] = useState({});
+
+  const handleCOnfirm =()=>{
+
+  }
+
   const modalProps = {
     title: ' 新增商品',
-    visible: false,
+    visible: show,
     width: 800,
+    onCancel:onClose,
+    onOk:handleCOnfirm
   };
-  //  搜索
+
+  // 搜索
   const onSearch = (values) => {
     dispatch({
-      type: '',
+      type: 'groupGoods/fetchListActivityForSearch',
       payload: {
         ...values,
       },
+      callback:(list)=>{}
     });
   };
 

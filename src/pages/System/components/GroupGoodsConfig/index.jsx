@@ -26,16 +26,18 @@ const GroupGoodsConfig = (props) => {
 
   return (
     <>
-      <Card title="拼团商品配置" extra={<ExtraButton list={btnExtra}></ExtraButton>}>
-        <div style={{ display: 'flex' }}>
-          {goodList.map((item, index) => (
-            <div style={{ margin: 5 }} key={index}>
-              {groupGoods(item, '', '', '')}
-            </div>
-          ))}
-        </div>
-      </Card>
-      <GroupGoodsDraw visible={visible} onClose={() => setVisible(false)}></GroupGoodsDraw>
+      <DndProvider backend={HTML5Backend}>
+        <Card title="拼团商品配置" extra={<ExtraButton list={btnExtra}></ExtraButton>}>
+          <div style={{ display: 'flex' }}>
+            {goodList.map((item, index) => (
+              <div style={{ margin: 5 }} key={index}>
+                {groupGoods(item, '', '', '')}
+              </div>
+            ))}
+          </div>
+        </Card>
+        <GroupGoodsDraw visible={visible} onClose={() => setVisible(false)}></GroupGoodsDraw>
+      </DndProvider>
     </>
   );
 };

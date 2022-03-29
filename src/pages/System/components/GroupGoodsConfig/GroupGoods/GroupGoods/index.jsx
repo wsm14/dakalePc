@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { DeleteOutlined } from '@ant-design/icons';
 import DragAndDropHOC from '@/components/DndDragContext/DragAndDropHOC';
 import DndDragContext from '@/components/DndDragContext';
 import update from 'immutability-helper';
@@ -14,6 +15,7 @@ export const groupGoods = (
   index,
   accept = 'sort',
   data = [],
+  onEnd,
 ) => {
   const {
     goodsImg,
@@ -26,9 +28,11 @@ export const groupGoods = (
     goodsId,
     name,
   } = item;
+
+  console.log(accept,'saa')
   // 移动数据处理
   const moveRow = (dragIndex, hoverIndex) => {
-      console.log(dragIndex, hoverIndex,'111')
+    console.log(dragIndex, hoverIndex, '111');
     const dragRow = data[dragIndex];
     const movefile = update(data, {
       $splice: [
@@ -36,7 +40,7 @@ export const groupGoods = (
         [hoverIndex, 0, dragRow],
       ],
     });
-    // onEnd(movefile);
+    onEnd(movefile);
   };
 
   const ref = useRef();

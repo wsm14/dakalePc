@@ -680,10 +680,24 @@ export function fetchGetResourceTemplateContentById(params) {
 
 // 资源位内容配置 end
 
-
-//拼团配置 
+//拼团配置
 export function fetchGetListTogetherGroupConfig(params) {
   return request('/admin/together/group/config/listTogetherGroupConfig', {
     params,
+  });
+}
+
+// 商品配置
+export function fetchSaveTogetherGroupConfig(data) {
+  return request('/admin/together/group/config/saveTogetherGroupConfig', {
+    method: 'POST',
+    data,
+  });
+}
+//
+export function fetchListActivityForSearch(data) {
+  return request('/admin/specialGoodsManagement/listActivityForSearch', {
+    method: 'POST',
+    data,
   });
 }
