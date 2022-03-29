@@ -67,6 +67,7 @@ const DistrictListComponent = (props) => {
       columns={getColumns}
       params={{ bucket: 'districtCode' }}
       rowKey={(record) => `${record.bucket}`}
+      pagination={false}
       dispatchType="areaTotal/fetchGetList"
       list={list}
     ></TableDataBlock>

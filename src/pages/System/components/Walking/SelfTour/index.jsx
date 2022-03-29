@@ -78,7 +78,7 @@ const TabConfigure = (props) => {
   return (
     <>
       <Card
-        title="逛逛页面配置"
+        title="自我游配置"
         tabList={Object.keys(TAB_INDEX_TYPE).map((i) => ({ key: i, tab: TAB_INDEX_TYPE[i] }))}
         activeTabKey={tabKey}
         onTabChange={handleTabChange}

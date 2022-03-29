@@ -185,7 +185,7 @@ const VerificationList = (props) => {
 
   return (
     <TableDataBlock
-      keepData
+      
       btnExtra={extraBtn}
       resetSearch={() => setMerchantId()}
       cRef={childRef}

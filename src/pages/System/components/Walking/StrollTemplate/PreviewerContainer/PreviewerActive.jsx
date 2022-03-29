@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowUpOutlined, ArrowDownOutlined, DeleteOutlined } from '@ant-design/icons';
-import showImg from '../showImg';
+import showImg from '../panel.config';
 import update from 'immutability-helper';
 import styles from './style.less';
 
@@ -17,6 +17,8 @@ export default ({ show, index, data, dispatchData }) => {
     e.stopPropagation();
     // 更新 data 数据源
     const movefile = update(data, { $splice: [[index, 1]] });
+    // 关闭编辑框
+    dispatchData({ type: 'closeEditor' });
     // 数据变化储存
     dispatchData({ type: 'saveModuleData', payload: { dataList: movefile } });
   };

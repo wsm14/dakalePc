@@ -23,8 +23,17 @@ export const BRAND_VIDEO_ADVERT = 640 / 360;
 // 风向标
 export const VANE_ICON = 80 / 80;
 
-// 风向标中卡豆教育
+// 风向标中四宫格
 export const VANE_BEAN_ICON = 335 / 160;
+
+// 风向标中六宫格
+export const VANE_SIX_ICON = 226 / 176;
+
+// 风向标中卡豆抵扣专区
+export const VANE_BEANDEDUCTION_ICON = 202 / 250;
+
+// 风向标中田字资源位
+export const VANE_FIELD_ICON = 298 / 208;
 
 // 商圈
 export const CIRCLE_ICON = 750 / 460;
@@ -47,6 +56,11 @@ export const RIGHT_COUNT_DWON = 84 / 84;
 
 // 顶部背景
 export const TOP_BGIMG = 750 / 360;
+
+//小程序顶部背景
+export const TOP_BGIMG_WECHAT = 750 / 400;
+
+export const TOP_BGIMG_WECHAT2 = 750 / 500;
 
 export const TABBAR_ICON = 88 / 88;
 

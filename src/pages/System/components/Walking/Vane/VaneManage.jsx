@@ -8,7 +8,10 @@ import VaneDrawer from './components/VaneDrawer';
 
 const tabList = [
   { key: 'windVane', tab: '风向标' },
-  { key: 'beanEducation', tab: '卡豆教育' },
+  { key: 'beanEducation', tab: '四宫格' },
+  { key: 'sixPalaceLattice', tab: '六宫格' },
+  { key: 'beanDeductionZone', tab: '卡豆抵扣专区' },
+  { key: 'fieldResource', tab: '田字资源位' },
 ];
 
 const VaneManage = (props) => {
@@ -126,6 +129,15 @@ const VaneManage = (props) => {
       },
     },
   ];
+  const cardBtnFlag = () => {
+    if (['windVane', 'beanEducation', 'sixPalaceLattice'].includes(tabKey)) {
+      return cardBtnList;
+    } else if (['beanDeductionZone'].includes(tabKey) && list.list.length < 3) {
+      return cardBtnList;
+    } else if (['fieldResource'].includes(tabKey) && list.list.length < 4) {
+      return cardBtnList;
+    }
+  };
   const handleTabChange = (key) => {
     setTabKey(key);
     childRef?.current?.fetchGetData({
@@ -145,7 +157,7 @@ const VaneManage = (props) => {
           tableSort={{ key: 'configWindVaneId', onSortEnd: fetchDetailSort }}
           cardProps={{ tabList, activeTabKey: tabKey, onTabChange: handleTabChange }}
           cRef={childRef}
-          btnExtra={cardBtnList}
+          btnExtra={cardBtnFlag()}
           loading={loading}
           pagination={false}
           columns={getColumns}

@@ -59,7 +59,7 @@ const BusinessRegisterComponent = (props) => {
 
   return (
     <TableDataBlock
-      keepData
+      
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}

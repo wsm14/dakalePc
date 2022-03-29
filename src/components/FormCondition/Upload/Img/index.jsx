@@ -136,12 +136,17 @@ const UploadBlock = (props) => {
     onChange = undefined,
     onRemove,
     isCut,
+    drop = true,
     imgRatio,
     disabled,
     multiple = true,
   } = props;
 
-  const fileKeyName = Array.isArray(name) ? name[1] : name;
+  const fileKeyName = Array.isArray(name)
+    ? typeof name[1] === 'number'
+      ? name[2]
+      : name[1]
+    : name;
 
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显弹窗显示隐藏
   const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
@@ -204,7 +209,7 @@ const UploadBlock = (props) => {
       }
       setFileLists(newimg);
       onChange && onChange(file);
-      form.setFieldsValue(checkArrKeyVal(name, newimg, maxFile, 'fileList'));
+      form && form.setFieldsValue(checkArrKeyVal(name, newimg, maxFile, 'fileList'));
     });
   };
 
@@ -221,9 +226,9 @@ const UploadBlock = (props) => {
     setFileLists(movefile);
     const urlValue = form.getFieldValue(name);
     if (typeof urlValue === 'string') {
-      form.setFieldsValue(checkArrKeyVal(name, movefile.map((i) => i.url).toString()));
+      form && form.setFieldsValue(checkArrKeyVal(name, movefile.map((i) => i.url).toString()));
     } else {
-      form.setFieldsValue(checkArrKeyVal(name, movefile, maxFile, 'fileList'));
+      form && form.setFieldsValue(checkArrKeyVal(name, movefile, maxFile, 'fileList'));
     }
   };
 
@@ -268,11 +273,11 @@ const UploadBlock = (props) => {
             return;
           }
           setFileLists(newFileList.slice(0, maxFile || 999));
-          form.setFieldsValue(checkArrKeyVal(name, newFileList, maxFile, 'fileList'));
+          form && form.setFieldsValue(checkArrKeyVal(name, newFileList, maxFile, 'fileList'));
           if (onChange) onChange(value);
         } else {
-          if (!newFileList.length) form.setFieldsValue(checkArrKeyVal(name, undefined));
-          else form.setFieldsValue(checkArrKeyVal(name, newFileList, maxFile, 'fileList'));
+          if (!newFileList.length) form && form.setFieldsValue(checkArrKeyVal(name, undefined));
+          else form && form.setFieldsValue(checkArrKeyVal(name, newFileList, maxFile, 'fileList'));
           setFileLists(newFileList);
         }
       },
@@ -292,6 +297,7 @@ const UploadBlock = (props) => {
           maxCount={maxFile}
           {...handleUpProps()}
           itemRender={(originNode, file, currFileList) => {
+            if (!drop) return originNode;
             return (
               <DragableUploadListItem
                 originNode={originNode}

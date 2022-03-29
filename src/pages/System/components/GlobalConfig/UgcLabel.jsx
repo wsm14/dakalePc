@@ -50,18 +50,18 @@ const UgcLabel = (props) => {
       dataIndex: 'configMomentTagId',
       render: (val, row) => [
         {
-          type: 'edit',
+          type: 'UGCEdit',
           click: () => handleUpdateSet('edit', val),
           auth: true,
         },
         {
-          type: 'down',
+          type: 'UGCDown',
           title: '显示',
           visible: row.deleteFlag === '0',
           click: () => handleDown(val, 1),
         },
         {
-          type: 'down',
+          type: 'UGCDown',
           title: '隐藏',
           visible: row.deleteFlag === '1',
           click: () => handleDown(val, 0),
@@ -103,7 +103,8 @@ const UgcLabel = (props) => {
 
   const cardBtnList = [
     {
-      auth: 'save',
+      auth: 'UGCSave',
+      title:'新增',
       onClick: () => handleUpdateSet('add'),
     },
   ];

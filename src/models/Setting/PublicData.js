@@ -42,6 +42,8 @@ import {
   fetchListConfigGoodsTag,
   fetchGlobalListCity,
   fetchGlobalListPartner,
+  fetchListHittingMain,
+  fetchPageResourceTemplateContent,
 } from '@/services/PublicServices';
 
 export default {
@@ -71,9 +73,11 @@ export default {
     EquityCoupon: { list: [], total: 0 },
     PlatformCoupon: { list: [], total: 0 },
     pointList: { list: [], total: 0 },
+    bodyList: { list: [], total: 0 },
     virtualList: { list: [], total: 0 },
     allCouponList: { list: [], total: 0 },
     configGoodsTagList: [],
+    resourceList: [],
   },
 
   reducers: {
@@ -326,6 +330,21 @@ export default {
         },
       });
     },
+    // 特惠商品 - 同特惠列表 - 字段较多
+    *fetchGetSpecialGoodsSelectList({ payload }, { call, put }) {
+      const response = yield call(fetchGetPlatformEquitySelect, {
+        activityType: 'specialGoods',
+        ...payload,
+      });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          specialGoods: { list: content.recordList, total: content.total },
+        },
+      });
+    },
     // 权益商品
     *fetchGetPlatformEquitySelect({ payload }, { call, put }) {
       const response = yield call(fetchGetPlatformEquitySelect, {
@@ -404,7 +423,6 @@ export default {
         },
       });
       callback && callback(content.recordList);
-     
     },
     *fetchGetExpertLevel({ payload }, { call, put }) {
       const response = yield call(fetchGetExpertLevel, payload);
@@ -614,6 +632,27 @@ export default {
             list: content.recordList.map((item) => ({
               name: `${item.name}`,
               value: item.hittingId,
+              otherData: item.address,
+              dayCount: item.dayCount,
+            })),
+            total: content.total,
+          },
+        },
+      });
+    },
+    //  哒小卡点位主体-列表
+    *fetchListHittingMain({ payload }, { call, put }) {
+      const response = yield call(fetchListHittingMain, { page: 1, limit: 999, payload });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          bodyList: {
+            list: content.recordList.map((item) => ({
+              name: `${item.name}-${item.hittingMainId}`,
+              value: item.hittingMainId,
+              otherData: item.address,
             })),
             total: content.total,
           },
@@ -637,6 +676,7 @@ export default {
             list: content.recordList.map((item) => ({
               name: `${item.activityName}`,
               value: item.identification,
+              preferentialActivityId: item.preferentialActivityId,
             })),
             total: content.total,
           },
@@ -682,6 +722,25 @@ export default {
       }));
 
       callback && callback(arr);
+    },
+    //资源位模板-  不分页列表\查询
+    *fetchPageResourceTemplateContent({ payload }, { call, put }) {
+      const response = yield call(fetchPageResourceTemplateContent, {
+        page: 1,
+        limit: 999,
+        ...payload,
+      });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          resourceList: content.recordList.map((item) => ({
+            name: item.name,
+            value: item.resourceTemplateContentId,
+          })),
+        },
+      });
     },
   },
 };

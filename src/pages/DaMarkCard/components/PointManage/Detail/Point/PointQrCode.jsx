@@ -8,8 +8,6 @@ const PointQrCode = (props) => {
 
   const dakaUrl = 'https://www.dakale.net?uniqueKey=';
 
-  console.log(detail.uniqueKey, '11');
-
   //   点击下载
   const changeCanvasToPic = (id, type, down) => {
     let img = id;

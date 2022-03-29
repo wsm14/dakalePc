@@ -9,12 +9,14 @@ import UgcLabel from './components/GlobalConfig/UgcLabel';
 import TabConfigure from './components/GlobalConfig/TabConfigure';
 import VirtualRatioConfig from './components/GlobalConfig/VirtualRatioConfig';
 import BottomIconConfig from './components/GlobalConfig/BottomIconConfig';
+import SearchSetList from './components/GlobalConfig/SearchSetList'
+import VideoConfig from './components/GlobalConfig/VideoConfig'
 
 const GlobalConfig = (props) => {
   let main = undefined;
 
   const [mode, setMode] = useState('inline'); // 菜单显示状态
-  const [menuKey, setMenuKey] = useState('holidayConfig'); // menu key
+  const [menuKey, setMenuKey] = useState('videoConfig'); // menu key 
 
   useEffect(() => {
     // 监听窗口大小变化
@@ -48,6 +50,12 @@ const GlobalConfig = (props) => {
 
   const menuList = [
     {
+      type: 'videoConfig',
+      menuName: '刷视频规则配置',
+      block: <VideoConfig></VideoConfig>,
+    },
+   
+    {
       type: 'holidayConfig',
       menuName: '节日配置',
       block: <HolidayConfig></HolidayConfig>,
@@ -74,13 +82,18 @@ const GlobalConfig = (props) => {
     },
     {
       type: 'virtualRatioConfig',
-      menuName: '虚拟商品优惠比例配置',
+      menuName: '卡豆抵扣比例配置',
       block: <VirtualRatioConfig></VirtualRatioConfig>,
     },
     {
       type: 'bottomIconConfig',
       menuName: '底部中心icon配置',
       block: <BottomIconConfig></BottomIconConfig>,
+    },
+    {
+      type: 'searchConfig',
+      menuName: '搜索配置',
+      block: <SearchSetList></SearchSetList>,
     },
   ];
   // 显示内容判断

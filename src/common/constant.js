@@ -51,6 +51,7 @@ export const EXPORT_TYPE = {
   darenList: '哒人列表',
   userRegistration: '用户注册明细',
   merchantMark: '到店打卡明细',
+  communityGoodsStatistic: '团购商品统计',
 };
 
 // 导出excel枚举 - 列表枚举映射
@@ -226,7 +227,12 @@ export const MARKET_MODAL_TYPE = { image: '图片', url: '链接' };
 export const MARKET_STATUS_TYPE = ['即将开始', '展示中', '已结束'];
 
 //全局弹窗配置 - 跳转类型
-export const MARKET_JUMP_TYPE = { '': '无', h5: 'H5', native: '原生页面' };
+export const MARKET_JUMP_TYPE = {
+  '': '无',
+  h5: 'H5',
+  native: '原生页面',
+  template: '跳转模板内容',
+};
 
 // 全局弹窗配置 - 可见范围
 export const MARKET_LOOK_AREA = {
@@ -473,7 +479,12 @@ export const MASTER_TYPE = { user: '用户', merchant: '店铺' };
 export const GOODS_CLASS_TYPE = { single: '单品', package: '套餐' };
 
 // 风向标跳转类型
-export const VANE_URL_TYPE = { h5: '跳转至URL', trade: '按行业显示', native: '原生页面' };
+export const VANE_URL_TYPE = {
+  h5: '跳转至URL',
+  trade: '按行业显示',
+  native: '原生页面',
+  template: '跳转模板内容',
+};
 
 // 分享设置 - 区域类型
 export const SHARE_AREA_TYPE = {
@@ -525,6 +536,12 @@ export const COUPON_TIME_TYPE = { '00:00-23:59': '全天', part: '固定时间' 
 
 // 优惠券管理 - 购买规则
 export const COUPON_BUY_RULE = { unlimited: '不限', personLimit: '每人限制', dayLimit: '每天限制' };
+// 优惠券管理 - 发送方式
+export const COUPON_GIVE_TYPE = {
+  manual: '手动领取',
+  auto: '自动发放',
+  // system: '系统发放',
+};
 
 // 优惠券管理 - 优惠券类型
 export const COUPON_ACTIVE_TYPE = { fixed: '固定时间', infinite: '长期' };
@@ -847,7 +864,38 @@ export const TAB_INDEX_TYPE = { iOS: 'iOS', android: 'Android', weChat: '小程�
 export const BOTTOM_ICON_TYPE = { iOS: 'iOS', android: 'Android' };
 
 // 全局配置 - 虚拟商品优惠比例配置
-export const VIRTUAL_CONFIG_TYPE = { phoneBill: '话费优惠', memberRecharge: '会员优惠' };
+export const VIRTUAL_CONFIG_TYPE = {
+  default: {
+    default: '默认配置',
+    phoneBill: '话费优惠',
+    memberRecharge: '会员优惠',
+    scanPay: '扫码付优惠',
+    assembly: '组件优惠 ',
+  },
+  other: {
+    phoneBill: '话费优惠',
+    memberRecharge: '会员优惠',
+    scanPay: '扫码付优惠',
+    assembly: '组件优惠 ',
+  },
+};
+
+// 全局配置 - 下单方式名称
+export const VIRTUAL_ORDER_TYPE = {
+  memberDefault: '会员默认',
+  phoneDefault: '话费默认',
+  scanDefault: '扫码默认',
+  videoDefault: '视频默认',
+  communityDefault: '团购默认 ',
+  otherDefault: '其他场景默认',
+  defaultIdentification: '全局默认',
+};
+
+//全局配置-节日配置-顶部动效图高度
+export const VIRTUAL_TOP_HEIGHT = {
+  400: '日常高度',
+  // 500: '节日高度',
+};
 
 // 全局配置 - 首页tab配置 - 标签类型
 export const TABINDEX_VIDEO_TYPE = {
@@ -985,6 +1033,18 @@ export const MARK_CARD_MAIN_TYPE = {
   officeBuilding: '写字楼',
   factory: '工厂',
   enterprise: '企业',
+  expressageState: '快递驿站',
+  houseEstate: '小区',
+  apartment: '公寓',
+  merchant: '商户',
+  market: '商场',
+  other: '其他',
+};
+
+export const DAY_COUNT_NUM = {
+  999: '不限',
+  1: '每天限1次',
+  2: '每天限2次',
 };
 
 // 哒小卡 - 点位管理 - 启用状态
@@ -1020,4 +1080,154 @@ export const AGENCY_TYPE = {
   province: '省级代理',
   city: '市级代理',
   partner: '区县代理',
+};
+
+//点位审核状态 审核状态0-待审核 1-已审核 2-拒绝
+export const VERIFY_STATUS_DOT = [false, '已通过', '已驳回'];
+
+//点位审核类型 hittingType personal-个人 merchant-商家
+export const HITTING_TYPE = {
+  personal: '个人',
+  merchant: '商家',
+};
+
+//用户数据统计 - 端口类型 - 数据枚举
+export const USER_ANALYSIS_TYPE = {
+  totalAppNum: 'APP',
+  totalWeChatNum: '哒小乐',
+  totalMarkNum: '哒小卡',
+  totalCommunityNum: '哒小团',
+};
+
+//用户数据统计 - 支付人数类型
+export const PAY_USER_TYPE = {
+  totalFirstPayUserNum: '首次支付人数',
+  totalPayUserNum: '总支付人数',
+};
+
+//用户数据统计 - 端口类型 - 入参筛选
+export const USER_ANALYSIS_TYPES = [
+  { label: 'APP', value: 'app' },
+  { label: '哒小乐', value: 'weChat' },
+  { label: '哒小卡', value: 'mark' },
+  { label: '哒小团', value: 'communityWechat' },
+];
+
+//用户数据统计 - 渠道类型
+export const CHANNEL_TYPE = {
+  applicationMarket: '应用市场',
+};
+
+//视频数据统计 - 视频类型
+export const VIDEO_DATA_TYPE = {
+  totalPgcNum: 'PGC视频',
+  totalUgcNum: 'UGC视频',
+  totalPlatformNum: '广告视频',
+  totalSdkNum: 'SDK视频',
+};
+
+//视频数据统计 - 视频数量 - PGC视频类型
+export const PGC_VIDEO_TYPE = {
+  lifeFunNum: '带货视频',
+  pickUpNum: '探店视频',
+};
+
+//视频数据统计 - 视频数量 - UGC视频类型
+export const UGC_VIDEO_TYPE = {
+  foodNum: '美食',
+  playNum: '潮玩',
+  plotNum: '剧情',
+};
+
+//订单数据统计 - 商品类型 - 数据枚举
+export const ORDER_GOODS_TYPE = {
+  totalChannelData: '渠道商品',
+  totalCommerceData: '电商商品',
+  totalCommunityData: '团购商品',
+  totalCouponData: '有价券',
+  totalGiftData: '礼包订单',
+  totalRightData: '权益品',
+  totalScanData: '扫码支付',
+  totalSpecialData: '特惠商品',
+  totalVirtualData: '虚拟商品',
+  totalWeeklyData: '周卡订单',
+};
+
+//订单数据统计 - 商品类型 - 入参筛选
+export const ORDER_GOODS_TYPES = [
+  { label: '扫码支付', value: 'scan' },
+  { label: '特惠商品', value: 'special' },
+  { label: '渠道商品', value: 'channel' },
+  { label: '有价券', value: 'coupon' },
+  { label: '权益品', value: 'right' },
+  { label: '虚拟商品', value: 'virtual' },
+  { label: '电商商品', value: 'commerce' },
+  { label: '团购商品', value: 'community' },
+  { label: '周卡订单', value: 'weekly' },
+  { label: '礼包订单', value: 'gift' },
+];
+
+//订单数据统计 - 商品类型 - 入参筛选
+export const AREA_ORDER_GOODS_TYPES = [
+  { label: '扫码支付', value: 'scan' },
+  { label: '特惠商品', value: 'special' },
+  { label: '有价券', value: 'coupon' },
+  { label: '权益品', value: 'right' },
+];
+
+//订单数据统计 - 端口类型 - 对应
+export const USER_ANALYSIS_CONTRAS = {
+  app: 'APP',
+  weChat: '哒小乐',
+  mark: '哒小卡',
+  communityWechat: '哒小团',
+};
+
+//订单数据统计 - 商品类型 - 对应
+export const ORDER_GOODS_CONTRAS = {
+  specialGoods: '特惠商品',
+  commerceGoods: '电商品',
+  selfTour: '自我游',
+  communityGoods: '团购商品',
+  scan: '扫码支付',
+  reduceCoupon: '有价券',
+  rightGoods: '权益商品',
+  rightCoupon: '权益券',
+  platformGift: '平台礼包',
+  other: '其他',
+};
+
+//订单数据统计 - 商品订单类型
+export const GOODS_ORDER_CONTRAS = {
+  scan: '扫码支付',
+  specialGoods: '特惠商品',
+  commerceGoods: '电商品',
+  reduceCoupon: '有价券',
+  communityGoods: '团购商品',
+  virtualProduct: '虚拟商品',
+  right: '权益商品',
+  platformGift: '平台礼包订单',
+  weeklyCard: '卡豆周卡订单',
+  channelGoods: '渠道商品',
+};
+
+//订单数据统计 - 地区占比 - 入参筛选
+export const ORDER_AREA_TYPES = [
+  { label: '扫码支付', value: 'scan' },
+  { label: '特惠商品', value: 'specialGoods' },
+];
+
+//销售报表 - 订单类型
+export const SELL_ORDER_TYPE = {
+  scan: '扫码订单',
+  topUp: '充值订单',
+  specialGoods: '特价商品订单',
+  reduceCoupon: '有价券订单',
+  communityGoods: '团购商品订单',
+  virtualProduct: '虚拟商品订单',
+  rightGoods: '权益商品订单',
+  rightCoupon: '权益券订单',
+  commerceGoods: '电商商品订单',
+  platformGift: '平台礼包订单',
+  weeklyCard: '卡豆周卡订单',
 };
