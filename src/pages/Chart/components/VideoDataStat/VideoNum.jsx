@@ -78,12 +78,24 @@ const VideoNum = ({ PGCList, UGCList, dispatch, loading }) => {
       <div style={{ display: 'flex', width: '100%', height: 500, marginTop: 25 }}>
         <div style={{ flex: 1 }}>
           <Spin spinning={loading}>
-            <Pie data={PGCList} title="PGC" innerRadius={0.6} legend={{ position: 'bottom' }} />
+            <Pie
+              data={PGCList}
+              title="PGC"
+              innerRadius={0.7}
+              radius={0.8}
+              legend={{ position: 'bottom' }}
+            />
           </Spin>
         </div>
         <div style={{ flex: 1 }}>
           <Spin spinning={loading}>
-            <Pie data={UGCList} title="UGC" innerRadius={0.6} legend={{ position: 'bottom' }} />
+            <Pie
+              data={UGCList}
+              title="UGC"
+              innerRadius={0.7}
+              radius={0.8}
+              legend={{ position: 'bottom' }}
+            />
           </Spin>
         </div>
       </div>
