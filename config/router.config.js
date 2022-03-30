@@ -720,6 +720,7 @@ export default [
               'newWinAdd',
               'groupGoodsConfigEdit',
               'groupGoodsConfigAdd',
+              'weight'
             ],
           },
         ],

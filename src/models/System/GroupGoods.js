@@ -10,6 +10,8 @@ export default {
 
   state: {
     list: [],
+    total: 0,
+    activityGoodsList: [],
   },
 
   reducers: {
@@ -29,7 +31,8 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.locationCityList,
+          list: content.togetherGroupConfigList,
+          total: content.total,
         },
       });
     },
@@ -43,11 +46,17 @@ export default {
       });
       callback && callback();
     },
-    *fetchListActivityForSearch({ payload, callback }, { call }) {
+    *fetchListActivityForSearch({ payload, callback }, { call, put }) {
       const response = yield call(fetchListActivityForSearch, payload);
       if (!response) return;
       const { content } = response;
-      callback && callback();
+      yield put({
+        type: 'save',
+        payload: {
+          list: content.activityGoodsList,
+        },
+      });
+      callback && callback(content.activityGoodsList);
     },
   },
 };

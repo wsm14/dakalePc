@@ -695,9 +695,8 @@ export function fetchSaveTogetherGroupConfig(data) {
   });
 }
 //
-export function fetchListActivityForSearch(data) {
+export function fetchListActivityForSearch(params) {
   return request('/admin/specialGoodsManagement/listActivityForSearch', {
-    method: 'POST',
-    data,
+    params,
   });
 }
