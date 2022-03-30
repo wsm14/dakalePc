@@ -54,7 +54,7 @@ const ServiceLimitPop = (props) => {
   return (
     <>
       <TableDataBlock
-        keepData
+        
         btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Card, Row, Col, Empty, Table } from 'antd';
+import { Card, Row, Col, Empty, Table, Cascader } from 'antd';
 import moment from 'moment';
 import { ChoroplethMap } from '@/components/Charts';
 import { getCityName } from '@/utils/utils';
+import CITY from '@/common/city';
 import TimeSearch from './TimeSearch/TimeSearch';
 
 const DistrictDistribution = (props) => {
@@ -26,6 +27,8 @@ const DistrictDistribution = (props) => {
     statisticType: 'district',
     code: '3301',
   });
+  const [province, setProvince] = useState(['33']);
+  const [city, setCity] = useState(['33', '3301']);
 
   useEffect(() => {
     dispatch({
@@ -69,7 +72,21 @@ const DistrictDistribution = (props) => {
 
   const cityColumns = [
     {
-      title: <div>111</div>,
+      title: (
+        <Cascader
+          value={province}
+          options={CITY.map((item) => ({
+            ...item,
+            children: undefined,
+          }))}
+          onChange={(val) => {
+            setProvince(val);
+            setCityData((old) => ({ ...old, code: val[0] }));
+          }}
+          placeholder="请选择地区"
+          allowClear={false}
+        />
+      ),
       dataIndex: 'cityCode',
       align: 'center',
       render: (val) => getCityName(val.slice(0, 4)),
@@ -88,7 +105,21 @@ const DistrictDistribution = (props) => {
 
   const districtColumns = [
     {
-      title: '区县',
+      title: (
+        <Cascader
+          value={city}
+          options={CITY.map((item) => ({
+            ...item,
+            children: item.children.map((citem) => ({ ...citem, children: undefined })),
+          }))}
+          onChange={(val) => {
+            setCity(val);
+            setDistrictData((old) => ({ ...old, code: val[1] }));
+          }}
+          placeholder="请选择地区"
+          allowClear={false}
+        />
+      ),
       dataIndex: 'districtCode',
       align: 'center',
       render: (val) => getCityName(val),

@@ -4,8 +4,9 @@ import { Spin, Cascader } from 'antd';
 import moment from 'moment';
 import CITY from '@/common/city';
 import { Column, Line } from '@/components/Charts';
-import { ORDER_GOODS_TYPES } from '@/common/constant';
+import { ORDER_GOODS_TYPES, AREA_ORDER_GOODS_TYPES } from '@/common/constant';
 import SearchBlock from '../SearchBlock';
+import old from '@/pages/System/components/Walking/GratiaClass/components/old';
 
 const TrendAnalyse = (props) => {
   const { dispatch, loading, newRegisterDataObj } = props;
@@ -33,17 +34,17 @@ const TrendAnalyse = (props) => {
   };
 
   return (
-    <div>
+    <div style={{ paddingTop: 25 }}>
       <SearchBlock
         data={data}
         setData={setData}
         btnObj={{
           payMoney: '支付金额',
           verificationMoney: '核销金额',
-          orderAmount: '核销金额',
+          orderAmount: '支付订单数',
         }}
         btnObjKeyName="subStatisticType"
-        portTypeList={ORDER_GOODS_TYPES}
+        portTypeList={city.length === 0 ? ORDER_GOODS_TYPES : AREA_ORDER_GOODS_TYPES}
         defaultPortType={['scan', 'special', 'coupon']}
         appTypeName="dataTypes"
         allText={
@@ -56,8 +57,19 @@ const TrendAnalyse = (props) => {
                   children: item.children.map((citem) => ({ ...citem, children: undefined })),
                 }))}
                 onChange={(val) => {
+                  let obj = {};
+                  const booleanArr = data.dataTypes
+                    .split(',')
+                    .filter((item) =>
+                      ['channel', 'virtual', 'commerce', 'community', 'weekly', 'gift'].includes(
+                        item,
+                      ),
+                    );
+                  if (val && booleanArr.length !== 0) {
+                    obj = { dataTypes: 'scan,special,coupon' };
+                  }
                   setCity(val || []);
-                  setData((old) => ({ ...old, cityCode: (val && val[1]) || undefined }));
+                  setData((old) => ({ ...old, cityCode: (val && val[1]) || undefined, ...obj }));
                 }}
                 placeholder="请选择地区"
               />
@@ -83,6 +95,7 @@ const TrendAnalyse = (props) => {
           label={{
             position: 'middle',
           }}
+          maxColumnWidth={40}
         />
       </Spin>
     </div>

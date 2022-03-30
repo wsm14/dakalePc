@@ -8,10 +8,11 @@ export default {
   state: {
     currentUser: {},
     flag: 0,
-    menuList: [],
+    menuList: [], // 用户菜单列表
     menuBtn: {},
     menuNameObj: {},
     loading: true,
+    openedMenu: [], // 保存已经打开的菜单栏 用于顶部tab
   },
   reducers: {
     saveCurrentUser(state, { payload }) {
@@ -22,6 +23,22 @@ export default {
         ...state,
         ...payload,
       };
+    },
+    saveOpenMenu(state, { payload }) {
+      const { menuItem } = payload;
+      if (!state.openedMenu.find((i) => i.path === menuItem.path)) {
+        const openedMenu = [...state.openedMenu];
+        openedMenu.push(menuItem);
+        return { ...state, openedMenu };
+      }
+      return state;
+    },
+    filterKey(state, { payload }) {
+      const openedMenu = state.openedMenu.filter((i) => i.path !== payload.key);
+      if (state.openedMenu.length === openedMenu.length) {
+        return state;
+      }
+      return { ...state, openedMenu };
     },
   },
   effects: {

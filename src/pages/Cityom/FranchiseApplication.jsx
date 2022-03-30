@@ -127,7 +127,7 @@ const FranchiseApplication = (props) => {
           onTabChange: setTabKey,
         }}
         order
-        keepData
+        
         cRef={childRef}
         loading={loading}
         columns={getColumns}

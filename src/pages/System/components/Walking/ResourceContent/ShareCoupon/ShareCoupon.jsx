@@ -19,8 +19,9 @@ const ShareCoupon = (props) => {
         name={type}
         rules={[
           {
-            validator: async (_, names) => {
-              if (!names || names.length < 1) {
+            validator: async (type, names) => {
+              // console.log(a, names);
+              if (type.field === 'specialGoods' && (!names || names.length < 1)) {
                 return Promise.reject(new Error('请至少选择1个商品'));
               }
             },

@@ -19,10 +19,12 @@ import {
   RedEnvelopeOutlined,
   FlagOutlined,
   PlayCircleOutlined,
+  DatabaseOutlined
 } from '@ant-design/icons';
 
 const iconEnum = {
   chart: <PieChartOutlined />,
+  dataStatement:<DatabaseOutlined />,
   cityom: <HeatMapOutlined />,
   finance: <DollarOutlined />,
   operation: <BoxPlotOutlined />,

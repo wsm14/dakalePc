@@ -124,7 +124,7 @@ const SaleAccount = (props) => {
     <>
       <TableDataBlock
         order
-        keepData
+        
         cRef={childRef}
         btnExtra={extraBtn}
         resetSearch={() => setAgentType(undefined)}

@@ -95,7 +95,7 @@ const ClassifyManageComponent = (props) => {
     <>
       <TableDataBlock
         order
-        keepData
+        
         btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}

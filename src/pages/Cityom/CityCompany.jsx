@@ -141,7 +141,6 @@ const CityCompany = (props) => {
     <>
       <TableDataBlock
         order
-        keepData
         cRef={childRef}
         btnExtra={extraBtn}
         loading={loading}

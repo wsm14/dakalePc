@@ -280,7 +280,7 @@ const GoodsManageComponent = (props) => {
     <>
       <TableDataBlock
         order
-        keepData
+        
         btnExtra={extraBtn}
         resetSearch={() => {
           fetchClassifySelectClear();

@@ -224,7 +224,7 @@ const PlatformEquityGoods = (props) => {
   return (
     <>
       <TableDataBlock
-        // keepData
+        // 
         btnExtra={btnList}
         noCard={false}
         cRef={childRef}

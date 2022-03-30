@@ -6,7 +6,6 @@ import {
   NEW_SHARE_STATUS,
   SUBMIT_TYPE_VIDEO,
   NEW_SHARE_OWNER,
-  NEW_SHARE_AWARD,
   BEANFLAG_TYPE,
 } from '@/common/constant';
 import { NUM_PATTERN } from '@/common/regExp';
@@ -17,10 +16,10 @@ import TableDataBlock from '@/components/TableDataBlock';
 import QuestionTooltip from '@/components/QuestionTooltip';
 import VideoSet from './components/VideoPlatform/VideoSet';
 import RewardSet from './components/VideoPlatform/RewardSet';
-import ShareDrawer from './components/VideoPlatform/ShareDrawer';
+import VideoPlatformDrawer from './components/VideoPlatform/VideoPlatformDrawer';
 import ShareWeightSet from './components/VideoPlatform/ShareWeightSet';
 import ShareDetail from './components/VideoPlatform/Detail/ShareDetail';
-import VideoPeasDetail from './components/ShareManage/Detail/VideoPeasDetail';
+import VideoPeasDetail from './components/VideoPlatform/Detail/VideoPeasDetail';
 
 const tabList = [
   {
@@ -362,7 +361,7 @@ const VideoPlatform = (props) => {
     <>
       <TableDataBlock
         firstFetch={false}
-        // keepData
+        //
         searchForm={form}
         cardProps={{
           tabList: tabList,
@@ -386,11 +385,11 @@ const VideoPlatform = (props) => {
         {...videoPlatform}
       ></TableDataBlock>
       {/* 新增 */}
-      <ShareDrawer
+      <VideoPlatformDrawer
         childRef={childRef}
         visible={visibleShare}
         onClose={() => setVisibleShare(false)}
-      ></ShareDrawer>
+      ></VideoPlatformDrawer>
       {/* 详情 修改 编辑画像 带货设置 分享配置*/}
       <ShareDetail
         childRef={childRef}

@@ -26,6 +26,7 @@ const disTime = moment('2020-03-01');
  */
 
 const SearchBlock = ({
+  data,
   setData,
   btnObjKeyName = 'reportType',
   groupTypeName = 'groupType',
@@ -78,9 +79,8 @@ const SearchBlock = ({
       {Object.keys(btnObj).length !== 0 && (
         <div>
           <Radio.Group
-            defaultValue={Object.keys(btnObj)[0]}
+            value={data[btnObjKeyName]}
             onChange={(e) => saveData({ [btnObjKeyName]: e.target.value })}
-            style={{ marginTop: 16 }}
           >
             {Object.keys(btnObj).map((item) => {
               return (
@@ -139,6 +139,7 @@ const SearchBlock = ({
           <Checkbox.Group
             options={portTypeList}
             defaultValue={defaultPortType}
+            value={data[appTypeName].split(',')}
             onChange={(val) => saveData({ [appTypeName]: val.toString() })}
           />
         </div>

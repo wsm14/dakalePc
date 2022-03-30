@@ -168,7 +168,6 @@ const SpecialGoodCheck = (props) => {
     <>
       <Card tabList={tabList} activeTabKey={tabkey} onTabChange={handleTabChange}>
         <TableDataBlock
-          keepData
           noCard={false}
           cRef={tableRef}
           loading={loading}

@@ -142,7 +142,7 @@ const ExpertTempList = (props) => {
     <>
       <TableDataBlock
         order
-        keepData
+        
         btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}

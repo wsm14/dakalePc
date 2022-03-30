@@ -354,7 +354,7 @@ const BusinessListComponent = (props) => {
   return (
     <>
       <TableDataBlock
-        keepData
+        
         cardProps={{ title: <ExtraButton list={extraBtn}></ExtraButton> }}
         cRef={childRef}
         btnExtra={({ get }) => [

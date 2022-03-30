@@ -36,7 +36,7 @@ const PayMoneyAnalyse = ({ payList, dispatch, loading }) => {
       {/* 图表 */}
       <div style={{ maxWidth: '60%', marginTop: 25 }}>
         <Spin spinning={loading}>
-          <Pie data={payList} title="支付金额" innerRadius={0.6} />
+          <Pie data={payList} title="支付金额" innerRadius={0.7} radius={0.8} />
         </Spin>
       </div>
     </div>

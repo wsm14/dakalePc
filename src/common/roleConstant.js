@@ -15,7 +15,7 @@ export const ROLE_BUTTON_TYPE = {
   award: '奖励',
   advert: '广告',
   adVideo_edit: '视频广告编辑',
-  activeTemplate:'活动模板',
+  activeTemplate: '活动模板',
 
   BDSet: '关联BD',
   batchEdit: '批量修改',
@@ -29,11 +29,11 @@ export const ROLE_BUTTON_TYPE = {
   bannerUp: 'banner上架',
   bannerDel: 'banner删除',
   bannerAdd: 'banner新增',
-  bannerAddPlace:"banner新增位置",
+  bannerAddPlace: 'banner新增位置',
   blindEdit: '盲盒编辑',
   blindDel: '盲盒新增',
-  blindAdd:'盲盒新增',
-  blindConfigEdit :'盲盒规则编辑',
+  blindAdd: '盲盒新增',
+  blindConfigEdit: '盲盒规则编辑',
 
   copy: '复制',
   check: '审核',
@@ -94,11 +94,19 @@ export const ROLE_BUTTON_TYPE = {
 
   handle: '处理',
   handleDeatil: '操作记录',
+  holidaySave: '节日配置-新增',
+  holidayDown: '节日配置-下架',
+  holidayEdit: '节日配置-编辑',
+  holidayInfo: '节日配置-详情',
 
   info: '详情',
   income: '收益明细',
   isWechat: '小程序展示控制',
   immediateGroup:'立即成团',
+  iconEdit:'底部icon-编辑',
+  iconVersionEdit:'底部icon-编辑版本',
+  iconVersionDel:'底部icon-删除版本',
+  iconVersionSave:'底部icon-新增版本',
 
   jobClass: '职位类别',
 
@@ -118,8 +126,8 @@ export const ROLE_BUTTON_TYPE = {
   noticeSend: '公告发送',
   newWelfareEdit: '新人福利弹框编辑',
   newWelfareAdd: '新人福利弹框新增',
-  newWinDel:'新手必中奖池删除',
-  newWinAdd:'新手必中奖池新增',
+  newWinDel: '新手必中奖池删除',
+  newWinAdd: '新手必中奖池新增',
 
   openAd: '开屏广告',
   orderDetail: '订单明细',
@@ -186,6 +194,10 @@ export const ROLE_BUTTON_TYPE = {
   targetSet: '营销卡豆充值设置',
   taskDetail: '营销卡豆充值补贴详情',
   tradeSecondAdd: '添加子类目',
+  tabEdit:'首页tab配置-编辑',
+  tabEditVersion:'首页tab配置-编辑版本',
+  tabSaveVersion:'首页tab配置-新增版本',
+  tabAddCity:'首页tab配置-新增城市',
 
   up: '上架',
   user: '用户',
@@ -195,8 +207,14 @@ export const ROLE_BUTTON_TYPE = {
   userStatus: '用户状态',
   useInfo: '使用情况',
   UGCVideo_edit: 'UCG视频编辑',
+  UGCSave:'UGC视频标签配置-新增',
+  UGCEdit:'UGC视频标签配置-编辑',
+  UGCDown:'UGC视频标签配置-显示/隐藏',
 
   videoAd: '视频广告',
+  virtualSave:'卡豆抵扣比例配置-新增',
+  virtualInfo:'卡豆抵扣比例配置-详情',
+  virtualEdit:'卡豆抵扣比例配置-编辑',
 
   withdraw: '提现记录',
   withdrawGroup: '团长提现',

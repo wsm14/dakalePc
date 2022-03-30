@@ -1167,6 +1167,14 @@ export const ORDER_GOODS_TYPES = [
   { label: '礼包订单', value: 'gift' },
 ];
 
+//订单数据统计 - 商品类型 - 入参筛选
+export const AREA_ORDER_GOODS_TYPES = [
+  { label: '扫码支付', value: 'scan' },
+  { label: '特惠商品', value: 'special' },
+  { label: '有价券', value: 'coupon' },
+  { label: '权益品', value: 'right' },
+];
+
 //订单数据统计 - 端口类型 - 对应
 export const USER_ANALYSIS_CONTRAS = {
   app: 'APP',
@@ -1178,7 +1186,48 @@ export const USER_ANALYSIS_CONTRAS = {
 //订单数据统计 - 商品类型 - 对应
 export const ORDER_GOODS_CONTRAS = {
   specialGoods: '特惠商品',
-  communityGoods: '电商品',
+  commerceGoods: '电商品',
   selfTour: '自我游',
+  communityGoods: '团购商品',
+  scan: '扫码支付',
+  reduceCoupon: '有价券',
+  rightGoods: '权益商品',
+  rightCoupon: '权益券',
+  platformGift: '平台礼包',
   other: '其他',
+};
+
+//订单数据统计 - 商品订单类型
+export const GOODS_ORDER_CONTRAS = {
+  scan: '扫码支付',
+  specialGoods: '特惠商品',
+  commerceGoods: '电商品',
+  reduceCoupon: '有价券',
+  communityGoods: '团购商品',
+  virtualProduct: '虚拟商品',
+  right: '权益商品',
+  platformGift: '平台礼包订单',
+  weeklyCard: '卡豆周卡订单',
+  channelGoods: '渠道商品',
+};
+
+//订单数据统计 - 地区占比 - 入参筛选
+export const ORDER_AREA_TYPES = [
+  { label: '扫码支付', value: 'scan' },
+  { label: '特惠商品', value: 'specialGoods' },
+];
+
+//销售报表 - 订单类型
+export const SELL_ORDER_TYPE = {
+  scan: '扫码订单',
+  topUp: '充值订单',
+  specialGoods: '特价商品订单',
+  reduceCoupon: '有价券订单',
+  communityGoods: '团购商品订单',
+  virtualProduct: '虚拟商品订单',
+  rightGoods: '权益商品订单',
+  rightCoupon: '权益券订单',
+  commerceGoods: '电商商品订单',
+  platformGift: '平台礼包订单',
+  weeklyCard: '卡豆周卡订单',
 };
