@@ -718,6 +718,8 @@ export default [
               'blindConfigEdit',
               'newWinDel',
               'newWinAdd',
+              'groupGoodsConfigEdit',
+              'groupGoodsConfigAdd',
             ],
           },
         ],
