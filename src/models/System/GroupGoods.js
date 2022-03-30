@@ -4,6 +4,8 @@ import {
   fetchGetListTogetherGroupConfig,
   fetchSaveTogetherGroupConfig,
   fetchListActivityForSearch,
+  fetchUpdateSort,
+  fetchDeleteConfigGoods,
 } from '@/services/SystemServices';
 export default {
   namespace: 'groupGoods',
@@ -57,6 +59,24 @@ export default {
         },
       });
       callback && callback(content.activityGoodsList);
+    },
+    *fetchUpdateSort({ payload, callback }, { call }) {
+      const response = yield call(fetchUpdateSort, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '设置成功',
+      });
+      callback && callback();
+    },
+    *fetchDeleteConfigGoods({ payload, callback }, { call }) {
+      const response = yield call(fetchDeleteConfigGoods, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '删除成功',
+      });
+      callback && callback();
     },
   },
 };

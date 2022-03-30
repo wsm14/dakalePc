@@ -13,32 +13,31 @@ const WeightSet = ({ detail, onSubmit, loading }) => {
   const [form] = Form.useForm();
   const [editType, setEditType] = useState(false);
 
-  const { configGlobalPopUpId, weight } = detail;
+  const { togetherGroupConfigId, sort } = detail;
 
   const setEdit = () => setEditType(!editType);
 
   // 提交
   const fetchFormData = () => {
-    form.validateFields().then(({ weight }) => {
+    form.validateFields().then(({ sort }) => {
       onSubmit(
         {
           flag: 'updateWeight',
-          configGlobalPopUpId,
-          weight,
+          togetherGroupConfigId,
+          sort,
         },
         setEdit,
       );
     });
   };
   useEffect(() => {
-    // console.log(detail, 'detail');
-    // console.log(weight, 'weight');
-    weight && form.setFieldsValue({ weight: Number(weight) });
-  }, [weight]);
+    sort && form.setFieldsValue({ sort: Number(sort) });
+  }, [sort]);
+  
   return (
-    <Form initialValues={{ weight: Number(weight) }} form={form}>
+    <Form initialValues={{ sort: Number(sort) }} form={form}>
       <div style={{ display: 'flex' }}>
-        <FormItem noStyle name={'weight'}>
+        <FormItem noStyle name={'sort'}>
           <InputNumber disabled={!editType} />
         </FormItem>
         <Button

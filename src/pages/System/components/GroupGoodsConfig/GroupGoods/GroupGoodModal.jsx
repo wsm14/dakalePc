@@ -5,32 +5,29 @@ import TableDataBlock from '@/components/TableDataBlock';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 
-const GroupGoodModal = ({
-  visible = {},
-  onClose,
-  dispatch,
-  childRef,
-  loading,
-  activityGoodsList = [],
-}) => {
+const GroupGoodModal = ({ visible = {}, onClose, dispatch, childRef, loading }) => {
   const { show = false } = visible;
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const cRef = useRef();
+  const [list, setList] = useState([]);
 
   // 保存
   const handleConfirm = () => {
-    dispatch({
-      type: 'groupGoods/fetchSaveTogetherGroupConfig',
-      payload: {
-        togetherGroupConfigList: selectedRowKeys.map((item) => ({
-          goodsId: item,
-        })),
-      },
-      callback: () => {
-        childRef.current.fetchGetData();
-        onClose();
-      },
-    });
+    if (selectedRowKeys.length) {
+      dispatch({
+        type: 'groupGoods/fetchSaveTogetherGroupConfig',
+        payload: {
+          togetherGroupConfigList: selectedRowKeys.map((item) => ({
+            goodsId: item,
+          })),
+        },
+        callback: () => {
+          childRef.current.fetchGetData();
+          onClose();
+        },
+      });
+    } else {
+      onClose();
+    }
   };
 
   const handleSearch = ({ activityName, activityId }) => {
@@ -42,8 +39,10 @@ const GroupGoodModal = ({
           activityId,
           activityType: 'commerceGoods',
         },
+        callback: (list) => {
+          setList(list);
+        },
       });
-      // cRef.current.fetchGetData();
     }
   };
 
@@ -89,20 +88,29 @@ const GroupGoodModal = ({
               </Ellipsis>
             </div>
             <div style={{ display: 'flex', marginTop: 5, color: '#999' }}>
-              商品ID： {row.goodsIdString}
+              商品ID： {row.specialGoodsId}
             </div>
           </div>
         </div>
       ),
     },
-    { title: '商品价格', dataIndex: 'goodsImg', align: 'center' },
-    { title: '库存', dataIndex: 'goodsImg', align: 'center' },
+    {
+      title: '商品价格',
+      dataIndex: 'realPrice',
+      align: 'center',
+      render: (val, row) => `￥${val}`,
+    },
+    {
+      title: '库存',
+      dataIndex: 'remain',
+      align: 'center',
+    },
   ];
 
   const rowSelection = {
     selectedRowKeys,
     onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      setSelectedRowKeys(selectedRowKeys);
     },
   };
 
@@ -110,7 +118,6 @@ const GroupGoodModal = ({
     <Modal {...modalProps}>
       <TableDataBlock
         noCard={false}
-        cRef={cRef}
         columns={getColumns}
         searchItems={searchItems}
         searchCallback={(val) => handleSearch(val)}
@@ -118,14 +125,13 @@ const GroupGoodModal = ({
         rowSelection={rowSelection}
         loading={loading}
         rowKey={(record) => `${record.specialGoodsId}`}
-        list={activityGoodsList}
+        list={list}
         pagination={false}
       ></TableDataBlock>
     </Modal>
   );
 };
 
-export default connect(({ loading, groupGoods }) => ({
-  activityGoodsList: groupGoods.activityGoodsList,
+export default connect(({ loading }) => ({
   loading: loading.effects['groupGoods/fetchListActivityForSearch'],
 }))(GroupGoodModal);

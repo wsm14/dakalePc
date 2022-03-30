@@ -16,11 +16,14 @@ const GroupGoodsConfig = (props) => {
   const childRef = useRef();
 
   // 编辑权重
-  const fetchNewShareNoAudit = (values, callback) => {
+  const fetchNewShareNoAudit = (values, back) => {
     dispatch({
-      type: 'marketConfigure/fetchGlobalPopUpEdit',
+      type: 'groupGoods/fetchUpdateSort',
       payload: values,
-      callback,
+      callback: () => {
+        back();
+        childRef.current.fetchGetData();
+      },
     });
   };
 
@@ -61,24 +64,24 @@ const GroupGoodsConfig = (props) => {
       title: '商品价格',
       dataIndex: 'togetherPrice',
       align: 'center',
-      render:(val,row)=>{
+      render: (val, row) => {
         const { togetherEarnGoodsObject = {} } = row;
-        return togetherEarnGoodsObject.togetherPrice
-      }
+        return `￥${togetherEarnGoodsObject.togetherPrice}`;
+      },
     },
     {
       itle: '库存',
       dataIndex: 'remain',
       align: 'center',
-      render:(val,row)=>{
+      render: (val, row) => {
         const { togetherEarnGoodsObject = {} } = row;
-        return togetherEarnGoodsObject.remain
-      }
+        return togetherEarnGoodsObject.remain;
+      },
     },
     {
       title: '权重',
       align: 'center',
-      dataIndex: 'weight',
+      dataIndex: 'sort',
       render: (val, row) => <WeightSet detail={row} onSubmit={fetchNewShareNoAudit}></WeightSet>,
     },
     {
@@ -88,14 +91,25 @@ const GroupGoodsConfig = (props) => {
       render: (val, record, index) => {
         return [
           {
-            type: 'groupGoodsConfigEdit',
-            title: '编辑',
-            // click: () => fetchSpecialGoodsDetail(index, 'info'),
+            type: 'groupGoodsConfigDel',
+            title: '删除',
+            pop: true,
+            click: () => handleDel(val),
           },
         ];
       },
     },
   ];
+
+  const handleDel = (togetherGroupConfigId) => {
+    dispatch({
+      type: 'groupGoods/fetchDeleteConfigGoods',
+      payload: {
+        togetherGroupConfigId,
+      },
+      callback: () => childRef.current.fetchGetData(),
+    });
+  };
 
   const btnExtra = [
     {
@@ -113,7 +127,7 @@ const GroupGoodsConfig = (props) => {
           noCard={false}
           columns={getColumns}
           loading={loading}
-          rowKey={(record) => `${record.specialGoodsId}`}
+          rowKey={(record) => `${record.togetherGroupConfigId}`}
           dispatchType="groupGoods/fetchGetList"
           {...groupGoods}
         ></TableDataBlock>

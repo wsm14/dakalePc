@@ -700,3 +700,18 @@ export function fetchListActivityForSearch(params) {
     params,
   });
 }
+
+// 排序
+export function fetchUpdateSort(data) {
+  return request('/admin/together/group/config/updateSort', {
+    method: 'POST',
+    data,
+  });
+}
+// 删除  
+export function fetchDeleteConfigGoods(data) {
+  return request('/admin/together/group/config/deleteConfigGoods', {
+    method: 'POST',
+    data,
+  });
+}
