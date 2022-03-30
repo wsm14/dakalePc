@@ -1228,3 +1228,6 @@ export const SELL_ORDER_TYPE = {
   platformGift: '平台礼包订单',
   weeklyCard: '卡豆周卡订单',
 };
+
+// 提现明细  - 店铺  - 类型
+export const WITHDRAW_BUSINESS_TYPE = { merchant: '单店', group: '集团', subMerchant: '子门店' };

@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { WITHDRAW_STATUS } from '@/common/constant';
+import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const WithdrawGroup = (props) => {
@@ -39,14 +40,29 @@ const WithdrawGroup = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '流水单号',
-      fixed: 'left',
-      dataIndex: 'incomeSn',
-    },
-    {
-      title: '提现日期',
+      title: '提现日期/流水单号',
       fixed: 'left',
       dataIndex: 'createTime',
+      render: (val, row) => (
+        <div style={{ textAlign: 'center' }}>
+          <div>{val}</div>
+          <Ellipsis length={10} tooltip>
+            {row.incomeSn}
+          </Ellipsis>
+        </div>
+      ),
+    },
+    {
+      title: '用户昵称/账号',
+      width: 200,
+      align: 'center',
+      dataIndex: 'username',
+      render: (val, row) => (
+        <div style={{ textAlign: 'center' }}>
+          <div>{val}</div>
+          <div>{row.mobile}</div>
+        </div>
+      ),
     },
     {
       title: '需提现金额',
@@ -77,16 +93,6 @@ const WithdrawGroup = (props) => {
       align: 'center',
       dataIndex: 'withdrawalAccount',
       render: (val, row) => `${row.withdrawalChannelName}\n${val}`,
-    },
-    {
-      title: '用户昵称',
-      align: 'center',
-      dataIndex: 'username',
-    },
-    {
-      title: '用户账号',
-      align: 'center',
-      dataIndex: 'mobile',
     },
     {
       title: '审核时间',
