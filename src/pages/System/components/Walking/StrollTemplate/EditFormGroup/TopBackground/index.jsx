@@ -44,7 +44,7 @@ const TopBackground = (props) => {
       type: 'otherUpload',
       required: true,
       maxFile: 1,
-      extra: '支持上传zip的格式',
+      extra: '支持上传zip的格式,此处不做展示，以用户端为准',
       visible: ['iOS', 'android'].includes(userOs),
     },
     {
