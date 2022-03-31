@@ -149,7 +149,8 @@ const GoodsSelectModal = (props) => {
       }}
       onOk={() => {
         form.setFieldsValue({
-          [typeList]: (form.getFieldValue(typeList) || []).concat(selectItem),
+          [typeList]: selectItem,
+          // [typeList]: (form.getFieldValue(typeList) || []).concat(selectItem),
         });
         onClose();
       }}
