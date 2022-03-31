@@ -352,7 +352,7 @@ export const SUBSIDY_TYPE = {
   directCharge: '平台直充',
   // recycleDirectCharge: '平台直充回收',
   // recyclePlatform: '营销卡豆回收',
-  platformSubsidy: '新手任务补贴',
+  platformSubsidy: '平台补贴',
   pushVideo: '打赏补贴',
   momentStop: '打赏回收',
   watchMoment: '看分享',
