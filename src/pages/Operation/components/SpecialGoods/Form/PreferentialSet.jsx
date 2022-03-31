@@ -186,7 +186,9 @@ const PreferentialSet = ({
       name: 'thirdCode',
       visible: goodsType === '2',
       onChange: (e) => {
-        console.log(e.target.value);
+        form.setFieldsValue({
+          thirdCode: e.target.value.replace(/ /g, ''),
+        });
       },
     },
     {
