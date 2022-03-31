@@ -6,7 +6,7 @@ import { BUSINESS_TYPE, GOODS_CLASS_TYPE, SPECIAL_DESC_TYPE } from '@/common/con
 
 const GoodsDetail = (props) => {
   const { detail, merchantList } = props;
-  const { goodsType, ownerType, goodsDescType } = detail;
+  const { goodsType, ownerType, goodsDescType, thirdFlag } = detail;
 
   const GoodsTypeformItems = [
     {
@@ -17,6 +17,7 @@ const GoodsDetail = (props) => {
     {
       name: 'thirdCode',
       label: `自我游编码`,
+      show: thirdFlag == '2',
     },
   ];
 

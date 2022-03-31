@@ -8,7 +8,7 @@ import VideoFormList from './VideoFormList';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const VideoSet = (props) => {
-  const { visible = {}, onClose, fetchGetRate, loading, onSubmit, childRef } = props;
+  const { visible = {}, onClose, fetchGetRate, loading, onSubmit, childRef, tabList } = props;
   const { type, show, initialValues = {} } = visible;
   const { listPayload, title, ownerId, momentId } = initialValues;
 
@@ -120,6 +120,16 @@ const VideoSet = (props) => {
           <span>{`底部确认按钮只对微信好友分享图及分享赚开关有效`}</span>
         </>
       ),
+    },
+    {
+      label: '视频标签',
+      name: 'tagsId',
+      type: 'select',
+      select: tabList,
+      fieldNames: {
+        label: 'tab',
+        value: 'key',
+      },
     },
   ];
 
