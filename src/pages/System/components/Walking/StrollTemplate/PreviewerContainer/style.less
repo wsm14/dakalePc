@@ -22,6 +22,14 @@
     min-height: 100%;
     line-height: 1.15;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    .previewer_background {
+      position: absolute;
+      top: 64px;
+      left: 0;
+      width: 100%;
+      background-color: #d13e17;
+      background-size: 100% 100%;
+    }
     .previewer_cell {
       position: relative;
       width: 375px;
@@ -84,6 +92,8 @@
       }
     }
     .previewer_basket {
+      position: relative;
+      z-index: 1;
       display: flex;
       align-items: center;
       justify-content: center;

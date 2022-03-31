@@ -6,6 +6,11 @@
  */
 export default [
   {
+    header: '通用配置',
+    type: 'common',
+    children: ['topBackground', 'spaceOccupyingLattice'],
+  },
+  {
     header: '广告营销',
     type: 'public',
     children: [
@@ -15,6 +20,7 @@ export default [
       'beanSpecialArea',
       'notify',
       'signInModule',
+      'beanBalance',
     ],
   },
   {

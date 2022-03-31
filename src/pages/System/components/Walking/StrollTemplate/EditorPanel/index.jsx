@@ -8,10 +8,10 @@ import styles from './style.less';
 const EditorPanel = ({ context }) => {
   const cRef = useRef();
   // 组件选项打开类型 showPanel 当前高亮选项数据
-  const { dispatchData, showEditor, showPanel, moduleData } = useContext(context);
+  const { dispatchData, showEditor, showPanel, moduleData, info = {} } = useContext(context);
 
   const { dataList } = moduleData;
-  const { timestame, moduleName, drop, only = false, index, ...other } = showEditor;
+  const { timestame, moduleName, drop = true, only = false, index, ...other } = showEditor;
 
   const [form] = Form.useForm();
 
@@ -59,6 +59,17 @@ const EditorPanel = ({ context }) => {
       });
   };
 
+  // 清楚对应数据
+  const handleDelectData = () => {
+    dispatchData({
+      type: 'saveModuleData',
+      payload: {
+        dataList: update(dataList, { $splice: [[showPanel, 1]] }),
+      },
+    });
+    handleCloseEdit();
+  };
+
   const FormDom = editFormGroup[moduleName];
 
   // 检查控件是否存在
@@ -78,7 +89,14 @@ const EditorPanel = ({ context }) => {
       <div className={styles.content}>
         <div className={styles.previewer_active_editor}>
           {checkForm ? (
-            <FormDom id={timestame} form={form} cRef={cRef} value={other}></FormDom>
+            <FormDom
+              id={timestame}
+              form={form}
+              cRef={cRef}
+              value={other}
+              info={info}
+              handleDelectData={handleDelectData}
+            ></FormDom>
           ) : (
             '控件暂未配置'
           )}
@@ -92,6 +110,7 @@ const EditorPanel = ({ context }) => {
             </Button>
           )}
           <Button onClick={handleCloseEdit}>取消</Button>
+          {!drop && <Button onClick={handleDelectData}>删除模块</Button>}
         </Space>
       </div>
     </div>
