@@ -11,12 +11,12 @@ const tabList = [
   {
     key: 'withdrawMerchant',
     auth: 'withdrawMerchant',
-    tab: '单店卡豆提现',
+    tab: '店铺卡豆提现',
   },
   {
     key: 'withdrawMerchantCash',
     auth: 'withdrawMerchantCash',
-    tab: '单店现金提现',
+    tab: '店铺现金提现',
   },
   {
     key: 'withdrawExpert',

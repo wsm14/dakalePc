@@ -2,7 +2,9 @@ import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import { Card } from 'antd';
 import { BANNER_PORT_TYPE } from '@/common/constant';
+import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
+import AddImgplace from './AddImgplace';
 import EditionModal from './EditionModal';
 import AppSetModal from './AppSetModal';
 import AppSetList from './AppSetList';
@@ -13,6 +15,8 @@ const AppSetTabList = (props) => {
   const [tabKey, setTabKey] = useState('user');
   const [tabKeyTwo, setTabKeyTwo] = useState('iOS');
   const [visibleEdition, setVisibleEdition] = useState(false);
+  const [visibleAddImg, setVisibleAddImg] = useState(false); // 新增位置
+
   const childRef = useRef();
 
   const getColumns = [
@@ -54,7 +58,12 @@ const AppSetTabList = (props) => {
     },
   ];
 
-  const cardBtnList = [
+  const btnList = [
+    {
+      text: '新增位置',
+      auth: 'bannerAddPlace',
+      onClick: () => setVisibleAddImg(true),
+    },
     {
       auth: 'bannerAddVersion',
       text: '新增版本',
@@ -95,6 +104,7 @@ const AppSetTabList = (props) => {
         tabList={Object.keys(BANNER_PORT_TYPE).map((i) => ({ key: i, tab: BANNER_PORT_TYPE[i] }))}
         activeTabKey={tabKey}
         onTabChange={handleTabChange}
+        bodyStyle={['user', 'merchant'].includes(tabKey) ? { padding: '1px 0 0' } : {}}
       >
         {['user', 'merchant'].includes(tabKey) ? (
           <Card
@@ -102,6 +112,7 @@ const AppSetTabList = (props) => {
               key: ['iOS', 'android'][i],
               tab: ['iOS', 'android'][i],
             }))}
+            tabBarExtraContent={<ExtraButton list={btnList}></ExtraButton>}
             activeTabKey={tabKeyTwo}
             onTabChange={handleTabChangeTwo}
             bordered={false}
@@ -113,7 +124,6 @@ const AppSetTabList = (props) => {
               loading={loading}
               pagination={false}
               columns={getColumns}
-              btnExtra={cardBtnList}
               rowKey={(record) => `${record.bannerIdString}`}
               params={{ userType: tabKey, userOs: tabKeyTwo, isAutomatic: 1 }}
               dispatchType="sysAppList/fetchGetList"
@@ -140,6 +150,13 @@ const AppSetTabList = (props) => {
         tabKeyTwo={tabKeyTwo}
         onClose={() => setVisible(false)}
       ></AppSetModal>
+      {/* 新增图片位置 */}
+      <AddImgplace
+        getType={() => fetchBannerRatio()}
+        tabKey={tabKey}
+        visible={visibleAddImg}
+        onClose={() => setVisibleAddImg(false)}
+      ></AddImgplace>
     </>
   );
 };

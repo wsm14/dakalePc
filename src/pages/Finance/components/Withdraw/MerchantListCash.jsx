@@ -2,7 +2,8 @@ import React, { useRef, useEffect, useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Spin, Tag } from 'antd';
-import { WITHDRAW_STATUS } from '@/common/constant';
+import { WITHDRAW_STATUS, WITHDRAW_BUSINESS_TYPE } from '@/common/constant';
+import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import { checkCityName } from '@/utils/utils';
 
@@ -34,16 +35,23 @@ const MerchantListCash = (props) => {
       end: 'withdrawalDateEnd',
     },
     {
-      label: '店铺',
+      label: '店铺名称',
       name: 'merchantName',
     },
     {
-      label: '店铺帐号',
-      name: 'merchantAccount',
+      label: '店铺ID',
+      name: 'userId',
     },
+    // {
+    //   label: '提现单号',
+    //   name: 'withdrawalSn',
+    // },
     {
-      label: '提现单号',
+      label: '提现状态',
       name: 'withdrawalSn',
+      type: 'select',
+      select: WITHDRAW_STATUS,
+      allItem: false,
     },
     {
       label: '省市区',
@@ -57,24 +65,37 @@ const MerchantListCash = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '提现日期',
+      title: '提现日期/流水单号',
       fixed: 'left',
       dataIndex: 'withdrawalDate',
+      render: (val, row) => (
+        <div style={{ textAlign: 'center' }}>
+          <div>{val}</div>
+          <Ellipsis length={10} tooltip>
+            {row.withdrawalSn}
+          </Ellipsis>
+        </div>
+      ),
     },
     {
-      title: '流水单号',
-      fixed: 'left',
-      dataIndex: 'withdrawalSn',
-    },
-    {
-      title: '店铺名称',
+      title: '店铺名称/ID',
       width: 200,
       dataIndex: 'merchantName',
-      ellipsis: { lines: 2 },
-    },
-    {
-      title: '店铺账号',
-      dataIndex: 'merchantAccount',
+      render: (val, row) => (
+        <div>
+          <div>
+            <Tag color="magenta">{WITHDRAW_BUSINESS_TYPE[row.userType]}</Tag>
+            <Ellipsis length={8} tooltip>
+              {val}
+            </Ellipsis>
+          </div>
+          <div style={{ display: 'flex', marginTop: 5 }}>
+            <Ellipsis length={10} tooltip>
+              {row.userIdString}
+            </Ellipsis>
+          </div>
+        </div>
+      ),
     },
     {
       title: '省市区',
@@ -110,7 +131,7 @@ const MerchantListCash = (props) => {
       align: 'right',
       fixed: 'right',
       dataIndex: 'status',
-      render: (val) => WITHDRAW_STATUS[val],
+      render: (val) => <div style={val == '4' ? { color: 'red' } : {}}>{WITHDRAW_STATUS[val]}</div>,
     },
   ];
 

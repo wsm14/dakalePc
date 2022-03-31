@@ -281,6 +281,7 @@ const VideoPlatform = (props) => {
           ...record,
           ...detail,
           listPayload: payload,
+          shareEarnFlag: 0,
         };
         setVisibleSet({ type, show: true, initialValues });
       },

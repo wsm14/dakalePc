@@ -4,6 +4,7 @@ import { connect } from 'umi';
 import { Spin, Tag } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
 import { checkCityName } from '@/utils/utils';
+import Ellipsis from '@/components/Ellipsis';
 import { WITHDRAW_STATUS } from '@/common/constant';
 import TableDataBlock, { HandleSetTable } from '@/components/TableDataBlock';
 import WithdrawRemark from './WithdrawRemark';
@@ -62,24 +63,29 @@ const ExpertUserList = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '提现日期',
+      title: '提现日期/流水单号',
       fixed: 'left',
       dataIndex: 'withdrawalDate',
+      render: (val, row) => (
+        <div style={{ textAlign: 'center' }}>
+          <div>{val}</div>
+          <Ellipsis length={10} tooltip>
+            {row.withdrawalSn}
+          </Ellipsis>
+        </div>
+      ),
     },
     {
-      title: '提现单号',
-      fixed: 'left',
-      dataIndex: 'withdrawalSn',
-    },
-    {
-      title: '哒人昵称',
+      title: '哒人',
       width: 200,
+      align: 'center',
       dataIndex: 'userName',
-      ellipsis: { lines: 2 },
-    },
-    {
-      title: '哒人手机号',
-      dataIndex: 'mobile',
+      render: (val, row) => (
+        <div style={{ textAlign: 'center' }}>
+          <div>{val}</div>
+          <div>{row.mobile}</div>
+        </div>
+      ),
     },
     {
       title: '哒人级别',
@@ -113,7 +119,7 @@ const ExpertUserList = (props) => {
       align: 'right',
       fixed: 'right',
       dataIndex: 'status',
-      render: (val) => WITHDRAW_STATUS[val],
+      render: (val) => <div style={val == '4' ? { color: 'red' } : {}}>{WITHDRAW_STATUS[val]}</div>,
     },
     {
       title: '备注',

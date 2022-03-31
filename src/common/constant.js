@@ -540,7 +540,7 @@ export const COUPON_BUY_RULE = { unlimited: '不限', personLimit: '每人限制
 export const COUPON_GIVE_TYPE = {
   manual: '手动领取',
   auto: '自动发放',
-  // system: '系统发放',
+  system: '系统发放',
 };
 
 // 优惠券管理 - 优惠券类型
@@ -1231,3 +1231,6 @@ export const SELL_ORDER_TYPE = {
   platformGift: '平台礼包订单',
   weeklyCard: '卡豆周卡订单',
 };
+
+// 提现明细  - 店铺  - 类型
+export const WITHDRAW_BUSINESS_TYPE = { merchant: '单店', group: '集团', subMerchant: '子门店' };

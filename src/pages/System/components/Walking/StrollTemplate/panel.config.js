@@ -24,6 +24,7 @@ import fieldResource from './Img/fieldResource.png';
 import timeLimitedCoupon from './Img/timeLimitedCoupon.png';
 import limitedTimeHotMixing from './Img/limitedTimeHotMixing.png';
 import signInModule from './Img/signInModule.png';
+import beanRemaining from './Img/beanRemaining.png';
 
 /**
  * 组件库
@@ -32,15 +33,36 @@ import signInModule from './Img/signInModule.png';
  * @param {String} moduleName  组件类型
  * @param {Boolean} drop 是否可拖拽 如果是不可拖拽的模块 全局唯一只能存在一个
  * @param {ReactDOM} defaultImg 拖拽后默认显示占位图片
+ * @param {ReactDOM} defaultData 默认数据
  * @param {Boolean} editFormFlag 是否存在编辑表单
  */
 export default {
+  topBackground: {
+    name: '顶部背景',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    drop: false,
+    editFormFlag: true,
+    defaultData: { height: 400 },
+  },
+  spaceOccupyingLattice: {
+    name: '占位格',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    drop: true,
+    editFormFlag: true,
+    defaultData: { height: 10 },
+  },
+  beanBalance: {
+    name: '卡豆余额',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    drop: true,
+    defaultImg: beanRemaining,
+  },
   mainBanner: {
     name: '主banner位',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
     drop: true,
     defaultImg: mainBanner,
-    editFormFlag: true,
+    // editFormFlag: true,
   },
   signInModule: {
     name: '签到入口',
