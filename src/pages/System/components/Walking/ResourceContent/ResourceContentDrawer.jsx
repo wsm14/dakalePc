@@ -41,7 +41,7 @@ const CouponDrawer = (props) => {
         commerceGoods,
         selfTourGoods,
         brandSelfTravel,
-        giftTypes,
+        giftTypes = [],
         ...other
       } = values;
       console.log('提交', values);
