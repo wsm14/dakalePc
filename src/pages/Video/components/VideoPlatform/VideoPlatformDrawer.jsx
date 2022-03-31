@@ -9,10 +9,11 @@ import SharePushSet from './SharePushForm/SharePushSet';
 
 const { Step } = Steps;
 
-const ShareDrawer = (props) => {
+const VideoPlatformDrawer = (props) => {
   const { dispatch, visible, childRef, onClose, loading } = props;
 
   const { tabtype, show = false } = visible;
+
   const [form] = Form.useForm();
   const [current, setCurrent] = useState(0);
   const [dataStorage, setDataStorage] = useState({ userType: 'merchant' }); // 数据暂存
@@ -181,4 +182,4 @@ const ShareDrawer = (props) => {
 
 export default connect(({ loading }) => ({
   loading: loading.effects['videoPlatform/fetchNewSharePush'],
-}))(ShareDrawer);
+}))(VideoPlatformDrawer);

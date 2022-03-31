@@ -27,7 +27,7 @@ const TabConfigure = (props) => {
       dataIndex: 'configIndexTabId',
       render: (val, row) => [
         {
-          type: 'edit',
+          type: 'tabEdit',
           title: '编辑详情',
           click: () => {
             setVisible({
@@ -39,7 +39,7 @@ const TabConfigure = (props) => {
           auth: true,
         },
         {
-          type: 'edit',
+          type: 'tabEditVersion',
           title: '修改版本',
           click: () => {
             setVisibleEdition({
@@ -56,7 +56,7 @@ const TabConfigure = (props) => {
 
   const cardBtnList = [
     {
-      auth: 'save',
+      auth: 'tabSaveVersion',
       text: '新增版本',
       onClick: () => {
         setVisibleEdition({

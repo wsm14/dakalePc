@@ -22,8 +22,8 @@ const PlayAnalysis = ({ playList, dispatch, loading }) => {
   }, [data]);
 
   return (
-    <div>
-      <div style={{ fontSize: 20, fontWeight: 600, marginTop: 25 }}>
+    <div style={{ paddingTop: 25 }}>
+      <div style={{ fontSize: 20, fontWeight: 600, marginBottom: 15 }}>
         各端口视频观看情况占比（完播）
       </div>
       <SearchBlock
@@ -41,7 +41,7 @@ const PlayAnalysis = ({ playList, dispatch, loading }) => {
       {/* 图表 */}
       <div style={{ maxWidth: '60%', marginTop: 25 }}>
         <Spin spinning={loading}>
-          <Pie data={playList} title="完播量" innerRadius={0.6} />
+          <Pie data={playList} title="完播量" innerRadius={0.7} radius={0.8} />
         </Spin>
       </div>
     </div>

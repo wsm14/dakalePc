@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Tabs, Select } from 'antd';
+import { Button, Tabs, Select } from 'antd';
 import reactCSS from 'reactcss';
 import { ChromePicker } from 'react-color';
 import FormCondition from '@/components/FormCondition';
 import ShareCoupon from './ShareCoupon/ShareCoupon';
 import BrandModuleList from './BrandModuleList/BrandModuleList';
 import PlatformCouponList from './PlatformCouponList/PlatformCouponList';
+import PreviewDrawer from './PreviewDrawer';
 
 const { TabPane } = Tabs;
 
@@ -24,6 +25,8 @@ const ResourceContentForm = (props) => {
 
   const [displayColorPicker, setDisplayColorPicker] = useState(false); //  背景色状态
   const [color, setColor] = useState(''); //  背景色状态
+  const [visible, setVisible] = useState(false);
+  const [detailInfo, setDetailInfo] = useState({});
   const [typeList, setTypeList] = useState([]); // 礼包列表
   const [giftSelect, setGiftSelect] = useState([]); // 已选的礼包类型
 
@@ -42,6 +45,7 @@ const ResourceContentForm = (props) => {
         resourceTemplateId,
       },
       callback: (obj) => {
+        setDetailInfo(obj);
         setTypeList(obj.typeList);
         form.setFieldsValue({
           templateType: obj.templateType,
@@ -113,6 +117,12 @@ const ResourceContentForm = (props) => {
         handleSelectTemplate(id);
       },
       disabled: type === 'edit',
+      extra:
+        typeList.length !== 0 ? (
+          <Button type="link" onClick={() => setVisible(true)}>
+            预览
+          </Button>
+        ) : null,
     },
     {
       label: `模板类型`,
@@ -279,7 +289,19 @@ const ResourceContentForm = (props) => {
   ];
 
   return (
-    <FormCondition form={form} formItems={formItems} initialValues={initialValues}></FormCondition>
+    <>
+      <FormCondition
+        form={form}
+        formItems={formItems}
+        initialValues={initialValues}
+      ></FormCondition>
+      {/* 预览 */}
+      <PreviewDrawer
+        visible={visible}
+        detail={detailInfo}
+        onClose={() => setVisible(false)}
+      ></PreviewDrawer>
+    </>
   );
 };
 

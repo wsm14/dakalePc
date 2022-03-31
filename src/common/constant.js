@@ -1191,17 +1191,20 @@ export const ORDER_GOODS_CONTRAS = {
   communityGoods: '团购商品',
   scan: '扫码支付',
   reduceCoupon: '有价券',
-  right: '权益商品',
+  rightGoods: '权益商品',
+  rightCoupon: '权益券',
+  platformGift: '平台礼包',
   other: '其他',
 };
 
 //订单数据统计 - 商品订单类型
 export const GOODS_ORDER_CONTRAS = {
-  scan: '扫码订单',
-  specialGoods: '特价商品订单',
-  reduceCoupon: '有价券订单',
-  communityGoods: '团购商品订单',
-  virtualProduct: '虚拟商品订单',
+  scan: '扫码支付',
+  specialGoods: '特惠商品',
+  commerceGoods: '电商品',
+  reduceCoupon: '有价券',
+  communityGoods: '团购商品',
+  virtualProduct: '虚拟商品',
   right: '权益商品',
   platformGift: '平台礼包订单',
   weeklyCard: '卡豆周卡订单',

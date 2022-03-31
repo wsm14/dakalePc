@@ -48,6 +48,7 @@ const BehaviorContent = (props) => {
           label={{
             position: 'middle',
           }}
+          maxColumnWidth={40}
         />
       ),
     },

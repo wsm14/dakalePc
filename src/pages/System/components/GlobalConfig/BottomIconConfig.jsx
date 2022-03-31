@@ -26,13 +26,13 @@ const TabConfigure = (props) => {
       dataIndex: 'configBottomCenterIconId',
       render: (val, row) => [
         {
-          type: 'edit',
+          type: 'iconEdit',
           title: '编辑详情',
           click: () => handleDetail(val),
           auth: true,
         },
         {
-          type: 'edit',
+          type: 'iconVersionEdit',
           title: '修改版本',
           click: () => {
             setVisibleEdition({
@@ -44,7 +44,7 @@ const TabConfigure = (props) => {
           auth: true,
         },
         {
-          type: 'del',
+          type: 'iconVersionDel',
           title: '删除版本',
           click: () => {
             handleDelVersion(val);
@@ -80,7 +80,7 @@ const TabConfigure = (props) => {
 
   const cardBtnList = [
     {
-      auth: 'save',
+      auth: 'iconVersionSave',
       text: '新增版本',
       onClick: () => {
         setVisibleEdition({

@@ -2,11 +2,10 @@ import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import { Card, Tag } from 'antd';
 import {
-  BUSINESS_TYPE,
+  VIDEO_TYPE,
   VIDEO_ACTION_TYPE,
   GOODS_CHECK_RESSTATUS,
   SUBMIT_TYPE_VIDEO,
-  VIDEO_TYPE,
 } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
