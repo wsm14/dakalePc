@@ -21,8 +21,8 @@ const GroupGoodModal = ({ visible = {}, onClose, dispatch, childRef, loading }) 
           })),
         },
         callback: () => {
-          childRef.current.fetchGetData();
           onClose();
+          childRef.current.fetchGetData();
         },
       });
     } else {
@@ -70,6 +70,7 @@ const GroupGoodModal = ({ visible = {}, onClose, dispatch, childRef, loading }) 
       title: '商品名称',
       fixed: 'left',
       dataIndex: 'goodsImg',
+      width: 350,
       render: (val, row) => (
         <div style={{ display: 'flex' }}>
           <PopImgShow url={val} />

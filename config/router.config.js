@@ -734,9 +734,8 @@ export default [
               'blindConfigEdit',
               'newWinDel',
               'newWinAdd',
-              'groupGoodsConfigEdit',
+              'groupGoodsConfigDel',
               'groupGoodsConfigAdd',
-              'weight'
             ],
           },
         ],

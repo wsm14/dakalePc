@@ -41,7 +41,6 @@ export default {
     *fetchSaveTogetherGroupConfig({ payload, callback }, { call }) {
       const response = yield call(fetchSaveTogetherGroupConfig, payload);
       if (!response) return;
-      const { content } = response;
       notification.success({
         message: '温馨提示',
         description: '修改成功',
@@ -55,7 +54,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.activityGoodsList,
+          activityGoodsList: content.activityGoodsList,
         },
       });
       callback && callback(content.activityGoodsList);

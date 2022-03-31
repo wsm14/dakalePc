@@ -32,6 +32,7 @@ const GroupGoodsConfig = (props) => {
       title: '商品名称',
       fixed: 'left',
       dataIndex: 'goodsImg',
+      width: 350,
       render: (val, row) => {
         const { togetherEarnGoodsObject = {} } = row;
 
@@ -70,7 +71,7 @@ const GroupGoodsConfig = (props) => {
       },
     },
     {
-      itle: '库存',
+      title: '库存',
       dataIndex: 'remain',
       align: 'center',
       render: (val, row) => {
@@ -82,7 +83,11 @@ const GroupGoodsConfig = (props) => {
       title: '权重',
       align: 'center',
       dataIndex: 'sort',
-      render: (val, row) => <WeightSet detail={row} onSubmit={fetchNewShareNoAudit}></WeightSet>,
+      render: (val, row) => (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <WeightSet detail={row} onSubmit={fetchNewShareNoAudit}></WeightSet>
+        </div>
+      ),
     },
     {
       type: 'handle',

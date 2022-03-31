@@ -88,7 +88,6 @@ export const ROLE_BUTTON_TYPE = {
   globalPopDel: '全局弹框删除',
   globalPopDown: '全局弹框下架',
   globalAddCity:'全局弹框新增城市',
-  groupGoodsConfigEdit:'拼团商品配置编辑',
   groupGoodsConfigAdd:'拼团商品配置新增',
   groupGoodsConfigDel:'拼团商品配置删除',
 
