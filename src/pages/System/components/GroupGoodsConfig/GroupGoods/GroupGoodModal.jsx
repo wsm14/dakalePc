@@ -50,6 +50,8 @@ const GroupGoodModal = ({ visible = {}, onClose, dispatch, childRef, loading }) 
     title: ' 新增商品',
     visible: show,
     width: 1000,
+    destroyOnClose:true,
+    afterClose:()=>setList([]),
     onCancel: onClose,
     onOk: handleConfirm,
   };
