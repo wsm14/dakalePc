@@ -179,11 +179,7 @@ const CommerceGoodsSet = ({
         saveSelectData({ buyType: e.target.value });
       },
     },
-    // {
-    //   label: '售卖',
-    //   name: ['paymentModeObject', 'type'],
-    //   hidden: true,
-    // },
+
     {
       label: '卡豆数',
       name: ['paymentModeObject', 'bean'],
@@ -215,7 +211,7 @@ const CommerceGoodsSet = ({
       precision: 2,
       min: 0.01,
       max: 999999.99,
-      visible: radioData.buyType == 'defaultMode',
+      visible: ['defaultMode', 'cashMode'].includes(radioData.buyType),
       formatter: (value) => `￥ ${value}`,
       suffix: '元',
     },

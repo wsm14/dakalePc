@@ -793,7 +793,7 @@ export const VIDEO_ADVERT_STATUS = ['下架', '发布中'];
 export const PEQUITY_GOODSBUY_TYPE = ['免费', '卡豆+现金'];
 
 // 平台权益 - 电商商品售卖类型
-export const COMMERCE_GOODSBUY_TYPE = { self: '卡豆+现金', defaultMode: '现金' };
+export const COMMERCE_GOODSBUY_TYPE = { self: '卡豆+现金', defaultMode: '现金',cashMode:"现金（不可使用卡豆）" };
 
 //评论状态
 export const COMMENT_DELETFLAG = ['已删除', '正常'];
