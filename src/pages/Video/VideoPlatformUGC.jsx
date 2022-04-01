@@ -197,7 +197,7 @@ const VideoPlatformUGC = (props) => {
           ...record,
           ...detail,
           listPayload: payload,
-          tagsId: tabKey,
+          momentTags: tabKey,
         };
         setVisibleSet({ type, show: true, initialValues });
       },

@@ -225,7 +225,6 @@ const ShareManage = (props) => {
           listPayload: payload,
           momentId: platformMomentId,
           ownerId: relateId,
-          shareEarnFlag: 0,
         };
         setVisibleSet({ type, show: true, initialValues });
       },

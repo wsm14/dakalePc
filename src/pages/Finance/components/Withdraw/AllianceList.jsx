@@ -113,18 +113,6 @@ const AllianceList = (props) => {
       render: (val, row) => checkCityName(val || row.cityCode || row.provinceCode),
     },
     {
-      title: '提现账户',
-      align: 'center',
-      dataIndex: 'withdrawalAccount',
-      render: (val, row) => `${row.withdrawalChannelName}\n${val}`,
-    },
-    {
-      title: '提现账户类型',
-      align: 'center',
-      dataIndex: 'withdrawalChannelType',
-      render: (val) => '现金账户',
-    },
-    {
       title: '提现金额',
       align: 'right',
       dataIndex: 'withdrawalFee',
@@ -135,6 +123,18 @@ const AllianceList = (props) => {
       align: 'right',
       dataIndex: 'withdrawalHandlingFee',
       render: (val) => `￥ ${val}`,
+    },
+    {
+      title: '提现账户类型',
+      align: 'center',
+      dataIndex: 'withdrawalChannelType',
+      render: (val) => '现金账户',
+    },
+    {
+      title: '提现账户',
+      align: 'center',
+      dataIndex: 'withdrawalAccount',
+      render: (val, row) => `${row.withdrawalChannelName}\n${val}`,
     },
     {
       title: '状态',

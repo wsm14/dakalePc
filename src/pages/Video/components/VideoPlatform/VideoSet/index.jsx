@@ -123,9 +123,10 @@ const VideoSet = (props) => {
     },
     {
       label: '视频标签',
-      name: 'tagsId',
+      name: 'momentTags',
       type: 'select',
       select: tabList,
+      visible: type === 'ugc',
       fieldNames: {
         label: 'tab',
         value: 'key',
@@ -135,7 +136,7 @@ const VideoSet = (props) => {
 
   const handleSave = () => {
     form.validateFields().then(async (values) => {
-      const { friendShareImg = '', shareEarnFlag } = values;
+      const { friendShareImg = '', shareEarnFlag, momentTags = '' } = values;
 
       const fImg = await aliOssUpload(friendShareImg);
       onSubmit(
@@ -144,6 +145,7 @@ const VideoSet = (props) => {
           ownerId,
           friendShareImg: fImg.toString() || undefined,
           shareEarnFlag,
+          momentTags: momentTags || undefined,
         },
         () => {
           childRef.current.fetchGetData();

@@ -176,6 +176,7 @@ const PreferentialSet = ({
       label: '商品类型',
       name: 'thirdFlag',
       type: 'radio',
+      disabled: commonDisabled,
       select: { 1: '特惠商品', 2: '自我游商品' },
       onChange: (e) => {
         setGoodsType(e.target.value);

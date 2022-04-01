@@ -97,13 +97,7 @@ const ExpertUserList = (props) => {
       render: (val, row) => checkCityName(val || row.cityCode || row.provinceCode),
     },
     {
-      title: '提现账户',
-      align: 'center',
-      dataIndex: 'withdrawalAccount',
-      render: (val, row) => `${row.withdrawalChannelName}\n${val}`,
-    },
-    {
-      title: '提现现金金额',
+      title: '提现金额',
       align: 'right',
       dataIndex: 'withdrawalBeanAmount',
       render: (val) => val / 100,
@@ -113,6 +107,12 @@ const ExpertUserList = (props) => {
       align: 'right',
       dataIndex: 'withdrawalHandlingFee',
       render: (val) => `￥ ${val}`,
+    },
+    {
+      title: '提现账户',
+      align: 'center',
+      dataIndex: 'withdrawalAccount',
+      render: (val, row) => `${row.withdrawalChannelName}\n${val}`,
     },
     {
       title: '状态',

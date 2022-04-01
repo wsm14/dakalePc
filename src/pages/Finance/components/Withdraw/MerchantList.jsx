@@ -105,18 +105,6 @@ const MerchantList = (props) => {
       render: (val, row) => checkCityName(val),
     },
     {
-      title: '提现账户',
-      align: 'center',
-      dataIndex: 'withdrawalAccount',
-      render: (val, row) => `${row.withdrawalChannelName}\n${val}`,
-    },
-    {
-      title: '提现账户类型',
-      align: 'right',
-      dataIndex: 'withdrawalType',
-      render: (val) => ACCOUNT_TYPE[val - 1],
-    },
-    {
       title: '提现金额',
       align: 'right',
       dataIndex: 'withdrawalFee',
@@ -129,6 +117,18 @@ const MerchantList = (props) => {
       render: (val) => `￥ ${val}`,
     },
     {
+      title: '提现账户',
+      align: 'center',
+      dataIndex: 'withdrawalAccount',
+      render: (val, row) => `${row.withdrawalChannelName}\n${val}`,
+    },
+    // {
+    //   title: '提现账户类型',
+    //   align: 'right',
+    //   dataIndex: 'withdrawalType',
+    //   render: (val) => ACCOUNT_TYPE[val - 1],
+    // },
+    {
       title: '状态',
       align: 'right',
       fixed: 'right',
@@ -137,8 +137,8 @@ const MerchantList = (props) => {
     },
     {
       title: '备注',
-      fixed: 'right',
       align: 'right',
+      fixed: 'right',
       width: 200,
       dataIndex: 'remark',
       render: (val, record) => {

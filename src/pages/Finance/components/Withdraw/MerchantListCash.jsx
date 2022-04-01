@@ -103,18 +103,6 @@ const MerchantListCash = (props) => {
       render: (val, row) => checkCityName(val),
     },
     {
-      title: '提现账户',
-      align: 'center',
-      dataIndex: 'withdrawalAccount',
-      render: (val, row) => `${row.withdrawalChannelName}\n${val}`,
-    },
-    {
-      title: '提现账户类型',
-      align: 'right',
-      dataIndex: 'withdrawalType',
-      render: (val) => '现金账户',
-    },
-    {
       title: '提现金额',
       align: 'right',
       dataIndex: 'withdrawalFee',
@@ -126,6 +114,18 @@ const MerchantListCash = (props) => {
       dataIndex: 'withdrawalHandlingFee',
       render: (val) => `￥0`,
     },
+    {
+      title: '提现账户',
+      align: 'center',
+      dataIndex: 'withdrawalAccount',
+      render: (val, row) => `${row.withdrawalChannelName}\n${val}`,
+    },
+    // {
+    //   title: '提现账户类型',
+    //   align: 'right',
+    //   dataIndex: 'withdrawalType',
+    //   render: (val) => '现金账户',
+    // },
     {
       title: '状态',
       align: 'right',

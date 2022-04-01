@@ -94,27 +94,27 @@ const GameSign = ({ gameSignList, loading, dispatch, tabkey }) => {
       title: '中奖结果',
       dataIndex: 'packageName',
     },
-    {
-      title: '发放状态',
-      dataIndex: 'status',
-      render: (val, row) => GAME_FREE_STATUS[val],
-    },
-    {
-      type: 'handle',
-      dataIndex: 'userPackageId',
-      render: (val, row) => [
-        {
-          type: 'goodsDeliver',
-          visible: row.status === '1',
-          click: () => fetchBoxDeatil(val, row, 'add'),
-        },
-        {
-          type: 'goodsView',
-          visible: row.status === '2',
-          click: () => fetchBoxDeatil(val, row, 'info'),
-        },
-      ],
-    },
+    // {
+    //   title: '发放状态',
+    //   dataIndex: 'status',
+    //   render: (val, row) => GAME_FREE_STATUS[val],
+    // },
+    // {
+    //   type: 'handle',
+    //   dataIndex: 'userPackageId',
+    //   render: (val, row) => [
+    //     {
+    //       type: 'goodsDeliver',
+    //       visible: row.status === '1',
+    //       click: () => fetchBoxDeatil(val, row, 'add'),
+    //     },
+    //     {
+    //       type: 'goodsView',
+    //       visible: row.status === '2',
+    //       click: () => fetchBoxDeatil(val, row, 'info'),
+    //     },
+    //   ],
+    // },
   ];
 
   // 获取详情 type：info 查看

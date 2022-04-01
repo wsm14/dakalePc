@@ -170,13 +170,13 @@ const ResourceContentForm = (props) => {
       required: false,
       visible: typeList.includes('banner'),
     },
-    {
-      label: `上传图片`,
-      name: 'image',
-      type: 'upload',
-      maxFile: 1,
-      visible: typeList.includes('image'),
-    },
+    // {
+    //   label: `上传图片`,
+    //   name: 'image',
+    //   type: 'upload',
+    //   maxFile: 1,
+    //   visible: typeList.includes('image'),
+    // },
     {
       label: `背景色`,
       name: 'backgroundColor',

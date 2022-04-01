@@ -84,7 +84,7 @@ const ShareDetail = (props) => {
     },
     {
       label: '视频标签',
-      name: 'tags',
+      name: 'momentTagNames',
       show: tabKey !== '0' && tabKey !== '1',
     },
     {

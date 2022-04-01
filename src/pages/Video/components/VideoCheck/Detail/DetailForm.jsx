@@ -31,7 +31,7 @@ const DetailForm = (props) => {
     },
     {
       label: '视频标签',
-      name: 'tags',
+      name: 'momentTagNames',
     },
     {
       label: `收藏数`,
