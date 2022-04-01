@@ -69,6 +69,7 @@ const TopBackground = (props) => {
           detail={value || {}}
         ></NewNativeFormSet>
       ),
+      visible: ['weChat', 'mark'].includes(userOs),
     },
   ];
 
