@@ -30,6 +30,7 @@ const SpaceOccupyingLattice = (props) => {
       max: 100,
       precision: 0,
       required: true,
+      extra: '可输入1-100之间的整数（含1和100）',
     },
     {
       type: 'noForm',

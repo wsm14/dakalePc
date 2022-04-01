@@ -272,6 +272,17 @@ export const ORDERS_STATUS = [
   '已过期',
 ];
 
+// 游戏类型名称
+export const GAME_TYPE_NAME = {
+  mark: '哒小卡中奖',
+  gameSign: '签到游戏',
+  gameFree: '免费领商品游戏',
+  gameGather: '集碎片游戏',
+  gameFarm: '卡豆农场',
+  dailyLuckDraw: '天天抽奖',
+  taskPrize: '任务奖励',
+};
+
 // 电商订单状态
 export const COMMERCE_ORDERS_STATUS = ['', '待发货', '已退款', '已完成', '', '', '', '', '已发货'];
 

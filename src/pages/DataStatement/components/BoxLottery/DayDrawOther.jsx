@@ -104,6 +104,7 @@ const DayDrawOther = ({ prizeList, loading, dispatch, tabkey }) => {
     <>
       <TableDataBlock
         order
+        noCard={false}
         btnExtra={btnList}
         cRef={tableRef}
         loading={loading}
