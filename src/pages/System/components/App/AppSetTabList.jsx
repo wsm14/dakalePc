@@ -98,6 +98,17 @@ const AppSetTabList = (props) => {
     });
   };
 
+  // 获取banner分辨率配置
+  const fetchBannerRatio = () => {
+    dispatch({
+      type: 'sysAppList/fetchBannerRatio',
+      payload: {
+        userType: tabKey,
+        deleteFlag: 1,
+      },
+    });
+  };
+
   return (
     <>
       <Card

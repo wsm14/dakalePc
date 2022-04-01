@@ -42,6 +42,7 @@ const CouponDrawer = (props) => {
         selfTourGoods,
         brandSelfTravel,
         giftTypes = [],
+        bannerType,
         ...other
       } = values;
       console.log('提交', values);
@@ -56,6 +57,7 @@ const CouponDrawer = (props) => {
         resourceTemplateContentId,
         ...other,
         contentInfo: {
+          bannerType,
           topImg: topImgUrl.toString(),
           backgroundColor,
           giftTypes: giftTypes.toString(),
