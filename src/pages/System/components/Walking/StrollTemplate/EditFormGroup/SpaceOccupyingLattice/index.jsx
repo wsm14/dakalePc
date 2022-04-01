@@ -1,5 +1,5 @@
 import React, { useImperativeHandle } from 'react';
-import aliOssUpload from '@/utils/aliOssUpload';
+import { NewNativeFormSet } from '@/components/FormListCondition';
 import EditorForm from '../editorForm';
 import '../index.less';
 
@@ -7,7 +7,9 @@ import '../index.less';
  * 占位格配置
  */
 const SpaceOccupyingLattice = (props) => {
-  const { id, value = {}, cRef, form } = props;
+  const { id, value = {}, cRef, form, info = {} } = props;
+  const { params = {} } = info;
+  const { userOs } = params;
 
   // 向父组件暴露方法
   useImperativeHandle(cRef, () => ({
@@ -25,9 +27,24 @@ const SpaceOccupyingLattice = (props) => {
       type: 'number',
       addonAfter: 'px',
       min: 1,
-      max: 50,
+      max: 100,
       precision: 0,
       required: true,
+    },
+    {
+      type: 'noForm',
+      formItem: (
+        <NewNativeFormSet
+          jumpTypeSelect={{
+            '': '无',
+            h5: 'H5',
+            native: '原生页面',
+          }}
+          form={form}
+          detail={value || {}}
+        ></NewNativeFormSet>
+      ),
+      visible: ['iOS', 'android'].includes(userOs),
     },
   ];
 
