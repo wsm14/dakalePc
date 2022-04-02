@@ -138,13 +138,13 @@ const OpenGroupList = (props) => {
             title: '拼团详情',
             click: () => fetchDetail(val),
           },
-          {
-            type: 'info',
-            title: '立即成团',
-            popText: '确定要立即成团吗？立即成团后将在已参与的用户中随机抽取3位用户拼中商品。',
-            visible: record.joinUserNum >= 8,
-            click: () => fetchGetGroup(),
-          },
+          // {
+          //   type: 'info',
+          //   title: '立即成团',
+          //   popText: '确定要立即成团吗？立即成团后将在已参与的用户中随机抽取3位用户拼中商品。',
+          //   visible: record.joinUserNum >= 8,
+          //   click: () => fetchGetGroup(),
+          // },
         ];
       },
     },

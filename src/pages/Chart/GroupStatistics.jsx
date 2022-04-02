@@ -113,7 +113,7 @@ const GroupStatistics = (props) => {
                 className="cardItem"
               >
                 <div style={{ textAlign: 'center' }}>
-                  <Statistic valueStyle={{ fontWeight: 'bold' }} value={item.value}></Statistic>
+                  <Statistic valueStyle={{ fontWeight: 'bold' }}  precision={2} value={item.value}></Statistic>
                 </div>
               </Card>
             ))}
