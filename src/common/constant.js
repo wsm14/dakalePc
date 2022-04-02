@@ -793,7 +793,11 @@ export const VIDEO_ADVERT_STATUS = ['下架', '发布中'];
 export const PEQUITY_GOODSBUY_TYPE = ['免费', '卡豆+现金'];
 
 // 平台权益 - 电商商品售卖类型
-export const COMMERCE_GOODSBUY_TYPE = { self: '卡豆+现金', defaultMode: '现金',cashMode:"现金（不可使用卡豆）" };
+export const COMMERCE_GOODSBUY_TYPE = {
+  self: '卡豆+现金',
+  defaultMode: '现金',
+  cashMode: '现金（不可使用卡豆）',
+};
 
 //评论状态
 export const COMMENT_DELETFLAG = ['已删除', '正常'];
@@ -1230,4 +1234,13 @@ export const SELL_ORDER_TYPE = {
   commerceGoods: '电商商品订单',
   platformGift: '平台礼包订单',
   weeklyCard: '卡豆周卡订单',
+};
+
+//开团列表
+
+export const OPEN_GROUP_STATUS = ['拼团中', '拼团成功', '拼团失败'];
+
+export const REWARD_TYPE = {
+  winGoods: '拼中商品',
+  rewardType: '拼中红包',
 };

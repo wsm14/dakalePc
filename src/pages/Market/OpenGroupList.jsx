@@ -1,11 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'umi';
+import moment from 'moment';
 import Ellipsis from '@/components/Ellipsis';
+import { OPEN_GROUP_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
 import OpenGroupDetail from './components/OpenGroupList/OpenGroupDetail';
+import { fetchGetGroupForSearch } from '@/services/PublicServices';
 
 const OpenGroupList = (props) => {
+  const { loading, dispatch, openGroupList } = props;
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
 
@@ -16,22 +20,24 @@ const OpenGroupList = (props) => {
     },
     {
       label: '拼团ID',
-      name: 'platformCouponId',
+      name: 'groupId',
     },
     {
       label: '发起人',
-      name: 'useScenesType',
+      name: 'userId',
+      type: 'user',
     },
     {
       label: '开团时间',
       type: 'rangePicker',
-      name: 'updateTimeBegin',
-      end: 'updateTimeEnd',
+      name: 'startTime',
+      end: 'endTime',
     },
     {
       label: '拼团状态',
       type: 'select',
-      name: 'couponStatus',
+      name: 'status',
+      select: OPEN_GROUP_STATUS,
     },
   ];
 
@@ -39,47 +45,90 @@ const OpenGroupList = (props) => {
     {
       title: '商品名称',
       fixed: 'left',
-      dataIndex: 'goodsImg',
-      render: (val, row) => (
-        <div style={{ display: 'flex' }}>
-          <PopImgShow url={val} />
-        </div>
-      ),
+      dataIndex: 'groupId',
+      width: 350,
+      render: (val, row) => {
+        const { togetherEarnGoodsObject = {} } = row;
+        const { goodsName = '', goodsImg = '' } = togetherEarnGoodsObject;
+        return (
+          <div style={{ display: 'flex' }}>
+            <PopImgShow url={goodsImg} />
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                flex: 1,
+                marginLeft: 5,
+              }}
+            >
+              <Ellipsis length={5} tooltip lines={2}>
+                {goodsName}
+              </Ellipsis>
+              <div style={{ color: '#999', marginTop: 10 }}>拼团ID:{val}</div>
+            </div>
+          </div>
+        );
+      },
     },
     {
       title: '商品价格',
       align: 'center',
-      dataIndex: 'paymentModeObject',
+      dataIndex: 'togetherEarnGoodsObject',
+      render: (val, row) => {
+        const { togetherEarnGoodsObject = {} } = row;
+        return `￥${togetherEarnGoodsObject.togetherPrice}`;
+      },
     },
     {
       title: '发起人',
       align: 'center',
-      dataIndex: 'useStartTime',
-      render: (val, row) => {},
+      dataIndex: 'username',
+      render: (val, row) => val? `${val}\n${row.mobile}`:'--',
     },
     {
       title: '开团时间',
       align: 'center',
-      dataIndex: 'activityStartTime',
+      dataIndex: 'createTime',
     },
     {
       title: '参团人数',
       align: 'center',
-      dataIndex: 'remain',
+      dataIndex: 'joinUserNum',
     },
     {
       title: '剩余时间',
       align: 'center',
-      dataIndex: 'soldGoodsCount',
+      dataIndex: 'createTime',
+      render: (val) => {
+        if (val) {
+          const endTime = moment(val).add(24, 'hours').format('YYYY-MM-DD HH:mm:ss'); // 剩余时间
+          if (moment(endTime).isBefore(moment())) {
+            return '已结束';
+          } else {
+            const remainTime = moment(endTime).diff(moment(), 'seconds');
+            const h = parseInt(remainTime / 3600);
+            const m = parseInt((remainTime - h * 3600) / 60);
+            const s = remainTime - h * 3600 - m * 60;
+            const H = h > 9 ? h : `0${h}`;
+            const M = m > 9 ? m : `0${m}`;
+            const S = s > 9 ? s : `0${s}`;
+            return `${H}:${M}:${S}`;
+          }
+        } else {
+          return '--';
+        }
+      },
     },
     {
       title: '拼团状态',
       align: 'center',
-      dataIndex: 'writeOffGoodsCount',
+      dataIndex: 'status',
+      render: (val) => OPEN_GROUP_STATUS[val],
     },
     {
       type: 'handle',
-      dataIndex: 'specialGoodsId',
+      dataIndex: 'groupId',
       width: 150,
       render: (val, record, index) => {
         return [
@@ -92,17 +141,30 @@ const OpenGroupList = (props) => {
             type: 'info',
             title: '立即成团',
             popText: '确定要立即成团吗？立即成团后将在已参与的用户中随机抽取3位用户拼中商品。',
-            // click: () => fetchSpecialGoodsDetail(index, 'info'),
+            visible: record.joinUserNum >= 8,
+            click: () => fetchGetGroup(),
           },
         ];
       },
     },
   ];
 
-  const fetchDetail = () => {
-    setVisible({
-      show: true,
-      list: [],
+  //立即成团
+  const fetchGetGroup = () => {};
+
+  //参团详情
+  const fetchDetail = (groupId) => {
+    dispatch({
+      type: 'openGroupList/fetchAdminListJoinGroupByGroupId',
+      payload: {
+        groupId,
+      },
+      callback: (list) => {
+        setVisible({
+          show: true,
+          list,
+        });
+      },
     });
   };
 
@@ -110,15 +172,28 @@ const OpenGroupList = (props) => {
     <>
       <TableDataBlock
         cRef={childRef}
-        //   loading={loading}
+        loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.specialGoodsId}`}
-        dispatchType="specialGoods/fetchGetList"
+        rowKey={(record) => `${record.groupId}`}
+        timeParams={{
+          time: {
+            startTime: moment().subtract(1, 'day').format('YYYY-MM-DD'),
+            endTime: moment().subtract(1, 'day').format('YYYY-MM-DD'),
+          },
+          show: {
+            startTime: [moment().subtract(1, 'day'), moment().subtract(1, 'day')],
+          },
+        }}
+        dispatchType="openGroupList/fetchGetList"
+        {...openGroupList}
       ></TableDataBlock>
       <OpenGroupDetail visible={visible} onClose={() => setVisible(false)}></OpenGroupDetail>
     </>
   );
 };
 
-export default connect(({}) => ({}))(OpenGroupList);
+export default connect(({ loading, openGroupList }) => ({
+  openGroupList,
+  loading: loading.models.openGroupList,
+}))(OpenGroupList);
