@@ -93,7 +93,7 @@ const PlatformManage = (props) => {
           <div>{`￥${val}（满${row.thresholdPrice}元可用）`}</div>
           <div style={{ color: '#999', fontSize: '12px' }}>
             <Ellipsis length={15} tooltip>
-              本地商品券100元
+              {row.couponDesc}
             </Ellipsis>
           </div>
         </div>
@@ -139,7 +139,7 @@ const PlatformManage = (props) => {
       dataIndex: 'platformCouponId',
       render: (platformCouponId, record) => {
         // 1 上架 2 下架
-        const { couponStatus: status, endDate } = record;
+        const { couponStatus: status, endDate, giveType } = record;
         return [
           {
             type: 'info',
@@ -152,6 +152,7 @@ const PlatformManage = (props) => {
           {
             title: '赠送',
             auth: true,
+            visible: ['1'].includes(status) && ['system'].includes(giveType),
             click: () => fetchCouponGive(record),
           },
           {
@@ -254,7 +255,7 @@ const PlatformManage = (props) => {
       <GiveUserCoupon
         visible={visibleGive}
         onClose={() => {
-          setVisibleGive(false);
+          setVisibleGive({ show: false });
         }}
       ></GiveUserCoupon>
     </>
