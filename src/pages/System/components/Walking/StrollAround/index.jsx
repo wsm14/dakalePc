@@ -50,9 +50,29 @@ const TabConfigure = (props) => {
           },
           auth: true,
         },
+        {
+          type: 'del',
+          title: '删除版本',
+          click: () => {
+            handleDelVersion(val);
+          },
+          auth: true,
+        },
       ],
     },
   ];
+
+  // 删除版本
+  const handleDelVersion = (configWanderAroundModuleId) => {
+    dispatch({
+      type: 'walkingManage/fetchAroundModuleEdit',
+      payload: {
+        configWanderAroundModuleId,
+        flag: 'delete',
+      },
+      callback: childRef?.current?.fetchGetData,
+    });
+  };
 
   const cardBtnList = [
     {
@@ -71,7 +91,7 @@ const TabConfigure = (props) => {
   const handleTabChange = (key) => {
     setTabKey(key);
     if (key !== 'weChat' && key !== 'mark') {
-      childRef?.current?.fetchGetData({ userOs: key, area: 'all' });
+      childRef?.current?.fetchGetData({ userOs: key, area: 'all', deleteFlag: 1 });
     }
   };
 
@@ -96,7 +116,7 @@ const TabConfigure = (props) => {
             btnExtra={cardBtnList}
             pagination={false}
             rowKey={(record) => `${record.configWanderAroundModuleId}`}
-            params={{ userOs: tabKey, area: 'all' }}
+            params={{ userOs: tabKey, area: 'all', deleteFlag: 1 }}
             dispatchType="walkingManage/fetchAroundModuleList"
             {...editionList}
           />

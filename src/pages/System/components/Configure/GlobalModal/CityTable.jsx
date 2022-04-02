@@ -6,7 +6,7 @@ import CityDrawerSet from './components/CityDrawerSet';
 import CityGlobalModal from './CityGlobalModal';
 
 const CityTable = (props) => {
-  const { loading, modalCityList, tabKey, version } = props;
+  const { loading, modalCityList, tabKey, version, dispatch } = props;
   const [visible, setVisible] = useState(false);
   const [visibleConfigure, setVisibleConfigure] = useState({ show: false, info: {} });
   const childRef = useRef();
@@ -22,16 +22,35 @@ const CityTable = (props) => {
       type: 'handle',
       align: 'center',
       dataIndex: 'configGlobalPopUpId',
-      render: (_, row) => [
+      render: (val, row) => [
         {
           type: 'globalPopEdit',
           title: '编辑',
           click: () => handleEdit(row),
           auth: true,
         },
+        {
+          type: 'del',
+          title: '删除',
+          click: () => handleDelCity(val),
+          visible: row.area !== 'all',
+          auth: true,
+        },
       ],
     },
   ];
+
+  // 删除城市
+  const handleDelCity = (configGlobalPopUpId) => {
+    dispatch({
+      type: 'marketConfigure/fetchGlobalPopUpEdit',
+      payload: {
+        configGlobalPopUpId,
+        flag: 'deleteCity',
+      },
+      callback: childRef?.current?.fetchGetData,
+    });
+  };
 
   const handleEdit = (row) => {
     const { userOs, version, area, cityCode } = row;
@@ -65,7 +84,7 @@ const CityTable = (props) => {
         pagination={false}
         btnExtra={cardBtnList}
         rowKey={(record) => `${record.configGlobalPopUpId}`}
-        params={{ userOs: tabKey, version, pageType: 'pickup', isAutomatic: 1 }}
+        params={{ userOs: tabKey, version, pageType: 'pickup', isAutomatic: 1, deleteFlag: 1 }}
         dispatchType="marketConfigure/fetchGlobalPopUpCityList"
         {...modalCityList}
       ></TableDataBlock>
@@ -90,5 +109,7 @@ const CityTable = (props) => {
 
 export default connect(({ loading, marketConfigure }) => ({
   modalCityList: marketConfigure.modalCityList,
-  loading: loading.effects['marketConfigure/fetchGlobalPopUpCityList'],
+  loading:
+    loading.effects['marketConfigure/fetchGlobalPopUpCityList'] ||
+    loading.effects['marketConfigure/fetchGlobalPopUpEdit'],
 }))(CityTable);

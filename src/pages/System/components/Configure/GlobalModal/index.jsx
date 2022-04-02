@@ -47,9 +47,29 @@ const Index = (props) => {
             });
           },
         },
+        {
+          type: 'del',
+          title: '删除版本',
+          click: () => {
+            handleDelVersion(val);
+          },
+          auth: true,
+        },
       ],
     },
   ];
+
+  // 删除版本
+  const handleDelVersion = (configGlobalPopUpId) => {
+    dispatch({
+      type: 'marketConfigure/fetchGlobalPopUpEdit',
+      payload: {
+        configGlobalPopUpId,
+        flag: 'deleteVersion',
+      },
+      callback: childRef?.current?.fetchGetData,
+    });
+  };
 
   const cardBtnList = [
     {
@@ -73,6 +93,7 @@ const Index = (props) => {
         area: 'all',
         pageType: 'pickup',
         isAutomatic: 1,
+        deleteFlag: 1,
       });
     }
   };
@@ -95,7 +116,13 @@ const Index = (props) => {
             columns={getColumns}
             btnExtra={cardBtnList}
             rowKey={(record) => `${record.configGlobalPopUpId}`}
-            params={{ userOs: tabKey, area: 'all', pageType: 'pickup', isAutomatic: 1 }}
+            params={{
+              userOs: tabKey,
+              area: 'all',
+              pageType: 'pickup',
+              isAutomatic: 1,
+              deleteFlag: 1,
+            }}
             dispatchType="marketConfigure/fetchGlobalPopUpEditionList"
             {...editionList}
           />

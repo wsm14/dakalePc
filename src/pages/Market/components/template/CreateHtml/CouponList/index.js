@@ -69,7 +69,7 @@ export default (function (list, id) {
   }
 
   function wxOpenLaunchWeapp(html, mid, sid) {
-    const path = `pages/perimeter/payCouponDetails/index?ownerId=${mid}&ownerCouponId=${sid}&merchantId=${mid}&shareUserId=${getUrlParam(
+    const path = `pages/perimeter/payCouponDetails/index.html?ownerId=${mid}&ownerCouponId=${sid}&merchantId=${mid}&shareUserId=${getUrlParam(
       'shareUserId',
     )}&shareUserType=${getUrlParam('shareUserType')}`;
 

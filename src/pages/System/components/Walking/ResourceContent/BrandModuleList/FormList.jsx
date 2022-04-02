@@ -88,34 +88,56 @@ const FormList = (props) => {
             return (
               <>
                 <Form.ErrorList errors={errors} />
-                {fields2.map((field2) => (
-                  <div key={field2.key}>
-                    <Space key={field2.key} className={styles.ifame_carouseal} align="baseline">
-                      <div className={styles.ifame_btnArr}>
-                        <UpSquareOutlined
-                          onClick={() => {
-                            move(field2.name, field2.name - 1);
-                          }}
-                        />
-                        <DownSquareOutlined
-                          onClick={() => {
-                            move(field2.name, field2.name + 1);
-                          }}
-                        />
-                      </div>
+                {fields2.map((field2) => {
+                  // const [nameIndex, setNameIndex] = useState(Number);
+                  // useEffect(() => {
+                  //   setNameIndex(field2.name + 1);
+                  // }, [field2]);
 
-                      {(() => {
-                        const item =
-                          form.getFieldValue(name)[field.name]['activityGoodsList'][field2.name];
-                        return {
-                          specialGoods: goodsDom(item, item?.activityGoodsId), // 特惠，自我游
-                          commerceGoods: commerceDom(item, item?.activityGoodsId), // 电商品
-                        }[item.activityType];
-                      })()}
-                      <DeleteOutlined onClick={() => remove(field2.name)} />
-                    </Space>
-                  </div>
-                ))}
+                  // const inputDom = () => {
+                  //   return (
+                  //     <InputNumber
+                  //       size="small"
+                  //       value={nameIndex}
+                  //       onChange={(val) => setNameIndex(val)}
+                  //       onPressEnter={() => move(field2.name, nameIndex - 1)}
+                  //       precision={0}
+                  //       min={1}
+                  //       max={fields2.length}
+                  //       style={{ width: 60 }}
+                  //     ></InputNumber>
+                  //   );
+                  // };
+
+                  return (
+                    <div key={field2.key}>
+                      <Space key={field2.key} className={styles.ifame_carouseal} align="baseline">
+                        <div className={styles.ifame_btnArr}>
+                          <UpSquareOutlined
+                            onClick={() => {
+                              move(field2.name, field2.name - 1);
+                            }}
+                          />
+                          <DownSquareOutlined
+                            onClick={() => {
+                              move(field2.name, field2.name + 1);
+                            }}
+                          />
+                        </div>
+
+                        {(() => {
+                          const item =
+                            form.getFieldValue(name)[field.name]['activityGoodsList'][field2.name];
+                          return {
+                            specialGoods: goodsDom({ ...item }, item?.activityGoodsId), // 特惠，自我游
+                            commerceGoods: commerceDom({ ...item }, item?.activityGoodsId), // 电商品
+                          }[item.activityType];
+                        })()}
+                        <DeleteOutlined onClick={() => remove(field2.name)} />
+                      </Space>
+                    </div>
+                  );
+                })}
               </>
             );
           }}
