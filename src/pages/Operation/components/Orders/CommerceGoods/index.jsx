@@ -5,6 +5,7 @@ import { COMMERCE_ORDERS_STATUS, ORDER_CLOSE_TYPE, ORDER_PAY_LOGO } from '@/comm
 import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
 import Ellipsis from '@/components/Ellipsis';
+import PopImgShow from '@/components/PopImgShow';
 import excelHeder from './excelHeder';
 import OrderDrawer from './OrderDrawer';
 import styles from '../style.less';
@@ -86,19 +87,30 @@ const CommerceGoods = (props) => {
       title: '商品名称',
       dataIndex: 'goodsName',
       render: (val, row) => (
-        <>
-          <Ellipsis length={15} tooltip>
-            {val}
-          </Ellipsis>
-          <div style={{ marginTop: 5 }} className={styles.specFont}>
-            <Ellipsis length={12} tooltip>
-              {`备注：${row?.remark}`}
+        <div style={{ display: 'flex' }}>
+          <PopImgShow url={row.goodsImg} />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              flex: 1,
+              marginLeft: 5,
+            }}
+          >
+            <Ellipsis length={15} tooltip>
+              {val}
             </Ellipsis>
+            <div style={{ marginTop: 5 }} className={styles.specFont}>
+              <Ellipsis length={12} tooltip>
+                {`备注：${row?.remark}`}
+              </Ellipsis>
+            </div>
+            <div style={{ marginTop: 5 }} className={styles.specFont}>
+              订单号：{row.orderSn}
+            </div>
           </div>
-          <div style={{ marginTop: 5 }} className={styles.specFont}>
-            订单号：{row.orderSn}
-          </div>
-        </>
+        </div>
       ),
     },
     {

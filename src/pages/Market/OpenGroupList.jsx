@@ -8,6 +8,7 @@ import PopImgShow from '@/components/PopImgShow';
 import OpenGroupDetail from './components/OpenGroupList/OpenGroupDetail';
 import { fetchGetGroupForSearch } from '@/services/PublicServices';
 
+
 const OpenGroupList = (props) => {
   const { loading, dispatch, openGroupList } = props;
   const childRef = useRef();

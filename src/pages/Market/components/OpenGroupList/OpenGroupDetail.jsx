@@ -2,6 +2,9 @@ import React from 'react';
 import { Modal, Button } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import { REWARD_TYPE } from '@/common/constant';
+import robot from './img/robot.png';
+import redEnvelop from './img/redEnvelop.png';
+import goods from './img/goods.png';
 
 const OpenGroupDetail = (props) => {
   const { visible = {}, onClose } = props;
@@ -24,7 +27,18 @@ const OpenGroupDetail = (props) => {
       title: '拼团用户',
       align: 'center',
       dataIndex: 'username',
-      render: (val, row) => `${val}\n${row.mobile}`,
+      render: (val, row) =>
+        row.orderSn ? (
+          `${val}\n${row.mobile}`
+        ) : (
+          <>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <img src={robot} style={{ width: 20 }} alt="" />
+              {val}
+            </div>
+            <div>{row.mobile}</div>
+          </>
+        ),
     },
     {
       title: '参团时间',
@@ -40,7 +54,16 @@ const OpenGroupDetail = (props) => {
       title: '拼团结果',
       align: 'center',
       dataIndex: 'rewardType',
-      render: (val) => REWARD_TYPE[val],
+      render: (val) => (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          {val === 'winGoods' ? (
+            <img src={goods} style={{ width: 20 }} alt="" />
+          ) : (
+            <img style={{ width: 20 }} src={redEnvelop} alt="" />
+          )}
+          <span>{REWARD_TYPE[val]}</span>
+        </div>
+      ),
     },
     {
       title: '获得奖励',
