@@ -87,7 +87,9 @@ export const ROLE_BUTTON_TYPE = {
   globalPopAdd: '全局弹框新增',
   globalPopDel: '全局弹框删除',
   globalPopDown: '全局弹框下架',
-  globalAddCity: '全局弹框新增城市',
+  globalAddCity:'全局弹框新增城市',
+  groupGoodsConfigAdd:'拼团商品配置新增',
+  groupGoodsConfigDel:'拼团商品配置删除',
 
   handle: '处理',
   handleDeatil: '操作记录',
@@ -99,6 +101,7 @@ export const ROLE_BUTTON_TYPE = {
   info: '详情',
   income: '收益明细',
   isWechat: '小程序展示控制',
+  immediateGroup:'立即成团',
   iconEdit:'底部icon-编辑',
   iconVersionEdit:'底部icon-编辑版本',
   iconVersionDel:'底部icon-删除版本',

@@ -621,3 +621,16 @@ export function fetchSetWeeklyCard(data) {
     data,
   });
 }
+
+// 开团列表  
+export function fetchAdminListStartGroup(params) {
+  return request('/admin/start/group/adminListStartGroup', {
+    params,
+  });
+}
+//参团列表
+export function fetchAdminListJoinGroupByGroupId(params) {
+  return request('/admin/start/group/adminListJoinGroupByGroupId', {
+    params,
+  });
+}

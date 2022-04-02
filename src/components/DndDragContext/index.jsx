@@ -5,7 +5,7 @@ import DragAndDropHOC from './DragAndDropHOC';
 import './index.less';
 
 const DndDragContext = (props) => {
-  const { data = [], accept, onEnd, children } = props;
+  const { data = [], accept, onEnd, layout = 'horizontal', children } = props;
 
   // 移动数据处理
   const moveRow = (dragIndex, hoverIndex) => {
@@ -49,19 +49,22 @@ const DndDragContext = (props) => {
     drop(drag(ref));
 
     return (
-      <span
+      <div
         ref={ref}
         className={`dakale-draggable-list-item ${isOver ? dropClassName : ''}`}
         style={{ cursor: 'move' }}
       >
         {originNode}
-      </span>
+      </div>
     );
   };
 
   return (
     <DragAndDropHOC>
-      <div className="dakale-move-dom-wrapper">
+      <div
+        className="dakale-move-dom-wrapper"
+        style={{ flexDirection: { horizontal: 'row', vertical: 'column' }[layout] }}
+      >
         {children.map((item, index) => (
           <DragableListItem
             key={`domDnd${index}`}

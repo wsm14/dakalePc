@@ -49,6 +49,11 @@ export default [
             name: '订单数据统计',
             component: './Chart/OrderDataStat',
           },
+          {
+            path:'/chart/groupStatistics',
+            name: '拼团统计',
+            component:'./Chart/GroupStatistics'
+          }
          
         ],
       },
@@ -178,6 +183,12 @@ export default [
             name: '资源位配置',
             component: './Market/SpecialGoodsResource',
             buttons: ['cancleRecommend', 'configCondit'],
+          },
+          {
+            path: '/market/openGroup',
+            name: '开团列表',
+            component: './Market/OpenGroupList',
+            buttons: ['info', 'immediateGroup'],
           },
         ],
       },
@@ -723,6 +734,8 @@ export default [
               'blindConfigEdit',
               'newWinDel',
               'newWinAdd',
+              'groupGoodsConfigDel',
+              'groupGoodsConfigAdd',
             ],
           },
         ],

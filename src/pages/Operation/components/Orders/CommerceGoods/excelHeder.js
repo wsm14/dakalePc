@@ -12,6 +12,10 @@ export default [
     dataIndex: 'goodsName',
   },
   {
+    title:"备注",
+    dataIndex:'remark'
+  },
+  {
     title: '下单用户昵称',
     dataIndex: 'userName',
   },

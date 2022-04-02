@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { SUBMIT_TYPE, COMMERCEGOODS_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
+import PopImgShow from '@/components/PopImgShow';
 import { RefuseModal } from '@/components/PublicComponents';
 import TableDataBlock from '@/components/TableDataBlock';
 import CommerceGoodsAdd from './components/CommerceGoodsAdd';
@@ -56,13 +57,30 @@ const PlatformEquityGoods = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '商品名称',
+      title: '商品名称/ID',
       fixed: 'left',
-      dataIndex: 'goodsName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
+      dataIndex: 'goodsImg',
+      width:300,
+      render: (val, row) => (
+        <div style={{ display: 'flex' }}>
+          <PopImgShow url={val} />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              flex: 1,
+              marginLeft: 5,
+            }}
+          >
+            <div style={{ display: 'flex' }}>
+              <Ellipsis length={5} lines={2} tooltip>
+                {row.goodsName}
+              </Ellipsis>
+            </div>
+            <div style={{ color: '#999', marginTop: 5 }}>ID：{row.activityGoodsId}</div>
+          </div>
+        </div>
       ),
     },
     {
