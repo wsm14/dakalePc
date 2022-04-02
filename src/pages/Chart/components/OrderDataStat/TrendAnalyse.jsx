@@ -74,8 +74,14 @@ const TrendAnalyse = (props) => {
                 placeholder="请选择地区"
               />
             </div>
-            {`累计：${newRegisterDataObj.total || '-'}    均值：${
-              newRegisterDataObj.average || '-'
+            {`累计：${
+              data.subStatisticType === 'orderAmount'
+                ? Number(newRegisterDataObj.total).toFixed(0)
+                : newRegisterDataObj.total || '-'
+            }    均值：${
+              data.subStatisticType === 'orderAmount'
+                ? Number(newRegisterDataObj.average).toFixed(0)
+                : newRegisterDataObj.average || '-'
             }`}
           </div>
         }
@@ -92,9 +98,6 @@ const TrendAnalyse = (props) => {
           legend={false}
           seriesField="type"
           isStack={true}
-          label={{
-            position: 'middle',
-          }}
           maxColumnWidth={40}
         />
       </Spin>

@@ -1186,10 +1186,10 @@ export const AREA_ORDER_GOODS_TYPES = [
   { label: '权益品', value: 'right' },
 ];
 
-//订单数据统计 - 端口类型 - 对应
+//订单数据统计 - 支付金额分析 - 端口类型 - 对应
 export const USER_ANALYSIS_CONTRAS = {
   app: 'APP',
-  weChat: '哒小乐',
+  weChat: '小程序（含3个端口）',
   mark: '哒小卡',
   communityWechat: '哒小团',
 };

@@ -117,7 +117,9 @@ const GenderAgeDistribution = (props) => {
         <Row style={{ minHeight: 300, marginTop: 35 }}>
           <Col span={14}>
             {ageList.length ? (
-              <Pie data={ageList} {...ageProps} />
+              <div style={{ height: 300 }}>
+                <Pie data={ageList} {...ageProps} />
+              </div>
             ) : (
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
             )}
