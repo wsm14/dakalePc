@@ -13,7 +13,7 @@ const tabList = [
   },
 ];
 const GroupStatistics = (props) => {
- 
+  const { dispatch, loading, realTimeData = {}, staticsData = {} } = props;
 
   const [timeData, setTimeData] = useState([
     moment().subtract(1, 'day'),
@@ -23,6 +23,33 @@ const GroupStatistics = (props) => {
   useEffect(() => {
     //搜索
   }, [timeData]);
+
+  const cardRealTime = [
+    {
+      title: '累计开团次数',
+      value: '233223',
+    },
+    {
+      title: '拼团中',
+      value: '233223',
+    },
+    {
+      title: '拼团成功',
+      value: '233223',
+    },
+    {
+      title: '拼团失败',
+      value: '233223',
+    },
+    {
+      title: '开团人数',
+      value: '233223',
+    },
+    {
+      title: '参团人数',
+      value: '233223',
+    },
+  ];
 
   const cardPropsList = [
     {
@@ -58,64 +85,47 @@ const GroupStatistics = (props) => {
   ];
 
   return (
-    <div className="wraperCon">
-      <div>
-        <Card tabList={tabList} activeTabKey={'0'}>
-          <div className="groupStaticHead bgColor">
-            <span>累计开团次数</span>
-            <span className="fontWeight">1223</span>
-          </div>
-          <div className="groupStaticItem groupStaticHead">
-            <span>拼团中</span>
-            <span className="fontWeight">1223</span>
-          </div>
-          <div className="groupStaticItem groupStaticHead">
-            <span>拼团成功</span>
-            <span className="fontWeight">1223</span>
-          </div>
-          <div className="groupStaticItem groupStaticHead">
-            <span>拼团失败</span>
-            <span className="fontWeight">1223</span>
-          </div>
-        </Card>
-        <Card>
-          <div className="groupStaticItem groupStaticHead">
-            <span>开团人数</span>
-            <span className="fontWeight">1223</span>
-          </div>
-          <div className="groupStaticItem groupStaticHead">
-            <span>参团人数</span>
-            <span className="fontWeight">1223</span>
-          </div>
-        </Card>
-      </div>
-      <div className="rightWrap">
-        <SearchCard
-          setTimeData={setTimeData}
-          timeData={timeData}
-        ></SearchCard>
-        <div className="rightCon">
-          {cardPropsList.map((item) => (
-            <Card
-              key={item.title}
-              title={
-                <QuestionTooltip
-                  type="quest"
-                  title={item.title}
-                  content={item.tip}
-                ></QuestionTooltip>
-              }
-              className="cardItem"
-            >
-              <div style={{ textAlign: 'center' }}>
-                <Statistic valueStyle={{ fontWeight: 'bold' }} value={item.value}></Statistic>
+    <Card tabList={tabList} activeTabKey={'0'}>
+      <div className="wraperCon">
+        <div>
+          <Card>
+            {cardRealTime.map((RealItem) => (
+              <div className="groupStaticItem groupStaticHead" key={RealItem.title}>
+                <span>{RealItem.title}</span>
+                <span className="fontWeight">{RealItem.value}</span>
               </div>
-            </Card>
-          ))}
+            ))}
+          </Card>
+        </div>
+        <div className="rightWrap">
+          <SearchCard setTimeData={setTimeData} timeData={timeData}></SearchCard>
+          <div className="rightCon">
+            {cardPropsList.map((item) => (
+              <Card
+                key={item.title}
+                title={
+                  <QuestionTooltip
+                    type="quest"
+                    title={item.title}
+                    content={item.tip}
+                  ></QuestionTooltip>
+                }
+                className="cardItem"
+              >
+                <div style={{ textAlign: 'center' }}>
+                  <Statistic valueStyle={{ fontWeight: 'bold' }} value={item.value}></Statistic>
+                </div>
+              </Card>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </Card>
   );
 };
 
-export default GroupStatistics;
+export default connect(({ loading, groupStatistics }) => ({
+  loading: loading.models.groupStatistics,
+  realTimeData: groupStatistics.realTimeData,
+  staticsData: groupStatistics.staticsData,
+}))(GroupStatistics);
