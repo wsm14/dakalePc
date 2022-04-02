@@ -1,42 +1,19 @@
 import React, { useState } from 'react';
 import { Card } from 'antd';
-import UsageAnalysis from './components/UserDataStat/UsageAnalysis';
-import UserPortrait from './components/UserDataStat/UserPortrait';
-import AccumulativeData from './components/UserDataStat/AccumulativeData';
-import ChannelData from './components/UserDataStat/ChannelData';
+import EveryDayLottery from './components/EveryDayLottery/EveryDayLottery';
 
 const tabList = [
   {
-    key: 'usageAnalysis',
-    tab: '使用分析',
-  },
-  // {
-  //   key: 'realTimeData',
-  //   tab: '实时数据',
-  // },
-  {
-    key: 'userPortrait',
-    tab: '用户画像',
-  },
-  {
-    key: 'accumulativeData',
-    tab: '累计数据',
-  },
-  {
-    key: 'channelData',
-    tab: '渠道数据',
+    key: 'everyDayLottery',
+    tab: '天天抽奖',
   },
 ];
 
 const GameDataStat = () => {
-  const [tabkey, setTabkey] = useState('usageAnalysis');
+  const [tabkey, setTabkey] = useState('everyDayLottery');
 
   const contentList = {
-    usageAnalysis: <UsageAnalysis></UsageAnalysis>,
-    realTimeData: <>123</>,
-    userPortrait: <UserPortrait></UserPortrait>,
-    accumulativeData: <AccumulativeData></AccumulativeData>,
-    channelData: <ChannelData></ChannelData>,
+    everyDayLottery: <EveryDayLottery></EveryDayLottery>,
   };
 
   return (

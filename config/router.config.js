@@ -49,7 +49,11 @@ export default [
             name: '订单数据统计',
             component: './Chart/OrderDataStat',
           },
-         
+          {
+            path: '/chart/gameDataStat',
+            name: '游戏数据统计',
+            component: './Chart/GameDataStat',
+          },
         ],
       },
       // 数据报表
@@ -648,7 +652,6 @@ export default [
               'virtualSave',
               'virtualInfo',
               'virtualEdit',
-           
             ],
           },
           {
