@@ -42,7 +42,7 @@ const TabTable = (props) => {
       render: (val, row) => {
         return [
           {
-            type: 'edit',
+            type: 'tabEdit',
             title: '编辑',
             click: () => handleUpdateSet('edit', val),
             auth: true,
@@ -69,7 +69,7 @@ const TabTable = (props) => {
 
   const cardBtnList = [
     {
-      auth: 'save',
+      auth: 'tabAddCity',
       text: '新增城市',
       onClick: () => {
         setVisible({

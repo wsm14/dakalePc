@@ -272,6 +272,17 @@ export const ORDERS_STATUS = [
   '已过期',
 ];
 
+// 游戏类型名称
+export const GAME_TYPE_NAME = {
+  mark: '哒小卡中奖',
+  gameSign: '签到游戏',
+  gameFree: '免费领商品游戏',
+  gameGather: '集碎片游戏',
+  gameFarm: '卡豆农场',
+  dailyLuckDraw: '天天抽奖',
+  taskPrize: '任务奖励',
+};
+
 // 电商订单状态
 export const COMMERCE_ORDERS_STATUS = ['', '待发货', '已退款', '已完成', '', '', '', '', '已发货'];
 
@@ -352,7 +363,7 @@ export const SUBSIDY_TYPE = {
   directCharge: '平台直充',
   // recycleDirectCharge: '平台直充回收',
   // recyclePlatform: '营销卡豆回收',
-  platformSubsidy: '新手任务补贴',
+  platformSubsidy: '平台补贴',
   pushVideo: '打赏补贴',
   momentStop: '打赏回收',
   watchMoment: '看分享',
@@ -1191,17 +1202,20 @@ export const ORDER_GOODS_CONTRAS = {
   communityGoods: '团购商品',
   scan: '扫码支付',
   reduceCoupon: '有价券',
-  right: '权益商品',
+  rightGoods: '权益商品',
+  rightCoupon: '权益券',
+  platformGift: '平台礼包',
   other: '其他',
 };
 
 //订单数据统计 - 商品订单类型
 export const GOODS_ORDER_CONTRAS = {
-  scan: '扫码订单',
-  specialGoods: '特价商品订单',
-  reduceCoupon: '有价券订单',
-  communityGoods: '团购商品订单',
-  virtualProduct: '虚拟商品订单',
+  scan: '扫码支付',
+  specialGoods: '特惠商品',
+  commerceGoods: '电商品',
+  reduceCoupon: '有价券',
+  communityGoods: '团购商品',
+  virtualProduct: '虚拟商品',
   right: '权益商品',
   platformGift: '平台礼包订单',
   weeklyCard: '卡豆周卡订单',
@@ -1228,3 +1242,6 @@ export const SELL_ORDER_TYPE = {
   platformGift: '平台礼包订单',
   weeklyCard: '卡豆周卡订单',
 };
+
+// 提现明细  - 店铺  - 类型
+export const WITHDRAW_BUSINESS_TYPE = { merchant: '单店', group: '集团', subMerchant: '子门店' };

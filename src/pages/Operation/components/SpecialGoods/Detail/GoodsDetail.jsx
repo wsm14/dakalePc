@@ -6,7 +6,20 @@ import { BUSINESS_TYPE, GOODS_CLASS_TYPE, SPECIAL_DESC_TYPE } from '@/common/con
 
 const GoodsDetail = (props) => {
   const { detail, merchantList } = props;
-  const { goodsType, ownerType, goodsDescType } = detail;
+  const { goodsType, ownerType, goodsDescType, thirdFlag } = detail;
+
+  const GoodsTypeformItems = [
+    {
+      name: 'thirdFlag',
+      label: `商品类型`,
+      render: (val) => (val ? '自我游商品' : '特惠商品'),
+    },
+    {
+      name: 'thirdCode',
+      label: `自我游编码`,
+      show: thirdFlag == '2',
+    },
+  ];
 
   const ActiveformItems = [
     {
@@ -104,7 +117,7 @@ const GoodsDetail = (props) => {
       label: '区县分佣金额（卡豆）',
       name: ['serviceDivisionDTO', 'districtBean'],
     },
-   
+
     {
       label: '哒人分佣金额（卡豆）',
       name: ['serviceDivisionDTO', 'darenBean'],
@@ -170,6 +183,10 @@ const GoodsDetail = (props) => {
 
   return (
     <>
+      <DescriptionsCondition
+        formItems={GoodsTypeformItems}
+        initialValues={detail}
+      ></DescriptionsCondition>
       <DescriptionsCondition
         title="参与活动的店铺"
         formItems={ActiveformItems}

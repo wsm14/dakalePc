@@ -231,6 +231,15 @@ const ShareManage = (props) => {
     });
   };
 
+  // 修改不审核
+  const fetchNewShareNoAudit = (values, callback) => {
+    dispatch({
+      type: 'videoPlatform/fetchNewShareNoAudit',
+      payload: values,
+      callback,
+    });
+  };
+
   // 获取推荐位置ugc标签
   const fetchGetUgcTag = () => {
     dispatch({
@@ -304,6 +313,8 @@ const ShareManage = (props) => {
       ></RewardSet>
       {/* 设置 */}
       <VideoSet
+        onSubmit={fetchNewShareNoAudit}
+        childRef={childRef}
         visible={visibleSet}
         fetchGetRate={fetchGetRate}
         onClose={() => setVisibleSet(false)}

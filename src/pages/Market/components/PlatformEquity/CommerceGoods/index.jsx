@@ -7,6 +7,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import CommerceGoodsAdd from './components/CommerceGoodsAdd';
 import CommerceGoodsDetail from './components/CommerceGoodsDetail';
 import RemainModal from './components/Detail/RemainModal';
+import QrCodeShow from './components/Detail/QrCodeShow';
 
 /**
  * 电商商品
@@ -20,6 +21,7 @@ const PlatformEquityGoods = (props) => {
   const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 审核拒绝 下架原因
   const [visibleRemain, setVisibleRemain] = useState(false);
+  const [qrcode, setQrcode] = useState({ url: null, title: '' }); // 商品码
 
   useEffect(() => {
     if (childRef.current) {
@@ -111,7 +113,7 @@ const PlatformEquityGoods = (props) => {
       dataIndex: 'specialGoodsId',
       width: 150,
       render: (val, record, index) => {
-        const { specialGoodsId, status, deleteFlag } = record;
+        const { specialGoodsId, relateIdString, status, deleteFlag } = record;
         return [
           {
             type: 'info',
@@ -119,7 +121,7 @@ const PlatformEquityGoods = (props) => {
           },
           {
             type: 'down',
-            visible: status == '1' && deleteFlag == '1', // 活动中 && 未删除
+            visible: ['1', '2'].includes(status) && deleteFlag == '1', // 活动中/即将开始 && 未删除
             click: () =>
               setVisibleRefuse({
                 show: true,
@@ -153,10 +155,29 @@ const PlatformEquityGoods = (props) => {
             visible: ['1'].includes(status) && deleteFlag == '1',
             click: () => fetAddRemain(specialGoodsId, record.remain, record.ownerIdString),
           },
+          {
+            type: 'goodsCode',
+            visible: status == '1' && deleteFlag == '1', // 活动中 && 未删除
+            click: () =>
+              fetchSpecialGoodsQrCode(
+                { specialGoodsId },
+                `${record.relateName}-${record.goodsName}`,
+                { specialGoodsId, merchantId: relateIdString },
+              ),
+          },
         ];
       },
     },
   ];
+
+  // 获取商品码
+  const fetchSpecialGoodsQrCode = (payload, title, data) => {
+    dispatch({
+      type: 'specialGoods/fetchSpecialGoodsQrCode',
+      payload,
+      callback: (url) => setQrcode({ url, title, data }),
+    });
+  };
 
   // 获取详情
   const fetchSpecialGoodsDetail = (index, type) => {
@@ -224,7 +245,7 @@ const PlatformEquityGoods = (props) => {
   return (
     <>
       <TableDataBlock
-        // 
+        //
         btnExtra={btnList}
         noCard={false}
         cRef={childRef}
@@ -271,6 +292,8 @@ const PlatformEquityGoods = (props) => {
         visible={visibleRemain}
         onClose={() => setVisibleRemain(false)}
       ></RemainModal>
+      {/* 商品码 */}
+      <QrCodeShow {...qrcode} onCancel={() => setQrcode({})}></QrCodeShow>
     </>
   );
 };

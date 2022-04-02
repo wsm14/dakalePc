@@ -47,6 +47,7 @@ const StoreList = (props) => {
           <div style={{ display: 'flex', alignItems: 'center', marginTop: 5, color: '#888888' }}>
             {row.account}
           </div>
+          <div>{row?.merchantId}</div>
         </PopImgShow>
       ),
     },

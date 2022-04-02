@@ -37,18 +37,20 @@ const HolidayConfig = (props) => {
       dataIndex: 'configFestivalId',
       render: (val, row) => [
         {
-          type: 'down',
+          type: 'holidayDown',
           title: '下架',
           visible: row.status !== '2',
           click: () => handleDown(val),
         },
         {
-          type: 'edit',
+          type: 'holidayEdit',
+          title: '编辑',
           click: () => handleUpdateSet('edit', val),
           visible: row.status === '2',
         },
         {
-          type: 'info',
+          type: 'holidayInfo',
+          title: '详情',
           click: () => handleUpdateSet('info', val),
           visible: row.status !== '2',
         },
@@ -88,7 +90,8 @@ const HolidayConfig = (props) => {
 
   const cardBtnList = [
     {
-      auth: 'save',
+      auth: 'holidaySave',
+      text:'新增',
       onClick: () => handleUpdateSet('save'),
     },
   ];

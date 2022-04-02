@@ -78,14 +78,16 @@ const TabConfigure = (props) => {
       dataIndex: 'preferentialActivityId',
       render: (val, row) => [
         {
-          type: 'edit',
-          visible: row.status !== '2',
+          type: 'virtualEdit',
+          title:'编辑',
+          visible: ['scanPay'].includes(tabKey) ? true : row.status !== '2',
           click: () => {
             handleDetail(val, 'edit');
           },
         },
         {
-          type: 'info',
+          type: 'virtualInfo',
+          title:"详情",
           click: () => {
             handleDetail(val, 'info');
           },
@@ -113,7 +115,7 @@ const TabConfigure = (props) => {
 
   const cardBtnList = [
     {
-      type: 'save',
+      type: 'virtualSave',
       text: '新增',
       onClick: () => {
         setVisible({

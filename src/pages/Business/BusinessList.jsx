@@ -146,6 +146,7 @@ const BusinessListComponent = (props) => {
             </Ellipsis>
             <Tag style={{ marginLeft: 5 }}>{row.groupId ? '子门店' : '单店'}</Tag>
           </div>
+          <div>{row?.userMerchantIdString}</div>
         </PopImgShow>
       ),
     },
@@ -354,7 +355,6 @@ const BusinessListComponent = (props) => {
   return (
     <>
       <TableDataBlock
-        
         cardProps={{ title: <ExtraButton list={extraBtn}></ExtraButton> }}
         cRef={childRef}
         btnExtra={({ get }) => [

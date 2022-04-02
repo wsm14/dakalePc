@@ -26,6 +26,7 @@ const PreferentialSet = ({
   //活动中隐藏的编辑项//edit 独有不展示
   const editDisabled = ['edit'].includes(editActive);
 
+  const [goodsType, setGoodsType] = useState('1'); // 商品类型： 特惠 自我游
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
   const [goodsDescType, setGoodsDescType] = useState('0'); // 商品介绍类型
   const [radioData, setRadioData] = useState({ goodsType: 'single' }); // 商品类型 goodsType
@@ -48,6 +49,11 @@ const PreferentialSet = ({
   const goodsTypeName = GOODS_CLASS_TYPE[radioData.goodsType];
   useEffect(() => {
     if (initialValues.ownerName) {
+      // 商品类型： 特惠 自我游
+      setGoodsType(initialValues.thirdFlag || '1');
+      form.setFieldsValue({
+        thirdFlag: initialValues.thirdFlag || '1',
+      });
       // 图文介绍类型
       setGoodsDescType(initialValues.goodsDescType);
       setMreList({
@@ -166,6 +172,26 @@ const PreferentialSet = ({
 
   // 信息
   const formItems = [
+    {
+      label: '商品类型',
+      name: 'thirdFlag',
+      type: 'radio',
+      disabled: commonDisabled,
+      select: { 1: '特惠商品', 2: '自我游商品' },
+      onChange: (e) => {
+        setGoodsType(e.target.value);
+      },
+    },
+    {
+      label: '自我游编码',
+      name: 'thirdCode',
+      visible: goodsType === '2',
+      onChange: (e) => {
+        form.setFieldsValue({
+          thirdCode: e.target.value.replace(/ /g, ''),
+        });
+      },
+    },
     {
       title: '设置参与活动的店铺',
       label: '选择店铺类型',

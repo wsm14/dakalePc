@@ -72,21 +72,21 @@ const AppSetList = (props) => {
       dataIndex: 'bannerType',
       render: (val) => bannerTypeObj[val],
     },
-    {
-      title: '可见范围',
-      dataIndex: 'visibleRange',
-      render: (val) => BANNER_LOOK_AREA[val],
-    },
-    {
-      title: '投放区域',
-      align: 'center',
-      dataIndex: 'deliveryAreaType',
-      render: (val, row) =>
-        ({
-          all: BANNER_AREA_TYPE[val],
-          detail: <Tooltip title={row.deliveryAreaNameStr}>按区县({row.deliveryAreaNum})</Tooltip>,
-        }[val]),
-    },
+    // {
+    //   title: '可见范围',
+    //   dataIndex: 'visibleRange',
+    //   render: (val) => BANNER_LOOK_AREA[val],
+    // },
+    // {
+    //   title: '投放区域',
+    //   align: 'center',
+    //   dataIndex: 'deliveryAreaType',
+    //   render: (val, row) =>
+    //     ({
+    //       all: BANNER_AREA_TYPE[val],
+    //       detail: <Tooltip title={row.deliveryAreaNameStr}>按区县({row.deliveryAreaNum})</Tooltip>,
+    //     }[val]),
+    // },
     {
       title: '跳转类型',
       align: 'center',

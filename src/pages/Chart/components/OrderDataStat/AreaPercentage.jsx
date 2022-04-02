@@ -13,8 +13,6 @@ import styles from './style.less';
 const AreaPercentage = ({ areaData, dispatch, loading }) => {
   const childRef = useRef();
 
-  console.log('areaData', areaData);
-
   const [data, setData] = useState({
     groupBy: 'city',
     subStatisticType: 'scan,specialGoods',
@@ -26,10 +24,10 @@ const AreaPercentage = ({ areaData, dispatch, loading }) => {
 
   // 监听数据变化发送请求
   useEffect(() => {
-    setSelectRow(areaData.cityList[0]?.cityCode);
     dispatch({
       type: 'orderDataStat/fetchOrderAreaAnalysisReport',
       payload: data,
+      callback: (code) => setSelectRow(code),
     });
   }, [data]);
 
@@ -57,6 +55,7 @@ const AreaPercentage = ({ areaData, dispatch, loading }) => {
         setData={setData}
         portTypeList={ORDER_AREA_TYPES}
         defaultPortType={['scan', 'specialGoods']}
+        appTypeName="subStatisticType"
         timeDayMonthOk={false}
       ></SearchBlock>
       {/* 图表 */}
@@ -67,8 +66,9 @@ const AreaPercentage = ({ areaData, dispatch, loading }) => {
               data={areaData.cityList}
               angleField="payMoneySum"
               title="支付金额"
-              innerRadius={0.6}
+              innerRadius={0.7}
               legend={false}
+              radius={0.8}
             />
           </Spin>
         </div>
@@ -96,11 +96,10 @@ const AreaPercentage = ({ areaData, dispatch, loading }) => {
               }}
             ></TableDataBlock>
           </div>
-          {selectRow && (
-            <div style={{ flex: 1, marginLeft: 5 }}>
-              <DistrictList searchData={data} cityCode={selectRow}></DistrictList>
-            </div>
-          )}
+
+          <div style={{ flex: 1, marginLeft: 5 }}>
+            <DistrictList searchData={data} cityCode={selectRow}></DistrictList>
+          </div>
         </div>
       </div>
     </div>

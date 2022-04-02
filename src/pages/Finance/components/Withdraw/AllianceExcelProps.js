@@ -10,6 +10,10 @@ export default {
       dataIndex: 'withdrawalDate',
     },
     {
+      title: '流水单号',
+      dataIndex: 'withdrawalSn',
+    },
+    {
       title: '平台类型',
       dataIndex: 'userType',
       render: (val) => WITHDRAW_ALLIANCE_TYPE[val],

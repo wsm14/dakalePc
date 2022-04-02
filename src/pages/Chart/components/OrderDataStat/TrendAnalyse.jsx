@@ -34,7 +34,7 @@ const TrendAnalyse = (props) => {
   };
 
   return (
-    <div>
+    <div style={{ paddingTop: 25 }}>
       <SearchBlock
         data={data}
         setData={setData}
@@ -95,6 +95,7 @@ const TrendAnalyse = (props) => {
           label={{
             position: 'middle',
           }}
+          maxColumnWidth={40}
         />
       </Spin>
     </div>

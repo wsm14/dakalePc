@@ -30,6 +30,10 @@ const DetailForm = (props) => {
       label: '内容详情',
     },
     {
+      label: '视频标签',
+      name: 'momentTagNames',
+    },
+    {
       label: `收藏数`,
       name: 'collectionAmount',
       render: (val) => (val ? val : '-'),

@@ -111,7 +111,8 @@ const SysAppSet = (props) => {
       label: '应用范围',
       type: 'radio',
       name: 'deliveryAreaType',
-      select: BANNER_AREA_TYPE,
+      // select: BANNER_AREA_TYPE,
+      select: { all: '全平台' },
       onChange: (e) => setShowArea(e.target.value === 'detail'),
     },
     {
