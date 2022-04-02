@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Modal, Button, Upload, message } from 'antd';
+import { Modal, Button, Upload, message, Typography } from 'antd';
 import * as XLSX from 'xlsx';
 import { UploadOutlined } from '@ant-design/icons';
 import ImportRecord from './ImportRecord';
 
 const ImportDataModal = (props) => {
-  const { visible, onClose, setUserList, dispatch } = props;
-  const { show = false, pushObj } = visible;
+  const { visible, onClose, setUserList, dispatch, loading } = props;
+  const { show = false, pushObj, detail } = visible;
   // 是否存在有效文件
   const [excelFile, setExcelFile] = useState(false);
   // excel数据储存
@@ -23,28 +23,35 @@ const ImportDataModal = (props) => {
       excelName: '用户信息表', // excel 表名
       // excel 导出列
       excelRow: (item) => ({
-        id: item['ID'],
-        mobile: item['手机号'],
-        username: item['用户名'],
-        level: item['级别'],
+        id: item['用户ID'],
+        // mobile: item['手机号'],
+        // username: item['用户名'],
+        // level: item['级别'],
       }),
       // 模版链接
       excelModelUrl:
-        'https://resource-new.dakale.net/excel/%E8%90%A5%E9%94%80%E7%89%A9%E6%96%99-%E5%AF%BC%E5%85%A5%E7%94%A8%E6%88%B7.xlsx',
+        'https://dakale-resource-new.oss-cn-hangzhou.aliyuncs.com/excel/%E6%89%B9%E9%87%8F%E9%80%81%E5%88%B8-%E6%A8%A1%E6%9D%BF.xlsx',
     },
-  }[pushObj];
+  }['specific'];
 
   // 上传文件模版数据
   const fetchUpExcelData = () => {
     console.log(excelData, 'dddd');
-    if (!excelData.list.length) {
+    if (!excelData.length || !excelData.list.length) {
       message.error('excel无数据，导入失败');
       return;
     }
-    if (pushObj === 'specific') {
-      setUserList({ ...excelData });
-      onClose();
-    }
+    dispatch({
+      type: 'platformCoupon/fetchGivePlatformCoupon',
+      payload: {
+        giveFlag: 'batch',
+        platformCouponId: detail.platformCouponId, // 赠送数据
+        userIds: excelData.keys,
+      },
+      callback: () => {
+        onClose();
+      },
+    });
   };
 
   // 上传文件模版
@@ -75,7 +82,7 @@ const ImportDataModal = (props) => {
         message.error('文件类型不正确！');
         setFileLoading(false);
       }
-
+      console.log(data, 'data');
       if (!data[excelProps.excelName]) {
         setFileLoading(false);
         message.error('Excel模版不正确');
@@ -94,6 +101,7 @@ const ImportDataModal = (props) => {
         items.userIdString = items.id;
         items.levelName = items.level;
       });
+      console.log(keys, 'keys', dataSources);
       setExcelData({ keys, list: dataSources });
       setExcelFile(true);
       setFileLoading(false);
@@ -111,26 +119,24 @@ const ImportDataModal = (props) => {
   };
 
   const modalProps = {
-    title: `批量导入 - ${excelProps?.excelName}`,
+    title: `批量导入 - ${detail?.couponName}`,
     visible: show,
     onCancel: onClose,
     confirmLoading: fileLoading,
     footer: [
-      <Button
+      <Typography.Link
         key="cancle"
-        type="primary"
         onClick={() => {
-          setRecordVisible({ show: true });
+          setRecordVisible({ show: true, detail: detail });
         }}
-        style={{ float: 'left' }}
+        style={{ float: 'left', marginTop: 5 }}
       >
         查看导入记录
-      </Button>,
-      <Button key="ok" onClick={onClose}>
-        返回
+      </Typography.Link>,
+      <Button key="ok" type="primary" onClick={fetchUpExcelData} loading={loading}>
+        确定导入
       </Button>,
     ],
-    onOk: fetchUpExcelData,
   };
 
   return (
@@ -154,11 +160,22 @@ const ImportDataModal = (props) => {
             下载模板
           </a>
         </div>
+
+        <div style={{ marginTop: 20, color: 'red' }}>
+          注：导入成功后将直接赠送到用户账户，请谨慎操作。
+        </div>
       </Modal>
 
       {/*导入记录  */}
-      <ImportRecord visible={recordVisible}></ImportRecord>
+      <ImportRecord
+        visible={recordVisible}
+        onClose={() => {
+          setRecordVisible(false);
+        }}
+      ></ImportRecord>
     </>
   );
 };
-export default connect()(ImportDataModal);
+export default connect(({ loading }) => ({
+  loading: loading.effects['platformCoupon/fetchGivePlatformCoupon'],
+}))(ImportDataModal);

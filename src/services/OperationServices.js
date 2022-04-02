@@ -894,6 +894,28 @@ export function fetchAddTotalPlatformCoupon(data) {
   });
 }
 
+// post 平台券 - 赠送
+export function fetchGivePlatformCoupon(data) {
+  return request('/admin/platform/coupon/givePlatformCoupon', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 平台券 - 导入记录列表
+export function fetchPagePlatformCouponGiveImport(params) {
+  return request('/admin/platform/coupon/pagePlatformCouponGiveImport', {
+    params,
+  });
+}
+
+// get 平台券 - 导入记录列表
+export function fetchPagePlatformCouponGiveImportDetail(params) {
+  return request('/admin/platform/coupon/pagePlatformCouponGiveImportDetail', {
+    params,
+  });
+}
+
 // 平台券 end
 
 // 礼包管理

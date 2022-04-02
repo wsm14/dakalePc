@@ -8,7 +8,6 @@ import FormCondition from '@/components/FormCondition';
 const GiveUserCoupon = (props) => {
   const { visible = {}, onClose, dispatch, loading } = props;
   const { show = false, detail = {} } = visible;
-  console.log(detail, 'detail');
   const [form] = Form.useForm();
   const [userList, setUserList] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -34,11 +33,12 @@ const GiveUserCoupon = (props) => {
 
   const handleOk = () => {
     form.validateFields().then((values) => {
+      console.log(values);
       dispatch({
-        type: 'platformEquity/fetchGiveGoods',
+        type: 'platformCoupon/fetchGivePlatformCoupon',
         payload: {
-          ownerId: -1,
-          ...detail, // 赠送数据
+          giveFlag: 'single',
+          platformCouponId: detail.platformCouponId, // 赠送数据
           ...values,
         },
         callback: () => {
@@ -59,7 +59,6 @@ const GiveUserCoupon = (props) => {
       onSearch: fetchGetUser,
     },
   ];
-
   const modalProps = {
     title: `赠送 - ${detail.couponName}`,
     visible: show,
@@ -67,12 +66,13 @@ const GiveUserCoupon = (props) => {
       <Typography.Link
         style={{ float: 'left', marginTop: 5 }}
         onClick={() => {
-          setModalVisible({ show: true });
+          setModalVisible({ show: true, detail: detail });
         }}
+        key="modal"
       >
         批量赠送
       </Typography.Link>,
-      <Button key="cancle" loading={loading} onClick={onClose}>
+      <Button key="cancle" onClick={onClose}>
         取消
       </Button>,
       <Button key="ok" type="primary" loading={loading} onClick={handleOk}>
@@ -83,7 +83,7 @@ const GiveUserCoupon = (props) => {
   };
   return (
     <>
-      <Modal destroyOnClose {...modalProps} loading={loading}>
+      <Modal destroyOnClose {...modalProps}>
         <FormCondition form={form} formItems={formItems}></FormCondition>
       </Modal>
       <ImportDataModal
@@ -98,5 +98,5 @@ const GiveUserCoupon = (props) => {
 export default connect(({ loading }) => ({
   loading:
     loading.effects['baseData/fetchGetUsersSearch'] ||
-    loading.effects['platformEquity/fetchGiveGoods'],
+    loading.effects['platformCoupon/fetchGivePlatformCoupon'],
 }))(GiveUserCoupon);
