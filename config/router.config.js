@@ -50,11 +50,15 @@ export default [
             component: './Chart/OrderDataStat',
           },
           {
-            path:'/chart/groupStatistics',
+            path: '/chart/groupStatistics',
             name: '拼团统计',
-            component:'./Chart/GroupStatistics'
-          }
-         
+            component: './Chart/GroupStatistics',
+          },
+          {
+            path: '/chart/gameDataStat',
+            name: '游戏数据统计',
+            component: './Chart/GameDataStat',
+          },
         ],
       },
       // 数据报表
@@ -659,7 +663,6 @@ export default [
               'virtualSave',
               'virtualInfo',
               'virtualEdit',
-           
             ],
           },
           {

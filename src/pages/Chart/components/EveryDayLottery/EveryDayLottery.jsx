@@ -4,9 +4,9 @@ import { Spin } from 'antd';
 import moment from 'moment';
 import { Column, Line } from '@/components/Charts';
 import { USER_ANALYSIS_TYPES } from '@/common/constant';
-import SearchBlock from '../../../SearchBlock';
+import SearchBlock from '../SearchBlock';
 
-const BehaviorContent = (props) => {
+const EveryDayLottery = (props) => {
   const { dispatch, loading, newRegisterDataObj } = props;
   const [data, setData] = useState({
     groupType: 'day',
@@ -45,6 +45,9 @@ const BehaviorContent = (props) => {
           legend={false}
           seriesField="type"
           isStack={true}
+          label={{
+            position: 'middle',
+          }}
           maxColumnWidth={40}
         />
       ),
@@ -76,7 +79,7 @@ const BehaviorContent = (props) => {
   }[data.reportType || 'newRegister'];
 
   return (
-    <div>
+    <div style={{ paddingTop: 25 }}>
       <SearchBlock
         data={data}
         setData={setData}
@@ -98,4 +101,4 @@ const BehaviorContent = (props) => {
 export default connect(({ userDataStat, loading }) => ({
   newRegisterDataObj: userDataStat.newRegisterDataObj,
   loading: loading.effects['userDataStat/fetchUserAnalysisReport'],
-}))(BehaviorContent);
+}))(EveryDayLottery);

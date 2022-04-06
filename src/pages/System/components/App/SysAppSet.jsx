@@ -9,11 +9,10 @@ import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const SysAppSet = (props) => {
-  const { dispatch, cRef, visible, onClose, tabKey, tabKeyTwo, radioType, loading, bannerTypeObj } =
-    props;
+  const { dispatch, cRef, visible, onClose, tabKey, radioType, loading, bannerTypeObj } = props;
 
   const { show = false, type = 'add', detail = { provinceCityDistrictObjects: [{}] } } = visible;
-  const { version } = detail;
+  const { version, userType, userOs, area, cityCode, bannerIdString } = detail;
 
   const [form] = Form.useForm();
   const [showArea, setShowArea] = useState(false); // 区域
@@ -35,22 +34,22 @@ const SysAppSet = (props) => {
         cityCode: city[1],
         districtCode: city[2],
       }));
+      const detailParam = { userType, userOs, version, area, cityCode };
+
       // 上传图片到oss -> 提交表单
       aliOssUpload(coverImg).then((res) => {
         dispatch({
           type: { add: 'sysAppList/fetchBannerSet', edit: 'sysAppList/fetchBannerEdit' }[type],
           payload: {
-            bannerId: detail.bannerIdString,
+            bannerIdString,
             ...values,
+            ...detailParam,
             flag: {
               add: 'addConfig',
               edit: 'updateConfig',
             }[type],
-            version,
             beginDate: moment(activityTime[0]).format('YYYY-MM-DD'),
             endDate: moment(activityTime[1]).format('YYYY-MM-DD'),
-            userType: tabKey,
-            userOs: tabKeyTwo,
             hideTitle: Number(!hideTitle),
             provinceCityDistrictObjects,
             coverImg: res.toString(),
@@ -161,6 +160,7 @@ const SysAppSet = (props) => {
         确认
       </Button>
     ),
+    zIndex: 1001,
   };
 
   return (

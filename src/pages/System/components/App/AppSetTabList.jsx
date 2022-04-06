@@ -7,10 +7,11 @@ import TableDataBlock from '@/components/TableDataBlock';
 import AddImgplace from './AddImgplace';
 import EditionModal from './EditionModal';
 import AppSetModal from './AppSetModal';
-import AppSetList from './AppSetList';
+import CityTable from './CityTable';
+import CityModal from './CityModal';
 
 const AppSetTabList = (props) => {
-  const { dispatch, loading, sysAppList } = props;
+  const { dispatch, loading, versionList } = props;
   const [visible, setVisible] = useState(false);
   const [tabKey, setTabKey] = useState('user');
   const [tabKeyTwo, setTabKeyTwo] = useState('iOS');
@@ -54,9 +55,29 @@ const AppSetTabList = (props) => {
           },
           auth: true,
         },
+        {
+          type: 'del',
+          title: '删除版本',
+          click: () => {
+            handleDelVersion(val);
+          },
+          auth: true,
+        },
       ],
     },
   ];
+
+  // 删除版本
+  const handleDelVersion = (bannerIdString) => {
+    dispatch({
+      type: 'sysAppList/fetchBannerEdit',
+      payload: {
+        bannerIdString,
+        flag: 'deleteVersion',
+      },
+      callback: childRef?.current?.fetchGetData,
+    });
+  };
 
   const btnList = [
     {
@@ -85,6 +106,8 @@ const AppSetTabList = (props) => {
         userType: key,
         userOs: tabKeyTwo,
         isAutomatic: 1,
+        deleteFlag: 1,
+        area: 'all',
       });
     }
   };
@@ -95,6 +118,8 @@ const AppSetTabList = (props) => {
       userType: tabKey,
       userOs: key,
       isAutomatic: 1,
+      deleteFlag: 1,
+      area: 'all',
     });
   };
 
@@ -136,13 +161,19 @@ const AppSetTabList = (props) => {
               pagination={false}
               columns={getColumns}
               rowKey={(record) => `${record.bannerIdString}`}
-              params={{ userType: tabKey, userOs: tabKeyTwo, isAutomatic: 1 }}
+              params={{
+                userType: tabKey,
+                userOs: tabKeyTwo,
+                area: 'all',
+                isAutomatic: 1,
+                deleteFlag: 1,
+              }}
               dispatchType="sysAppList/fetchGetList"
-              {...sysAppList}
+              {...versionList}
             />
           </Card>
         ) : (
-          <AppSetList tabKey={tabKey} tabKeyTwo={tabKey} />
+          <CityTable tabKey={tabKey} />
         )}
       </Card>
       {/* 弹窗-新增版本 */}
@@ -154,13 +185,13 @@ const AppSetTabList = (props) => {
         onClose={() => setVisibleEdition(false)}
       ></EditionModal>
       {/* 编辑详情-弹窗 */}
-      <AppSetModal
+      <CityModal
         childRef={childRef}
         visible={visible}
         tabKey={tabKey}
         tabKeyTwo={tabKeyTwo}
         onClose={() => setVisible(false)}
-      ></AppSetModal>
+      ></CityModal>
       {/* 新增图片位置 */}
       <AddImgplace
         getType={() => fetchBannerRatio()}
@@ -173,6 +204,6 @@ const AppSetTabList = (props) => {
 };
 
 export default connect(({ loading, sysAppList }) => ({
-  sysAppList: sysAppList.list,
+  versionList: sysAppList.versionList,
   loading: loading.models.sysAppList,
 }))(AppSetTabList);
