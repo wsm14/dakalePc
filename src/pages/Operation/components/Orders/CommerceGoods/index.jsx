@@ -86,32 +86,45 @@ const CommerceGoods = (props) => {
     {
       title: '商品名称',
       dataIndex: 'goodsName',
-      render: (val, row) => (
-        <div style={{ display: 'flex' }}>
-          <PopImgShow url={row.goodsImg} />
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              flex: 1,
-              marginLeft: 5,
-            }}
-          >
-            <Ellipsis length={15} tooltip>
-              {val}
-            </Ellipsis>
-            <div style={{ marginTop: 5 }} className={styles.specFont}>
-              <Ellipsis length={12} tooltip>
-                {`备注：${row?.remark}`}
+      render: (val, row) => {
+        const { remark = '', togetherGroupId = '' } = row;
+        let showRemark = '';
+        if (togetherGroupId) {
+          if (remark) {
+            showRemark = `${togetherGroupId}--${remark}`;
+          } else {
+            showRemark = togetherGroupId;
+          }
+        } else {
+          showRemark = remark;
+        }
+        return (
+          <div style={{ display: 'flex' }}>
+            <PopImgShow url={row.goodsImg} />
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                flex: 1,
+                marginLeft: 5,
+              }}
+            >
+              <Ellipsis length={15} tooltip>
+                {val}
               </Ellipsis>
-            </div>
-            <div style={{ marginTop: 5 }} className={styles.specFont}>
-              订单号：{row.orderSn}
+              <div style={{ marginTop: 5 }} className={styles.specFont}>
+                <Ellipsis length={12} tooltip>
+                  {`备注：${showRemark}`}
+                </Ellipsis>
+              </div>
+              <div style={{ marginTop: 5 }} className={styles.specFont}>
+                订单号：{row.orderSn}
+              </div>
             </div>
           </div>
-        </div>
-      ),
+        );
+      },
     },
     {
       title: '下单人',

@@ -139,6 +139,7 @@ const GLobalSetDrawer = (props) => {
       suffix: '卡豆',
       name: ['totalLimit'],
       render: (val) => val + '卡豆',
+      max: 999,
     },
     {
       label: '单个视频赚豆数',
