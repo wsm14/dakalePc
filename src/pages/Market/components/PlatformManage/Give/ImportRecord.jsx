@@ -57,6 +57,7 @@ const ImportRecord = (props) => {
     width: 1000,
     visible: show,
     onCancel: onClose,
+    zIndex: 1002,
     footer: [
       <Button key="ok" onClick={onClose}>
         返回

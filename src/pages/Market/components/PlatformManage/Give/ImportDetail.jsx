@@ -26,6 +26,7 @@ const ImportDetail = (props) => {
   const modalProps = {
     title: '导入失败详情',
     visible: show,
+    zIndex: 1003,
     onClose,
   };
   return (

@@ -124,6 +124,7 @@ const ImportDataModal = (props) => {
     visible: show,
     onCancel: onClose,
     confirmLoading: fileLoading,
+    zIndex: 1001,
     footer: [
       <Typography.Link
         key="cancle"
