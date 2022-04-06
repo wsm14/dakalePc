@@ -50,7 +50,7 @@ const TabTable = (props) => {
       type: 'walkingManage/fetchGetWindVaneManagementEdit',
       payload: {
         configWindVaneId,
-        flag: 'delete',
+        flag: 'deleteCity',
       },
       callback: childRef?.current?.fetchGetData,
     });

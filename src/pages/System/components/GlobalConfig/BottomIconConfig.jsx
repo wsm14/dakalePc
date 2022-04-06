@@ -61,7 +61,7 @@ const TabConfigure = (props) => {
       type: 'globalConfig/fetchUpdateConfigBottomCenterIcon',
       payload: {
         configBottomCenterIconId,
-        flag: 'delete',
+        flag: 'deleteVersion',
       },
       callback: childRef?.current?.fetchGetData,
     });
