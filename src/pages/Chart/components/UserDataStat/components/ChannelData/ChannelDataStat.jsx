@@ -76,7 +76,12 @@ const ChannelDataStat = (props) => {
       title: '媒介',
       align: 'center',
       dataIndex: 'utmMedium',
-      render: (val, row) => `${CHANNEL_TYPE[row.utmSource]}-${val}`,
+      render: (val, row) =>
+        `${
+          ['applicationMarket'].includes(row.utmSource)
+            ? CHANNEL_TYPE[row.utmSource]
+            : row.utmSource
+        }-${val}`,
     },
     {
       title: '注册用户',

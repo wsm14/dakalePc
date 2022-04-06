@@ -135,6 +135,7 @@ export default [
               'againUp',
               'addRemain',
               'diary',
+              'goodsCode',
             ],
           },
           {

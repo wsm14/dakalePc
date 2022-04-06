@@ -31,20 +31,7 @@ const ColumnChart = (props) => {
     autoFit: true,
     color: {
       field, // 元素颜色值映射关联字段
-      value: [
-        '#2A8FF7',
-        '#5AC35B',
-        '#FACD48',
-        '#233273',
-        '#8545E0',
-        '#53C2C3',
-        '#3438C7',
-        '#ED4764',
-        '#F77E00',
-        '#B13BB0',
-        '#288445',
-        '#527C88',
-      ],
+      value: ['#B8E1FF', '#7DAAFF', '#3D76DD', '#0047A5', '#001D70'],
       scale: {
         type: 'linear',
       },
@@ -74,6 +61,9 @@ const ColumnChart = (props) => {
         lineWidth: 1,
       },
     },
+    // zoom: {
+    //   position: 'bottomright',
+    // },
     legend: {
       position: 'bottomleft',
     },

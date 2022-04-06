@@ -1238,16 +1238,17 @@ export const ORDER_AREA_TYPES = [
 //销售报表 - 订单类型
 export const SELL_ORDER_TYPE = {
   scan: '扫码订单',
-  topUp: '充值订单',
+  // topUp: '充值订单',
   specialGoods: '特价商品订单',
   reduceCoupon: '有价券订单',
   communityGoods: '团购商品订单',
   virtualProduct: '虚拟商品订单',
   rightGoods: '权益商品订单',
-  rightCoupon: '权益券订单',
+  // rightCoupon: '权益券订单',
   commerceGoods: '电商商品订单',
   platformGift: '平台礼包订单',
   weeklyCard: '卡豆周卡订单',
+  channelGoods: '渠道商品',
 };
 
 // 提现明细  - 店铺  - 类型
