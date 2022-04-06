@@ -167,7 +167,7 @@ const ResourceContentForm = (props) => {
       name: 'bannerType',
       type: 'select',
       select: bannerTypeObj,
-      required: false,
+      rules: [{ required: false }],
       visible: typeList.includes('banner'),
     },
     // {

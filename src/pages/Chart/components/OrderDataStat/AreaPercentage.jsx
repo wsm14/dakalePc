@@ -69,6 +69,15 @@ const AreaPercentage = ({ areaData, dispatch, loading }) => {
               innerRadius={0.7}
               legend={false}
               radius={0.8}
+              statistic={{
+                content: {
+                  style: { fontSize: 25, fontWeight: 400 },
+                  customHtml: (container, view, datum, data) => {
+                    const text = `¥ ${data.reduce((r, d) => r + d.payMoneySum, 0).toFixed(2)}`;
+                    return text;
+                  },
+                },
+              }}
             />
           </Spin>
         </div>
