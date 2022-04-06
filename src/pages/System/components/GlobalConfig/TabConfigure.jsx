@@ -68,7 +68,7 @@ const TabConfigure = (props) => {
       type: 'globalConfig/fetchIndexTabEdit',
       payload: {
         configIndexTabId,
-        flag: 'delete',
+        flag: 'deleteVersion',
       },
       callback: childRef?.current?.fetchGetData,
     });

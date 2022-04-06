@@ -50,7 +50,7 @@ const TabTable = (props) => {
       type: 'walkingManage/fetchGetSelfTourGoodsEdit',
       payload: {
         configSelfTourGoodsId,
-        flag: 'delete',
+        flag: 'deleteCity',
       },
       callback: childRef?.current?.fetchGetData,
     });

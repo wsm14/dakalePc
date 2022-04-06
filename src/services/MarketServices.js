@@ -454,6 +454,14 @@ export function fetchVideoSetShareEarnBeanRule(data) {
   });
 }
 
+// post 视频广告 - 分享赚  - 修改
+export function fetchVideoSetUpdatePlatfromMomentDirect(data) {
+  return request('/admin/marketing/moment/platform/updatePlatfromMomentDirect', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 视频广告 end
 
 // 新手视频

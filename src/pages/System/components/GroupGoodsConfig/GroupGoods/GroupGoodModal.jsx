@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { notification } from 'antd';
 import { connect } from 'umi';
 import { Modal, Button, Form, Empty } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -31,6 +32,7 @@ const GroupGoodModal = ({ visible = {}, onClose, dispatch, childRef, loading }) 
   };
 
   const handleSearch = ({ activityName, activityId }) => {
+    setList([]);
     if (activityName || activityId) {
       dispatch({
         type: 'groupGoods/fetchListActivityForSearch',
@@ -43,15 +45,21 @@ const GroupGoodModal = ({ visible = {}, onClose, dispatch, childRef, loading }) 
           setList(list);
         },
       });
+    } else {
+      notification.warning({
+        message: '温馨提示',
+        description: '清先搜索',
+      });
+      return;
     }
   };
 
   const modalProps = {
-    title: ' 新增商品',
+    title: '新增商品',
     visible: show,
     width: 1000,
-    destroyOnClose:true,
-    afterClose:()=>setList([]),
+    destroyOnClose: true,
+    afterClose: () => setList([]),
     onCancel: onClose,
     onOk: handleConfirm,
   };
@@ -125,6 +133,9 @@ const GroupGoodModal = ({ visible = {}, onClose, dispatch, childRef, loading }) 
         searchItems={searchItems}
         searchCallback={(val) => handleSearch(val)}
         params={{ activityType: 'commerceGoods' }}
+        locale={{
+          emptyText: <Empty description={<div style={{ fontSize: 20 }}>请先搜索</div>}></Empty>,
+        }}
         rowSelection={rowSelection}
         loading={loading}
         rowKey={(record) => `${record.specialGoodsId}`}

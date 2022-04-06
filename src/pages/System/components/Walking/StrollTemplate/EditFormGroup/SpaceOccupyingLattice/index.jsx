@@ -45,7 +45,6 @@ const SpaceOccupyingLattice = (props) => {
           detail={value || {}}
         ></NewNativeFormSet>
       ),
-      visible: ['iOS', 'android'].includes(userOs),
     },
   ];
 

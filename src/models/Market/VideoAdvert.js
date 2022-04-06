@@ -10,6 +10,7 @@ import {
   fetchVideoListMomentTag,
   fetchVideoGetDictionaryAdmin,
   fetchVideoSetShareEarnBeanRule,
+  fetchVideoSetUpdatePlatfromMomentDirect,
 } from '@/services/MarketServices';
 
 import { fetchNewShareStatisticsList } from '@/services/OperationServices';
@@ -34,6 +35,16 @@ export default {
   },
 
   effects: {
+    // post 视频广告 - 分享赚  - 修改
+    *fetchVideoSetUpdatePlatfromMomentDirect({ payload, callback }, { call }) {
+      const response = yield call(fetchVideoSetUpdatePlatfromMomentDirect, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `设置成功`,
+      });
+      callback && callback();
+    },
     // 视频广告 - 设置初始收藏数和分享数
     *fetchVideoAdvertShareSet({ payload, callback }, { call }) {
       const response = yield call(fetchVideoAdvertEdit, payload);

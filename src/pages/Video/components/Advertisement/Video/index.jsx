@@ -211,7 +211,7 @@ const ShareManage = (props) => {
   // 设置
   const fetchGetRate = (payload) => {
     const { type, record = {} } = payload;
-    const { platformMomentId, relateId } = record;
+    const { platformMomentId, relateId, shareEarnFlag } = record;
     dispatch({
       type: 'videoPlatform/fetchVideoFakeList',
       payload: {
@@ -225,17 +225,22 @@ const ShareManage = (props) => {
           listPayload: payload,
           momentId: platformMomentId,
           ownerId: relateId,
+          shareEarnFlag: Number(shareEarnFlag),
         };
         setVisibleSet({ type, show: true, initialValues });
       },
     });
   };
 
-  // 修改不审核
+  // 修改不审核 - 分享赚开关
   const fetchNewShareNoAudit = (values, callback) => {
+    const { momentId, ...other } = values;
     dispatch({
-      type: 'videoPlatform/fetchNewShareNoAudit',
-      payload: values,
+      type: 'videoAdvert/fetchVideoSetUpdatePlatfromMomentDirect',
+      payload: {
+        ...other,
+        platformMomentId: momentId,
+      },
       callback,
     });
   };
