@@ -1196,15 +1196,18 @@ export const USER_ANALYSIS_CONTRAS = {
 
 //订单数据统计 - 商品类型 - 对应
 export const ORDER_GOODS_CONTRAS = {
-  specialGoods: '特惠商品',
-  commerceGoods: '电商品',
-  selfTour: '自我游',
-  communityGoods: '团购商品',
   scan: '扫码支付',
+  topUp: '充值订单',
+  specialGoods: '特惠商品',
   reduceCoupon: '有价券',
+  communityGoods: '团购商品',
+  virtualProduct: '虚拟商品',
   rightGoods: '权益商品',
   rightCoupon: '权益券',
+  commerceGoods: '电商品',
   platformGift: '平台礼包',
+  weeklyCard: '卡豆周卡',
+  selfTour: '自我游',
   other: '其他',
 };
 
