@@ -86,7 +86,7 @@ const PlatformManage = (props) => {
       ),
     },
     {
-      title: '券价值/使用门槛',
+      title: '券价值/使用门槛/券描述',
       dataIndex: 'couponValue',
       render: (val, row) => (
         <div>
@@ -257,6 +257,7 @@ const PlatformManage = (props) => {
         onClose={() => {
           setVisibleGive({ show: false });
         }}
+        childRef={childRef}
       ></GiveUserCoupon>
     </>
   );

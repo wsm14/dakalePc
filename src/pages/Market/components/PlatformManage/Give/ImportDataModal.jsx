@@ -6,7 +6,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import ImportRecord from './ImportRecord';
 
 const ImportDataModal = (props) => {
-  const { visible, onClose, setUserList, dispatch, loading } = props;
+  const { visible, onClose, setUserList, dispatch, loading, childRef } = props;
   const { show = false, pushObj, detail } = visible;
   // 是否存在有效文件
   const [excelFile, setExcelFile] = useState(false);
@@ -37,7 +37,7 @@ const ImportDataModal = (props) => {
   // 上传文件模版数据
   const fetchUpExcelData = () => {
     console.log(excelData, 'dddd');
-    if (!excelData.length || !excelData.list.length) {
+    if (!Object.keys(excelData).length || !excelData.list.length) {
       message.error('excel无数据，导入失败');
       return;
     }
@@ -50,6 +50,7 @@ const ImportDataModal = (props) => {
       },
       callback: () => {
         onClose();
+        childRef.current.fetchGetData();
       },
     });
   };

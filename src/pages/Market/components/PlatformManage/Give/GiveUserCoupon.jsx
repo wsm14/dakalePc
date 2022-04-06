@@ -6,7 +6,7 @@ import ImportDataModal from './ImportDataModal';
 import FormCondition from '@/components/FormCondition';
 
 const GiveUserCoupon = (props) => {
-  const { visible = {}, onClose, dispatch, loading } = props;
+  const { visible = {}, onClose, dispatch, loading, childRef } = props;
   const { show = false, detail = {} } = visible;
   const [form] = Form.useForm();
   const [userList, setUserList] = useState(false);
@@ -43,6 +43,7 @@ const GiveUserCoupon = (props) => {
         },
         callback: () => {
           onClose();
+          childRef.current.fetchGetData();
         },
       });
     });
@@ -91,6 +92,7 @@ const GiveUserCoupon = (props) => {
         onClose={() => {
           setModalVisible(false);
         }}
+        childRef={childRef}
       ></ImportDataModal>
     </>
   );
