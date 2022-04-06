@@ -211,7 +211,7 @@ const ShareManage = (props) => {
   // 设置
   const fetchGetRate = (payload) => {
     const { type, record = {} } = payload;
-    const { platformMomentId, relateId } = record;
+    const { platformMomentId, relateId, shareEarnFlag } = record;
     dispatch({
       type: 'videoPlatform/fetchVideoFakeList',
       payload: {
@@ -225,6 +225,7 @@ const ShareManage = (props) => {
           listPayload: payload,
           momentId: platformMomentId,
           ownerId: relateId,
+          shareEarnFlag: Number(shareEarnFlag),
         };
         setVisibleSet({ type, show: true, initialValues });
       },
