@@ -50,6 +50,10 @@ const PlatformEquityGoods = (props) => {
       label: '创建人',
       name: 'creatorName',
     },
+    {
+      label: '商品ID',
+      name: 'goodsId',
+    },
   ];
 
   // table 表头
