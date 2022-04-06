@@ -73,6 +73,7 @@ const BeanCounteractInfo = (props) => {
                 }
               >
                 <Progress
+                  strokeWidth={10}
                   style={{ marginTop: 25 }}
                   type="circle"
                   percent={item.value}
