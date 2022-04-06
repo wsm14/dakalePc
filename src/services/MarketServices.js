@@ -619,3 +619,11 @@ export function fetchAdminListJoinGroupByGroupId(params) {
     params,
   });
 }
+
+// 立即成团  
+export function fetchSimulationStartGroup(data) {
+  return request('/admin/start/group/simulationStartGroup', {
+    method: 'POST',
+    data,
+  });
+}

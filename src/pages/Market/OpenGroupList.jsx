@@ -8,7 +8,6 @@ import PopImgShow from '@/components/PopImgShow';
 import OpenGroupDetail from './components/OpenGroupList/OpenGroupDetail';
 import { fetchGetGroupForSearch } from '@/services/PublicServices';
 
-
 const OpenGroupList = (props) => {
   const { loading, dispatch, openGroupList } = props;
   const childRef = useRef();
@@ -85,7 +84,7 @@ const OpenGroupList = (props) => {
       title: '发起人',
       align: 'center',
       dataIndex: 'username',
-      render: (val, row) => val? `${val}\n${row.mobile}`:'--',
+      render: (val, row) => (val ? `${val}\n${row.mobile}` : '--'),
     },
     {
       title: '开团时间',
@@ -131,27 +130,35 @@ const OpenGroupList = (props) => {
       type: 'handle',
       dataIndex: 'groupId',
       width: 150,
-      render: (val, record, index) => {
+      render: (val, record) => {
         return [
           {
             type: 'info',
             title: '拼团详情',
             click: () => fetchDetail(val),
           },
-          // {
-          //   type: 'info',
-          //   title: '立即成团',
-          //   popText: '确定要立即成团吗？立即成团后将在已参与的用户中随机抽取3位用户拼中商品。',
-          //   visible: record.joinUserNum >= 8,
-          //   click: () => fetchGetGroup(),
-          // },
+          {
+            type: 'immediateGroup',
+            title: '立即成团',
+            popText: '确定要立即成团吗？立即成团后将在已参与的用户中随机抽取3位用户拼中商品。',
+            visible: record.joinUserNum >= 8 && record.status == '0',
+            click: () => fetchGetGroup(val),
+          },
         ];
       },
     },
   ];
 
   //立即成团
-  const fetchGetGroup = () => {};
+  const fetchGetGroup = (groupId) => {
+    dispatch({
+      type: 'openGroupList/fetchSimulationStartGroup',
+      payload: {
+        groupId,
+      },
+      callback: childRef.current.fetchGetData,
+    });
+  };
 
   //参团详情
   const fetchDetail = (groupId) => {

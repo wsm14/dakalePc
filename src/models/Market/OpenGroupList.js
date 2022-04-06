@@ -3,6 +3,7 @@ import moment from 'moment';
 import {
   fetchAdminListStartGroup,
   fetchAdminListJoinGroupByGroupId,
+  fetchSimulationStartGroup,
 } from '@/services/MarketServices';
 
 export default {
@@ -31,7 +32,7 @@ export default {
         },
       });
     },
-    *fetchAdminListJoinGroupByGroupId({ payload,callback }, { call, put }) {
+    *fetchAdminListJoinGroupByGroupId({ payload, callback }, { call, put }) {
       const response = yield call(fetchAdminListJoinGroupByGroupId, payload);
       if (!response) return;
       const { content } = response;
@@ -41,7 +42,12 @@ export default {
           userJoinGroupList: content.userJoinGroupList,
         },
       });
-      callback&&callback(content.userJoinGroupList)
+      callback && callback(content.userJoinGroupList);
+    },
+    *fetchSimulationStartGroup({ payload, callback }, { call }) {
+      const response = yield call(fetchSimulationStartGroup, payload);
+      if (!response) return;
+      callback && callback();
     },
   },
 };
