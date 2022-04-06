@@ -65,7 +65,7 @@ const TabTable = (props) => {
       type: 'walkingManage/fetchUpdateWanderAroundModule',
       payload: {
         configWanderAroundModuleId,
-        flag: 'delete',
+        flag: 'deleteCity',
       },
       callback: childRef?.current?.fetchGetData,
     });

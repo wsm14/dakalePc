@@ -68,7 +68,7 @@ const TabConfigure = (props) => {
       type: 'walkingManage/fetchGetSelfTourGoodsEdit',
       payload: {
         configSelfTourGoodsId,
-        flag: 'delete',
+        flag: 'deleteVersion',
       },
       callback: childRef?.current?.fetchGetData,
     });

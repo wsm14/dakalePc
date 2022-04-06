@@ -68,7 +68,7 @@ const TabConfigure = (props) => {
       type: 'walkingManage/fetchGetWindVaneManagementEdit',
       payload: {
         configWindVaneId,
-        flag: 'delete',
+        flag: 'deleteVersion',
       },
       callback: childRef?.current?.fetchGetData,
     });

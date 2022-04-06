@@ -65,7 +65,7 @@ const TabTable = (props) => {
       type: 'globalConfig/fetchIndexTabEdit',
       payload: {
         configIndexTabId,
-        flag: 'delete',
+        flag: 'deleteCity',
       },
       callback: childRef?.current?.fetchGetData,
     });

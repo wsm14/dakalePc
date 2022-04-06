@@ -68,7 +68,7 @@ const TabConfigure = (props) => {
       type: 'walkingManage/fetchAroundModuleEdit',
       payload: {
         configWanderAroundModuleId,
-        flag: 'delete',
+        flag: 'deleteVersion',
       },
       callback: childRef?.current?.fetchGetData,
     });

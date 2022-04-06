@@ -232,11 +232,15 @@ const ShareManage = (props) => {
     });
   };
 
-  // 修改不审核
+  // 修改不审核 - 分享赚开关
   const fetchNewShareNoAudit = (values, callback) => {
+    const { momentId, ...other } = values;
     dispatch({
-      type: 'videoPlatform/fetchNewShareNoAudit',
-      payload: values,
+      type: 'videoAdvert/fetchVideoSetUpdatePlatfromMomentDirect',
+      payload: {
+        ...other,
+        platformMomentId: momentId,
+      },
       callback,
     });
   };
