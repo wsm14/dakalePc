@@ -61,9 +61,9 @@ const ColumnChart = (props) => {
         lineWidth: 1,
       },
     },
-    zoom: {
-      position: 'bottomright',
-    },
+    // zoom: {
+    //   position: 'bottomright',
+    // },
     legend: {
       position: 'bottomleft',
     },
