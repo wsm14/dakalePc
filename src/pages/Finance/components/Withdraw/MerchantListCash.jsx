@@ -48,7 +48,7 @@ const MerchantListCash = (props) => {
     // },
     {
       label: '提现状态',
-      name: 'withdrawalSn',
+      name: 'status',
       type: 'select',
       select: WITHDRAW_STATUS,
       allItem: false,
