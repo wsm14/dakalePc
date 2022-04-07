@@ -88,6 +88,7 @@ const OpenGroupDetail = (props) => {
         columns={getColumns}
         rowKey={(record) => `${record.orderSn}`}
         list={list}
+        pagination={false}
       ></TableDataBlock>
     </Modal>
   );
