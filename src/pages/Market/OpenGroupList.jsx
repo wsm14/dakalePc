@@ -32,6 +32,7 @@ const OpenGroupList = (props) => {
       type: 'rangePicker',
       name: 'startTime',
       end: 'endTime',
+      allowClear: false,
     },
     {
       label: '拼团状态',
@@ -84,10 +85,12 @@ const OpenGroupList = (props) => {
       title: '发起人',
       align: 'center',
       dataIndex: 'username',
-      render: (val, row) =>{
-        const {togetherUserSnapshotObject={}} =row
-        return (togetherUserSnapshotObject.username ? `${togetherUserSnapshotObject.username}\n${togetherUserSnapshotObject.mobile}` : '--')
-      } ,
+      render: (val, row) => {
+        const { togetherUserSnapshotObject = {} } = row;
+        return togetherUserSnapshotObject.username
+          ? `${togetherUserSnapshotObject.username}\n${togetherUserSnapshotObject.mobile}`
+          : '--';
+      },
     },
     {
       title: '开团时间',
