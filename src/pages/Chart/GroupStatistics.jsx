@@ -52,7 +52,9 @@ const GroupStatistics = (props) => {
     {
       title: '累计开团次数',
       value:
-        realTimeData.openingCount + realTimeData.openSuccessCount + realTimeData.openFailureCount,
+        Number(realTimeData.openingCount) +
+        Number(realTimeData.openSuccessCount) +
+        Number(realTimeData.openFailureCount),
     },
     {
       title: '拼团中',

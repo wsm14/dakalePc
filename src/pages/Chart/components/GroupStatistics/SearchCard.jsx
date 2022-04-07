@@ -23,12 +23,12 @@ const SearchCard = ({ timeData, setTimeData }) => {
     {
       name: '最近7天',
       value: '7',
-      other: returnDay(6, 'day'),
+      other: [moment().subtract(7, 'day'), moment().subtract(1, 'day')],
     },
     {
       name: '最近30天',
       value: '30',
-      other: returnDay(29, 'day'),
+      other: [moment().subtract(30, 'day'), moment().subtract(1, 'day')],
     },
     {
       name: '自定义',
@@ -54,10 +54,10 @@ const SearchCard = ({ timeData, setTimeData }) => {
         setTimeData([moment().subtract(1, 'day'), moment().subtract(1, 'day')]);
         break;
       case '7':
-        setTimeData(returnDay(6, 'day'));
+        setTimeData([moment().subtract(7, 'day'), moment().subtract(1, 'day')]);
         break;
       case '30':
-        setTimeData(returnDay(29, 'day'));
+        setTimeData([moment().subtract(30, 'day'), moment().subtract(1, 'day')]);
         break;
       case '0':
         setTimeData([]);
@@ -78,6 +78,7 @@ const SearchCard = ({ timeData, setTimeData }) => {
         allowClear={false}
         value={timeData}
         onChange={(val) => handleSearchData(val)}
+        disabled={selectTime != '0'}
         disabledDate={disabledDate}
         style={{ width: 256 }}
       />
