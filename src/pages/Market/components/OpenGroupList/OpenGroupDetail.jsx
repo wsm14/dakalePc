@@ -27,18 +27,20 @@ const OpenGroupDetail = (props) => {
       title: '拼团用户',
       align: 'center',
       dataIndex: 'username',
-      render: (val, row) =>
-        row.orderSn ? (
-          `${val}\n${row.mobile}`
+      render: (val, row) => {
+        const { simulationFlag = '', togetherUserSnapshotObject = {} } = row;
+        return simulationFlag == '0' ? (
+          `${togetherUserSnapshotObject.username}\n${togetherUserSnapshotObject.mobile}`
         ) : (
           <>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <img src={robot} style={{ width: 20 }} alt="" />
-              {val}
+              {togetherUserSnapshotObject.username}
             </div>
-            <div>{row.mobile}</div>
+            <div>{togetherUserSnapshotObject.mobile}</div>
           </>
-        ),
+        );
+      },
     },
     {
       title: '参团时间',
@@ -49,6 +51,10 @@ const OpenGroupDetail = (props) => {
       title: '订单号',
       align: 'center',
       dataIndex: 'orderSn',
+      render: (val, row) => {
+        const { togetherJoinOrderParamObject = {} } = row;
+        return togetherJoinOrderParamObject.orderSn;
+      },
     },
     {
       title: '拼团结果',
@@ -58,8 +64,10 @@ const OpenGroupDetail = (props) => {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {val === 'winGoods' ? (
             <img src={goods} style={{ width: 20 }} alt="" />
-          ) : (
+          ) : val === 'winRed' ? (
             <img style={{ width: 20 }} src={redEnvelop} alt="" />
+          ) : (
+            '--'
           )}
           <span>{REWARD_TYPE[val]}</span>
         </div>
@@ -69,7 +77,8 @@ const OpenGroupDetail = (props) => {
       title: '获得奖励',
       align: 'center',
       dataIndex: 'rewardValue',
-      render: (val, row) => (row.rewardType == 'winGoods' ? `${val}卡豆` : `￥${val}`),
+      render: (val, row) =>
+        row.rewardType == 'winGoods' ? `${val}卡豆` : row.rewardType == 'winRed' ? `￥${val}` : '',
     },
   ];
   return (

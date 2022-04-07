@@ -247,3 +247,19 @@ export function fetchOrderAreaAnalysisReport(params) {
 }
 
 // 订单数据统计 end
+
+// 拼团统计  start
+// 拼团累计数据
+export function fetchTogetherRebateStatistic(params) {
+  return request('/admin/togetherReportManagement/togetherRebateStatistic', {
+    params,
+  });
+}
+
+//拼团报表
+export function fetchTogetherRebateReport(params) {
+  return request('/admin/togetherReportManagement/togetherRebateReport', {
+    params,
+  });
+}
+// 拼团统计  end
