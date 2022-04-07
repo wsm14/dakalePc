@@ -22,32 +22,51 @@ const GroupStatistics = (props) => {
 
   useEffect(() => {
     //搜索
+    handleStatistic();
+    handleReport()
   }, [timeData]);
+
+  //实时数据
+  const handleStatistic = () => {
+    dispatch({
+      type: 'groupStatistics/fetchTogetherRebateStatistic',
+    });
+  };
+
+  // 统计数据
+  const handleReport =(time)=>{
+    dispatch({
+      type: 'groupStatistics/fetchTogetherRebateReport',
+      payload:{
+
+      }
+    });
+  }
 
   const cardRealTime = [
     {
       title: '累计开团次数',
-      value: '233223',
+      value:(realTimeData.openingCount+realTimeData.openSuccessCount+realTimeData.openFailureCount),
     },
     {
       title: '拼团中',
-      value: '233223',
+      value: realTimeData.openingCount,
     },
     {
       title: '拼团成功',
-      value: '233223',
+      value: realTimeData.openSuccessCount,
     },
     {
       title: '拼团失败',
-      value: '233223',
+      value: realTimeData.openFailureCount,
     },
     {
       title: '开团人数',
-      value: '233223',
+      value: realTimeData.openUserCount,
     },
     {
       title: '参团人数',
-      value: '233223',
+      value: realTimeData.joinUserCount,
     },
   ];
 
@@ -113,7 +132,11 @@ const GroupStatistics = (props) => {
                 className="cardItem"
               >
                 <div style={{ textAlign: 'center' }}>
-                  <Statistic valueStyle={{ fontWeight: 'bold' }}  precision={2} value={item.value}></Statistic>
+                  <Statistic
+                    valueStyle={{ fontWeight: 'bold' }}
+                    precision={2}
+                    value={item.value}
+                  ></Statistic>
                 </div>
               </Card>
             ))}

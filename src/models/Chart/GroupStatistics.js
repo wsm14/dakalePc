@@ -1,4 +1,4 @@
-import { fetchMomentKanBan } from '@/services/ChartServices';
+import { fetchTogetherRebateStatistic,fetchTogetherRebateReport } from '@/services/ChartServices';
 
 export default {
   namespace: 'groupStatistics',
@@ -18,14 +18,25 @@ export default {
   },
 
   effects: {
-    *fetchMomentKanBan({ payload }, { call, put }) {
-      const response = yield call(fetchMomentKanBan, payload);
+    *fetchTogetherRebateStatistic({ payload }, { call, put }) {
+      const response = yield call(fetchTogetherRebateStatistic, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
           realTimeData: content,
+        },
+      });
+    },
+    *fetchTogetherRebateReport({ payload }, { call, put }) {
+      const response = yield call(fetchTogetherRebateReport, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          staticsData: content.togetherRebateAnalysisInfo,
         },
       });
     },
