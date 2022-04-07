@@ -37,13 +37,15 @@ const GroupStatistics = (props) => {
 
   // 统计数据
   const handleReport = (time) => {
-    dispatch({
-      type: 'groupStatistics/fetchTogetherRebateReport',
-      payload: {
-        beginDate: time.length > 0 ? time[0].format('YYYY-MM-DD') : '',
-        endDate: time.length > 0 ? time[1].format('YYYY-MM-DD') : '',
-      },
-    });
+    if (time.length > 0) {
+      dispatch({
+        type: 'groupStatistics/fetchTogetherRebateReport',
+        payload: {
+          beginDate: time.length > 0 ? time[0].format('YYYY-MM-DD') : '',
+          endDate: time.length > 0 ? time[1].format('YYYY-MM-DD') : '',
+        },
+      });
+    }
   };
 
   const cardRealTime = [
