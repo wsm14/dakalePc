@@ -84,7 +84,10 @@ const OpenGroupList = (props) => {
       title: '发起人',
       align: 'center',
       dataIndex: 'username',
-      render: (val, row) => (val ? `${val}\n${row.mobile}` : '--'),
+      render: (val, row) =>{
+        const {togetherUserSnapshotObject={}} =row
+        return (togetherUserSnapshotObject.username ? `${togetherUserSnapshotObject.username}\n${togetherUserSnapshotObject.mobile}` : '--')
+      } ,
     },
     {
       title: '开团时间',
