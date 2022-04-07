@@ -19,11 +19,13 @@ const GroupStatistics = (props) => {
     moment().subtract(1, 'day'),
     moment().subtract(1, 'day'),
   ]);
+  useEffect(() => {
+    handleStatistic();
+  }, []);
 
   useEffect(() => {
     //搜索
-    handleStatistic();
-    handleReport()
+    handleReport(timeData);
   }, [timeData]);
 
   //实时数据
@@ -34,19 +36,21 @@ const GroupStatistics = (props) => {
   };
 
   // 统计数据
-  const handleReport =(time)=>{
+  const handleReport = (time) => {
     dispatch({
       type: 'groupStatistics/fetchTogetherRebateReport',
-      payload:{
-
-      }
+      payload: {
+        beginDate: time.length > 0 ? time[0].format('YYYY-MM-DD') : '',
+        endDate: time.length > 0 ? time[1].format('YYYY-MM-DD') : '',
+      },
     });
-  }
+  };
 
   const cardRealTime = [
     {
       title: '累计开团次数',
-      value:(realTimeData.openingCount+realTimeData.openSuccessCount+realTimeData.openFailureCount),
+      value:
+        realTimeData.openingCount + realTimeData.openSuccessCount + realTimeData.openFailureCount,
     },
     {
       title: '拼团中',
@@ -74,32 +78,32 @@ const GroupStatistics = (props) => {
     {
       title: '拼团成功金额',
       tip: '指拼团成功后拼中商品的用户所支付的金额',
-      value: '￥233223',
+      value: staticsData.totalWinFee,
     },
     {
       title: '拼团成功毛利金额',
       tip: '指拼团成功后，所有团的毛利金额。单个团毛利=拼中商品数*（商品售卖价-成本价）',
-      value: '￥233223',
+      value: staticsData.totalProfitFee,
     },
     {
       title: '平台服务费',
       tip: '平台服务费=拼团成功毛利金额*10%，另外包含部分无渠道主的团，会把渠道主奖励分配到平台',
-      value: '￥233223',
+      value: staticsData.totalCommissionFee,
     },
     {
       title: '拼中红包奖励',
       tip: '拼中红包奖励=拼团成功毛利金额*50%',
-      value: '￥233223',
+      value: staticsData.totalNotWinFee,
     },
     {
       title: '渠道主奖励',
       tip: '渠道主奖励=拼团成功毛利金额*15%，无渠道主的团会把该部分奖励分到平台',
-      value: '￥233223',
+      value: staticsData.totalChannelOwnerFee,
     },
     {
       title: '团长奖励',
       tip: '团长奖励=拼团成功毛利金额*25%',
-      value: '￥233223',
+      value: staticsData.totalTeamLeaderFee,
     },
   ];
 

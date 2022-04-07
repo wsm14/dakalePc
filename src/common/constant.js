@@ -1242,5 +1242,5 @@ export const OPEN_GROUP_STATUS = ['拼团中', '拼团成功', '拼团失败'];
 
 export const REWARD_TYPE = {
   winGoods: '拼中商品',
-  rewardType: '拼中红包',
+  winRed: '拼中红包',
 };
