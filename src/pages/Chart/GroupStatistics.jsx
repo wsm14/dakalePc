@@ -47,14 +47,15 @@ const GroupStatistics = (props) => {
       });
     }
   };
+  const sumCount =
+    Number(realTimeData.openingCount) +
+    Number(realTimeData.openSuccessCount) +
+    Number(realTimeData.openFailureCount);
 
   const cardRealTime = [
     {
       title: '累计开团次数',
-      value:
-        Number(realTimeData.openingCount) +
-        Number(realTimeData.openSuccessCount) +
-        Number(realTimeData.openFailureCount),
+      value: sumCount.toString(),
     },
     {
       title: '拼团中',
@@ -129,6 +130,7 @@ const GroupStatistics = (props) => {
           <div className="rightCon">
             {cardPropsList.map((item) => (
               <Card
+                loading={loading}
                 key={item.title}
                 title={
                   <QuestionTooltip
@@ -156,7 +158,7 @@ const GroupStatistics = (props) => {
 };
 
 export default connect(({ loading, groupStatistics }) => ({
-  loading: loading.models.groupStatistics,
+  loading: loading.effects['groupStatistics/fetchTogetherRebateReport'],
   realTimeData: groupStatistics.realTimeData,
   staticsData: groupStatistics.staticsData,
 }))(GroupStatistics);
