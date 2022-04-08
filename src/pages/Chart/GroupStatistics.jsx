@@ -48,13 +48,15 @@ const GroupStatistics = (props) => {
     }
   };
 
+  const sumCount =
+    Number(realTimeData.openingCount) +
+    Number(realTimeData.openSuccessCount) +
+    Number(realTimeData.openFailureCount);
+
   const cardRealTime = [
     {
       title: '累计开团次数',
-      value:
-        Number(realTimeData.openingCount) +
-        Number(realTimeData.openSuccessCount) +
-        Number(realTimeData.openFailureCount),
+      value: sumCount.toString(),
     },
     {
       title: '拼团中',
