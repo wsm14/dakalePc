@@ -11,7 +11,7 @@ const GoodsDetail = (props) => {
   const GoodsTypeformItems = [
     {
       name: 'thirdFlag',
-      label: `商品类型`,
+      label: `商品类别`,
       render: (val) => (val ? '自我游商品' : '特惠商品'),
     },
     {

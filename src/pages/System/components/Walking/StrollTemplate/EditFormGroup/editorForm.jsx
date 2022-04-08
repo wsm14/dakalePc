@@ -100,7 +100,7 @@ const FormCondition = ({
     const fileobj = {};
     formItems.map((item, i) => {
       const { name } = item;
-      if (item.type === 'upload') {
+      if (item.type === 'upload' || item.type === 'otherUpload') {
         if (Object.keys(initialValues).length) {
           if (Array.isArray(name)) {
             if (!initialValues[name[0]]) {
@@ -348,6 +348,7 @@ const FormCondition = ({
             fileList={fileLists[Array.isArray(name) ? name[1] : name]}
             beforeUpload={() => false}
             onChange={(value) => {
+              console.log(222, value);
               const { fileList } = value;
               const newFileList = fileList;
               if ((!value.file.status || value.file.status === 'done') && newFileList.length) {
@@ -367,7 +368,12 @@ const FormCondition = ({
             }}
           >
             {(fileLists[Array.isArray(name) ? name[1] : name]?.length || 0) <
-              (item.maxFile || 999) && <Button>选择文件</Button>}
+              (item.maxFile || 999) && (
+              <Button>
+                选择文件
+                {console.log(333, fileLists, fileLists[Array.isArray(name) ? name[1] : name])}
+              </Button>
+            )}
           </Upload>
         ),
         children: item.children,

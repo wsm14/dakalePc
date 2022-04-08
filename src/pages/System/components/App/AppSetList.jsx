@@ -147,7 +147,7 @@ const AppSetList = (props) => {
         },
         {
           title: '编辑',
-          type: 'bannerEdit ',
+          type: 'bannerEdit',
           click: () => fetchBannerDetail({ bannerIdString: val, type: 'edit' }),
         },
         {
