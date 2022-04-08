@@ -147,7 +147,7 @@ const OpenGroupList = (props) => {
             type: 'immediateGroup',
             title: '立即成团',
             popText: '确定要立即成团吗？立即成团后将在已参与的用户中随机抽取3位用户拼中商品。',
-            visible: record.joinUserNum >= 8 && record.status == '0',
+            visible: record.joinUserNum >= 8 && record.status == '0',//拼团中并且参团人数大于等于8人
             click: () => fetchGetGroup(val),
           },
         ];

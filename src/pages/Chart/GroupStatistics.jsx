@@ -132,6 +132,7 @@ const GroupStatistics = (props) => {
             {cardPropsList.map((item) => (
               <Card
                 key={item.title}
+                loading={loading}
                 title={
                   <QuestionTooltip
                     type="quest"
@@ -158,7 +159,7 @@ const GroupStatistics = (props) => {
 };
 
 export default connect(({ loading, groupStatistics }) => ({
-  loading: loading.models.groupStatistics,
+  loading: loading.effects['groupStatistics/fetchTogetherRebateReport'],
   realTimeData: groupStatistics.realTimeData,
   staticsData: groupStatistics.staticsData,
 }))(GroupStatistics);
