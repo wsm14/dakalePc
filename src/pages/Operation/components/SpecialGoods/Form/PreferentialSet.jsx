@@ -173,7 +173,7 @@ const PreferentialSet = ({
   // 信息
   const formItems = [
     {
-      label: '商品类型',
+      label: '商品类别',
       name: 'thirdFlag',
       type: 'radio',
       disabled: commonDisabled,
