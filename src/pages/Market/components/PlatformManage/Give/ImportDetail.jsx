@@ -10,16 +10,16 @@ const ImportDetail = (props) => {
 
   const getColumns = [
     {
-      label: '行数',
-      name: 'line',
+      title: '行数',
+      dataIndex: 'line',
     },
     {
-      label: '用户id',
-      name: 'userId',
+      title: '用户id',
+      dataIndex: 'userId',
     },
     {
-      label: '错误信息',
-      name: 'failureReason',
+      title: '错误信息',
+      dataIndex: 'failureReason',
     },
   ];
   // 弹窗属性
@@ -28,6 +28,8 @@ const ImportDetail = (props) => {
     visible: show,
     zIndex: 1003,
     onClose,
+    destroyOnClose: true,
+    maskClosable: true,
   };
   return (
     <>
@@ -37,7 +39,7 @@ const ImportDetail = (props) => {
           loading={loading}
           columns={getColumns}
           params={{ platformCouponGiveImportId: detail?.platformCouponGiveImportId }}
-          rowKey={(record) => `${record.importId}`}
+          rowKey={(record) => `${record.platformCouponGiveImportDetailId}`}
           dispatchType="platformCoupon/fetchGiveImportGetListDetail"
           {...platformCouponList}
         ></TableDataBlock>

@@ -64,6 +64,7 @@ const ImportRecord = (props) => {
       </Button>,
     ],
     bodyStyle: { overflowY: 'auto', maxHeight: 600 },
+    destroyOnClose: true,
   };
 
   return (
@@ -75,7 +76,7 @@ const ImportRecord = (props) => {
           loading={loading}
           columns={getColumns}
           params={{ platformCouponId: detail?.platformCouponId }}
-          rowKey={(record) => `${record.platformCouponId}`}
+          rowKey={(record) => `${record.platformCouponGiveImportId}`}
           dispatchType="platformCoupon/fetchGiveImportGetList"
           {...platformCouponList}
         ></TableDataBlock>

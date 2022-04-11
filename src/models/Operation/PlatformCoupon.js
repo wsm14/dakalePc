@@ -165,9 +165,11 @@ export default {
     *fetchGivePlatformCoupon({ payload, callback }, { call, put }) {
       const response = yield call(fetchGivePlatformCoupon, payload);
       if (!response) return;
+      const descriptionInfo =
+        payload.giveFlag === 'batch' ? '导入成功，导入结果请到“导入记录”中查看' : '成功';
       notification.success({
         message: '温馨提示',
-        description: '成功',
+        description: descriptionInfo,
       });
       callback && callback();
     },

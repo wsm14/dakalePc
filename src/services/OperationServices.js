@@ -909,7 +909,7 @@ export function fetchPagePlatformCouponGiveImport(params) {
   });
 }
 
-// get 平台券 - 导入记录列表
+// get 平台券 - 导入记录列表明细
 export function fetchPagePlatformCouponGiveImportDetail(params) {
   return request('/admin/platform/coupon/pagePlatformCouponGiveImportDetail', {
     params,
