@@ -193,7 +193,7 @@ const CommerceGoods = (props) => {
       render: (val, row) => (
         <>
           <span style={{ display: 'inline-flex', marginBottom: 5 }}>
-            {COMMERCE_ORDERS_STATUS[val]}
+            {['2','6'].includes(val)? <div style={{ color: '#999' }}>{ORDER_CLOSE_TYPE[row.closeType]}</div>:COMMERCE_ORDERS_STATUS[val]}
             <Avatar
               src={ORDER_PAY_LOGO[row.orderSource]}
               size="small"
@@ -201,9 +201,6 @@ const CommerceGoods = (props) => {
               style={{ marginLeft: 5 }}
             />
           </span>
-          {(val == 2 || val == 6) && (
-            <div style={{ color: '#999' }}>{ORDER_CLOSE_TYPE[row.closeType]}</div>
-          )}
         </>
       ),
     },
