@@ -47,10 +47,6 @@ const GroupStatistics = (props) => {
       });
     }
   };
-  const sumCount =
-    Number(realTimeData.openingCount) +
-    Number(realTimeData.openSuccessCount) +
-    Number(realTimeData.openFailureCount);
 
   const sumCount =
     Number(realTimeData.openingCount) +
@@ -137,7 +133,6 @@ const GroupStatistics = (props) => {
               <Card
                 loading={loading}
                 key={item.title}
-                loading={loading}
                 title={
                   <QuestionTooltip
                     type="quest"
