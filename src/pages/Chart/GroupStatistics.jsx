@@ -52,6 +52,11 @@ const GroupStatistics = (props) => {
     Number(realTimeData.openSuccessCount) +
     Number(realTimeData.openFailureCount);
 
+  const sumCount =
+    Number(realTimeData.openingCount) +
+    Number(realTimeData.openSuccessCount) +
+    Number(realTimeData.openFailureCount);
+
   const cardRealTime = [
     {
       title: '累计开团次数',
@@ -132,6 +137,7 @@ const GroupStatistics = (props) => {
               <Card
                 loading={loading}
                 key={item.title}
+                loading={loading}
                 title={
                   <QuestionTooltip
                     type="quest"
