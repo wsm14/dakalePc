@@ -106,11 +106,12 @@ const OpenGroupList = (props) => {
       title: '剩余时间',
       align: 'center',
       dataIndex: 'createTime',
-      render: (val) => {
+      render: (val, row) => {
+        const { status = '' } = row;
         if (val) {
           const endTime = moment(val).add(24, 'hours').format('YYYY-MM-DD HH:mm:ss'); // 剩余时间
-          if (moment(endTime).isBefore(moment())) {
-            return '已结束';
+          if (moment(endTime).isBefore(moment()) || ['1', '2'].includes(status)) {
+            return '--';
           } else {
             const remainTime = moment(endTime).diff(moment(), 'seconds');
             const h = parseInt(remainTime / 3600);
@@ -147,7 +148,7 @@ const OpenGroupList = (props) => {
             type: 'immediateGroup',
             title: '立即成团',
             popText: '确定要立即成团吗？立即成团后将在已参与的用户中随机抽取3位用户拼中商品。',
-            visible: record.joinUserNum >= 8 && record.status == '0',//拼团中并且参团人数大于等于8人
+            visible: record.joinUserNum >= 8 && record.status == '0', //拼团中并且参团人数大于等于8人
             click: () => fetchGetGroup(val),
           },
         ];
