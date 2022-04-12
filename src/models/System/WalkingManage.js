@@ -606,11 +606,12 @@ export default {
       const { content } = response;
       const { resourceTemplateContentDTO = {} } = content;
       const { contentInfo = {}, ...other } = resourceTemplateContentDTO;
-      const { couponList = [], ...otherInfo } = contentInfo;
+      const { couponList = [], giftTypes, ...otherInfo } = contentInfo;
 
       const data = {
         ...other,
         ...otherInfo,
+        giftTypes: giftTypes.split(','),
         couponList: couponList?.map((item) => ({
           platformCouponId: item,
           platformCouponImg: item.platformCouponImg,

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Space } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Space, InputNumber } from 'antd';
 import { MinusCircleOutlined, UpSquareOutlined, DownSquareOutlined } from '@ant-design/icons';
 import Ellipsis from '@/components/Ellipsis';
 
@@ -7,8 +7,15 @@ import styles from './index.less';
 
 const FormList = (props) => {
   const { type, form, fields, field, remove, move } = props;
+  const [nameIndex, setNameIndex] = useState(Number);
+
+  useEffect(() => {
+    setNameIndex(field.name + 1);
+  }, [field]);
+
   const goodsItem = form.getFieldValue(type)[field.name];
   console.log('goodsItem', goodsItem);
+
   return (
     <div className={styles.productContent}>
       <div className={styles.ownerName}>
@@ -46,7 +53,21 @@ const FormList = (props) => {
             </>
           );
         })()}
-        {fields.length > 1 && <MinusCircleOutlined onClick={() => remove(field.name)} />}
+        {fields.length > 1 && (
+          <div>
+            <InputNumber
+              size="small"
+              value={nameIndex}
+              onChange={(val) => setNameIndex(val)}
+              onPressEnter={() => move(field.name, nameIndex - 1)}
+              precision={0}
+              min={1}
+              max={fields.length}
+              style={{ width: 60, marginRight: 10 }}
+            ></InputNumber>
+            <MinusCircleOutlined onClick={() => remove(field.name)} />
+          </div>
+        )}
       </Space>
     </div>
   );

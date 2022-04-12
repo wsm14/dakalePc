@@ -272,8 +272,19 @@ export const ORDERS_STATUS = [
   '已过期',
 ];
 
+// 游戏类型名称
+export const GAME_TYPE_NAME = {
+  mark: '哒小卡中奖',
+  gameSign: '签到游戏',
+  gameFree: '免费领商品游戏',
+  gameGather: '集碎片游戏',
+  gameFarm: '卡豆农场',
+  dailyLuckDraw: '天天抽奖',
+  taskPrize: '任务奖励',
+};
+
 // 电商订单状态
-export const COMMERCE_ORDERS_STATUS = ['', '待发货', '已退款', '已完成', '', '', '', '', '已发货'];
+export const COMMERCE_ORDERS_STATUS = ['待支付', '待发货', '已退款', '已完成', '', '', '', '', '已发货'];
 
 // 订单关闭状态 ---原来的“已关闭”状态 ORDERS_STATUS 进行了拆分：
 export const ORDER_CLOSE_TYPE = {
@@ -352,7 +363,7 @@ export const SUBSIDY_TYPE = {
   directCharge: '平台直充',
   // recycleDirectCharge: '平台直充回收',
   // recyclePlatform: '营销卡豆回收',
-  platformSubsidy: '新手任务补贴',
+  platformSubsidy: '平台补贴',
   pushVideo: '打赏补贴',
   momentStop: '打赏回收',
   watchMoment: '看分享',
@@ -540,7 +551,7 @@ export const COUPON_BUY_RULE = { unlimited: '不限', personLimit: '每人限制
 export const COUPON_GIVE_TYPE = {
   manual: '手动领取',
   auto: '自动发放',
-  // system: '系统发放',
+  system: '系统发放',
 };
 
 // 优惠券管理 - 优惠券类型
@@ -793,7 +804,11 @@ export const VIDEO_ADVERT_STATUS = ['下架', '发布中'];
 export const PEQUITY_GOODSBUY_TYPE = ['免费', '卡豆+现金'];
 
 // 平台权益 - 电商商品售卖类型
-export const COMMERCE_GOODSBUY_TYPE = { self: '卡豆+现金', defaultMode: '现金' };
+export const COMMERCE_GOODSBUY_TYPE = {
+  self: '卡豆+现金',
+  defaultMode: '现金',
+  cashMode: '现金（不可使用卡豆）',
+};
 
 //评论状态
 export const COMMENT_DELETFLAG = ['已删除', '正常'];
@@ -1175,25 +1190,28 @@ export const AREA_ORDER_GOODS_TYPES = [
   { label: '权益品', value: 'right' },
 ];
 
-//订单数据统计 - 端口类型 - 对应
+//订单数据统计 - 支付金额分析 - 端口类型 - 对应
 export const USER_ANALYSIS_CONTRAS = {
   app: 'APP',
-  weChat: '哒小乐',
+  weChat: '小程序（含3个端口）',
   mark: '哒小卡',
   communityWechat: '哒小团',
 };
 
 //订单数据统计 - 商品类型 - 对应
 export const ORDER_GOODS_CONTRAS = {
-  specialGoods: '特惠商品',
-  commerceGoods: '电商品',
-  selfTour: '自我游',
-  communityGoods: '团购商品',
   scan: '扫码支付',
+  topUp: '充值订单',
+  specialGoods: '特惠商品',
   reduceCoupon: '有价券',
+  communityGoods: '团购商品',
+  virtualProduct: '虚拟商品',
   rightGoods: '权益商品',
   rightCoupon: '权益券',
+  commerceGoods: '电商品',
   platformGift: '平台礼包',
+  weeklyCard: '卡豆周卡',
+  selfTour: '自我游',
   other: '其他',
 };
 
@@ -1220,14 +1238,26 @@ export const ORDER_AREA_TYPES = [
 //销售报表 - 订单类型
 export const SELL_ORDER_TYPE = {
   scan: '扫码订单',
-  topUp: '充值订单',
+  // topUp: '充值订单',
   specialGoods: '特价商品订单',
   reduceCoupon: '有价券订单',
   communityGoods: '团购商品订单',
   virtualProduct: '虚拟商品订单',
   rightGoods: '权益商品订单',
-  rightCoupon: '权益券订单',
+  // rightCoupon: '权益券订单',
   commerceGoods: '电商商品订单',
   platformGift: '平台礼包订单',
   weeklyCard: '卡豆周卡订单',
+  channelGoods: '渠道商品',
+};
+
+// 提现明细  - 店铺  - 类型
+export const WITHDRAW_BUSINESS_TYPE = { merchant: '单店', group: '集团', subMerchant: '子门店' };
+//开团列表
+
+export const OPEN_GROUP_STATUS = ['拼团中', '拼团成功', '拼团失败'];
+
+export const REWARD_TYPE = {
+  winGoods: '拼中商品',
+  winRed: '拼中红包',
 };

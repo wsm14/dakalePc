@@ -439,6 +439,29 @@ export function fetchVideoListMomentTag(params) {
   });
 }
 
+// get 视频广告 - 分享赚豆
+export function fetchVideoGetDictionaryAdmin(params) {
+  return request('/admin/dictionaryAdmin/getDictionaryAdmin', {
+    params,
+  });
+}
+
+// post 视频广告 - 分享赚豆 - 编辑
+export function fetchVideoSetShareEarnBeanRule(data) {
+  return request('/admin/marketing/moment/new/setShareEarnBeanRule', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 视频广告 - 分享赚  - 修改
+export function fetchVideoSetUpdatePlatfromMomentDirect(data) {
+  return request('/admin/marketing/moment/platform/updatePlatfromMomentDirect', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 视频广告 end
 
 // 新手视频
@@ -602,6 +625,27 @@ export function fetchGetWeeklyCard(params) {
 // post 周卡配置 - 编辑
 export function fetchSetWeeklyCard(data) {
   return request('/admin/weeklyCard/setWeeklyCard', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 开团列表  
+export function fetchAdminListStartGroup(params) {
+  return request('/admin/start/group/adminListStartGroup', {
+    params,
+  });
+}
+//参团列表
+export function fetchAdminListJoinGroupByGroupId(params) {
+  return request('/admin/start/group/adminListJoinGroupByGroupId', {
+    params,
+  });
+}
+
+// 立即成团  
+export function fetchSimulationStartGroup(data) {
+  return request('/admin/start/group/simulationStartGroup', {
     method: 'POST',
     data,
   });

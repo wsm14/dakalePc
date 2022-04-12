@@ -679,3 +679,39 @@ export function fetchGetResourceTemplateContentById(params) {
 }
 
 // 资源位内容配置 end
+
+//拼团配置
+export function fetchGetListTogetherGroupConfig(params) {
+  return request('/admin/together/group/config/listTogetherGroupConfig', {
+    params,
+  });
+}
+
+// 商品配置
+export function fetchSaveTogetherGroupConfig(data) {
+  return request('/admin/together/group/config/saveTogetherGroupConfig', {
+    method: 'POST',
+    data,
+  });
+}
+//
+export function fetchListActivityForSearch(params) {
+  return request('/admin/specialGoodsManagement/listActivityForSearch', {
+    params,
+  });
+}
+
+// 排序
+export function fetchUpdateSort(data) {
+  return request('/admin/together/group/config/updateSort', {
+    method: 'POST',
+    data,
+  });
+}
+// 删除  
+export function fetchDeleteConfigGoods(data) {
+  return request('/admin/together/group/config/deleteConfigGoods', {
+    method: 'POST',
+    data,
+  });
+}

@@ -47,10 +47,29 @@ const TabTable = (props) => {
             click: () => handleUpdateSet('edit', val),
             auth: true,
           },
+          {
+            type: 'del',
+            title: '删除',
+            click: () => handleDelCity(val),
+            visible: row.area !== 'all',
+            auth: true,
+          },
         ];
       },
     },
   ];
+
+  // 删除城市
+  const handleDelCity = (configIndexTabId) => {
+    dispatch({
+      type: 'globalConfig/fetchIndexTabEdit',
+      payload: {
+        configIndexTabId,
+        flag: 'deleteCity',
+      },
+      callback: childRef?.current?.fetchGetData,
+    });
+  };
 
   const handleUpdateSet = (type, configIndexTabId) => {
     dispatch({
@@ -90,7 +109,7 @@ const TabTable = (props) => {
         pagination={false}
         btnExtra={cardBtnList}
         rowKey={(record) => `${record.configIndexTabId}`}
-        params={{ userOs: tabKey, version }}
+        params={{ userOs: tabKey, version, deleteFlag: 1 }}
         dispatchType="globalConfig/fetchIndexTabModalList"
         {...IndexTabModalList}
       ></TableDataBlock>

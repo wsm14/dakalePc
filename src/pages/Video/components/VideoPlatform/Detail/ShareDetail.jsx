@@ -83,9 +83,14 @@ const ShareDetail = (props) => {
       name: 'message',
     },
     {
+      label: '视频标签',
+      name: 'momentTagNames',
+      show: tabKey !== '0' && tabKey !== '1',
+    },
+    {
       label: '定位',
       name: 'address',
-      show: tabKey === '0' || tabKey === '1' ? false : true,
+      show: tabKey !== '0' && tabKey !== '1',
       render: (val) => (
         <>
           <EnvironmentOutlined />

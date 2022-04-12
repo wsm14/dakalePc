@@ -15,14 +15,7 @@ import ShareWeightSet from './components/VideoPlatform/ShareWeightSet';
 import ShareDetail from './components/VideoPlatform/Detail/ShareDetail';
 
 const VideoPlatformUGC = (props) => {
-  const {
-    loading,
-    loadingTab,
-    loadingRefuse,
-    dispatch,
-    tabs,
-    UGCList,
-  } = props;
+  const { loading, loadingTab, loadingRefuse, dispatch, tabs, UGCList } = props;
   const { list } = UGCList;
 
   const childRef = useRef();
@@ -204,6 +197,7 @@ const VideoPlatformUGC = (props) => {
           ...record,
           ...detail,
           listPayload: payload,
+          momentTags: tabKey,
         };
         setVisibleSet({ type, show: true, initialValues });
       },
@@ -285,7 +279,7 @@ const VideoPlatformUGC = (props) => {
         dispatchType="videoPlatform/fetchUGCVideoList"
         {...UGCList}
       ></TableDataBlock>
-     
+
       {/* 详情 修改 编辑画像 带货设置 分享配置*/}
       <ShareDetail
         childRef={childRef}
@@ -305,6 +299,7 @@ const VideoPlatformUGC = (props) => {
       ></RefuseModal>
       {/* 设置 */}
       <VideoSet
+        tabList={tabList}
         onSubmit={fetchNewShareNoAudit}
         childRef={childRef}
         visible={visibleSet}

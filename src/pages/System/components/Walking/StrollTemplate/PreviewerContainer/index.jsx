@@ -28,14 +28,14 @@ const BasketDom = ({
     accept: 'Card',
     drop: (dropItem) => {
       setStyBasket(false);
-      const { icon, editForm, defaultImg, drop, type, name, ...other } = dropItem;
+      const { icon, editForm, defaultImg, drop, type, name, defaultData = {}, ...other } = dropItem;
       /**
        * 拖拽结束时，判断是否将拖拽元素放入了目标接收组件中
        *  1、如果是，则使用真正传入的 box 元素代替占位元素
        */
       // 更新 dataList 数据源
       const movefile = update(dataList, {
-        $splice: [[index, 0, other]],
+        $splice: [[index, 0, { ...other, ...defaultData }]],
       });
       console.log(movefile, 'movefile');
       changeCardList(movefile);
@@ -66,6 +66,8 @@ const ActiveTemplateIframe = (props) => {
   const { dispatchData, showPanel, moduleData } = useContext(context);
 
   const { dataList } = moduleData;
+  // 背景图对象
+  const backgroundObj = dataList.filter((item) => item.moduleName === 'topBackground')[0];
   console.log(dataList, 'dataList');
 
   // 数据变化储存
@@ -101,23 +103,38 @@ const ActiveTemplateIframe = (props) => {
           style={{ backgroundColor: moduleData['backgroundColor'] }}
         >
           <img src={search} style={{ width: '100%' }} />
+          {backgroundObj && (
+            <div
+              className={styles.previewer_background}
+              style={{
+                height: backgroundObj.height,
+                backgroundImage: `url(${backgroundObj.topBackgroundImg})`,
+              }}
+            ></div>
+          )}
           <BasketDom index={0} {...dropProps}></BasketDom>
-          {dataList.map((item, index) => (
-            <React.Fragment key={`${index}`}>
-              <div className={styles.previewer_cell} onClick={() => handleShowEditor(item, index)}>
-                {/* 回显dom*/}
-                <PreviewerContent moduleName={item.moduleName}></PreviewerContent>
-                {/* 高亮操作区域 */}
-                <PreviewerActive
-                  data={dataList}
-                  index={index}
-                  show={showPanel === index}
-                  dispatchData={dispatchData}
-                ></PreviewerActive>
-              </div>
-              <BasketDom index={index + 1} {...dropProps}></BasketDom>
-            </React.Fragment>
-          ))}
+          {dataList.map(
+            (item, index) =>
+              item.moduleName !== 'topBackground' && (
+                <React.Fragment key={`${index}`}>
+                  <div
+                    className={styles.previewer_cell}
+                    onClick={() => handleShowEditor(item, index)}
+                  >
+                    {/* 回显dom*/}
+                    <PreviewerContent data={item} moduleName={item.moduleName}></PreviewerContent>
+                    {/* 高亮操作区域 */}
+                    <PreviewerActive
+                      data={dataList}
+                      index={index}
+                      show={showPanel === index}
+                      dispatchData={dispatchData}
+                    ></PreviewerActive>
+                  </div>
+                  <BasketDom index={index + 1} {...dropProps}></BasketDom>
+                </React.Fragment>
+              ),
+          )}
         </div>
       </div>
     </div>

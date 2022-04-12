@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Button, Form } from 'antd';
+import { Button, Form, InputNumber } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
 
@@ -46,6 +46,18 @@ const GLobalSetDrawer = (props) => {
           payload2: {
             dictionaryId: '1417829187663585300',
             extraParam: JSON.stringify(values.rewardRule),
+          },
+          callback: () => {
+            onClose();
+            getUpdate(tabKey);
+          },
+        });
+      } else if (tabKey === 'shareBean') {
+        dispatch({
+          type: 'videoAdvert/fetchVideoSetShareEarnBeanRule',
+          payload: {
+            dictionaryId: detail.dictionaryId,
+            extraParam: JSON.stringify(values),
           },
           callback: () => {
             onClose();
@@ -120,10 +132,48 @@ const GLobalSetDrawer = (props) => {
     },
   ];
 
+  const beanItem = [
+    {
+      label: '每日赚豆上限',
+      type: 'number',
+      suffix: '卡豆',
+      name: ['totalLimit'],
+      render: (val) => val + '卡豆',
+      max: 999,
+    },
+    {
+      label: '单个视频赚豆数',
+      type: 'formItem',
+      required: true,
+      rules: 'false',
+      formItem: (
+        <>
+          <Form.Item
+            name="lowerLimit"
+            rules={[{ required: true, message: '请输入单个视频赚豆数' }]}
+            style={{ display: 'inline-block', width: 'calc(20%)' }}
+          >
+            <InputNumber min={0} placeholder={'请输入数字'} />
+          </Form.Item>
+          <span style={{ display: 'inline-block', marginTop: 5, marginRight: 15 }}>-</span>
+          <Form.Item
+            name="upperLimit"
+            rules={[{ required: true, message: '请输入单个视频赚豆数' }]}
+            style={{ display: 'inline-block', width: 'calc(20%)' }}
+          >
+            <InputNumber min={0} placeholder={'请输入数字'} />
+          </Form.Item>
+          <span style={{ display: 'inline-block', marginTop: 5 }}>卡豆</span>
+        </>
+      ),
+    },
+  ];
+
   const formItems = {
     merchantVideo: merChantItems,
     UGCVideo: UCGItems,
     adVideo: videoAdItem,
+    shareBean: beanItem,
     // jigsawAd: videoAdItem,
   }[tabKey];
 

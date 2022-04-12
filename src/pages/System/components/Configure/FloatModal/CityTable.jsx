@@ -6,7 +6,7 @@ import CityDrawerSet from './components/CityDrawerSet';
 import CityGlobalModal from './CityGlobalModal';
 
 const CityTable = (props) => {
-  const { loading, floatCityList, tabKey, version } = props;
+  const { loading, floatCityList, tabKey, version, dispatch } = props;
   const [visible, setVisible] = useState(false);
   const [visibleConfigure, setVisibleConfigure] = useState({ show: false, info: {} });
   const childRef = useRef();
@@ -22,16 +22,35 @@ const CityTable = (props) => {
       type: 'handle',
       align: 'center',
       dataIndex: 'configFloatingWindowId',
-      render: (_, row) => [
+      render: (val, row) => [
         {
           type: 'floatEdit',
           title: '编辑',
           click: () => handleEdit(row),
           auth: true,
         },
+        {
+          type: 'del',
+          title: '删除',
+          click: () => handleDelCity(val),
+          visible: row.area !== 'all',
+          auth: true,
+        },
       ],
     },
   ];
+
+  // 删除城市
+  const handleDelCity = (configFloatingWindowId) => {
+    dispatch({
+      type: 'marketConfigure/fetchFloatingWindowEdit',
+      payload: {
+        configFloatingWindowId,
+        flag: 'deleteCity',
+      },
+      callback: childRef?.current?.fetchGetData,
+    });
+  };
 
   const handleEdit = (row) => {
     const { userOs, version, area, cityCode } = row;
@@ -43,7 +62,7 @@ const CityTable = (props) => {
 
   const cardBtnList = [
     {
-      auth: "floatAddCity",
+      auth: 'floatAddCity',
       text: '新增城市',
       className: 'dkl_blue_btn',
       onClick: () => {
@@ -65,7 +84,7 @@ const CityTable = (props) => {
         pagination={false}
         btnExtra={cardBtnList}
         rowKey={(record) => `${record.configFloatingWindowId}`}
-        params={{ userOs: tabKey, version, windowType: 'first', isAutomatic: 1 }}
+        params={{ userOs: tabKey, version, windowType: 'first', isAutomatic: 1, deleteFlag: 1 }}
         dispatchType="marketConfigure/fetchFloatingWindowCityList"
         {...floatCityList}
       ></TableDataBlock>

@@ -139,6 +139,7 @@ const DistrictDistribution = (props) => {
   const provinceProps = {
     sourceField: 'provinceCode',
     field: 'totalAreaNum',
+    chinaBorder: false,
   };
 
   const cityProps = {
@@ -148,6 +149,7 @@ const DistrictDistribution = (props) => {
       level: 'province',
       adcode: 330000,
     },
+    chinaBorder: false,
   };
 
   const districtProps = {
@@ -157,6 +159,7 @@ const DistrictDistribution = (props) => {
       level: 'city',
       adcode: 330100,
     },
+    chinaBorder: false,
   };
 
   return (

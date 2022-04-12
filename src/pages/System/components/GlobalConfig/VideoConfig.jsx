@@ -22,6 +22,10 @@ const tabList = [
   //   key: 'jigsawAd',
   //   tab: '拼图广告',
   // },
+  {
+    key: 'shareBean',
+    tab: '分享赚豆',
+  },
 ];
 
 const VideoConfig = (props) => {
@@ -64,6 +68,18 @@ const VideoConfig = (props) => {
     });
   };
 
+  // 获取视频广告分享赚豆
+  const fetchVideoGetDictionaryAdmin = () => {
+    dispatch({
+      type: 'videoAdvert/fetchVideoGetDictionaryAdmin',
+      payload: { parent: 'shareEarnBean', child: 'shareMoment' },
+      callback: (data) => {
+        console.log(data);
+        setDetail(data);
+      },
+    });
+  };
+
   const fetchDetail = (type) => {
     switch (type) {
       case 'merchantVideo':
@@ -78,6 +94,9 @@ const VideoConfig = (props) => {
       // case 'jigsawAd':
       //   fetchAdRootDetail();
       //   break;
+      case 'shareBean':
+        fetchVideoGetDictionaryAdmin();
+        break;
     }
   };
 
@@ -107,7 +126,6 @@ const VideoConfig = (props) => {
     },
   ];
 
-
   return (
     <>
       <Card
@@ -133,5 +151,6 @@ export default connect(({ loading }) => ({
   loading:
     loading.effects['puzzleAd/fetchPuzzleAdRoot'] ||
     loading.effects['videoPlatform/fetchUGCVideoBeanRules'] ||
-    loading.effects['videoAdvert/fetchVideoAdvertRootCount'],
+    loading.effects['videoAdvert/fetchVideoAdvertRootCount'] ||
+    loading.effects['videoAdvert/fetchVideoGetDictionaryAdmin'],
 }))(VideoConfig);

@@ -33,9 +33,28 @@ const TabTable = (props) => {
           click: () => handleEdit(val),
           auth: true,
         },
+        {
+          type: 'del',
+          title: '删除',
+          click: () => handleDelCity(val),
+          visible: row.area !== 'all',
+          auth: true,
+        },
       ],
     },
   ];
+
+  // 删除城市
+  const handleDelCity = (configSelfTourGoodsId) => {
+    dispatch({
+      type: 'walkingManage/fetchGetSelfTourGoodsEdit',
+      payload: {
+        configSelfTourGoodsId,
+        flag: 'deleteCity',
+      },
+      callback: childRef?.current?.fetchGetData,
+    });
+  };
 
   const handleEdit = (configSelfTourGoodsId) => {
     dispatch({
@@ -74,7 +93,7 @@ const TabTable = (props) => {
         pagination={false}
         btnExtra={cardBtnList}
         rowKey={(record) => `${record.configSelfTourGoodsId}`}
-        params={{ userOs: tabKey, version, isAutomatic: 1 }}
+        params={{ userOs: tabKey, version, isAutomatic: 1, deleteFlag: 1 }}
         dispatchType="walkingManage/fetchGetSelfTourCityList"
         {...cityList}
       ></TableDataBlock>

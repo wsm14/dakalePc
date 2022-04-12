@@ -18,6 +18,7 @@ export const goodsDom = (item = {}, id = '', setSelectItem, onDel) => {
     activityStartTime,
     activityEndTime,
     buyFlag,
+    inputDom = null,
   } = item;
 
   return (
@@ -59,6 +60,7 @@ export const goodsDom = (item = {}, id = '', setSelectItem, onDel) => {
                 剩余{remain}张
               </div>
             </div>
+            {inputDom && inputDom()}
           </div>
           {!onDel ? (
             <div className="share_select_icon">
@@ -90,6 +92,7 @@ export const couponsDom = (item = {}, id = '', setSelectItem, onDel) => {
     endDate,
     delayDays = 0, // 使用有效期-领取后-延迟生效天数
     activeDays, // 使用有效期-领取后-有效天数
+    inputDom = null,
   } = item;
   const { couponPrice, thresholdPrice = '' } = reduceObject;
   return (
@@ -222,6 +225,7 @@ export const commerceDom = (item = {}, id = '', setSelectItem, onDel) => {
     activityTimeRule = 'infinite',
     activityStartTime,
     activityEndTime,
+    inputDom = null,
   } = item;
 
   return (
@@ -260,6 +264,7 @@ export const commerceDom = (item = {}, id = '', setSelectItem, onDel) => {
                 剩余{remain}张
               </div>
             </div>
+            {inputDom && inputDom()}
           </div>
           {!onDel ? (
             <div className="share_select_icon">

@@ -49,7 +49,16 @@ export default [
             name: '订单数据统计',
             component: './Chart/OrderDataStat',
           },
-         
+          {
+            path: '/chart/groupStatistics',
+            name: '拼团统计',
+            component: './Chart/GroupStatistics',
+          },
+          {
+            path: '/chart/gameDataStat',
+            name: '游戏数据统计',
+            component: './Chart/GameDataStat',
+          },
         ],
       },
       // 数据报表
@@ -126,6 +135,7 @@ export default [
               'againUp',
               'addRemain',
               'diary',
+              'goodsCode',
             ],
           },
           {
@@ -178,6 +188,12 @@ export default [
             name: '资源位配置',
             component: './Market/SpecialGoodsResource',
             buttons: ['cancleRecommend', 'configCondit'],
+          },
+          {
+            path: '/market/openGroup',
+            name: '开团列表',
+            component: './Market/OpenGroupList',
+            buttons: ['info', 'immediateGroup'],
           },
         ],
       },
@@ -629,6 +645,7 @@ export default [
               'adVideo_edit',
               'merchantVideo_edit',
               'UGCVideo_edit',
+              'shareBean_edit',
               'holidaySave',
               'holidayDown',
               'holidayEdit',
@@ -648,7 +665,6 @@ export default [
               'virtualSave',
               'virtualInfo',
               'virtualEdit',
-           
             ],
           },
           {
@@ -723,6 +739,8 @@ export default [
               'blindConfigEdit',
               'newWinDel',
               'newWinAdd',
+              'groupGoodsConfigDel',
+              'groupGoodsConfigAdd',
             ],
           },
         ],

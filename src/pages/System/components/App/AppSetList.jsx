@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Tooltip, Form } from 'antd';
+import { Tooltip, Form, Modal } from 'antd';
 import {
   BANNER_LOOK_AREA,
   BANNER_JUMP_TYPE,
@@ -10,20 +10,24 @@ import {
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import SysAppSetForm from './SysAppSet';
-import AddImgplace from './AddImgplace';
 
 const AppSetList = (props) => {
-  const { tabKey, tabKeyTwo, version, sysAppList, bannerTypeObj, loading, dispatch } = props;
+  const {
+    visible,
+    onClose,
+    tabKey,
+    tabKeyTwo,
+    version,
+    configureList,
+    bannerTypeObj,
+    loading,
+    dispatch,
+  } = props;
 
+  const { show, detail = {} } = visible;
   const childRef = useRef();
   const [form] = Form.useForm();
   const [visibleSet, setVisibleSet] = useState({ show: false, info: '' });
-  const [visibleAddImg, setVisibleAddImg] = useState(false); // 新增位置
-
-  useEffect(() => {
-    childRef.current.fetchGetData();
-    fetchBannerRatio();
-  }, [tabKey]);
 
   // 搜索参数
   const searchItems = [
@@ -72,21 +76,21 @@ const AppSetList = (props) => {
       dataIndex: 'bannerType',
       render: (val) => bannerTypeObj[val],
     },
-    {
-      title: '可见范围',
-      dataIndex: 'visibleRange',
-      render: (val) => BANNER_LOOK_AREA[val],
-    },
-    {
-      title: '投放区域',
-      align: 'center',
-      dataIndex: 'deliveryAreaType',
-      render: (val, row) =>
-        ({
-          all: BANNER_AREA_TYPE[val],
-          detail: <Tooltip title={row.deliveryAreaNameStr}>按区县({row.deliveryAreaNum})</Tooltip>,
-        }[val]),
-    },
+    // {
+    //   title: '可见范围',
+    //   dataIndex: 'visibleRange',
+    //   render: (val) => BANNER_LOOK_AREA[val],
+    // },
+    // {
+    //   title: '投放区域',
+    //   align: 'center',
+    //   dataIndex: 'deliveryAreaType',
+    //   render: (val, row) =>
+    //     ({
+    //       all: BANNER_AREA_TYPE[val],
+    //       detail: <Tooltip title={row.deliveryAreaNameStr}>按区县({row.deliveryAreaNum})</Tooltip>,
+    //     }[val]),
+    // },
     {
       title: '跳转类型',
       align: 'center',
@@ -132,40 +136,29 @@ const AppSetList = (props) => {
           type: 'bannerDown',
           title: '下架',
           visible: record.bannerStatus === '1',
-          click: () => fetchBannerStatus({ bannerId: val, bannerStatus: 0 }),
+          click: () => fetchBannerStatus({ bannerIdString: val, bannerStatus: 0 }),
         },
         {
           title: '上架',
           type: 'bannerUp',
           visible: record.bannerStatus === '0',
           // click: () => fetchBannerStatus({ bannerId: val, bannerStatus: 1 }),
-          click: () => fetchBannerDetail({ bannerId: val, type: 'up' }),
+          click: () => fetchBannerDetail({ bannerIdString: val, type: 'up' }),
         },
         {
           title: '编辑',
-          type: 'bannerEdit ',
-          click: () => fetchBannerDetail({ bannerId: val, type: 'edit' }),
+          type: 'bannerEdit',
+          click: () => fetchBannerDetail({ bannerIdString: val, type: 'edit' }),
         },
         {
           title: '删除',
           type: 'bannerDel',
           visible: record.bannerStatus === '0',
-          click: () => fetchBannerStatus({ bannerId: val, deleteFlag: 0 }),
+          click: () => fetchBannerStatus({ bannerIdString: val, deleteFlag: 0 }),
         },
       ],
     },
   ];
-
-  // 获取banner分辨率配置
-  const fetchBannerRatio = () => {
-    dispatch({
-      type: 'sysAppList/fetchBannerRatio',
-      payload: {
-        userType: tabKey,
-        deleteFlag: 1,
-      },
-    });
-  };
 
   // 获取详情
   const fetchBannerDetail = (payload) => {
@@ -181,16 +174,11 @@ const AppSetList = (props) => {
     dispatch({
       type: 'sysAppList/fetchBannerStatus',
       payload,
-      callback: childRef.current.fetchGetData,
+      callback: childRef?.current?.fetchGetData,
     });
   };
 
   const btnList = [
-    {
-      text: '新增位置',
-      auth: 'bannerAddPlace',
-      onClick: () => setVisibleAddImg(true),
-    },
     {
       text: '新增',
       auth: 'bannerAdd',
@@ -199,49 +187,59 @@ const AppSetList = (props) => {
         setVisibleSet({
           show: true,
           type: 'add',
-          detail: { version, visibleRange: 'user,kol', bannerType: type },
+          detail: { ...detail, visibleRange: 'user,kol', bannerType: type },
         });
       },
     },
   ];
 
+  const modalProps = {
+    title: 'banner配置',
+    visible: show,
+    onCancel: onClose,
+    width: 1000,
+    maskClosable: true,
+    footer: false,
+    bodyStyle: { overflowY: 'auto', maxHeight: 600 },
+  };
+
   return (
     <>
-      <TableDataBlock
-        noCard={false}
-        cRef={childRef}
-        searchForm={form}
-        btnExtra={btnList}
-        params={{ userType: tabKey, userOs: tabKeyTwo, version, isAutomatic: 0 }}
-        loading={loading}
-        columns={getColumns}
-        searchItems={searchItems}
-        rowKey={(record) => `${record.bannerIdString}`}
-        dispatchType="sysAppList/fetchGetList"
-        {...sysAppList}
-      ></TableDataBlock>
+      <Modal destroyOnClose {...modalProps} loading={loading}>
+        <TableDataBlock
+          noCard={false}
+          cRef={childRef}
+          searchForm={form}
+          btnExtra={btnList}
+          params={{
+            ...detail,
+            userType: tabKey,
+            userOs: tabKeyTwo,
+            version,
+            isAutomatic: 0,
+          }}
+          loading={loading}
+          columns={getColumns}
+          searchItems={searchItems}
+          rowKey={(record) => `${record.bannerIdString}`}
+          dispatchType="sysAppList/fetchGetConfigureList"
+          {...configureList}
+        ></TableDataBlock>
+      </Modal>
       {/* 新增 */}
       <SysAppSetForm
         bannerTypeObj={bannerTypeObj}
         tabKey={tabKey}
-        tabKeyTwo={tabKeyTwo}
         cRef={childRef}
         visible={visibleSet}
         onClose={() => setVisibleSet({ show: false })}
       ></SysAppSetForm>
-      {/* 新增图片位置 */}
-      <AddImgplace
-        getType={() => fetchBannerRatio()}
-        tabKey={tabKey}
-        visible={visibleAddImg}
-        onClose={() => setVisibleAddImg(false)}
-      ></AddImgplace>
     </>
   );
 };
 
 export default connect(({ sysAppList, loading }) => ({
-  sysAppList: sysAppList.list,
+  configureList: sysAppList.configureList,
   bannerTypeObj: sysAppList.bannerTypeObj,
   loading: loading.models.sysAppList,
 }))(AppSetList);

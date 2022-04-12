@@ -269,7 +269,7 @@ const VideoPlatform = (props) => {
   // 设置
   const fetchGetRate = (payload) => {
     const { type, record = {} } = payload;
-    const { momentId, ownerId } = record;
+    const { momentId, ownerId, shareEarnFlag } = record;
     dispatch({
       type: 'videoPlatform/fetchVideoFakeList',
       payload: {
@@ -280,6 +280,7 @@ const VideoPlatform = (props) => {
         const initialValues = {
           ...record,
           ...detail,
+          shareEarnFlag: Number(shareEarnFlag),
           listPayload: payload,
         };
         setVisibleSet({ type, show: true, initialValues });

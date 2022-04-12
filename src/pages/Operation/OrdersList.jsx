@@ -7,6 +7,7 @@ import OtherOrders from './components/Orders/OtherOrders';
 import VirtualOrders from './components/Orders/VirtualOrders';
 import CommerceGoods from './components/Orders/CommerceGoods';
 import CommunityGoods from './components/Orders/CommunityGoods';
+import WinnerOrders from './components/Orders/WinnerOrders';
 
 const tabList = [
   {
@@ -37,6 +38,10 @@ const tabList = [
     key: 'communityGoods',
     tab: '团购订单',
   },
+  {
+    key: 'winnerOrders',
+    tab: '中奖订单',
+  },
 ];
 
 const OrdersList = () => {
@@ -52,6 +57,7 @@ const OrdersList = () => {
     virtualProduct: <VirtualOrders {...listProps}></VirtualOrders>,
     commerceGoods: <CommerceGoods {...listProps}></CommerceGoods>,
     communityGoods: <CommunityGoods {...listProps}></CommunityGoods>,
+    winnerOrders: <WinnerOrders></WinnerOrders>,
   };
 
   return (

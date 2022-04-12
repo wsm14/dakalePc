@@ -97,28 +97,28 @@ const BoxLotteryBean = ({ beanBoxList, loading, dispatch, tabkey }) => {
       title: '奖品ID',
       dataIndex: 'awardId',
     },
-    {
-      title: '发放状态',
-      // fixed: 'right',
-      dataIndex: 'logisticsStatus',
-      render: (val, row) => BOXLOTTERY_STATUS[val] || '--',
-    },
-    {
-      type: 'handle',
-      dataIndex: 'blindBoxRewardId',
-      render: (val, row) => [
-        {
-          type: 'goodsDeliver',
-          visible: row.logisticsStatus === '1',
-          click: () => fetchBoxDeatil(val, row, 'add'),
-        },
-        {
-          type: 'goodsView',
-          visible: row.logisticsStatus === '2',
-          click: () => fetchBoxDeatil(val, row, 'info'),
-        },
-      ],
-    },
+    // {
+    //   title: '发放状态',
+    //   // fixed: 'right',
+    //   dataIndex: 'logisticsStatus',
+    //   render: (val, row) => BOXLOTTERY_STATUS[val] || '--',
+    // },
+    // {
+    //   type: 'handle',
+    //   dataIndex: 'blindBoxRewardId',
+    //   render: (val, row) => [
+    //     {
+    //       type: 'goodsDeliver',
+    //       visible: row.logisticsStatus === '1',
+    //       click: () => fetchBoxDeatil(val, row, 'add'),
+    //     },
+    //     {
+    //       type: 'goodsView',
+    //       visible: row.logisticsStatus === '2',
+    //       click: () => fetchBoxDeatil(val, row, 'info'),
+    //     },
+    //   ],
+    // },
   ];
 
   // 获取详情 type：info 查看
