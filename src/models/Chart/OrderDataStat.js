@@ -154,7 +154,7 @@ export default {
         },
       });
     },
-    *fetchOrderAreaAnalysisReport({ payload, callback }, { call, put }) {
+    *fetchOrderAreaAnalysisReport({ payload, callback }, { select, call, put }) {
       const { groupBy = 'city', code = '', ...other } = payload;
 
       let areaData = {};
@@ -181,7 +181,6 @@ export default {
       // if (groupBy === 'district' || areaData.cityList.length !== 0) {
       if (areaData.cityList && areaData.cityList.length === 0) {
         areaData = {
-          cityList: [],
           districtList: [],
         };
       } else {

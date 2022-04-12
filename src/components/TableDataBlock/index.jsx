@@ -137,6 +137,7 @@ const TableBlockComponent = (props) => {
     setTableParems({
       ...tableParems,
       searchData: newSearchValue,
+      limit: params.limit || tableParems.limit,
       page: 1,
     });
     // 搜索回调
