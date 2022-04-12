@@ -144,6 +144,7 @@ const GroupStatistics = (props) => {
               >
                 <div style={{ textAlign: 'center' }}>
                   <Statistic
+                    prefix="￥"
                     valueStyle={{ fontWeight: 'bold' }}
                     precision={2}
                     value={item.value}
