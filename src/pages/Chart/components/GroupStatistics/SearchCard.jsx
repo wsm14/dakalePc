@@ -66,7 +66,7 @@ const SearchCard = ({ timeData, setTimeData }) => {
   };
 
   return (
-    <Space style={{ marginBottom: 30 }}>
+    <Space style={{ marginBottom: 30,marginLeft:10 }}>
       <Select style={{ width: 200 }} onChange={handleChange} value={selectTime}>
         {timeSelect.map((item) => (
           <Option value={item.value} key={item.name}>
