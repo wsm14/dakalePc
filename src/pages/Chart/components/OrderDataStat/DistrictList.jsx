@@ -27,7 +27,8 @@ const DistrictListComponent = (props) => {
   ];
 
   useEffect(() => {
-    childRef.current.fetchGetData({ ...searchData, groupBy: 'district', code: cityCode });
+    cityCode &&
+      childRef.current.fetchGetData({ ...searchData, groupBy: 'district', code: cityCode });
   }, [cityCode]);
 
   return (

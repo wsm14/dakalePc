@@ -70,6 +70,7 @@ const AreaPercentage = ({ areaData, dispatch, loading }) => {
               legend={false}
               radius={0.8}
               statistic={{
+                title: { customHtml: '总计', style: { fontSize: 14 }, offsetY: -10 },
                 content: {
                   style: { fontSize: 25, fontWeight: 400 },
                   customHtml: (container, view, datum, data) => {
