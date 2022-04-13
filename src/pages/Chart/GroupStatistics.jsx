@@ -103,12 +103,12 @@ const GroupStatistics = (props) => {
     },
     {
       title: '渠道主奖励',
-      tip: '渠道主奖励=拼团成功毛利金额*15%，无渠道主的团会把该部分奖励分到平台',
+      tip: '渠道主奖励=拼团成功毛利金额*25%，无渠道主的团会把该部分奖励分到平台',
       value: staticsData.totalChannelOwnerFee,
     },
     {
       title: '团长奖励',
-      tip: '团长奖励=拼团成功毛利金额*25%',
+      tip: '团长奖励=拼团成功毛利金额*15%',
       value: staticsData.totalTeamLeaderFee,
     },
   ];
