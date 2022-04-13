@@ -31,7 +31,7 @@ const ModuleDrawer = (props) => {
         ...ohter,
         timestame: cell?.timestame || new Date().getTime(), // 需要编辑的组件id
         index: dataIndex != -1 ? dataIndex : dataList.length,
-        ...data,
+        ...data, // 数据回显
         param: JSON.parse(data?.param || '{}'),
       },
     });

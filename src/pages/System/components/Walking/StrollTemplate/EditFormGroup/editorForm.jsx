@@ -368,12 +368,7 @@ const FormCondition = ({
             }}
           >
             {(fileLists[Array.isArray(name) ? name[1] : name]?.length || 0) <
-              (item.maxFile || 999) && (
-              <Button>
-                选择文件
-                {console.log(333, fileLists, fileLists[Array.isArray(name) ? name[1] : name])}
-              </Button>
-            )}
+              (item.maxFile || 999) && <Button>选择文件</Button>}
           </Upload>
         ),
         children: item.children,
