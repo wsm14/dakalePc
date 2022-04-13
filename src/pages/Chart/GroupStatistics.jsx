@@ -93,7 +93,7 @@ const GroupStatistics = (props) => {
     },
     {
       title: '平台服务费',
-      tip: '平台服务费=拼团成功毛利金额*10%，另外包含部分无渠道主的团，会把渠道主奖励分配到平台',
+      tip: '平台服务费=拼团成功毛利金额*15%，另外包含部分无渠道主的团，会把渠道主奖励分配到平台',
       value: staticsData.totalCommissionFee,
     },
     {
@@ -103,7 +103,7 @@ const GroupStatistics = (props) => {
     },
     {
       title: '渠道主奖励',
-      tip: '渠道主奖励=拼团成功毛利金额*25%，无渠道主的团会把该部分奖励分到平台',
+      tip: '渠道主奖励=拼团成功毛利金额*20%，无渠道主的团会把该部分奖励分到平台',
       value: staticsData.totalChannelOwnerFee,
     },
     {
