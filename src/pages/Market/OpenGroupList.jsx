@@ -194,11 +194,11 @@ const OpenGroupList = (props) => {
         rowKey={(record) => `${record.groupId}`}
         timeParams={{
           time: {
-            startTime: moment().subtract(1, 'day').format('YYYY-MM-DD'),
-            endTime: moment().subtract(1, 'day').format('YYYY-MM-DD'),
+            startTime: moment().subtract(1, 'month').format('YYYY-MM-DD'),
+            endTime: moment().format('YYYY-MM-DD'),
           },
           show: {
-            startTime: [moment().subtract(1, 'day'), moment().subtract(1, 'day')],
+            startTime: [moment().subtract(1, 'month'), moment()],
           },
         }}
         dispatchType="openGroupList/fetchGetList"
