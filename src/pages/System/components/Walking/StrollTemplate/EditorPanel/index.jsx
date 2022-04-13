@@ -30,33 +30,16 @@ const EditorPanel = ({ context }) => {
    */
   const handleSaveData = () => {
     const params = { timestame, moduleName };
-
     cRef.current
       .getContent()
       .then((content) => {
         if (!content) return false;
         let payload = {};
-        if (moduleName === 'topBackground') {
-          // 顶部背景的特殊处理
-          let newData = [];
-          const topIndex = dataList.findIndex((i) => i.moduleName === moduleName);
-          if (topIndex) {
-            newData = update(dataList, {
-              $splice: [[topIndex, 1, { ...params, ...content }]],
-            });
-          } else {
-            newData = update(dataList, {
-              $unshift: [{ ...params, ...content }],
-            });
-          }
-          payload = { dataList: newData };
-        } else {
-          // 正常组件的处理
-          const newData = update(dataList, {
-            $splice: [[only ? 0 : showPanel, 1, { ...params, ...content }]],
-          });
-          payload = { dataList: newData };
-        }
+        // 正常组件的处理
+        const newData = update(dataList, {
+          $splice: [[index, 1, { ...params, ...content }]],
+        });
+        payload = { dataList: newData };
         console.log('saveModuleData', payload);
         dispatchData({
           type: 'saveModuleData',
@@ -82,7 +65,7 @@ const EditorPanel = ({ context }) => {
     dispatchData({
       type: 'saveModuleData',
       payload: {
-        dataList: update(dataList, { $splice: [[showPanel, 1]] }),
+        dataList: update(dataList, { $splice: [[index, 1]] }),
       },
     });
     handleCloseEdit();
