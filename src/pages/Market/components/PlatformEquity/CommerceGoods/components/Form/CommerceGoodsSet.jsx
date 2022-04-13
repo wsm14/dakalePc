@@ -193,13 +193,13 @@ const CommerceGoodsSet = ({
     },
     {
       label: '现金',
-      name:  ['paymentModeObject', 'cash'],
+      name: ['paymentModeObject', 'cash'],
       type: 'number',
       disabled: editDisabled,
       precision: 2,
       min: 0.01,
       max: 999999.99,
-      visible: ['cashMode','self'].includes(radioData.buyType),
+      visible: ['cashMode', 'self'].includes(radioData.buyType),
       formatter: (value) => `￥ ${value}`,
       suffix: '元',
     },
@@ -236,6 +236,8 @@ const CommerceGoodsSet = ({
             if (
               radioData.buyType === 'self'
                 ? merchantPrice > buyPrice + buyPriceBean / 100
+                : radioData.buyType === 'cashMode'
+                ? merchantPrice > buyPrice
                 : merchantPrice > realPrice
             ) {
               return Promise.reject('商家结算价不可超过售卖价格');
