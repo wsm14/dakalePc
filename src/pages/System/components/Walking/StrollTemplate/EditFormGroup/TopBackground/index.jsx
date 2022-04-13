@@ -36,7 +36,7 @@ const TopBackground = (props) => {
       max: 999,
       precision: 0,
       required: true,
-      extra: '可输入100-999之间的整数（含100和999）',
+      extra: '可输入100-999之间的整数（含100和999），正常情况下ios的高度比android小50px左右',
     },
     {
       label: '选择文件',
