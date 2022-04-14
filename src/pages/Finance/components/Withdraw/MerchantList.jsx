@@ -80,7 +80,7 @@ const MerchantList = (props) => {
     },
     {
       title: '店铺名称/ID',
-      width: 200,
+      width: 250,
       dataIndex: 'merchantName',
       // ellipsis: { lines: 2 },
       render: (val, row) => (
@@ -92,9 +92,9 @@ const MerchantList = (props) => {
             </Ellipsis>
           </div>
           <div style={{ display: 'flex', marginTop: 5 }}>
-            <Ellipsis length={10} tooltip>
-              {row.userIdString}
-            </Ellipsis>
+            {/* <Ellipsis length={10} tooltip> */}
+            {row.userIdString}
+            {/* </Ellipsis> */}
           </div>
         </div>
       ),

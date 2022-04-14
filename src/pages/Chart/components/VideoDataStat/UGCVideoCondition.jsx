@@ -43,6 +43,7 @@ const UGCVideoCondition = ({ rewardList, dispatch, loading }) => {
           seriesField="type"
           isGroup={true}
           maxColumnWidth={40}
+          ribbonAnnotations={[]}
         />
       </div>
     </div>
