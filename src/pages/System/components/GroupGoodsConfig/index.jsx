@@ -90,6 +90,13 @@ const GroupGoodsConfig = (props) => {
       ),
     },
     {
+      title: '状态',
+      align: 'center',
+      dataIndex: 'status',
+      render: (val) => ['下架', '上架'][val],
+    },
+
+    {
       type: 'handle',
       dataIndex: 'togetherGroupConfigId',
       width: 150,
