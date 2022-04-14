@@ -9,6 +9,7 @@ const ColumnChart = (props) => {
     xyField = { xField: 'type', yField: 'value' },
     meta = { type: { alias: 'x轴' }, value: { alias: 'y轴' } },
     loading = null,
+    ribbonAnnotations,
     ...other
   } = props;
 
@@ -18,11 +19,11 @@ const ColumnChart = (props) => {
     annotations.push({
       type: 'text',
       position: [k, value],
-      content: `${value}`,
+      content: `${value.toFixed(2)}`,
       style: {
         textAlign: 'center',
         fontSize: 14,
-        fill: 'rgba(0,0,0,0.85)',
+        fill: 'rgba(0, 0, 0, 0.7)',
       },
       offsetY: -10,
     });
@@ -61,7 +62,7 @@ const ColumnChart = (props) => {
       '#288445',
       '#527C88',
     ],
-    annotations,
+    annotations: ribbonAnnotations || annotations,
     ...other,
   };
 

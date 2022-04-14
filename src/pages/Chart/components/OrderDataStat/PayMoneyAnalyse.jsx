@@ -36,7 +36,21 @@ const PayMoneyAnalyse = ({ payList, dispatch, loading }) => {
       {/* 图表 */}
       <div style={{ maxWidth: '60%', marginTop: 25 }}>
         <Spin spinning={loading}>
-          <Pie data={payList} title="支付金额" innerRadius={0.7} radius={0.8} />
+          <Pie
+            data={payList}
+            statistic={{
+              title: { customHtml: '支付金额', style: { fontSize: 14 }, offsetY: -10 },
+              content: {
+                style: { fontSize: 25, fontWeight: 400 },
+                customHtml: (container, view, datum, data) => {
+                  const text = `¥ ${data.reduce((r, d) => r + d.value, 0).toFixed(2)}`;
+                  return text;
+                },
+              },
+            }}
+            innerRadius={0.7}
+            radius={0.8}
+          />
         </Spin>
       </div>
     </div>
