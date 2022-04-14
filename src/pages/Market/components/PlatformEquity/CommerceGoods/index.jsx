@@ -64,7 +64,7 @@ const PlatformEquityGoods = (props) => {
       title: '商品名称/ID',
       fixed: 'left',
       dataIndex: 'goodsImg',
-      width:300,
+      width:350,
       render: (val, row) => (
         <div style={{ display: 'flex' }}>
           <PopImgShow url={val} />
