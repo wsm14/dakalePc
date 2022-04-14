@@ -63,7 +63,7 @@ const BeanCounteractInfo = (props) => {
       <Spin spinning={loading}>
         <Row>
           {pieList.list.map((item) => (
-            <Col key={item.type} flex="20%">
+            <Col key={item.type} flex="20%" style={{ textAlign: 'center' }}>
               <Tooltip
                 title={
                   <div>
@@ -73,17 +73,22 @@ const BeanCounteractInfo = (props) => {
                 }
               >
                 <Progress
+                  strokeWidth={6}
                   style={{ marginTop: 25 }}
                   type="circle"
                   percent={item.value}
+                  strokeColor={{
+                    '0%': '#108ee9',
+                    '100%': '#87d068',
+                  }}
                   format={() => (
                     <div>
-                      <div style={{ fontSize: 16 }}>{item.type}</div>
                       <div>{`${item.value}%`}</div>
                     </div>
                   )}
                 />
               </Tooltip>
+              <div style={{ marginTop: 10, fontSize: 16 }}>{item.type}</div>
             </Col>
           ))}
         </Row>

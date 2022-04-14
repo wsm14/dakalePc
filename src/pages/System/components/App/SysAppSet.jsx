@@ -9,50 +9,37 @@ import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const SysAppSet = (props) => {
-  const { dispatch, cRef, visible, onClose, tabKey, tabKeyTwo, radioType, loading, bannerTypeObj } =
-    props;
+  const { dispatch, cRef, visible, onClose, tabKey, radioType, loading, bannerTypeObj } = props;
 
-  const { show = false, type = 'add', detail = { provinceCityDistrictObjects: [{}] } } = visible;
-  const { version } = detail;
+  const { show = false, type = 'add', detail = {} } = visible;
+  const { version, userType, userOs, area, cityCode, bannerIdString } = detail;
 
   const [form] = Form.useForm();
-  const [showArea, setShowArea] = useState(false); // 区域
   const [showRadio, setShowRadio] = useState(null); // 图片分辨率
   const [showTitle, setShowTitle] = useState(null); // 是否显示标题
 
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      const {
-        coverImg,
-        hideTitle = false,
-        provinceCityDistrictObjects: cityData = [],
-        activityTime,
-      } = values;
-      // 城市数据整理
-      const provinceCityDistrictObjects = cityData.map(({ city }) => ({
-        provinceCode: city[0],
-        cityCode: city[1],
-        districtCode: city[2],
-      }));
+      const { coverImg, hideTitle = false, activityTime } = values;
+
+      const detailParam = { userType, userOs, version, area, cityCode };
+
       // 上传图片到oss -> 提交表单
       aliOssUpload(coverImg).then((res) => {
         dispatch({
           type: { add: 'sysAppList/fetchBannerSet', edit: 'sysAppList/fetchBannerEdit' }[type],
           payload: {
-            bannerId: detail.bannerIdString,
+            bannerIdString,
             ...values,
+            ...detailParam,
             flag: {
               add: 'addConfig',
               edit: 'updateConfig',
             }[type],
-            version,
             beginDate: moment(activityTime[0]).format('YYYY-MM-DD'),
             endDate: moment(activityTime[1]).format('YYYY-MM-DD'),
-            userType: tabKey,
-            userOs: tabKeyTwo,
             hideTitle: Number(!hideTitle),
-            provinceCityDistrictObjects,
             coverImg: res.toString(),
           },
           callback: () => {
@@ -108,26 +95,6 @@ const SysAppSet = (props) => {
       select: BANNER_LOOK_AREA,
     },
     {
-      label: '应用范围',
-      type: 'radio',
-      name: 'deliveryAreaType',
-      select: BANNER_AREA_TYPE,
-      onChange: (e) => setShowArea(e.target.value === 'detail'),
-    },
-    {
-      label: '选择区县',
-      type: 'formItem',
-      visible: showArea,
-      formItem: (
-        <CitySet
-          name="provinceCityDistrictObjects"
-          form={form}
-          maxLength={10}
-          changeOnSelect={true}
-        ></CitySet>
-      ),
-    },
-    {
       type: 'noForm',
       formItem: (
         <NewNativeFormSet
@@ -153,13 +120,13 @@ const SysAppSet = (props) => {
     afterCallBack: () => {
       setShowTitle(detail.jumpUrlType);
       setShowRadio(detail.bannerType);
-      setShowArea(detail.deliveryAreaType === 'detail');
     },
     footer: (
       <Button onClick={fetchGetFormData} type="primary" loading={loading}>
         确认
       </Button>
     ),
+    zIndex: 1001,
   };
 
   return (

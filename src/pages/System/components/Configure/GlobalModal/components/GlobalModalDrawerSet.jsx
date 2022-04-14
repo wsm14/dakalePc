@@ -110,11 +110,11 @@ const GlobalModalDrawerSet = (props) => {
       name: 'popUpUrl',
       visible: modalType === 'url',
     },
-    {
-      type: 'noForm',
-      visible: modalType === 'image',
-      formItem: <NewNativeFormSet form={form} detail={detail}></NewNativeFormSet>,
-    },
+    // {
+    //   type: 'noForm',
+    //   visible: modalType === 'image',
+    //   formItem: <NewNativeFormSet form={form} detail={detail}></NewNativeFormSet>,
+    // },
     {
       label: '可见范围',
       name: 'visibleRange',

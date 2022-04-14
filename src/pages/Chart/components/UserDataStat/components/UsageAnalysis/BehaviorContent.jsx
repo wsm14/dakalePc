@@ -45,9 +45,6 @@ const BehaviorContent = (props) => {
           legend={false}
           seriesField="type"
           isStack={true}
-          label={{
-            position: 'middle',
-          }}
           maxColumnWidth={40}
         />
       ),

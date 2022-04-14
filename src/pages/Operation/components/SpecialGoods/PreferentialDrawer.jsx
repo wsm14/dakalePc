@@ -125,6 +125,7 @@ const PreferentialDrawer = (props) => {
           {...listProp}
           form={form}
           initialValues={{
+            thirdFlag: '1',
             ownerType: 'merchant',
             goodsType: 'single',
             goodsDescType: '0',

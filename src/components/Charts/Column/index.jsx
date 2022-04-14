@@ -1,6 +1,7 @@
 import React from 'react';
 import { Column } from '@ant-design/charts';
 import Loading from '../Loading';
+import { each, groupBy } from '@antv/util';
 
 const ColumnChart = (props) => {
   const {
@@ -10,6 +11,23 @@ const ColumnChart = (props) => {
     loading = null,
     ...other
   } = props;
+
+  const annotations = [];
+  each(groupBy(data, xyField.xField), (values, k) => {
+    const value = values.reduce((a, b) => a + b.value, 0);
+    annotations.push({
+      type: 'text',
+      position: [k, value],
+      content: `${value}`,
+      style: {
+        textAlign: 'center',
+        fontSize: 14,
+        fill: 'rgba(0,0,0,0.85)',
+      },
+      offsetY: -10,
+    });
+  });
+
   const config = {
     padding: 'auto',
     appendPadding: 20,
@@ -17,9 +35,9 @@ const ColumnChart = (props) => {
     autoFit: true,
     meta,
     ...xyField,
-    label: {
-      position: 'top', // 'top', 'bottom', 'middle',
-    },
+    // label: {
+    //   position: 'top', // 'top', 'bottom', 'middle',
+    // },
     tooltip: {
       visible: true,
       domStyles: {
@@ -43,6 +61,7 @@ const ColumnChart = (props) => {
       '#288445',
       '#527C88',
     ],
+    annotations,
     ...other,
   };
 

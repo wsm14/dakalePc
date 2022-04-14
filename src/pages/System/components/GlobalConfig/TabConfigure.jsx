@@ -50,9 +50,29 @@ const TabConfigure = (props) => {
           },
           auth: true,
         },
+        {
+          type: 'del',
+          title: '删除版本',
+          click: () => {
+            handleDelVersion(val);
+          },
+          auth: true,
+        },
       ],
     },
   ];
+
+  // 删除版本
+  const handleDelVersion = (configIndexTabId) => {
+    dispatch({
+      type: 'globalConfig/fetchIndexTabEdit',
+      payload: {
+        configIndexTabId,
+        flag: 'deleteVersion',
+      },
+      callback: childRef?.current?.fetchGetData,
+    });
+  };
 
   const cardBtnList = [
     {
@@ -70,7 +90,7 @@ const TabConfigure = (props) => {
   const handleTabChange = (key) => {
     setTabKey(key);
     if (key !== 'weChat') {
-      childRef?.current?.fetchGetData({ userOs: key, area: 'all' });
+      childRef?.current?.fetchGetData({ userOs: key, area: 'all', deleteFlag: 1 });
     }
   };
 
@@ -92,7 +112,7 @@ const TabConfigure = (props) => {
             btnExtra={cardBtnList}
             pagination={false}
             rowKey={(record) => `${record.configIndexTabId}`}
-            params={{ userOs: tabKey, area: 'all' }}
+            params={{ userOs: tabKey, area: 'all', deleteFlag: 1 }}
             dispatchType="globalConfig/fetchIndexTabList"
             {...IndexTabList}
           />

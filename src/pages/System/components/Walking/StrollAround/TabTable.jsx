@@ -48,9 +48,28 @@ const TabTable = (props) => {
           click: () => handleEdit(val, row),
           auth: true,
         },
+        {
+          type: 'del',
+          title: '删除',
+          click: () => handleDelCity(val),
+          visible: row.area !== 'all',
+          auth: true,
+        },
       ],
     },
   ];
+
+  // 删除城市
+  const handleDelCity = (configWanderAroundModuleId) => {
+    dispatch({
+      type: 'walkingManage/fetchUpdateWanderAroundModule',
+      payload: {
+        configWanderAroundModuleId,
+        flag: 'deleteCity',
+      },
+      callback: childRef?.current?.fetchGetData,
+    });
+  };
 
   const handleEdit = (configWanderAroundModuleId, row) => {
     dispatch({
@@ -99,7 +118,7 @@ const TabTable = (props) => {
         pagination={false}
         btnExtra={cardBtnList}
         rowKey={(record) => `${record.configWanderAroundModuleId}`}
-        params={{ userOs: tabKey, version }}
+        params={{ userOs: tabKey, version, deleteFlag: 1 }}
         dispatchType="walkingManage/fetchAroundModuleCityList"
         {...configureList}
       ></TableDataBlock>

@@ -45,6 +45,7 @@ const TabConfigure = (props) => {
         },
         {
           type: 'iconVersionDel',
+          pop: true,
           title: '删除版本',
           click: () => {
             handleDelVersion(val);
@@ -60,7 +61,7 @@ const TabConfigure = (props) => {
       type: 'globalConfig/fetchUpdateConfigBottomCenterIcon',
       payload: {
         configBottomCenterIconId,
-        flag: 'delete',
+        flag: 'deleteVersion',
       },
       callback: childRef?.current?.fetchGetData,
     });

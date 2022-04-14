@@ -14,7 +14,9 @@ export default {
   namespace: 'sysAppList',
 
   state: {
-    list: { list: [], total: 0 },
+    versionList: { list: [], total: 0 },
+    cityList: { list: [], total: 0 },
+    configureList: { list: [], total: 0 },
     radioType: { user: {}, merchant: {}, weChat: {}, markMain: {} },
     bannerTypeObj: {},
   },
@@ -36,7 +38,35 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: {
+          versionList: {
+            list: content.recordList,
+            total: content.total,
+          },
+        },
+      });
+    },
+    *fetchGetCityList({ payload }, { call, put }) {
+      const response = yield call(fetchBannerList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          cityList: {
+            list: content.recordList,
+            total: content.total,
+          },
+        },
+      });
+    },
+    *fetchGetConfigureList({ payload }, { call, put }) {
+      const response = yield call(fetchBannerList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          configureList: {
             list: content.recordList,
             total: content.total,
           },

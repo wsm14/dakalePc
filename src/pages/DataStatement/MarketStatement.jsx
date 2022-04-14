@@ -45,11 +45,12 @@ const MarketStatement = (props) => {
     {
       title: '下单数',
       dataIndex: 'totalPlaceOrderAmount',
+      render: (val, row) => (row.orderType === 'scan' ? '' : val),
     },
     {
       title: '下单金额',
       dataIndex: 'totalPlaceOrderFee',
-      render: (val) => `￥${val}`,
+      render: (val, row) => (row.orderType === 'scan' ? '' : `￥${val}`),
     },
     {
       title: '支付订单数',
@@ -67,7 +68,7 @@ const MarketStatement = (props) => {
     {
       title: '卡豆抵扣金额',
       dataIndex: 'totalBeanReduceAmount',
-      render: (val) => `￥${val / 100}`,
+      render: (val, row) => (row.orderType === 'weeklyCard' ? '' : `￥${(val / 100).toFixed(2)}`),
     },
     {
       title: '客单价',
@@ -86,20 +87,64 @@ const MarketStatement = (props) => {
     {
       title: '核销商品数',
       dataIndex: 'totalVerificationAmount',
+      render: (val, row) =>
+        [
+          'communityGoods',
+          'scan',
+          'virtualProduct',
+          'commerceGoods',
+          'weeklyCard',
+          'platformGift',
+        ].includes(row.orderType)
+          ? ''
+          : val,
     },
     {
       title: '核销金额',
       dataIndex: 'totalVerificationFee',
-      render: (val) => `￥${val}`,
+      render: (val, row) =>
+        [
+          'communityGoods',
+          'scan',
+          'virtualProduct',
+          'commerceGoods',
+          'weeklyCard',
+          'platformGift',
+        ].includes(row.orderType)
+          ? ''
+          : `￥${val}`,
     },
     {
       title: '退款商品数',
       dataIndex: 'totalRefundAmount',
+      render: (val, row) =>
+        [
+          'communityGoods',
+          'scan',
+          'virtualProduct',
+          'commerceGoods',
+          'weeklyCard',
+          'platformGift',
+          'channelGoods',
+        ].includes(row.orderType)
+          ? ''
+          : val,
     },
     {
       title: '退款金额',
       dataIndex: 'totalRefundFee',
-      render: (val) => `￥${val}`,
+      render: (val, row) =>
+        [
+          'communityGoods',
+          'scan',
+          'virtualProduct',
+          'commerceGoods',
+          'weeklyCard',
+          'platformGift',
+          'channelGoods',
+        ].includes(row.orderType)
+          ? ''
+          : `￥${val}`,
     },
   ];
 

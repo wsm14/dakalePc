@@ -5,6 +5,7 @@ import { COMMERCE_ORDERS_STATUS, ORDER_CLOSE_TYPE, ORDER_PAY_LOGO } from '@/comm
 import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
 import Ellipsis from '@/components/Ellipsis';
+import PopImgShow from '@/components/PopImgShow';
 import excelHeder from './excelHeder';
 import OrderDrawer from './OrderDrawer';
 import styles from '../style.less';
@@ -85,21 +86,45 @@ const CommerceGoods = (props) => {
     {
       title: '商品名称',
       dataIndex: 'goodsName',
-      render: (val, row) => (
-        <>
-          <Ellipsis length={15} tooltip>
-            {val}
-          </Ellipsis>
-          <div style={{ marginTop: 5 }} className={styles.specFont}>
-            <Ellipsis length={12} tooltip>
-              {`备注：${row?.remark}`}
-            </Ellipsis>
+      render: (val, row) => {
+        const { remark = '', togetherGroupId = '' } = row;
+        let showRemark = '';
+        if (togetherGroupId) {
+          if (remark) {
+            showRemark = `${togetherGroupId}--${remark}`;
+          } else {
+            showRemark = togetherGroupId;
+          }
+        } else {
+          showRemark = remark;
+        }
+        return (
+          <div style={{ display: 'flex' }}>
+            <PopImgShow url={row.goodsImg} />
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                flex: 1,
+                marginLeft: 5,
+              }}
+            >
+              <Ellipsis length={15} tooltip>
+                {val}
+              </Ellipsis>
+              <div style={{ marginTop: 5 }} className={styles.specFont}>
+                <Ellipsis length={12} tooltip>
+                  {`备注：${showRemark}`}
+                </Ellipsis>
+              </div>
+              <div style={{ marginTop: 5 }} className={styles.specFont}>
+                订单号：{row.orderSn}
+              </div>
+            </div>
           </div>
-          <div style={{ marginTop: 5 }} className={styles.specFont}>
-            订单号：{row.orderSn}
-          </div>
-        </>
-      ),
+        );
+      },
     },
     {
       title: '下单人',
@@ -168,7 +193,7 @@ const CommerceGoods = (props) => {
       render: (val, row) => (
         <>
           <span style={{ display: 'inline-flex', marginBottom: 5 }}>
-            {COMMERCE_ORDERS_STATUS[val]}
+            {['2','6'].includes(val)? <div style={{ color: '#999' }}>{ORDER_CLOSE_TYPE[row.closeType]}</div>:COMMERCE_ORDERS_STATUS[val]}
             <Avatar
               src={ORDER_PAY_LOGO[row.orderSource]}
               size="small"
@@ -176,9 +201,6 @@ const CommerceGoods = (props) => {
               style={{ marginLeft: 5 }}
             />
           </span>
-          {(val === 2 || val === 6) && (
-            <div style={{ color: '#999' }}>{ORDER_CLOSE_TYPE[row.closeType]}</div>
-          )}
         </>
       ),
     },

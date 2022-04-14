@@ -5,6 +5,7 @@ import { Spin, Tag } from 'antd';
 import debounce from 'lodash/debounce';
 import { checkCityName } from '@/utils/utils';
 import { WITHDRAW_STATUS } from '@/common/constant';
+import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import WithdrawRemark from './WithdrawRemark';
 import excelProps from './AllianceExcelProps';
@@ -90,14 +91,17 @@ const AllianceList = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '提现日期',
+      title: '提现日期/流水单号',
       fixed: 'left',
       dataIndex: 'withdrawalDate',
-    },
-    {
-      title: '提现单号',
-      fixed: 'left',
-      dataIndex: 'withdrawalSn',
+      render: (val, row) => (
+        <div style={{ textAlign: 'center' }}>
+          <div>{val}</div>
+          <Ellipsis length={10} tooltip>
+            {row.withdrawalSn}
+          </Ellipsis>
+        </div>
+      ),
     },
     {
       title: '企业名称',
@@ -107,18 +111,6 @@ const AllianceList = (props) => {
       title: '省市区',
       dataIndex: 'districtCode',
       render: (val, row) => checkCityName(val || row.cityCode || row.provinceCode),
-    },
-    {
-      title: '提现账户',
-      align: 'center',
-      dataIndex: 'withdrawalAccount',
-      render: (val, row) => `${row.withdrawalChannelName}\n${val}`,
-    },
-    {
-      title: '提现账户类型',
-      align: 'center',
-      dataIndex: 'withdrawalChannelType',
-      render: (val) => '现金账户',
     },
     {
       title: '提现金额',
@@ -133,11 +125,23 @@ const AllianceList = (props) => {
       render: (val) => `￥ ${val}`,
     },
     {
+      title: '提现账户类型',
+      align: 'center',
+      dataIndex: 'withdrawalChannelType',
+      render: (val) => '现金账户',
+    },
+    {
+      title: '提现账户',
+      align: 'center',
+      dataIndex: 'withdrawalAccount',
+      render: (val, row) => `${row.withdrawalChannelName}\n${val}`,
+    },
+    {
       title: '状态',
       align: 'right',
       fixed: 'right',
       dataIndex: 'status',
-      render: (val) => WITHDRAW_STATUS[val],
+      render: (val) => <div style={val == '4' ? { color: 'red' } : {}}>{WITHDRAW_STATUS[val]}</div>,
     },
   ];
 

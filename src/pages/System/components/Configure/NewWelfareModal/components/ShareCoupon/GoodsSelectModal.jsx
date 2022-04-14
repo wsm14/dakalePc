@@ -71,10 +71,13 @@ const GoodsSelectModal = (props) => {
 
   // 获取特惠活动
   const fetchSpecialGoodsList = (data) => {
+    console.log('data', data);
     if (!data?.id) return;
+    const { id, ...other } = data;
     dispatch({
       type: 'baseData/fetchGetPlatformCommerceGoodsSelect',
       payload: {
+        ...other,
         buyFlag: 1,
         relateId: data.id,
         relateType: 'merchant',

@@ -12,6 +12,7 @@ import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import PlatformDrawer from './components/PlatformManage/PlatformDrawer';
 import RemainModal from './components/PlatformManage/Detail/RemainModal';
+import GiveUserCoupon from './components/PlatformManage/Give/GiveUserCoupon';
 
 const PlatformManage = (props) => {
   const { platformCouponList, loading, dispatch } = props;
@@ -23,6 +24,7 @@ const PlatformManage = (props) => {
 
   const [visibleRemain, setVisibleRemain] = useState(false); //增加库存
 
+  const [visibleGive, setVisibleGive] = useState(false); //赠送
   // 搜索参数
   const searchItems = [
     {
@@ -38,6 +40,12 @@ const PlatformManage = (props) => {
       type: 'select',
       name: 'useScenesType',
       select: PLATFORM_TICKET_SCENE,
+    },
+    {
+      label: '发放方式',
+      type: 'select',
+      name: 'giveType',
+      select: COUPON_GIVE_TYPE,
     },
     {
       label: '状态',
@@ -78,9 +86,18 @@ const PlatformManage = (props) => {
       ),
     },
     {
-      title: '券价值/使用门槛',
+      title: '券价值/使用门槛/券描述',
       dataIndex: 'couponValue',
-      render: (val, row) => <div>{`￥${val}（满${row.thresholdPrice}元可用）`}</div>,
+      render: (val, row) => (
+        <div>
+          <div>{`￥${val}（满${row.thresholdPrice}元可用）`}</div>
+          <div style={{ color: '#999', fontSize: '12px' }}>
+            <Ellipsis length={15} tooltip>
+              {row.couponDesc}
+            </Ellipsis>
+          </div>
+        </div>
+      ),
     },
     {
       title: '券有效期',
@@ -122,7 +139,7 @@ const PlatformManage = (props) => {
       dataIndex: 'platformCouponId',
       render: (platformCouponId, record) => {
         // 1 上架 2 下架
-        const { couponStatus: status, endDate } = record;
+        const { couponStatus: status, endDate, giveType } = record;
         return [
           {
             type: 'info',
@@ -131,6 +148,12 @@ const PlatformManage = (props) => {
           {
             type: 'edit',
             click: () => fetchCouponDetail(platformCouponId, 'edit'),
+          },
+          {
+            title: '赠送',
+            auth: true,
+            visible: ['1'].includes(status) && ['system'].includes(giveType),
+            click: () => fetchCouponGive(record),
           },
           {
             title: '下架',
@@ -189,6 +212,11 @@ const PlatformManage = (props) => {
     });
   };
 
+  //赠送
+  const fetchCouponGive = (record) => {
+    setVisibleGive({ show: true, detail: record });
+  };
+
   // 权限按钮
   const btnList = [
     {
@@ -201,7 +229,6 @@ const PlatformManage = (props) => {
   return (
     <>
       <TableDataBlock
-        
         btnExtra={btnList}
         cRef={childRef}
         loading={loading}
@@ -223,6 +250,15 @@ const PlatformManage = (props) => {
         visible={visibleRemain}
         onClose={() => setVisibleRemain(false)}
       ></RemainModal>
+
+      {/* 赠送弹窗 */}
+      <GiveUserCoupon
+        visible={visibleGive}
+        onClose={() => {
+          setVisibleGive({ show: false });
+        }}
+        childRef={childRef}
+      ></GiveUserCoupon>
     </>
   );
 };

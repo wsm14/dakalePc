@@ -33,9 +33,28 @@ const TabTable = (props) => {
           click: () => handleEdit(row),
           auth: true,
         },
+        {
+          type: 'del',
+          title: '删除',
+          click: () => handleDelCity(val),
+          visible: row.areaType !== 'all',
+          auth: true,
+        },
       ],
     },
   ];
+
+  // 删除城市
+  const handleDelCity = (configWindVaneId) => {
+    dispatch({
+      type: 'walkingManage/fetchGetWindVaneManagementEdit',
+      payload: {
+        configWindVaneId,
+        flag: 'deleteCity',
+      },
+      callback: childRef?.current?.fetchGetData,
+    });
+  };
 
   const handleEdit = (detail) => {
     setVisibleConfigure({
@@ -68,7 +87,7 @@ const TabTable = (props) => {
         pagination={false}
         btnExtra={cardBtnList}
         rowKey={(record) => `${record.configWindVaneId}`}
-        params={{ userOs: tabKey, version, isAutomatic: 1 }}
+        params={{ userOs: tabKey, version, isAutomatic: 1, deleteFlag: 1 }}
         dispatchType="walkingManage/fetchGetWindVaneCityList"
         {...vaneCityList}
       ></TableDataBlock>

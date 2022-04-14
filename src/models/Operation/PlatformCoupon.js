@@ -8,6 +8,9 @@ import {
   fetchPlatformCouponUpdate,
   fetchAddTotalPlatformCoupon,
   fetchListRuleByPage,
+  fetchGivePlatformCoupon,
+  fetchPagePlatformCouponGiveImport,
+  fetchPagePlatformCouponGiveImportDetail,
 } from '@/services/OperationServices';
 import moment from 'moment';
 
@@ -24,6 +27,14 @@ export default {
       total: 0,
     },
     ruleByPagelist: { list: [], total: 0 },
+    importList: {
+      list: [],
+      total: 0,
+    },
+    importDetailList: {
+      list: [],
+      total: 0,
+    },
   },
 
   reducers: {
@@ -144,6 +155,46 @@ export default {
         type: 'save',
         payload: {
           ruleByPagelist: {
+            list: content.recordList,
+            total: content.total,
+          },
+        },
+      });
+    },
+    //  post 券规则管理 - 赠送
+    *fetchGivePlatformCoupon({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGivePlatformCoupon, payload);
+      if (!response) return;
+      const descriptionInfo =
+        payload.giveFlag === 'batch' ? '导入成功，导入结果请到“导入记录”中查看' : '成功';
+      notification.success({
+        message: '温馨提示',
+        description: descriptionInfo,
+      });
+      callback && callback();
+    },
+    *fetchGiveImportGetList({ payload }, { call, put }) {
+      const response = yield call(fetchPagePlatformCouponGiveImport, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          importList: {
+            list: content.recordList,
+            total: content.total,
+          },
+        },
+      });
+    },
+    *fetchGiveImportGetListDetail({ payload, callback }, { call, put }) {
+      const response = yield call(fetchPagePlatformCouponGiveImportDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          importDetailList: {
             list: content.recordList,
             total: content.total,
           },

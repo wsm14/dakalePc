@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Radio, Spin, Empty, Select, Upload, Modal, Switch, InputNumber } from 'antd';
+import {
+  Button,
+  Form,
+  Input,
+  Radio,
+  Spin,
+  Empty,
+  Select,
+  Upload,
+  Modal,
+  Switch,
+  InputNumber,
+} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import imageCompress from '@/utils/imageCompress';
 import './index.less';
@@ -53,7 +65,7 @@ const FormCondition = ({
     const fileobj = {};
     formItems.map((item, i) => {
       const { name } = item;
-      if (item.type === 'upload') {
+      if (item.type === 'upload' || item.type === 'otherUpload') {
         if (Object.keys(initialValues).length) {
           if (Array.isArray(name)) {
             if (!initialValues[name[0]]) {
@@ -88,7 +100,7 @@ const FormCondition = ({
     const fileobj = {};
     formItems.map((item, i) => {
       const { name } = item;
-      if (item.type === 'upload') {
+      if (item.type === 'upload' || item.type === 'otherUpload') {
         if (Object.keys(initialValues).length) {
           if (Array.isArray(name)) {
             if (!initialValues[name[0]]) {
@@ -205,6 +217,8 @@ const FormCondition = ({
         visible = true,
         hidden = false,
         fieldNames = {},
+        formItem,
+        ...other
       } = item;
       const { label = 'name', value = 'value', tip = 'otherData' } = fieldNames;
 
@@ -237,7 +251,7 @@ const FormCondition = ({
             }}
           />
         ),
-        number: <InputNumber min={0}></InputNumber>,
+        number: <InputNumber min={0} {...other}></InputNumber>,
         textArea: (
           <Input.TextArea
             placeholder={placeholder}
@@ -325,6 +339,38 @@ const FormCondition = ({
               uploadButton}
           </Upload>
         ),
+        otherUpload: (
+          <Upload
+            multiple={false}
+            listType="picture"
+            maxCount={item.maxFile || 1}
+            className={item.className}
+            fileList={fileLists[Array.isArray(name) ? name[1] : name]}
+            beforeUpload={() => false}
+            onChange={(value) => {
+              console.log(222, value);
+              const { fileList } = value;
+              const newFileList = fileList;
+              if ((!value.file.status || value.file.status === 'done') && newFileList.length) {
+                const newData = newFileList.slice(0, item.maxFile || 999);
+                setFileLists((old) => ({
+                  ...old,
+                  [Array.isArray(name) ? name[1] : name]: newData,
+                }));
+              } else {
+                if (!newFileList.length)
+                  form.setFieldsValue({ [Array.isArray(name) ? name[1] : name]: undefined });
+                setFileLists((old) => ({
+                  ...old,
+                  [Array.isArray(name) ? name[1] : name]: newFileList,
+                }));
+              }
+            }}
+          >
+            {(fileLists[Array.isArray(name) ? name[1] : name]?.length || 0) <
+              (item.maxFile || 999) && <Button>选择文件</Button>}
+          </Upload>
+        ),
         children: item.children,
         noForm: '',
       }[type];
@@ -339,7 +385,8 @@ const FormCondition = ({
       }
 
       if (type === 'noForm') {
-        children.push(visible && item.children);
+        // children.push(visible && item.children);
+        children.push(visible && <div key={`${plabel}${name}`}>{item.formItem}</div>);
         return;
       }
 

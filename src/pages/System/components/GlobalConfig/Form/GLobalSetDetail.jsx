@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Button, Form } from 'antd';
+import { Button } from 'antd';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const GLobalSetDetail = (props) => {
@@ -17,7 +17,7 @@ const GLobalSetDetail = (props) => {
       label: '每看',
       name: 'preventSize',
       suffix: '个视频弹出广告',
-      render: (val) => val + '个视频弹出广告',
+      render: (val) => val + '个视频弹出拼图广告',
     },
   ];
 
@@ -66,10 +66,25 @@ const GLobalSetDetail = (props) => {
     },
   ];
 
+  const beanItem = [
+    {
+      label: '每日赚豆上限',
+      type: 'number',
+      name: ['totalLimit'],
+      render: (val) => val + '卡豆',
+    },
+    {
+      label: '单个视频赚豆数',
+      type: 'formItem',
+      render: (val, row) => `${row?.lowerLimit}-${row?.upperLimit}卡豆`,
+    },
+  ];
+
   const formItems = {
     merchantVideo: merChantItems,
     UGCVideo: UCGItems,
     adVideo: videoAdItem,
+    shareBean: beanItem,
     // jigsawAd: videoAdItem,
   }[tabKey];
 

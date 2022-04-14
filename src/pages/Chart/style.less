@@ -3,3 +3,47 @@
     z-index: 1000;
   }
 }
+
+.wraperCon {
+  display: flex;
+  width: 100%;
+  background: #fff;
+  .groupStaticHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 300px;
+    padding: 15px 25px;
+    font-size: 16px;
+    .fontWeight {
+      font-weight: bold;
+      font-size: 18px;
+    }
+  }
+  .groupStaticItem {
+    color: #02a7ef;
+    background: #fff;
+    &:nth-child(1) {
+      color: #fff;
+      background: #02a7ef;
+    }
+    &:nth-child(4) {
+      border-bottom: 1px solid #0000000f;
+    }
+  }
+  .rightWrap {
+    padding-left: 30px;
+    margin-left: 40px;
+    border-left:1px solid #dfdfdf;
+    .rightCon {
+      display: flex;
+      flex-wrap: wrap;
+      // padding:10px 20px;
+      .cardItem {
+        min-width: 300px;
+        height: 180px;
+        margin: 10px;
+      }
+    }
+  }
+}

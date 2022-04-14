@@ -239,7 +239,7 @@ const BusinessAddBeas = (props) => {
       label: '经营类目',
       type: 'cascader',
       name: 'topCategoryName',
-      disabled:setType==='audit',
+      disabled: setType === 'audit',
       select: tradeList.filter((i) => i.categoryDTOList),
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
       onChange: (val, option) => {

@@ -45,7 +45,7 @@ const UserDetailList = (props) => {
           dataIndex: 'detailTitle',
         },
         {
-          title: tabKey === 'earn' ? '关联店铺' : '关联店铺/视频',
+          title: tabKey === 'earn' ? '关联店铺' : '关联店铺/视频/直播',
           align: 'center',
           dataIndex: 'detailContent',
           render: (val) => val || '--',

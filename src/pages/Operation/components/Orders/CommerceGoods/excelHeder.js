@@ -12,6 +12,22 @@ export default [
     dataIndex: 'goodsName',
   },
   {
+    title: '备注',
+    dataIndex: 'remark',
+    render: (val, row) => {
+      const { togetherGroupId = '' } = row;
+      if (togetherGroupId) {
+        if (val) {
+          return `${togetherGroupId}--${val}`;
+        } else {
+          return togetherGroupId;
+        }
+      } else {
+        return val;
+      }
+    },
+  },
+  {
     title: '下单用户昵称',
     dataIndex: 'userName',
   },

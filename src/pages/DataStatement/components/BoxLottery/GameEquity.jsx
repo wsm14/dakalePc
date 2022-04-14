@@ -9,6 +9,8 @@ const GameSign = ({ gameEquityList, loading, tabkey, twoTabkey }) => {
   const twoType = {
     gameSign: 'signGame',
     gameFree: 'freeGoodGame',
+    gameGather: 'gatherCardGame',
+    gameFarm: 'farmGame',
   };
   const tableRef = useRef();
 

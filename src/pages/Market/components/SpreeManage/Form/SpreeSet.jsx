@@ -49,7 +49,8 @@ const CouponSet = (props) => {
       type: 'radio',
       disabled: type === 'edit',
       name: 'buyFlagType',
-      select: ['免费', '有价', '卡豆+现金'],
+      // select: ['免费', '有价', '卡豆+现金'],
+      select: ['免费', false, '卡豆+现金'],
       onChange: (e) => saveSelectData({ spreePrice: e.target.value }),
     },
     {

@@ -49,9 +49,29 @@ const Index = (props) => {
           },
           auth: true,
         },
+        {
+          type: 'del',
+          title: '删除版本',
+          click: () => {
+            handleDelVersion(val);
+          },
+          auth: true,
+        },
       ],
     },
   ];
+
+  // 删除版本
+  const handleDelVersion = (configFloatingWindowId) => {
+    dispatch({
+      type: 'marketConfigure/fetchFloatingWindowEdit',
+      payload: {
+        configFloatingWindowId,
+        flag: 'deleteVersion',
+      },
+      callback: childRef?.current?.fetchGetData,
+    });
+  };
 
   const cardBtnList = [
     {
@@ -75,6 +95,7 @@ const Index = (props) => {
         area: 'all',
         windowType: 'first',
         isAutomatic: 1,
+        deleteFlag: 1,
       });
     }
   };
@@ -97,7 +118,13 @@ const Index = (props) => {
             btnExtra={cardBtnList}
             pagination={false}
             rowKey={(record) => `${record.configFloatingWindowId}`}
-            params={{ userOs: tabKey, area: 'all', windowType: 'first', isAutomatic: 1 }}
+            params={{
+              userOs: tabKey,
+              area: 'all',
+              windowType: 'first',
+              isAutomatic: 1,
+              deleteFlag: 1,
+            }}
             dispatchType="marketConfigure/fetchFloatingWindowList"
             {...editionList}
           />

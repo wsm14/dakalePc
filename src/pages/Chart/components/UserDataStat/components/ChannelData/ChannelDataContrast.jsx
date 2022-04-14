@@ -90,8 +90,16 @@ const ChannelDataContrast = (props) => {
       {/* 图表 */}
       <Spin spinning={!!loading}>
         {list.length === 0 && channelTypeOne.length === 0 && channelTypeTwo.length === 0 ? (
-          <div style={{ fontSize: 30, height: 510, textAlign: 'center', lineHeight: '510px' }}>
-            请选择渠道，默认对比注册用户，可筛选
+          <div
+            style={{
+              fontSize: 30,
+              height: 510,
+              textAlign: 'center',
+              lineHeight: '510px',
+              color: '#cccccc',
+            }}
+          >
+            请选择渠道
           </div>
         ) : (
           <Line

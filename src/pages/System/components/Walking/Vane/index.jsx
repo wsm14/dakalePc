@@ -50,9 +50,29 @@ const TabConfigure = (props) => {
           },
           auth: true,
         },
+        {
+          type: 'del',
+          title: '删除版本',
+          click: () => {
+            handleDelVersion(val);
+          },
+          auth: true,
+        },
       ],
     },
   ];
+
+  // 删除版本
+  const handleDelVersion = (configWindVaneId) => {
+    dispatch({
+      type: 'walkingManage/fetchGetWindVaneManagementEdit',
+      payload: {
+        configWindVaneId,
+        flag: 'deleteVersion',
+      },
+      callback: childRef?.current?.fetchGetData,
+    });
+  };
 
   const cardBtnList = [
     {
@@ -71,7 +91,12 @@ const TabConfigure = (props) => {
   const handleTabChange = (key) => {
     setTabKey(key);
     if (key !== 'weChat') {
-      childRef?.current?.fetchGetData({ userOs: key, areaType: 'all', isAutomatic: 1 });
+      childRef?.current?.fetchGetData({
+        userOs: key,
+        areaType: 'all',
+        isAutomatic: 1,
+        deleteFlag: 1,
+      });
     }
   };
 
@@ -93,7 +118,7 @@ const TabConfigure = (props) => {
             btnExtra={cardBtnList}
             pagination={false}
             rowKey={(record) => `${record.configWindVaneId}`}
-            params={{ userOs: tabKey, areaType: 'all', isAutomatic: 1 }}
+            params={{ userOs: tabKey, areaType: 'all', isAutomatic: 1, deleteFlag: 1 }}
             dispatchType="walkingManage/fetchGetWindVaneEditionList"
             {...editionList}
           />

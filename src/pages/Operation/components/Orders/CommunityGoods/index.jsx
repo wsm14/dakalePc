@@ -6,7 +6,7 @@ import OrderDetailDraw from '../OrderDetailDraw';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import excelHeder from './excelHeder';
-import coupon from '@public/coupon.png';
+import communityImg from '@public/community.png';
 import styles from '../style.less';
 
 const CommunityGoods = (props) => {
@@ -156,7 +156,7 @@ const CommunityGoods = (props) => {
         const { specificationMap = {} } = specificationData;
         const arrKeys = Object.keys(specificationMap);
         return (
-          <PopImgShow url={row.goodsImg || coupon} onClick={row.goodsImg ? null : () => {}}>
+          <PopImgShow url={row.goodsImg || communityImg} onClick={row.goodsImg ? null : () => {}}>
             <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 5 }}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Ellipsis length={15} tooltip>
