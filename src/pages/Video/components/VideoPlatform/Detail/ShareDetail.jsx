@@ -47,13 +47,6 @@ const ShareDetail = (props) => {
   const [form] = Form.useForm();
   const [couponData, setCouponData] = useState({ free: {}, contact: [] }); // 选择券的信息
 
-  useEffect(() => {
-    if (type !== 'info') {
-      form.setFieldsValue({ ownerId });
-      setCouponData({ free: detail.free, contact: detail.contact });
-    }
-  }, [type]);
-
   // 表单信息
   const formItems = [
     {
@@ -362,6 +355,12 @@ const ShareDetail = (props) => {
       current: index,
       total,
       onChange: (size) => getDetail(size),
+    },
+    afterCallBack: () => {
+      if (type !== 'info') {
+        form.setFieldsValue({ ownerId });
+        setCouponData({ free: detail.free, contact: detail.contact });
+      }
     },
     footer: (
       <>
