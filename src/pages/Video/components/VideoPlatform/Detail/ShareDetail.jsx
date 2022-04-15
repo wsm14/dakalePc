@@ -357,6 +357,7 @@ const ShareDetail = (props) => {
       onChange: (size) => getDetail(size),
     },
     afterCallBack: () => {
+      console.log('ownerId', ownerId);
       if (type !== 'info') {
         form.setFieldsValue({ ownerId });
         setCouponData({ free: detail.free, contact: detail.contact });
