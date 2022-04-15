@@ -7,7 +7,7 @@ import ShareCoupon from '@/components/VideoSelectBindContent';
  * 带货设置
  */
 const ShareContentSet = (props) => {
-  const { form, couponData, setCouponData } = props;
+  const { form, couponData, detail, setCouponData } = props;
 
   const { free, contact } = couponData;
 
@@ -72,7 +72,7 @@ const ShareContentSet = (props) => {
     },
   ];
 
-  return <FormCondition form={form} formItems={formItems}></FormCondition>;
+  return <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>;
 };
 
 export default connect(({ loading }) => ({}))(ShareContentSet);

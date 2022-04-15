@@ -53,7 +53,6 @@ const ShareCoupon = (props) => {
         <div
           className="share_Coupon share_add"
           onClick={() => {
-            console.log('merchantIdKey', merchantIdKey, form.getFieldValue(merchantIdKey));
             if (!form.getFieldValue(merchantIdKey)) {
               notification.info({
                 message: '温馨提示',

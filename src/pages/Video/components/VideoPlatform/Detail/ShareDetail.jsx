@@ -394,7 +394,12 @@ const ShareDetail = (props) => {
           ),
           // 带货修改
           commerce: (
-            <GoodsSet form={form} couponData={couponData} setCouponData={setCouponData}></GoodsSet>
+            <GoodsSet
+              form={form}
+              detail={{ ownerId }}
+              couponData={couponData}
+              setCouponData={setCouponData}
+            ></GoodsSet>
           ),
           // 修改
           edit: <GoodsEdit form={form} detail={detail}></GoodsEdit>,
