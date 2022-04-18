@@ -89,7 +89,7 @@ const DistrictDistribution = (props) => {
       ),
       dataIndex: 'cityCode',
       align: 'center',
-      render: (val) => getCityName(val.slice(0, 4)),
+      render: (val) => getCityName(val.slice(0, 4)) || '未知',
     },
     {
       title: '用户数',
@@ -122,7 +122,7 @@ const DistrictDistribution = (props) => {
       ),
       dataIndex: 'districtCode',
       align: 'center',
-      render: (val) => getCityName(val),
+      render: (val) => getCityName(val) || '未知',
     },
     {
       title: '用户数',

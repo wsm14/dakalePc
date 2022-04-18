@@ -45,12 +45,14 @@ const MarketStatement = (props) => {
     {
       title: '下单数',
       dataIndex: 'totalPlaceOrderAmount',
-      render: (val, row) => (row.orderType === 'scan' ? '' : val),
+      render: (val, row) =>
+        ['scan', 'platformGift', 'virtualProduct'].includes(row.orderType) ? '' : val,
     },
     {
       title: '下单金额',
       dataIndex: 'totalPlaceOrderFee',
-      render: (val, row) => (row.orderType === 'scan' ? '' : `￥${val}`),
+      render: (val, row) =>
+        ['scan', 'platformGift', 'virtualProduct'].includes(row.orderType) ? '' : `￥${val}`,
     },
     {
       title: '支付订单数',
@@ -78,11 +80,14 @@ const MarketStatement = (props) => {
     {
       title: '取消订单数',
       dataIndex: 'totalCancelOrderAmount',
+      render: (val, row) =>
+        ['scan', 'platformGift', 'virtualProduct'].includes(row.orderType) ? '' : val,
     },
     {
       title: '取消订单金额',
       dataIndex: 'totalCancelOrderFee',
-      render: (val) => `￥${val}`,
+      render: (val, row) =>
+        ['scan', 'platformGift', 'virtualProduct'].includes(row.orderType) ? '' : `￥${val}`,
     },
     {
       title: '核销商品数',

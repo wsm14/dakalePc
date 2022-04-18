@@ -9,7 +9,8 @@ const ColumnChart = (props) => {
     xyField = { xField: 'type', yField: 'value' },
     meta = { type: { alias: 'x轴' }, value: { alias: 'y轴' } },
     loading = null,
-    ribbonAnnotations,
+    ribbonAnnotations, // 自定义annotations
+    annotationsToFixed = 0, // 总计值保留几位小数
     ...other
   } = props;
 
@@ -19,7 +20,7 @@ const ColumnChart = (props) => {
     annotations.push({
       type: 'text',
       position: [k, value],
-      content: `${value.toFixed(2)}`,
+      content: `${value.toFixed(annotationsToFixed)}`,
       style: {
         textAlign: 'center',
         fontSize: 14,

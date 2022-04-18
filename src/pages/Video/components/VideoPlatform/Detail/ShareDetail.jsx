@@ -47,13 +47,6 @@ const ShareDetail = (props) => {
   const [form] = Form.useForm();
   const [couponData, setCouponData] = useState({ free: {}, contact: [] }); // 选择券的信息
 
-  useEffect(() => {
-    if (type !== 'info') {
-      form.setFieldsValue({ ownerId });
-      setCouponData({ free: detail.free, contact: detail.contact });
-    }
-  }, [type]);
-
   // 表单信息
   const formItems = [
     {
@@ -363,6 +356,13 @@ const ShareDetail = (props) => {
       total,
       onChange: (size) => getDetail(size),
     },
+    afterCallBack: () => {
+      console.log('ownerId', ownerId);
+      if (type !== 'info') {
+        form.setFieldsValue({ ownerId });
+        setCouponData({ free: detail.free, contact: detail.contact });
+      }
+    },
     footer: (
       <>
         {type !== 'info' && (
@@ -394,7 +394,12 @@ const ShareDetail = (props) => {
           ),
           // 带货修改
           commerce: (
-            <GoodsSet form={form} couponData={couponData} setCouponData={setCouponData}></GoodsSet>
+            <GoodsSet
+              form={form}
+              detail={{ ownerId }}
+              couponData={couponData}
+              setCouponData={setCouponData}
+            ></GoodsSet>
           ),
           // 修改
           edit: <GoodsEdit form={form} detail={detail}></GoodsEdit>,

@@ -99,6 +99,7 @@ const TrendAnalyse = (props) => {
           seriesField="type"
           isStack={true}
           maxColumnWidth={40}
+          annotationsToFixed={2}
         />
       </Spin>
     </div>
