@@ -172,6 +172,12 @@ const pathNative = {
     dakaleAndroid: { path: 'StudyCenter' },
     miniProgram: { path: '' },
   },
+  groupBuy: {
+    // 拼团
+    dakaleIOS: { path: 'collageCenterPage' },
+    dakaleAndroid: { path: 'GroupBuy' },
+    miniProgram: { path: '' },
+  },
   beanPrefecture: {
     // 卡豆专区
     dakaleIOS: { path: 'DKLBeanDistrictViewController' },
