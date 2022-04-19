@@ -9,6 +9,7 @@ import CommerceGoodsAdd from './components/CommerceGoodsAdd';
 import CommerceGoodsDetail from './components/CommerceGoodsDetail';
 import RemainModal from './components/Detail/RemainModal';
 import QrCodeShow from './components/Detail/QrCodeShow';
+import ShareImg from './components/Detail/ShareImg';
 
 /**
  * 电商商品
@@ -23,6 +24,7 @@ const PlatformEquityGoods = (props) => {
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 审核拒绝 下架原因
   const [visibleRemain, setVisibleRemain] = useState(false);
   const [qrcode, setQrcode] = useState({ url: null, title: '' }); // 商品码
+  const [visibleShare, setVisibleShare] = useState(false); // 分享配置
 
   useEffect(() => {
     if (childRef.current) {
@@ -64,7 +66,7 @@ const PlatformEquityGoods = (props) => {
       title: '商品名称/ID',
       fixed: 'left',
       dataIndex: 'goodsImg',
-      width:350,
+      width: 350,
       render: (val, row) => (
         <div style={{ display: 'flex' }}>
           <PopImgShow url={val} />
@@ -187,10 +189,39 @@ const PlatformEquityGoods = (props) => {
                 { specialGoodsId, merchantId: relateIdString },
               ),
           },
+          {
+            title: '分享配置',
+            type: 'shareImg',
+            click: () => fetchShareImg(record),
+          },
         ];
       },
     },
   ];
+
+  // 分享配置
+  const fetchShareImg = (record) => {
+    const { specialGoodsId, ownerIdString, goodsName, ownerName } = record;
+    dispatch({
+      type: 'specialGoods/fetchSpecialGoodsDetail',
+      payload: { specialGoodsId, ownerId: ownerIdString },
+      callback: (val) => {
+        const { shareImg, friendShareImg } = val;
+        const initialValues = {
+          shareImg,
+          friendShareImg,
+        };
+        setVisibleShare({
+          show: true,
+          goodsName,
+          ownerName,
+          specialGoodsId,
+          ownerIdString,
+          initialValues,
+        });
+      },
+    });
+  };
 
   // 获取商品码
   const fetchSpecialGoodsQrCode = (payload, title, data) => {
@@ -316,6 +347,8 @@ const PlatformEquityGoods = (props) => {
       ></RemainModal>
       {/* 商品码 */}
       <QrCodeShow {...qrcode} onCancel={() => setQrcode({})}></QrCodeShow>
+      {/* 分享配置 */}
+      <ShareImg visible={visibleShare} onClose={() => setVisibleShare(false)}></ShareImg>
     </>
   );
 };
