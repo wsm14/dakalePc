@@ -16,6 +16,7 @@ export const NATIVE_PATH_TYPE = [
   { value: 'aroundTravel', name: '周边游玩' },
   { value: 'beanDistrictCommerce', name: '精选好物' },
   { value: 'dailyTaskPage', name: '赚豆任务' },
+  { value: 'groupBuy', name: 'app-拼团' },
   { value: 'beanWeeklyCard', name: 'app-周卡' },
   { value: 'studyCenter', name: 'app-哒人学院' },
   { value: 'shoppingCircle', name: 'app-附近商圈' },

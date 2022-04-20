@@ -149,6 +149,15 @@ export default {
       });
       callback();
     },
+    *fetchSpecialGoodsShareEditCommerceGoods({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialGoodsShareEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '电商品分享图设置成功',
+      });
+      callback();
+    },
     *fetchSpecialGoodsEdit({ payload, callback }, { call }) {
       const response = yield call(fetchSpecialGoodsEdit, payload);
       if (!response) return;
