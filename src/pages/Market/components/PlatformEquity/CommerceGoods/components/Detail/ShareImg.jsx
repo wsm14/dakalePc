@@ -17,13 +17,13 @@ const ShareImg = (props) => {
 
   const [form] = Form.useForm();
   const formItems = [
-    {
-      label: '分享海报图',
-      name: 'shareImg',
-      type: 'upload',
-      maxFile: 1,
-      rules: [{ required: false }],
-    },
+    // {
+    //   label: '分享海报图',
+    //   name: 'shareImg',
+    //   type: 'upload',
+    //   maxFile: 1,
+    //   rules: [{ required: false }],
+    // },
     {
       label: '微信好友分享图',
       name: 'friendShareImg',
