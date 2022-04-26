@@ -8,6 +8,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import WeightSet from './GroupGoods/WeightSet';
+import { GROUP_RULE } from '@/common/constant';
 
 const GroupGoodsConfig = (props) => {
   const { groupGoods, dispatch, loading } = props;
@@ -88,6 +89,16 @@ const GroupGoodsConfig = (props) => {
           <WeightSet detail={row} onSubmit={fetchNewShareNoAudit}></WeightSet>
         </div>
       ),
+    },
+    {
+      title: '成团人数',
+      align: 'center',
+      dataIndex: 'togetherGroupRuleObject',
+      render: (val,row) =>{
+        const {togetherGroupRuleObject={}}=row
+        return GROUP_RULE[togetherGroupRuleObject.totalUserNum]
+    
+      } 
     },
     {
       title: '状态',
