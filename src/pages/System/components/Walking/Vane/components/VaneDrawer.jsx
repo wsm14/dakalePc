@@ -9,6 +9,7 @@ import {
   VANE_SIX_ICON,
   VANE_BEANDEDUCTION_ICON,
   VANE_FIELD_ICON,
+  VANE_USERPART_ICON
 } from '@/common/imgRatio';
 import { checkFileData } from '@/utils/utils';
 import { NewNativeFormSet } from '@/components/FormListCondition';
@@ -131,6 +132,7 @@ const VaneDrawer = (props) => {
         sixPalaceLattice: '请上传226*176尺寸png、jpeg格式图片',
         beanDeductionZone: '请上传202*250尺寸png、jpeg格式图片',
         fieldResource: '请上传298*208尺寸png、jpeg格式图片',
+        userParticipation:'请上传750*285尺寸png、jpeg格式图片'
       }[tabKey],
       imgRatio: {
         windVane: VANE_ICON,
@@ -138,6 +140,7 @@ const VaneDrawer = (props) => {
         sixPalaceLattice: VANE_SIX_ICON,
         beanDeductionZone: VANE_BEANDEDUCTION_ICON,
         fieldResource: VANE_FIELD_ICON,
+        userParticipation:VANE_USERPART_ICON
       }[tabKey],
     },
     {
