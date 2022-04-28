@@ -25,6 +25,7 @@ import timeLimitedCoupon from './Img/timeLimitedCoupon.png';
 import limitedTimeHotMixing from './Img/limitedTimeHotMixing.png';
 import signInModule from './Img/signInModule.png';
 import beanRemaining from './Img/beanRemaining.png';
+import userParticipation from './Img/userParticipation.png';
 
 /**
  * 组件库
@@ -221,4 +222,10 @@ export default {
     defaultImg: limitedTimeHotMixing,
     editFormFlag: true,
   },
+  userParticipation:{
+    name: '拼好货',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    drop: true,
+    defaultImg: userParticipation,
+  }
 };

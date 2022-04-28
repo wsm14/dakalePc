@@ -12,6 +12,7 @@ const tabList = [
   { key: 'sixPalaceLattice', tab: '六宫格' },
   { key: 'beanDeductionZone', tab: '卡豆抵扣专区' },
   { key: 'fieldResource', tab: '田字资源位' },
+  { key: 'userParticipation', tab: '拼好货' },
 ];
 
 const VaneManage = (props) => {
@@ -135,6 +136,8 @@ const VaneManage = (props) => {
     } else if (['beanDeductionZone'].includes(tabKey) && list.list.length < 3) {
       return cardBtnList;
     } else if (['fieldResource'].includes(tabKey) && list.list.length < 4) {
+      return cardBtnList;
+    } else if (['userParticipation'].includes(tabKey) && list.list.length < 1) {
       return cardBtnList;
     }
   };
