@@ -5,30 +5,34 @@ import { Modal, Button, Form, Empty } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
+import GroupRule from './GroupRule';
 
 const GroupGoodModal = ({ visible = {}, onClose, dispatch, childRef, loading }) => {
   const { show = false } = visible;
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [list, setList] = useState([]);
+  const [visibleRule, setVisibleRule] = useState(false);
 
   // 保存
   const handleConfirm = () => {
     if (selectedRowKeys.length) {
-      dispatch({
-        type: 'groupGoods/fetchSaveTogetherGroupConfig',
-        payload: {
-          togetherGroupConfigList: selectedRowKeys.map((item) => ({
-            goodsId: item,
-          })),
-        },
-        callback: () => {
-          onClose();
-          childRef.current.fetchGetData();
-        },
-      });
+      const togetherGroupConfigList = selectedRowKeys.map((item) => ({
+        goodsId: item,
+      }));
+      handleRule(togetherGroupConfigList);
     } else {
-      onClose();
+      notification.warning({
+        message: '温馨提示',
+        description: '清先勾选商品',
+      });
     }
+  };
+
+  const handleRule = (togetherGroupConfigList) => {
+    setVisibleRule({
+      show: true,
+      togetherGroupConfigList,
+    });
   };
 
   const handleSearch = ({ activityName, activityId }) => {
@@ -142,6 +146,14 @@ const GroupGoodModal = ({ visible = {}, onClose, dispatch, childRef, loading }) 
         list={list}
         pagination={false}
       ></TableDataBlock>
+      <GroupRule
+        visible={visibleRule}
+        childRef={childRef}
+        onCloseF={onClose}
+        onClose={() => {
+          setVisibleRule(false);
+        }}
+      ></GroupRule>
     </Modal>
   );
 };
