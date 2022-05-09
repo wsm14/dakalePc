@@ -42,6 +42,7 @@ export default [
       'fieldResource',
       'timeLimitedCoupon',
       'limitedTimeHotMixing',
+      'userParticipation',
     ],
   },
   {

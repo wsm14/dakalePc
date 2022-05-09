@@ -284,7 +284,17 @@ export const GAME_TYPE_NAME = {
 };
 
 // 电商订单状态
-export const COMMERCE_ORDERS_STATUS = ['待支付', '待发货', '已退款', '已完成', '', '', '', '', '已发货'];
+export const COMMERCE_ORDERS_STATUS = [
+  '待支付',
+  '待发货',
+  '已退款',
+  '已完成',
+  '',
+  '',
+  '',
+  '',
+  '已发货',
+];
 
 // 订单关闭状态 ---原来的“已关闭”状态 ORDERS_STATUS 进行了拆分：
 export const ORDER_CLOSE_TYPE = {
@@ -1260,4 +1270,15 @@ export const OPEN_GROUP_STATUS = ['拼团中', '拼团成功', '拼团失败'];
 export const REWARD_TYPE = {
   winGoods: '拼中商品',
   winRed: '拼中红包',
+};
+
+export const GROUP_RULE = {
+  3: '3人团',
+  6: '6人团',
+  10: '10人团',
+};
+export const GROUP_RULE_WIN = {
+  3: '1',
+  6: '2',
+  10: '3',
 };

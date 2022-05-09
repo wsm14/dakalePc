@@ -43,7 +43,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '修改成功',
+        description: '配置成功',
       });
       callback && callback();
     },

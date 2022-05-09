@@ -131,6 +131,7 @@ const VaneDrawer = (props) => {
         sixPalaceLattice: '请上传226*176尺寸png、jpeg格式图片',
         beanDeductionZone: '请上传202*250尺寸png、jpeg格式图片',
         fieldResource: '请上传298*208尺寸png、jpeg格式图片',
+        userParticipation:''
       }[tabKey],
       imgRatio: {
         windVane: VANE_ICON,
@@ -138,6 +139,7 @@ const VaneDrawer = (props) => {
         sixPalaceLattice: VANE_SIX_ICON,
         beanDeductionZone: VANE_BEANDEDUCTION_ICON,
         fieldResource: VANE_FIELD_ICON,
+        userParticipation:''
       }[tabKey],
     },
     {
