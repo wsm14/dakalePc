@@ -24,5 +24,6 @@ export const NATIVE_PATH_TYPE = [
   { value: 'dailyTaskInviteFriend', name: 'app-分享赚豆（邀请）' },
   { value: 'enterGroup', name: '小程序-加入社群页面' },
   { value: 'preChildTure', name: '小程序-吃喝玩乐购' },
+  { value: 'userParticipation', name: '用户参团' },
   // { value: 'shareUser', name: '小程序-活动助力页面' },
 ];
