@@ -244,6 +244,12 @@ const pathNative = {
     dakaleAndroid: { path: 'InviteFriendTask' },
     miniProgram: { path: '' },
   },
+  userParticipation:{
+    // 用户参团
+    dakaleIOS: { path: 'joinGroupBuyListPage' },
+    dakaleAndroid: { path: 'GroupGoodGoodsList' },
+    miniProgram: { path: 'collageList' },
+  }
 };
 
 // 原生方法
