@@ -44,9 +44,9 @@ export default {
       const response = yield call(fetchMsgPushDetail, payload);
       if (!response) return;
       const { content } = response;
-      const { param, pushTime, ...ohter } = content.messagePush;
+      const { param, pushTime, ...other } = content.messagePush;
       callback({
-        ...ohter,
+        ...other,
         param: JSON.parse(param || '{}'),
         pushTime: moment(pushTime),
       });
