@@ -833,7 +833,31 @@ export default [
           },
         ],
       },
-
+      // 供应链管理 SCM
+      {
+        path: '/SCM',
+        name: '供应链管理',
+        routes: [
+          {
+            path: '/SCM/supplierAuth',
+            name: '供应链审核',
+            component: './SCM/SupplierAuth',
+            buttons: ['point', 'award', 'advert', 'info', 'edit', 'signDetail', 'save', 'qrCode'],
+          },
+          {
+            path: '/SCM/supplierManage',
+            name: '供应链管理',
+            component: './SCM/SupplierManage',
+            buttons: ['check', 'info'],
+          },
+          {
+            path: '/SCM/supplierSettlement',
+            name: '结算明细',
+            component: './SCM/SupplierSettlement',
+            buttons: ['check', 'info'],
+          },
+        ],
+      },
       {
         name: '修改密码',
         path: '/password',
