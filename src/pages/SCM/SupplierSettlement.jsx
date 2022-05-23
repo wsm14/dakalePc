@@ -1,39 +1,25 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
-import { COMMENT_DELETFLAG } from '@/common/constant';
 
 const SupplierSettlement = (props) => {
   const { commentManage, loading, dispatch } = props;
+
   const childRef = useRef();
-  const [commentList, setCommentList] = useState([]);
+
   // 搜索参数
   const searchItems = [
     {
-      label: '用户',
+      label: '供应商名称',
       name: 'userId',
       type: 'user',
     },
     {
-      label: '视频ID',
+      label: '结算流水号',
       name: 'momentId',
     },
     {
-      label: '状态',
-      type: 'select',
-      name: 'deleteFlag',
-      select: COMMENT_DELETFLAG,
-    },
-    {
-      label: '评论ID',
-      name: 'momentCommentId',
-    },
-    {
-      label: '评论内容',
-      name: 'content',
-    },
-    {
-      label: '评论时间',
+      label: '结算时间',
       type: 'rangePicker',
       name: 'createBeginTime',
       end: 'createEndTime',
@@ -43,32 +29,30 @@ const SupplierSettlement = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '评论ID',
+      title: '供应商名称',
       dataIndex: 'momentCommentIdString',
-    },
-    {
-      title: '评论内容',
-      dataIndex: 'content',
-      width: 300,
       ellipsis: { length: 15 },
     },
     {
-      title: '评论时间',
+      title: '结算流水号',
+      dataIndex: 'deleteFlag',
+    },
+    {
+      title: '结算金额',
       dataIndex: 'createTime',
+      render: (val, row) => `￥${row.mobile}`,
     },
     {
-      title: '用户信息',
-      dataIndex: 'username',
-      render: (val, row) => `${val}\n${row.mobile}`,
+      title: '结算时间',
+      dataIndex: 'u sername',
     },
     {
-      title: '视频ID',
+      title: '制单人',
       dataIndex: 'momentIdString',
     },
     {
-      title: '状态',
+      title: '制单时间',
       dataIndex: 'deleteFlag',
-      render: (val) => COMMENT_DELETFLAG[val],
     },
     {
       title: '操作',
@@ -88,26 +72,28 @@ const SupplierSettlement = (props) => {
       ],
     },
   ];
-  const fetchDel = (deleteFlag, momentCommentIds) => {
+
+  const fetchDel = (deleteFlag) => {
     dispatch({
       type: 'commentManage/fetchUpdateCommentsDeleteFlag',
       payload: {
         deleteFlag: deleteFlag == '0' ? 1 : 0,
-        momentCommentIds: momentCommentIds ? momentCommentIds : commentList.toString(),
       },
       callback: childRef.current.fetchGetData,
     });
   };
+
   const btnList = [
     {
-      auth: 'del',
-      disabled: !commentList.length,
+      auth: 'save',
       onClick: fetchDel,
-      text: '批量删除',
+      text: '新增',
     },
   ];
+
   return (
     <TableDataBlock
+      order
       cRef={childRef}
       btnExtra={btnList}
       loading={loading}
@@ -115,7 +101,6 @@ const SupplierSettlement = (props) => {
       columns={getColumns}
       rowKey={(record) => `${record.momentCommentIdString}`}
       dispatchType="commentManage/fetchGetList"
-      rowSelection={{ onChange: setCommentList }}
       {...commentManage}
     ></TableDataBlock>
   );

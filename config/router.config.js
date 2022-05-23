@@ -854,7 +854,7 @@ export default [
             path: '/SCM/supplierSettlement',
             name: '结算明细',
             component: './SCM/SupplierSettlement',
-            buttons: ['info', 'edit'],
+            buttons: ['save', 'info', 'edit'],
           },
         ],
       },
