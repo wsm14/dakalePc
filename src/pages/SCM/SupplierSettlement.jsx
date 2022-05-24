@@ -4,7 +4,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import SettlementDrawer from './components/SupplierSettlement/SettlementDrawer';
 
 const SupplierSettlement = (props) => {
-  const { commentManage, loading, dispatch } = props;
+  const { supplierSettlement, loading, dispatch } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState({ mode: 'info', show: false, detail: {} });
@@ -67,7 +67,7 @@ const SupplierSettlement = (props) => {
         },
         {
           type: 'edit',
-          click: () => fetchDel(val, row.momentCommentIdString),
+          click: () => fetchGetSettlementDetail(index, 'edit'),
         },
       ],
     },
@@ -75,7 +75,7 @@ const SupplierSettlement = (props) => {
 
   // 获取详情
   const fetchGetSettlementDetail = (index, mode) => {
-    const { hittingId } = commentManage.list[index];
+    const { hittingId } = supplierSettlement.list[index];
     dispatch({
       type: 'pointManage/fetchGetHittingById',
       payload: {
@@ -84,16 +84,6 @@ const SupplierSettlement = (props) => {
       callback: (detail) => {
         setVisible({ mode, show: true, index, detail, hittingId });
       },
-    });
-  };
-
-  const fetchDel = (deleteFlag) => {
-    dispatch({
-      type: 'commentManage/fetchUpdateCommentsDeleteFlag',
-      payload: {
-        deleteFlag: deleteFlag == '0' ? 1 : 0,
-      },
-      callback: childRef.current.fetchGetData,
     });
   };
 
@@ -115,8 +105,8 @@ const SupplierSettlement = (props) => {
         searchItems={searchItems}
         columns={getColumns}
         rowKey={(record) => `${record.momentCommentIdString}`}
-        dispatchType="commentManage/fetchGetList"
-        {...commentManage}
+        dispatchType="supplierSettlement/fetchGetList"
+        {...supplierSettlement}
       ></TableDataBlock>
       {/* 详情编辑新增 */}
       <SettlementDrawer
@@ -127,7 +117,7 @@ const SupplierSettlement = (props) => {
     </>
   );
 };
-export default connect(({ commentManage, loading }) => ({
-  commentManage,
-  loading: loading.models.commentManage,
+export default connect(({ supplierSettlement, loading }) => ({
+  supplierSettlement,
+  loading: loading.models.supplierSettlement,
 }))(SupplierSettlement);

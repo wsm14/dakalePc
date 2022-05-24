@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import SettlementDetail from './Detail/SettlementDetail';
-import CouponSet from './Form/CouponSet';
+import SettlementEdit from './Form/SettlementEdit';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const SupplierSettlementDrawer = (props) => {
@@ -33,12 +33,12 @@ const SupplierSettlementDrawer = (props) => {
       children: <SettlementDetail detail={detail}></SettlementDetail>,
     },
     add: {
-      title: '新建券',
-      children: <SettlementDetail detail={detail}></SettlementDetail>,
+      title: '新增结算',
+      children: <SettlementEdit form={form}></SettlementEdit>,
     },
     edit: {
-      title: '编辑券',
-      children: <CouponSet form={form} initialValues={detail}></CouponSet>,
+      title: '编辑结算',
+      children: <SettlementEdit form={form} initialValues={detail}></SettlementEdit>,
     },
   }[mode];
 
@@ -64,8 +64,8 @@ const SupplierSettlementDrawer = (props) => {
   return <DrawerCondition {...modalProps}>{drawerProps.children}</DrawerCondition>;
 };
 
-export default connect(({ loading, commentManage }) => ({
-  total: commentManage.list.length,
+export default connect(({ loading, supplierSettlement }) => ({
+  total: supplierSettlement.list.length,
   loading: loading.effects['couponManage/fetchCouponSave'],
   loadingDetail: loading.effects['couponManage/fetchCouponDetail'],
 }))(SupplierSettlementDrawer);
