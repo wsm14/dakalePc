@@ -1,5 +1,11 @@
+import moment from 'moment';
 import { notification } from 'antd';
-import { fetchListMomentCommentManagement, fetchUpdateCommentsDeleteFlag } from '@/services/ServiceServices';
+import {
+  fetchGetSupplierSettlementList,
+  fetchGetSupplierSettlementDetail,
+  fetchSupplierSettlementAdd,
+  fetchSupplierSettlementEdit,
+} from '@/services/SCMServices';
 
 export default {
   namespace: 'supplierSettlement',
@@ -20,7 +26,7 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchListMomentCommentManagement, payload);
+      const response = yield call(fetchGetSupplierSettlementList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
@@ -31,12 +37,28 @@ export default {
         },
       });
     },
-    *fetchSearchSet({ payload, callback }, { call, put }) {
-      const response = yield call(fetchUpdateCommentsDeleteFlag, payload);
+    *fetchGetSupplierSettlementDetail({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetSupplierSettlementDetail, payload);
+      if (!response) return;
+      const { auditDetail = {} } = response;
+      const { shasdreImg } = auditDetail;
+      callback({ ...auditDetail, shasdreImg: moment(shasdreImg) });
+    },
+    *fetchSupplierSettlementAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchSupplierSettlementAdd, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '配置成功',
+        description: '新增成功',
+      });
+      callback();
+    },
+    *fetchSupplierSettlementEdit({ payload, callback }, { call, put }) {
+      const response = yield call(fetchSupplierSettlementEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '修改成功',
       });
       callback();
     },

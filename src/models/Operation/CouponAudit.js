@@ -40,7 +40,6 @@ export default {
 
       const { couponDesc = '', serviceDivisionDTO = {}, reduceObject = {} } = ownerCouponInfo;
       const { divisionTemplateType, ...templateOther } = serviceDivisionDTO;
-
       callback({
         ...ownerCouponInfo,
         ...auditDetail,

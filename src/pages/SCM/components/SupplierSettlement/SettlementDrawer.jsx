@@ -28,7 +28,7 @@ const SupplierSettlementDrawer = (props) => {
       const { shareImg = '', shasdrsdeImg, shasdreImg } = values;
       aliOssUpload(shareImg).then((res) => {
         dispatch({
-          type: 'couponManage/fetchCouponManageShareEdit',
+          type: 'supplierSettlement/fetchCouponManageShareEdit',
           payload: {
             ...values,
             ownerCouponIdString,
@@ -37,7 +37,10 @@ const SupplierSettlementDrawer = (props) => {
             shasdrsdeImg: shasdrsdeImg.replace(/\s*/g, ''),
             shasdreImg: shasdreImg.format('YYYY-MM-DD HH:mm'),
           },
-          callback: onClose,
+          callback: () => {
+            childRef.current.fetchGetData();
+            onClose();
+          },
         });
       });
     });
@@ -62,15 +65,7 @@ const SupplierSettlementDrawer = (props) => {
     },
     edit: {
       title: '编辑结算',
-      children: (
-        <SettlementEdit
-          form={form}
-          initialValues={{
-            ...detail,
-            shasdreImg: moment(detail.shasdreImg),
-          }}
-        ></SettlementEdit>
-      ),
+      children: <SettlementEdit form={form} initialValues={detail}></SettlementEdit>,
     },
   }[mode];
 
@@ -98,6 +93,6 @@ const SupplierSettlementDrawer = (props) => {
 
 export default connect(({ loading, supplierSettlement }) => ({
   total: supplierSettlement.list.length,
-  loading: loading.effects['couponManage/fetchCouponSave'],
-  loadingDetail: loading.effects['couponManage/fetchCouponDetail'],
+  loading: loading.effects['supplierSettlement/fetchCouponSave'],
+  loadingDetail: loading.effects['supplierSettlement/fetchCouponDetail'],
 }))(SupplierSettlementDrawer);
