@@ -1,11 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
+import SettlementDrawer from './components/SupplierSettlement/SettlementDrawer';
 
 const SupplierSettlement = (props) => {
   const { commentManage, loading, dispatch } = props;
 
   const childRef = useRef();
+  const [visible, setVisible] = useState({ mode: 'info', show: false, detail: {} });
 
   // 搜索参数
   const searchItems = [
@@ -58,20 +60,32 @@ const SupplierSettlement = (props) => {
       title: '操作',
       type: 'handle',
       dataIndex: 'deleteFlag',
-      render: (val, row) => [
+      render: (val, row, index) => [
         {
-          type: 'del',
-          visible: val === '1',
-          click: () => fetchDel(val, row.momentCommentIdString),
+          type: 'info',
+          click: () => fetchGetSettlementDetail(index, 'info'),
         },
         {
-          type: 'recover',
-          visible: val === '0',
+          type: 'edit',
           click: () => fetchDel(val, row.momentCommentIdString),
         },
       ],
     },
   ];
+
+  // 获取详情
+  const fetchGetSettlementDetail = (index, mode) => {
+    const { hittingId } = commentManage.list[index];
+    dispatch({
+      type: 'pointManage/fetchGetHittingById',
+      payload: {
+        hittingId,
+      },
+      callback: (detail) => {
+        setVisible({ mode, show: true, index, detail, hittingId });
+      },
+    });
+  };
 
   const fetchDel = (deleteFlag) => {
     dispatch({
@@ -86,23 +100,31 @@ const SupplierSettlement = (props) => {
   const btnList = [
     {
       auth: 'save',
-      onClick: fetchDel,
       text: '新增',
+      onClick: () => setVisible({ mode: 'add', show: true }),
     },
   ];
 
   return (
-    <TableDataBlock
-      order
-      cRef={childRef}
-      btnExtra={btnList}
-      loading={loading}
-      searchItems={searchItems}
-      columns={getColumns}
-      rowKey={(record) => `${record.momentCommentIdString}`}
-      dispatchType="commentManage/fetchGetList"
-      {...commentManage}
-    ></TableDataBlock>
+    <>
+      <TableDataBlock
+        order
+        cRef={childRef}
+        btnExtra={btnList}
+        loading={loading}
+        searchItems={searchItems}
+        columns={getColumns}
+        rowKey={(record) => `${record.momentCommentIdString}`}
+        dispatchType="commentManage/fetchGetList"
+        {...commentManage}
+      ></TableDataBlock>
+      {/* 详情编辑新增 */}
+      <SettlementDrawer
+        visible={visible}
+        getDetail={fetchGetSettlementDetail}
+        onClose={() => setVisible(false)}
+      ></SettlementDrawer>
+    </>
   );
 };
 export default connect(({ commentManage, loading }) => ({
