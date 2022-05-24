@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Button, Form } from 'antd';
 import { BUS_BANKACCOUNT_TYPE } from '@/common/constant';
+import { RefuseModal } from '@/components/PublicComponents';
 import DrawerCondition from '@/components/DrawerCondition';
 import PopImgShow from '@/components/PopImgShow';
 import ExtraButton from '@/components/ExtraButton';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
-import BankChangeRefuse from './BankChangeRefuse';
 
 const SpecialGoodCheckDetail = (props) => {
   const { visible, onClose, loading, dispatch, cRef } = props;
@@ -18,7 +17,7 @@ const SpecialGoodCheckDetail = (props) => {
     ownerBankBindingInfoRecordId,
   } = detail;
 
-  const [visibleRefuse, setVisibleRefuse] = useState(false);
+  const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 审核拒绝 下架原因
 
   // 审核通过
   const handleVerifyAllow = () => {
@@ -31,6 +30,23 @@ const SpecialGoodCheckDetail = (props) => {
       callback: () => {
         onClose();
         cRef.current.fetchGetData();
+      },
+    });
+  };
+
+  // 审核驳回
+  const fetchSpecialGoodsStatus = (values) => {
+    const { specialGoodsId, ownerIdString } = visibleRefuse.detail;
+    dispatch({
+      type: 'specialGoods/fetchSpecialGoodsStatus',
+      payload: {
+        ...values,
+        id: specialGoodsId,
+        ownerId: ownerIdString,
+      },
+      callback: () => {
+        setVisibleRefuse({ show: false, detail: {} });
+        childRef.current.fetchGetData();
       },
     });
   };
@@ -135,16 +151,13 @@ const SpecialGoodCheckDetail = (props) => {
     },
     {
       auth: 'check',
-      onClick: () =>
-        setVisibleRefuse({
-          show: true,
-          ownerBankBindingInfoRecordId,
-        }),
-      danger: true,
+      onClick: handleVerifyAllow,
+      typeBtn: 'default',
       text: '审核驳回',
       show: type === 'check',
     },
   ];
+
   // 弹出窗属性
   const modalProps = {
     title: type === 'check' ? '审核' : '详情',
@@ -153,6 +166,7 @@ const SpecialGoodCheckDetail = (props) => {
     onClose,
     footer: <ExtraButton list={btnList}></ExtraButton>,
   };
+
   return (
     <>
       <DrawerCondition {...modalProps}>
@@ -161,19 +175,15 @@ const SpecialGoodCheckDetail = (props) => {
           formItems={formItemsNew}
           initialValues={newDataObject}
         ></DescriptionsCondition>
-        {operationType === 'update' && (
-          <DescriptionsCondition
-            title="修改前"
-            formItems={formItemsNew}
-            initialValues={originalDataObject}
-          ></DescriptionsCondition>
-        )}
       </DrawerCondition>
-      <BankChangeRefuse
-        visible={visibleRefuse}
+      {/* 驳回原因 */}
+      <RefuseModal
         cRef={cRef}
+        visible={visibleRefuse}
+        handleUpData={fetchSpecialGoodsStatus}
+        loading={loading}
         onClose={() => setVisibleRefuse(false)}
-      ></BankChangeRefuse>
+      ></RefuseModal>
     </>
   );
 };
