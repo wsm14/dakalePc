@@ -8,14 +8,10 @@ import ExtraButton from '@/components/ExtraButton';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const SpecialGoodCheckDetail = (props) => {
-  const { visible, onClose, loading, dispatch, cRef } = props;
-  const { show = false, type = 'check', detail = {} } = visible;
-  const {
-    newDataObject = {},
-    originalDataObject = {},
-    operationType,
-    ownerBankBindingInfoRecordId,
-  } = detail;
+  const { visible, onClose, loading, dispatch, total, cRef } = props;
+  const { show = false, type = 'check', detail = {}, index } = visible;
+
+  const { newDataObject = {}, ownerBankBindingInfoRecordId } = detail;
 
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 审核拒绝 下架原因
 
@@ -164,6 +160,11 @@ const SpecialGoodCheckDetail = (props) => {
     visible: show,
     loading,
     onClose,
+    dataPage: {
+      current: index,
+      total,
+      onChange: (size) => getDetail(size, 'info'),
+    },
     footer: <ExtraButton list={btnList}></ExtraButton>,
   };
 
@@ -171,7 +172,6 @@ const SpecialGoodCheckDetail = (props) => {
     <>
       <DrawerCondition {...modalProps}>
         <DescriptionsCondition
-          title="修改后"
           formItems={formItemsNew}
           initialValues={newDataObject}
         ></DescriptionsCondition>
@@ -188,6 +188,7 @@ const SpecialGoodCheckDetail = (props) => {
   );
 };
 
-export default connect(({ loading }) => ({
+export default connect(({ loading, bankChangeCheck }) => ({
+  total: bankChangeCheck.list.length,
   loading: loading.effects['bankChangeCheck/fetchGetBankBindingInfoRecordById'],
 }))(SpecialGoodCheckDetail);
