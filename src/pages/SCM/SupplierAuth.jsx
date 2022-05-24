@@ -28,27 +28,20 @@ const SupplierAuth = (props) => {
   //组建公用的搜索条件
   const searchItems = [
     {
-      label: '集团/店铺名',
+      label: '供应商名称',
       name: 'ownerId',
       type: 'merchant',
       placeholder: '请输入集团或店铺名称',
     },
     {
-      label: '所在城市',
+      label: '供应商ID',
       name: 'districtCode',
-      type: 'cascader',
-      //   valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-      //   onChange: (value, option) => {
-      //     console.log(value);
-      //     console.log(option);
-      //   },
     },
     {
       label: '申请时间',
       type: 'rangePicker',
       name: 'createTimeBegin',
       end: 'createTimeEnd',
-      show: tabkey === '0',
     },
     {
       label: '审核结果',
@@ -62,6 +55,11 @@ const SupplierAuth = (props) => {
       type: 'rangePicker',
       name: 'auditTimeBegin',
       end: 'auditTimeEnd',
+      show: tabkey === '1',
+    },
+    {
+      label: '审核人',
+      name: 'auditTimesaBegin',
       show: tabkey === '1',
     },
   ];
