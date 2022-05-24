@@ -1,63 +1,93 @@
 import React from 'react';
-import { connect } from 'umi';
-import { Form, Button } from 'antd';
+import moment from 'moment';
 import FormCondition from '@/components/FormCondition';
-import aliOssUpload from '@/utils/aliOssUpload';
 
 const SettlementEdit = (props) => {
-  const { form, initialValues, dispatch, loading } = props;
+  const { form, initialValues = {} } = props;
 
   const formItems = [
     {
-      label: '分享海报图',
-      name: 'shareImg',
-      type: 'upload',
-      maxFile: 1,
+      label: '供应商名称',
+      name: 'customTitle',
+      type: 'select',
+      select: [],
+    },
+    {
+      label: '收款方户名',
+      name: 'customTssditle',
+      readOnly: true,
+      bordered: false,
       rules: [{ required: false }],
     },
     {
-      label: '微信好友分享图',
+      label: '收款方账号',
+      name: 'customTsssdditle',
+      readOnly: true,
+      bordered: false,
+      rules: [{ required: false }],
+    },
+    {
+      label: '收款方银行',
+      name: 'cussstomTssditle',
+      readOnly: true,
+      bordered: false,
+      rules: [{ required: false }],
+    },
+    {
+      label: '结算金额',
+      type: 'number',
+      suffix: '元',
+      precision: 2,
+      min: 0,
+      max: 9999999999.99,
+      name: 'customTssdsditle',
+    },
+    {
+      label: '付款方账号',
+      name: 'shasdrsdeImg',
+      maxLength: 24,
+      normalize: (val) => {
+        let str = val;
+        str = str.replace(/\D/g, '');
+        let ncard = '';
+        for (let n = 0; n < str.length; n = n + 4) {
+          ncard += str.substring(n, n + 4) + ' ';
+        }
+        return ncard.replace(/(\s*$)/g, '');
+      },
+    },
+    {
+      label: '结算流水号',
+      name: 'shardeImg',
+    },
+    {
+      label: '交易时间',
+      name: 'shasdreImg',
+      type: 'dataPicker',
+      format: 'YYYY-MM-DD HH:mm',
+      showTime: true,
+      disabledDate: (current) => current && current > moment().endOf('day'),
+    },
+    {
+      label: '凭证',
       name: 'friendShareImg',
       type: 'upload',
       maxFile: 1,
-      maxSize: 128,
       isCut: false,
       rules: [{ required: false }],
-      extra: '请上传比例为 5 * 4，大小128kb以内的jpg图片（375 * 300以上）',
     },
     {
-      label: '自定义标题',
+      label: '备注',
       name: 'customTitle',
       type: 'textArea',
-      maxLength: 50,
-      rows: 3,
+      maxLength: 200,
       rules: [{ required: false }],
     },
   ];
-  const handleSave = () => {
-    form.validateFields().then(async (values) => {
-      const { shareImg = '', friendShareImg = '', customTitle } = values;
-      const sImg = await aliOssUpload(shareImg);
-      const fImg = await aliOssUpload(friendShareImg);
-      dispatch({
-        type: 'couponManage/fetchCouponManageShareEdit',
-        payload: {
-          ownerCouponIdString,
-          ownerIdString,
-          shareImg: sImg.toString(),
-          friendShareImg: fImg.toString(),
-          customTitle,
-        },
-        callback: onClose,
-      });
-    });
-  };
 
   return (
     <FormCondition form={form} formItems={formItems} initialValues={initialValues}></FormCondition>
   );
 };
 
-export default connect(({ loading }) => ({
-  loading: loading.effects['couponManage/fetchCouponManageShareEdit'],
-}))(SettlementEdit);
+export default SettlementEdit;

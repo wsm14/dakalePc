@@ -78,9 +78,7 @@ const SupplierSettlement = (props) => {
     const { hittingId } = supplierSettlement.list[index];
     dispatch({
       type: 'pointManage/fetchGetHittingById',
-      payload: {
-        hittingId,
-      },
+      payload: { hittingId },
       callback: (detail) => {
         setVisible({ mode, show: true, index, detail, hittingId });
       },
@@ -110,6 +108,7 @@ const SupplierSettlement = (props) => {
       ></TableDataBlock>
       {/* 详情编辑新增 */}
       <SettlementDrawer
+        childRef={childRef}
         visible={visible}
         getDetail={fetchGetSettlementDetail}
         onClose={() => setVisible(false)}

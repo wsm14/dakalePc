@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import DrawerCondition from '@/components/DrawerCondition';
-import SettlementDetail from './Detail/SettlementDetail';
-import SettlementEdit from './Form/SettlementEdit';
+import moment from 'moment';
 import aliOssUpload from '@/utils/aliOssUpload';
+import DrawerCondition from '@/components/DrawerCondition';
+import SettlementEdit from './Form/SettlementEdit';
+import SettlementDetail from './Detail/SettlementDetail';
 
 const SupplierSettlementDrawer = (props) => {
   const {
@@ -23,7 +24,23 @@ const SupplierSettlementDrawer = (props) => {
 
   // 确认提交
   const handleUpAudit = () => {
-    form.validateFields().then(async (values) => {});
+    form.validateFields().then(async (values) => {
+      const { shareImg = '', shasdrsdeImg, shasdreImg } = values;
+      aliOssUpload(shareImg).then((res) => {
+        dispatch({
+          type: 'couponManage/fetchCouponManageShareEdit',
+          payload: {
+            ...values,
+            ownerCouponIdString,
+            ownerIdString,
+            shareImg: res.toString(),
+            shasdrsdeImg: shasdrsdeImg.replace(/\s*/g, ''),
+            shasdreImg: shasdreImg.format('YYYY-MM-DD HH:mm'),
+          },
+          callback: onClose,
+        });
+      });
+    });
   };
 
   // 统一处理弹窗
@@ -34,11 +51,26 @@ const SupplierSettlementDrawer = (props) => {
     },
     add: {
       title: '新增结算',
-      children: <SettlementEdit form={form}></SettlementEdit>,
+      children: (
+        <SettlementEdit
+          initialValues={{
+            shasdreImg: moment(),
+          }}
+          form={form}
+        ></SettlementEdit>
+      ),
     },
     edit: {
       title: '编辑结算',
-      children: <SettlementEdit form={form} initialValues={detail}></SettlementEdit>,
+      children: (
+        <SettlementEdit
+          form={form}
+          initialValues={{
+            ...detail,
+            shasdreImg: moment(detail.shasdreImg),
+          }}
+        ></SettlementEdit>
+      ),
     },
   }[mode];
 
