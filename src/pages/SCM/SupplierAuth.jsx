@@ -1,8 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
-import { Card, Tag } from 'antd';
 import { checkCityName } from '@/utils/utils';
-import { BUSINESS_TYPE, GOODS_CLASS_TYPE, BANK_CHECK_STATUS } from '@/common/constant';
+import { BANK_CHECK_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import SupplierAuthDetail from './components/SupplierAuth/SupplierAuthDetail';
@@ -64,35 +63,32 @@ const SupplierAuth = (props) => {
     },
   ];
 
-  //tab自组件Table公用的colum数据部分
+  // tab自组件Table公用的colum数据部分
   const getColumns = [
     {
-      title: '店铺账号/集团ID',
+      title: '供应商名称/ID',
       dataIndex: 'ownerId',
-    },
-    {
-      title: '店铺/集团名称',
-      dataIndex: 'ownerName',
       render: (val, row) => {
         return (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              flex: 1,
-            }}
-          >
-            <Ellipsis tooltip length={8} style={{ marginRight: 5 }}>
-              {val}
+          <div>
+            <Ellipsis tooltip length={8}>
+              {row.ownerName}
             </Ellipsis>
-            <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
+            <div>{val}</div>
           </div>
         );
       },
     },
     {
-      title: '所在城市',
+      title: '主营类目',
+      dataIndex: 'ownerName',
+    },
+    {
+      title: '联系人',
+      dataIndex: 'audisdtTime',
+    },
+    {
+      title: '所属地区',
       dataIndex: 'districtCode',
       render: (val) => checkCityName(val),
     },
@@ -106,25 +102,15 @@ const SupplierAuth = (props) => {
       show: tabkey === '1',
     },
     {
-      title: '审核人',
-      dataIndex: 'auditor',
-      show: tabkey === '1',
-    },
-    {
       title: '审核结果',
       dataIndex: 'auditResult',
       show: tabkey === '1',
       render: (val) => BANK_CHECK_STATUS[val],
     },
     {
-      title: '驳回原因',
-      dataIndex: 'rejectReason',
+      title: '审核人',
+      dataIndex: 'auditor',
       show: tabkey === '1',
-      render: (val) => (
-        <Ellipsis tooltip length={10}>
-          {val}
-        </Ellipsis>
-      ),
     },
     {
       type: 'handle',
@@ -133,15 +119,12 @@ const SupplierAuth = (props) => {
         return [
           {
             type: 'info',
-            title: '详情',
             click: () => fetchSpecialGoodsDetail(val, 'info'),
-            visible: tabkey === '1',
           },
           {
-            type: 'check',
-            title: '审核',
+            type: 'edit',
             click: () => fetchSpecialGoodsDetail(val, 'check'),
-            visible: tabkey === '0',
+            visible: tabkey === '1',
           },
         ];
       },
@@ -158,25 +141,30 @@ const SupplierAuth = (props) => {
       },
     });
   };
+
   const handleTabChange = (key) => {
     setTabKey(key);
     tableRef?.current?.fetchGetData({ auditStatus: key });
   };
+
   return (
     <>
-      <Card tabList={tabList} activeTabKey={tabkey} onTabChange={handleTabChange}>
-        <TableDataBlock
-          noCard={false}
-          cRef={tableRef}
-          loading={loading}
-          columns={getColumns}
-          searchItems={searchItems}
-          params={{ auditStatus: tabkey }}
-          rowKey={(record) => `${record.ownerBankBindingInfoRecordId}`}
-          dispatchType="bankChangeCheck/fetchGetList"
-          {...list}
-        ></TableDataBlock>
-      </Card>
+      <TableDataBlock
+        order
+        cardProps={{
+          tabList,
+          activeTabKey: tabkey,
+          onTabChange: handleTabChange,
+        }}
+        cRef={tableRef}
+        loading={loading}
+        columns={getColumns}
+        searchItems={searchItems}
+        params={{ auditStatus: tabkey }}
+        rowKey={(record) => `${record.ownerBankBindingInfoRecordId}`}
+        dispatchType="bankChangeCheck/fetchGetList"
+        {...list}
+      ></TableDataBlock>
       {/* 详情 审核 */}
       <SupplierAuthDetail
         visible={visibleInfo}
