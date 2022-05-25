@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
+import { Tag } from 'antd';
 import { checkCityName } from '@/utils/utils';
-import { SUPPLIER_AUTH_STATUS } from '@/common/constant';
+import { SUPPLIER_AUTH_STATUS, SUPPLIER_AUTH_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import SupplierAuthDetail from './components/SupplierAuth/SupplierAuthDetail';
@@ -65,9 +66,14 @@ const SupplierAuth = (props) => {
       dataIndex: 'supplierId',
       render: (val, row) => (
         <div>
-          <Ellipsis tooltip length={8}>
-            {row.supplierName}
-          </Ellipsis>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Tag color={row.supplierObject.type === '1' ? 'magenta' : 'red'}>
+              {SUPPLIER_AUTH_TYPE[row.supplierObject.type]}
+            </Tag>
+            <Ellipsis tooltip length={8}>
+              {row.supplierName}
+            </Ellipsis>
+          </div>
           <div>{val}</div>
         </div>
       ),
@@ -82,7 +88,7 @@ const SupplierAuth = (props) => {
     },
     {
       title: '所属地区',
-      dataIndex: 'districtCode',
+      dataIndex: ['supplierObject', 'districtCode'],
       render: (val) => checkCityName(val),
     },
     {
@@ -107,12 +113,12 @@ const SupplierAuth = (props) => {
     },
     {
       type: 'handle',
-      dataIndex: 'identifyId',
-      render: (val, record, index) => {
+      dataIndex: 'supplierVerifyId',
+      render: (val, row, index) => {
         return [
           {
             type: 'info',
-            click: () => fetchGetDetail(index, 'check'),
+            click: () => fetchGetDetail(index),
           },
         ];
       },
@@ -120,13 +126,13 @@ const SupplierAuth = (props) => {
   ];
 
   // 获取详情
-  const fetchGetDetail = (index, mode) => {
-    const { identifyId } = supplierAuth.list[index];
+  const fetchGetDetail = (index) => {
+    const { supplierVerifyId, verifyStatus } = supplierAuth.list[index];
     dispatch({
-      type: 'bankChangeCheck/fetchGetBankBindingInfoRecordById',
-      payload: { identifyId },
+      type: 'supplierAuth/fetchGetSupplierVerifyDetail',
+      payload: { supplierVerifyId },
       callback: (detail) => {
-        setVisibleInfo({ mode, detail, show: true });
+        setVisibleInfo({ mode: verifyStatus === '0' ? 'check' : 'info', detail, show: true });
       },
     });
   };
@@ -150,7 +156,7 @@ const SupplierAuth = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         params={{ verifyStatus: tabkey }}
-        rowKey={(record) => `${record.identifyId}`}
+        rowKey={(record) => `${record.supplierVerifyId}`}
         dispatchType="supplierAuth/fetchGetList"
         {...supplierAuth}
       ></TableDataBlock>

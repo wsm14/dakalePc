@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Tabs, Alert } from 'antd';
-import { BUS_BANKACCOUNT_TYPE } from '@/common/constant';
+import { SUPPLIER_AUTH_TYPE } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
+import { checkCityName } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
 import ExtraButton from '@/components/ExtraButton';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
@@ -13,37 +14,33 @@ const SpecialGoodCheckDetail = (props) => {
   const { visible, onClose, getDetail, loading, dispatch, total, cRef } = props;
   const { show = false, mode = 'check', detail = {}, index } = visible;
 
-  const { newDataObject = {}, ownerBankBindingInfoRecordId } = detail;
+  const { supplierVerifyId } = detail;
 
   const [visibleRefuse, setVisibleRefuse] = useState(false); // 审核拒绝 下架原因
 
   // 审核通过
   const handleVerifyAllow = () => {
     dispatch({
-      type: 'supplierSettlement/fetchAuditBankBindingInfo',
-      payload: {
-        ownerBankBindingInfoRecordId,
-        auditResult: '1',
-      },
+      type: 'supplierAuth/fetchSupplierVerifyAllow',
+      payload: { supplierVerifyId },
       callback: () => {
-        onClose();
         cRef.current.fetchGetData();
+        onClose();
       },
     });
   };
 
   // 审核驳回
-  const fetchSpecialGoodsStatus = (values) => {
-    const { specialGoodsId, ownerIdString } = visibleRefuse.detail;
+  const fetchVerifyReject = (values) => {
     dispatch({
-      type: 'supplierSettlement/fetchSpecialGoodsStatus',
+      type: 'supplierAuth/fetchSupplierVerifyReject',
       payload: {
         ...values,
-        id: specialGoodsId,
-        ownerId: ownerIdString,
+        supplierVerifyId,
       },
       callback: () => {
         setVisibleRefuse(false);
+        onClose();
         childRef.current.fetchGetData();
       },
     });
@@ -56,28 +53,29 @@ const SpecialGoodCheckDetail = (props) => {
       formItems: [
         {
           label: '供应商类型',
-          name: ['bankBindingObject', 'bankAccountType'],
-          render: (val) => BUS_BANKACCOUNT_TYPE[val],
+          name: ['supplierObject', 'type'],
+          render: (val) => SUPPLIER_AUTH_TYPE[val],
         },
         {
           label: '供应商名称',
-          name: ['businessLicenseObject', 'businessLicenseImg'],
+          name: 'supplierName',
         },
         {
           label: '供应商ID',
-          name: ['bankBindingObject', 'openAccountPermit'],
+          name: ['supplierObject', 'id'],
         },
         {
           label: '主营类目',
-          name: ['bankBindingObject', 'cardName'],
+          name: ['supplierObject', 'classifyNames'],
         },
         {
           label: '所属地区',
-          name: ['bankBindingObject', 'cardNo'],
+          name: ['supplierObject', 'districtCode'],
+          render: (val) => checkCityName(val),
         },
         {
           label: '详细地址',
-          name: ['bankBindingObject', 'bankBranchName'],
+          name: ['supplierObject', 'address'],
         },
       ],
     },
@@ -86,11 +84,11 @@ const SpecialGoodCheckDetail = (props) => {
       formItems: [
         {
           label: '联系人姓名',
-          name: 'bankAddccountType',
+          name: ['supplierObject', 'contactName'],
         },
         {
           label: '联系人手机号',
-          name: 'businessssLicenseImg',
+          name: ['supplierObject', 'contactPhone'],
         },
       ],
     },
@@ -99,11 +97,15 @@ const SpecialGoodCheckDetail = (props) => {
       formItems: [
         {
           label: '有无介绍人',
-          name: 'bankAddccountType',
+          name: ['supplierObject', 'anyInducer'],
         },
         {
           label: '介绍人账号',
-          name: 'businessssLicenseImg',
+          name: ['supplierObject', 'inducer'],
+          render: (val, row) =>
+            row.supplierObject.anyInducer == 0
+              ? '无'
+              : `${val.inducerName} ${val.inducerMobile} ${val.inducerBeanCode}`,
         },
       ],
     },
@@ -114,47 +116,47 @@ const SpecialGoodCheckDetail = (props) => {
     {
       label: '营业执照',
       type: 'upload',
-      name: ['businessLicenseObject', 'businessLicenseImg'],
+      name: ['supplierObject', 'proofInfoObject', 'businessLicenseImg'],
     },
     {
       label: '公司名称',
-      name: ['bankBindingObject', 'openAccountPermit'],
+      name: ['supplierObject', 'proofInfoObject', 'businessName'],
     },
     {
       label: '统一社会信用代码',
-      name: ['bankBindingObject', 'cardName'],
+      name: ['supplierObject', 'proofInfoObject', 'socialCreditCode'],
     },
     {
       label: '注册地址',
-      name: ['bankBindingObject', 'cardNo'],
+      name: ['supplierObject', 'proofInfoObject', 'signInAddress'],
     },
     {
       label: '营业期限',
-      name: ['bankBindingObject', 'bankBranchName'],
+      name: ['supplierObject', 'proofInfoObject', 'establishDate'],
     },
     {
       label: '经营范围',
-      name: ['bankBindingObject', 'provName'],
+      name: ['supplierObject', 'proofInfoObject', 'businessScope'],
     },
     {
       label: '生产/经营许可证',
       type: 'upload',
-      name: ['bankBindingObject', 'provCode'],
+      name: ['supplierObject', 'proofInfoObject', 'productLicense'],
     },
     {
       label: '体系认证',
       type: 'upload',
-      name: ['bankBindingObject', 'areaCode'],
+      name: ['supplierObject', 'proofInfoObject', 'systemApprove'],
     },
     {
       label: '产品认证',
       type: 'upload',
-      name: ['bankBindingObject', 'certFrontPhoto'],
+      name: ['supplierObject', 'proofInfoObject', 'productApprove'],
     },
     {
       label: '授权证书',
       type: 'upload',
-      name: ['bankBindingObject', 'legalPerson'],
+      name: ['supplierObject', 'proofInfoObject', 'authorizeImg'],
     },
   ];
 
@@ -176,14 +178,22 @@ const SpecialGoodCheckDetail = (props) => {
   const modalProps = {
     title: mode === 'check' ? '审核' : '详情',
     visible: show,
-    loading,
+    loading: loading.effects['supplierAuth/fetchGetSupplierSettlementDetail'],
     onClose,
     dataPage: {
       current: index,
       total,
-      onChange: (size) => getDetail(size, 'info'),
+      onChange: (size) => getDetail(size),
     },
-    footer: mode === 'check' && <ExtraButton list={btnList}></ExtraButton>,
+    footer: mode === 'check' && (
+      <ExtraButton
+        list={btnList}
+        loading={
+          loading.effects['supplierAuth/fetchGetSupplierVerifyAllow'] ||
+          loading.effects['supplierAuth/fetchGetSupplierVerifyReject']
+        }
+      ></ExtraButton>
+    ),
   };
 
   return (
@@ -196,14 +206,14 @@ const SpecialGoodCheckDetail = (props) => {
               <DescriptionsCondition
                 title={item.title}
                 formItems={item.formItems}
-                initialValues={newDataObject}
+                initialValues={detail}
               ></DescriptionsCondition>
             ))}
           </TabPane>
           <TabPane tab="供应商资质" key="2">
             <DescriptionsCondition
               formItems={intelligenceFormItem}
-              initialValues={newDataObject}
+              initialValues={detail}
             ></DescriptionsCondition>
           </TabPane>
         </Tabs>
@@ -212,7 +222,7 @@ const SpecialGoodCheckDetail = (props) => {
       <RefuseModal
         cRef={cRef}
         visible={visibleRefuse}
-        handleUpData={fetchSpecialGoodsStatus}
+        handleUpData={fetchVerifyReject}
         loading={loading}
         onClose={() => setVisibleRefuse(false)}
       ></RefuseModal>
@@ -220,7 +230,7 @@ const SpecialGoodCheckDetail = (props) => {
   );
 };
 
-export default connect(({ loading, supplierSettlement }) => ({
-  total: supplierSettlement.list.length,
-  loading: loading.effects['supplierSettlement/fetchGetBankBindingInfoRecordById'],
+export default connect(({ loading, supplierAuth }) => ({
+  total: supplierAuth.list.length,
+  loading,
 }))(SpecialGoodCheckDetail);

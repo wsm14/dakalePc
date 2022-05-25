@@ -1,10 +1,9 @@
-import moment from 'moment';
 import { notification } from 'antd';
 import {
   fetchGetSupplierVerifyList,
-  fetchGetSupplierSettlementDetail,
-  fetchSupplierSettlementAdd,
-  fetchSupplierSettlementEdit,
+  fetchGetSupplierVerifyDetail,
+  fetchSupplierVerifyAllow,
+  fetchSupplierVerifyReject,
 } from '@/services/SCMServices';
 
 export default {
@@ -37,28 +36,27 @@ export default {
         },
       });
     },
-    *fetchGetSupplierSettlementDetail({ payload, callback }, { call, put }) {
-      const response = yield call(fetchGetSupplierSettlementDetail, payload);
+    *fetchGetSupplierVerifyDetail({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetSupplierVerifyDetail, payload);
       if (!response) return;
-      const { auditDetail = {} } = response;
-      const { shasdreImg } = auditDetail;
-      callback({ ...auditDetail, shasdreImg: moment(shasdreImg) });
+      const { content } = response;
+      callback(content);
     },
-    *fetchSupplierSettlementAdd({ payload, callback }, { call, put }) {
-      const response = yield call(fetchSupplierSettlementAdd, payload);
+    *fetchSupplierVerifyAllow({ payload, callback }, { call, put }) {
+      const response = yield call(fetchSupplierVerifyAllow, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '新增成功',
+        description: '审核已通过',
       });
       callback();
     },
-    *fetchSupplierSettlementEdit({ payload, callback }, { call, put }) {
-      const response = yield call(fetchSupplierSettlementEdit, payload);
+    *fetchSupplierVerifyReject({ payload, callback }, { call, put }) {
+      const response = yield call(fetchSupplierVerifyReject, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '修改成功',
+        description: '审核已拒绝',
       });
       callback();
     },
