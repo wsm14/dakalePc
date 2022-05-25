@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { notification } from 'antd';
 import {
-  fetchGetSupplierSettlementList,
+  fetchGetSupplierVerifyList,
   fetchGetSupplierSettlementDetail,
   fetchSupplierSettlementAdd,
   fetchSupplierSettlementEdit,
@@ -26,7 +26,7 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchGetSupplierSettlementList, payload);
+      const response = yield call(fetchGetSupplierVerifyList, payload);
       if (!response) return;
       const { content } = response;
       yield put({

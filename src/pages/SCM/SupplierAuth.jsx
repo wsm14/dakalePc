@@ -13,14 +13,18 @@ const tabList = [
   },
   {
     key: '1',
-    tab: '已审核',
+    tab: '审核通过',
+  },
+  {
+    key: '2',
+    tab: '审核拒绝',
   },
 ];
 
 const SupplierAuth = (props) => {
-  const tableRef = useRef();
-  const { dispatch, loading, list, supplierAuth } = props;
+  const { dispatch, loading, supplierAuth } = props;
 
+  const tableRef = useRef();
   const [tabkey, setTabKey] = useState('0');
   const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
 
@@ -28,38 +32,29 @@ const SupplierAuth = (props) => {
   const searchItems = [
     {
       label: '供应商名称',
-      name: 'ownerId',
-      type: 'merchant',
-      placeholder: '请输入集团或店铺名称',
+      name: 'supplierName',
     },
     {
       label: '供应商ID',
-      name: 'districtCode',
+      name: 'supplierId',
     },
     {
       label: '申请时间',
       type: 'rangePicker',
-      name: 'createTimeBegin',
-      end: 'createTimeEnd',
-    },
-    {
-      label: '审核结果',
-      name: 'auditResult',
-      type: 'select',
-      show: tabkey === '1',
-      select: SUPPLIER_AUTH_STATUS,
+      name: 'submitBeginTime',
+      end: 'submitEndTime',
     },
     {
       label: '审核时间',
       type: 'rangePicker',
-      name: 'auditTimeBegin',
-      end: 'auditTimeEnd',
-      show: tabkey === '1',
+      name: 'verifyBeginTime',
+      end: 'verifyEndTime',
+      show: tabkey !== '0',
     },
     {
       label: '审核人',
-      name: 'auditTimesaBegin',
-      show: tabkey === '1',
+      name: 'verifierName',
+      show: tabkey !== '0',
     },
   ];
 
@@ -67,21 +62,19 @@ const SupplierAuth = (props) => {
   const getColumns = [
     {
       title: '供应商名称/ID',
-      dataIndex: 'ownerId',
-      render: (val, row) => {
-        return (
-          <div>
-            <Ellipsis tooltip length={8}>
-              {row.ownerName}
-            </Ellipsis>
-            <div>{val}</div>
-          </div>
-        );
-      },
+      dataIndex: 'supplierId',
+      render: (val, row) => (
+        <div>
+          <Ellipsis tooltip length={8}>
+            {row.supplierName}
+          </Ellipsis>
+          <div>{val}</div>
+        </div>
+      ),
     },
     {
       title: '主营类目',
-      dataIndex: 'ownerName',
+      dataIndex: ['supplierObject', 'classifyNames'],
     },
     {
       title: '联系人',
@@ -98,33 +91,28 @@ const SupplierAuth = (props) => {
     },
     {
       title: '审核时间',
-      dataIndex: 'auditTime',
-      show: tabkey === '1',
+      dataIndex: 'verifyTime',
+      show: tabkey !== '0',
     },
     {
       title: '审核结果',
-      dataIndex: 'auditResult',
-      show: tabkey === '1',
+      dataIndex: 'verifyStatus',
       render: (val) => SUPPLIER_AUTH_STATUS[val],
+      show: tabkey !== '0',
     },
     {
       title: '审核人',
-      dataIndex: 'auditor',
-      show: tabkey === '1',
+      dataIndex: 'ownerName',
+      show: tabkey !== '0',
     },
     {
       type: 'handle',
-      dataIndex: 'ownerBankBindingInfoRecordId',
+      dataIndex: 'identifyId',
       render: (val, record, index) => {
         return [
           {
             type: 'info',
             click: () => fetchGetDetail(index, 'check'),
-          },
-          {
-            type: 'edit',
-            click: () => fetchGetDetail(index, 'check'),
-            visible: tabkey === '1',
           },
         ];
       },
@@ -133,11 +121,10 @@ const SupplierAuth = (props) => {
 
   // 获取详情
   const fetchGetDetail = (index, mode) => {
-    console.log(list, list[index]);
-    const { ownerBankBindingInfoRecordId } = list.list[index];
+    const { identifyId } = supplierAuth.list[index];
     dispatch({
       type: 'bankChangeCheck/fetchGetBankBindingInfoRecordById',
-      payload: { ownerBankBindingInfoRecordId },
+      payload: { identifyId },
       callback: (detail) => {
         setVisibleInfo({ mode, detail, show: true });
       },
@@ -146,7 +133,7 @@ const SupplierAuth = (props) => {
 
   const handleTabChange = (key) => {
     setTabKey(key);
-    tableRef?.current?.fetchGetData({ auditStatus: key });
+    tableRef?.current?.fetchGetData({ verifyStatus: key });
   };
 
   return (
@@ -162,11 +149,10 @@ const SupplierAuth = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ auditStatus: tabkey }}
-        rowKey={(record) => `${record.ownerBankBindingInfoRecordId}`}
-        dispatchType="bankChangeCheck/fetchGetList"
+        params={{ verifyStatus: tabkey }}
+        rowKey={(record) => `${record.identifyId}`}
+        dispatchType="supplierAuth/fetchGetList"
         {...supplierAuth}
-        {...list}
       ></TableDataBlock>
       {/* 详情 审核 */}
       <SupplierAuthDetail
@@ -178,8 +164,7 @@ const SupplierAuth = (props) => {
     </>
   );
 };
-export default connect(({ loading, bankChangeCheck, supplierAuth }) => ({
+export default connect(({ loading, supplierAuth }) => ({
   supplierAuth,
-  list: bankChangeCheck.list,
-  loading: loading.models.supplierSettlement,
+  loading: loading.models.supplierAuth,
 }))(SupplierAuth);

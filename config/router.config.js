@@ -842,7 +842,7 @@ export default [
             path: '/SCM/supplierAuth',
             name: '供应链审核',
             component: './SCM/SupplierAuth',
-            buttons: ['info', 'edit', 'check'],
+            buttons: ['info', 'check'],
           },
           {
             path: '/SCM/supplierManage',

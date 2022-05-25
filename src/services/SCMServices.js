@@ -1,5 +1,12 @@
 import request from '@/utils/request';
 
+// get 供应商审核 - 列表
+export async function fetchGetSupplierVerifyList(params) {
+  return request('/admin/supplier/verify/pageListSupplierVerify', {
+    params,
+  });
+}
+
 // get 结算明细 - 列表
 export async function fetchGetSupplierSettlementList(params) {
   return request('/admin/accountManagement/listUserAccount', {
