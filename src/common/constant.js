@@ -652,6 +652,9 @@ export const CHECK_STATUS = ['审核通过', '审核驳回', '商家已确认', 
 // 银行卡变更审核结果
 export const BANK_CHECK_STATUS = ['审核驳回', '审核通过'];
 
+// 银行卡变更审核结果
+export const SUPPLIER_AUTH_STATUS = ['审核拒绝', '审核通过'];
+
 // 标签类型
 export const TAG_TYPE = {
   platform: '平台商品标签',

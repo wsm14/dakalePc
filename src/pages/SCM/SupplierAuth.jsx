@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import { checkCityName } from '@/utils/utils';
-import { BANK_CHECK_STATUS } from '@/common/constant';
+import { SUPPLIER_AUTH_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import SupplierAuthDetail from './components/SupplierAuth/SupplierAuthDetail';
@@ -19,7 +19,7 @@ const tabList = [
 
 const SupplierAuth = (props) => {
   const tableRef = useRef();
-  const { dispatch, loading, list } = props;
+  const { dispatch, loading, list, supplierAuth } = props;
 
   const [tabkey, setTabKey] = useState('0');
   const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
@@ -47,7 +47,7 @@ const SupplierAuth = (props) => {
       name: 'auditResult',
       type: 'select',
       show: tabkey === '1',
-      select: BANK_CHECK_STATUS,
+      select: SUPPLIER_AUTH_STATUS,
     },
     {
       label: '审核时间',
@@ -105,7 +105,7 @@ const SupplierAuth = (props) => {
       title: '审核结果',
       dataIndex: 'auditResult',
       show: tabkey === '1',
-      render: (val) => BANK_CHECK_STATUS[val],
+      render: (val) => SUPPLIER_AUTH_STATUS[val],
     },
     {
       title: '审核人',
@@ -115,15 +115,15 @@ const SupplierAuth = (props) => {
     {
       type: 'handle',
       dataIndex: 'ownerBankBindingInfoRecordId',
-      render: (val, record) => {
+      render: (val, record, index) => {
         return [
           {
             type: 'info',
-            click: () => fetchSpecialGoodsDetail(val, 'info'),
+            click: () => fetchGetDetail(index, 'check'),
           },
           {
             type: 'edit',
-            click: () => fetchSpecialGoodsDetail(val, 'check'),
+            click: () => fetchGetDetail(index, 'check'),
             visible: tabkey === '1',
           },
         ];
@@ -132,12 +132,14 @@ const SupplierAuth = (props) => {
   ];
 
   // 获取详情
-  const fetchSpecialGoodsDetail = (val, type) => {
+  const fetchGetDetail = (index, mode) => {
+    console.log(list, list[index]);
+    const { ownerBankBindingInfoRecordId } = list.list[index];
     dispatch({
       type: 'bankChangeCheck/fetchGetBankBindingInfoRecordById',
-      payload: { ownerBankBindingInfoRecordId: val },
+      payload: { ownerBankBindingInfoRecordId },
       callback: (detail) => {
-        setVisibleInfo({ type, detail, show: true });
+        setVisibleInfo({ mode, detail, show: true });
       },
     });
   };
@@ -163,18 +165,21 @@ const SupplierAuth = (props) => {
         params={{ auditStatus: tabkey }}
         rowKey={(record) => `${record.ownerBankBindingInfoRecordId}`}
         dispatchType="bankChangeCheck/fetchGetList"
+        {...supplierAuth}
         {...list}
       ></TableDataBlock>
       {/* 详情 审核 */}
       <SupplierAuthDetail
         visible={visibleInfo}
         cRef={tableRef}
+        getDetail={fetchGetDetail}
         onClose={() => setVisibleInfo(false)}
       ></SupplierAuthDetail>
     </>
   );
 };
-export default connect(({ loading, bankChangeCheck }) => ({
+export default connect(({ loading, bankChangeCheck, supplierAuth }) => ({
+  supplierAuth,
   list: bankChangeCheck.list,
-  loading: loading.models.bankChangeCheck,
+  loading: loading.models.supplierSettlement,
 }))(SupplierAuth);

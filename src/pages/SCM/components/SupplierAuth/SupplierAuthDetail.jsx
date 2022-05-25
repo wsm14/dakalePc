@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
+import { Tabs, Alert } from 'antd';
 import { BUS_BANKACCOUNT_TYPE } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
 import DrawerCondition from '@/components/DrawerCondition';
-import PopImgShow from '@/components/PopImgShow';
 import ExtraButton from '@/components/ExtraButton';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
+const { TabPane } = Tabs;
+
 const SpecialGoodCheckDetail = (props) => {
-  const { visible, onClose, loading, dispatch, total, cRef } = props;
-  const { show = false, type = 'check', detail = {}, index } = visible;
+  const { visible, onClose, getDetail, loading, dispatch, total, cRef } = props;
+  const { show = false, mode = 'check', detail = {}, index } = visible;
 
   const { newDataObject = {}, ownerBankBindingInfoRecordId } = detail;
 
-  const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 审核拒绝 下架原因
+  const [visibleRefuse, setVisibleRefuse] = useState(false); // 审核拒绝 下架原因
 
   // 审核通过
   const handleVerifyAllow = () => {
     dispatch({
-      type: 'bankChangeCheck/fetchAuditBankBindingInfo',
+      type: 'supplierSettlement/fetchAuditBankBindingInfo',
       payload: {
         ownerBankBindingInfoRecordId,
         auditResult: '1',
@@ -34,107 +36,125 @@ const SpecialGoodCheckDetail = (props) => {
   const fetchSpecialGoodsStatus = (values) => {
     const { specialGoodsId, ownerIdString } = visibleRefuse.detail;
     dispatch({
-      type: 'specialGoods/fetchSpecialGoodsStatus',
+      type: 'supplierSettlement/fetchSpecialGoodsStatus',
       payload: {
         ...values,
         id: specialGoodsId,
         ownerId: ownerIdString,
       },
       callback: () => {
-        setVisibleRefuse({ show: false, detail: {} });
+        setVisibleRefuse(false);
         childRef.current.fetchGetData();
       },
     });
   };
 
-  const formItemsNew = [
+  // 基础信息
+  const baseItemArr = [
     {
-      label: '账户类型',
-      name: ['bankBindingObject', 'bankAccountType'],
-      render: (val) => BUS_BANKACCOUNT_TYPE[val],
+      title: '基础信息',
+      formItems: [
+        {
+          label: '供应商类型',
+          name: ['bankBindingObject', 'bankAccountType'],
+          render: (val) => BUS_BANKACCOUNT_TYPE[val],
+        },
+        {
+          label: '供应商名称',
+          name: ['businessLicenseObject', 'businessLicenseImg'],
+        },
+        {
+          label: '供应商ID',
+          name: ['bankBindingObject', 'openAccountPermit'],
+        },
+        {
+          label: '主营类目',
+          name: ['bankBindingObject', 'cardName'],
+        },
+        {
+          label: '所属地区',
+          name: ['bankBindingObject', 'cardNo'],
+        },
+        {
+          label: '详细地址',
+          name: ['bankBindingObject', 'bankBranchName'],
+        },
+      ],
     },
+    {
+      title: '联系人信息',
+      formItems: [
+        {
+          label: '联系人姓名',
+          name: 'bankAddccountType',
+        },
+        {
+          label: '联系人手机号',
+          name: 'businessssLicenseImg',
+        },
+      ],
+    },
+    {
+      title: '介绍人信息',
+      formItems: [
+        {
+          label: '有无介绍人',
+          name: 'bankAddccountType',
+        },
+        {
+          label: '介绍人账号',
+          name: 'businessssLicenseImg',
+        },
+      ],
+    },
+  ];
+
+  // 供应商资质信息
+  const intelligenceFormItem = [
     {
       label: '营业执照',
+      type: 'upload',
       name: ['businessLicenseObject', 'businessLicenseImg'],
-      render: (val) => <PopImgShow url={val}></PopImgShow>,
     },
     {
-      label: '开户许可证',
+      label: '公司名称',
       name: ['bankBindingObject', 'openAccountPermit'],
-      render: (val) => <PopImgShow url={val}></PopImgShow>,
     },
     {
-      label: '开户名',
+      label: '统一社会信用代码',
       name: ['bankBindingObject', 'cardName'],
     },
     {
-      label: '银行卡号',
+      label: '注册地址',
       name: ['bankBindingObject', 'cardNo'],
     },
     {
-      label: '开户银行',
+      label: '营业期限',
       name: ['bankBindingObject', 'bankBranchName'],
     },
     {
-      label: '开户城市',
+      label: '经营范围',
       name: ['bankBindingObject', 'provName'],
-      render: (val, record) => `${val}-${record?.bankBindingObject?.areaName}`,
     },
     {
-      label: '省份编码',
+      label: '生产/经营许可证',
+      type: 'upload',
       name: ['bankBindingObject', 'provCode'],
     },
     {
-      label: '地区编码',
+      label: '体系认证',
+      type: 'upload',
       name: ['bankBindingObject', 'areaCode'],
     },
     {
-      label: '法人身份证',
+      label: '产品认证',
+      type: 'upload',
       name: ['bankBindingObject', 'certFrontPhoto'],
-      render: (val, record) => (
-        <>
-          <PopImgShow url={val}></PopImgShow>
-          <PopImgShow url={record?.bankBindingObject?.certReversePhoto}></PopImgShow>
-        </>
-      ),
     },
     {
-      label: '法人姓名',
+      label: '授权证书',
+      type: 'upload',
       name: ['bankBindingObject', 'legalPerson'],
-    },
-    {
-      label: '法人身份证号',
-      name: ['bankBindingObject', 'legalCertId'],
-    },
-    {
-      label: '法人身份证有效期',
-      name: ['bankBindingObject', 'legalCertIdExpires'],
-    },
-    {
-      label: '法人手机号',
-      name: ['bankBindingObject', 'legalMp'],
-    },
-    {
-      label: '凭证',
-      name: ['bankBindingObject', 'additionalVoucher'],
-      render: (val, record) => (
-        <>
-          <PopImgShow url={val}></PopImgShow>
-          {record?.bankBindingObject?.additionalDesc || ''}
-        </>
-      ),
-    },
-    {
-      label: '申请人姓名',
-      name: 'applicantName',
-    },
-    {
-      label: '申请人手机号',
-      name: 'applicantMobile',
-    },
-    {
-      label: '申请人账号',
-      name: 'applicantAccount',
     },
   ];
 
@@ -143,20 +163,18 @@ const SpecialGoodCheckDetail = (props) => {
       auth: 'check',
       onClick: handleVerifyAllow,
       text: '审核通过',
-      show: type === 'check',
     },
     {
       auth: 'check',
-      onClick: handleVerifyAllow,
-      typeBtn: 'default',
+      onClick: () => setVisibleRefuse(true),
+      danger: true,
       text: '审核驳回',
-      show: type === 'check',
     },
   ];
 
   // 弹出窗属性
   const modalProps = {
-    title: type === 'check' ? '审核' : '详情',
+    title: mode === 'check' ? '审核' : '详情',
     visible: show,
     loading,
     onClose,
@@ -165,16 +183,30 @@ const SpecialGoodCheckDetail = (props) => {
       total,
       onChange: (size) => getDetail(size, 'info'),
     },
-    footer: <ExtraButton list={btnList}></ExtraButton>,
+    footer: mode === 'check' && <ExtraButton list={btnList}></ExtraButton>,
   };
 
   return (
     <>
       <DrawerCondition {...modalProps}>
-        <DescriptionsCondition
-          formItems={formItemsNew}
-          initialValues={newDataObject}
-        ></DescriptionsCondition>
+        <Alert message="仅本地使用" type="error" banner style={{ marginBottom: 5 }}></Alert>
+        <Tabs type="card">
+          <TabPane tab="基础信息" key="1">
+            {baseItemArr.map((item) => (
+              <DescriptionsCondition
+                title={item.title}
+                formItems={item.formItems}
+                initialValues={newDataObject}
+              ></DescriptionsCondition>
+            ))}
+          </TabPane>
+          <TabPane tab="供应商资质" key="2">
+            <DescriptionsCondition
+              formItems={intelligenceFormItem}
+              initialValues={newDataObject}
+            ></DescriptionsCondition>
+          </TabPane>
+        </Tabs>
       </DrawerCondition>
       {/* 驳回原因 */}
       <RefuseModal
@@ -188,7 +220,7 @@ const SpecialGoodCheckDetail = (props) => {
   );
 };
 
-export default connect(({ loading, bankChangeCheck }) => ({
-  total: bankChangeCheck.list.length,
-  loading: loading.effects['bankChangeCheck/fetchGetBankBindingInfoRecordById'],
+export default connect(({ loading, supplierSettlement }) => ({
+  total: supplierSettlement.list.length,
+  loading: loading.effects['supplierSettlement/fetchGetBankBindingInfoRecordById'],
 }))(SpecialGoodCheckDetail);

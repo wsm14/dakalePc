@@ -3,13 +3,7 @@ import { Modal, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
 
 const RefuseModal = (props) => {
-  const {
-    visible = {},
-    onClose,
-    handleUpData,
-    loading,
-    extra = '',
-  } = props;
+  const { visible = false, onClose, handleUpData, loading, extra = '' } = props;
   const { show = false, formProps = {} } = visible;
   const { type = 'refuse', key = 'rejectReason', maxLength = 50 } = formProps;
 
@@ -37,7 +31,7 @@ const RefuseModal = (props) => {
   const modalProps = {
     title: `请填写${showProps}的原因`,
     width: 650,
-    visible: show,
+    visible: typeof visible === "boolean" ? visible : show,
     maskClosable: true,
     destroyOnClose: true,
     zIndex: 1001,
