@@ -94,7 +94,10 @@ const DrawerCondition = (props) => {
               <Button onClick={onClose}>{closeLabel}</Button>
             </Space>
           )}
-          <Space>{footer && footerCheck()}</Space>
+          <Space>
+            {!dataPage && <Button onClick={onClose}>{closeLabel}</Button>}
+            {footer && footerCheck()}
+          </Space>
         </div>
       }
     >

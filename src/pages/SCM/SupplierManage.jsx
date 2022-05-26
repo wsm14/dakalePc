@@ -10,6 +10,7 @@ import {
 } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
+import SupplierActivate from './components/SupplierManage/SupplierActivate';
 import SupplierManageDetail from './components/SupplierManage/SupplierManageDetail';
 
 const SupplierManage = (props) => {
@@ -17,6 +18,7 @@ const SupplierManage = (props) => {
 
   const childRef = useRef();
   const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
+  const [visibleActivate, setVisibleActivate] = useState(false); // 账户激活
 
   // 搜索参数
   const searchItems = [
@@ -126,15 +128,11 @@ const SupplierManage = (props) => {
         {
           type: 'activate',
           visible: ['0', '2'].includes(row.bankStatus), // 未激活 激活失败
-          click: () => fetchGetDetail(val, row.momentCommentIdString),
+          click: () => setVisibleActivate({ show: true, detail: row }),
         },
         {
           type: 'brand',
           visible: ['1'].includes(row.status), // 启用
-          click: () => fetchGetDetail(val, row.momentCommentIdString),
-        },
-        {
-          type: 'diary',
           click: () => fetchGetDetail(val, row.momentCommentIdString),
         },
       ],
@@ -180,6 +178,12 @@ const SupplierManage = (props) => {
         getDetail={fetchGetDetail}
         onClose={() => setVisibleInfo(false)}
       ></SupplierManageDetail>
+      {/* 账户激活 */}
+      <SupplierActivate
+        cRef={childRef}
+        visible={visibleActivate}
+        onClose={() => setVisibleActivate(false)}
+      ></SupplierActivate>
     </>
   );
 };
