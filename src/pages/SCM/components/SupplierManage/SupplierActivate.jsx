@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Form, Button } from 'antd';
-import AccountInfo from './Form/ActivateAccountInfo';
+import ActivateAccountInfo from './Form/ActivateAccountInfo';
 import DrawerCondition from '@/components/DrawerCondition';
-import FormComponents from '@/components/FormCondition';
 
+/**
+ * 对公对私激活
+ */
 const SupplierActivate = (props) => {
   const { cRef, visible, onClose, dispatch, loading } = props;
 
@@ -18,19 +20,17 @@ const SupplierActivate = (props) => {
   // 提交数据
   const fetchUpData = () => {
     form.validateFields().then((values) => {
-      const { city, activeBeginDate = [], bankBindingInfo, bankAccountType } = values;
+      const { city, activeBeginDate = [] } = values;
       dispatch({
-        type: 'groupSet/fetchMerchantBank',
+        type: 'supplierManage/fetchSupplierActivateAccount',
         payload: {
           supplierId,
-          bankAccountType,
-          bankBindingObject: {
-            ...bankBindingInfo,
-            provCode: city[0].includes('00') ? city[0] : '00' + city[0],
-            areaCode: city[1] || undefined,
-            startDate: activeBeginDate[0]?.format('YYYYMMDD') || undefined,
-            legalCertIdExpires: activeBeginDate[1]?.format('YYYYMMDD') || undefined,
-          },
+          bankAccount,
+          provCode: city[0].includes('00') ? city[0] : '00' + city[0],
+          areaCode: city[1] || undefined,
+          startDate: activeBeginDate[0]?.format('YYYYMMDD') || undefined,
+          [['', 'legalCertIdExpires', 'certExpireDate'][bankAccount]]:
+            activeBeginDate[1]?.format('YYYYMMDD') || undefined,
         },
         callback: () => {
           cRef.current.fetchGetData();
@@ -57,15 +57,14 @@ const SupplierActivate = (props) => {
   return (
     <DrawerCondition {...modalProps}>
       {/* 对公对私表单 */}
-      <AccountInfo form={form} bankAccount={bankAccount} initialValues={detail}></AccountInfo>
+      <ActivateAccountInfo form={form} bankAccount={bankAccount}></ActivateAccountInfo>
     </DrawerCondition>
   );
 };
 
-export default connect(({ groupSet, loading }) => ({
-  list: groupSet.list.list,
+export default connect(({ loading }) => ({
   loading:
-    loading.effects['groupSet/fetchMerchantBank'] ||
+    loading.effects['supplierManage/fetchSupplierActivateAccount'] ||
     loading.effects['groupSet/fetchGetOcrBankLicense'] ||
     loading.effects['groupSet/fetchGetOcrIdBankCard'] ||
     loading.effects['groupSet/fetchGetOcrIdCardFront'] ||

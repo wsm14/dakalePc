@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'umi';
+import { PHONE_PATTERN } from '@/common/regExp';
 import moment from 'moment';
 import aliOssUpload from '@/utils/aliOssUpload';
-import { PHONE_PATTERN } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
 
 /**
- * 对公对私表单
+ * 对公对私激活表单
  */
 const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) => {
   // 识别中不可修改
@@ -38,6 +38,7 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
       callback: (val) => callback(val),
     });
   };
+
   // 识别省份证反面信息
   const fetchGetOcrIdCardBack = (payload, callback) => {
     dispatch({
@@ -52,7 +53,7 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
     {
       title: '对公账户信息',
       label: '开户许可证',
-      name: ['bankBindingInfo', 'openAccountPermit'],
+      name: 'openAccountPermit',
       type: 'upload',
       maxFile: 1,
       maxSize: 1024,
@@ -62,18 +63,14 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
         let imgUrl = await aliOssUpload(val);
         if (imgUrl) {
           form.setFieldsValue({
-            bankBindingInfo: {
-              openAccountPermit: imgUrl[0],
-            },
+            openAccountPermit: imgUrl[0],
           });
           fetchGetOcrBankLicense({ imageUrl: imgUrl[0] }, (res) => {
             const { enterpriseNameCH = '', enterpriseBankId = '', enterpriseBankName } = res;
             form.setFieldsValue({
-              bankBindingInfo: {
-                cardName: enterpriseNameCH,
-                bankBranchName: enterpriseBankName,
-                cardNo: enterpriseBankId,
-              },
+              cardName: enterpriseNameCH,
+              bankBranchName: enterpriseBankName,
+              cardNo: enterpriseBankId,
               city: undefined,
             });
           });
@@ -82,17 +79,17 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
     },
     {
       label: '开户名称',
-      name: ['bankBindingInfo', 'cardName'],
+      name: 'cardName',
       disabled,
     },
     {
       label: '银行卡号',
-      name: ['bankBindingInfo', 'cardNo'],
+      name: 'cardNo',
       disabled,
     },
     {
       label: '开户支行',
-      name: ['bankBindingInfo', 'bankBranchName'],
+      name: 'bankBranchName',
       disabled,
     },
     {
@@ -103,7 +100,7 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
     },
     {
       label: '开户行号',
-      name: ['bankBindingInfo', 'bankSwiftCode'],
+      name: 'bankSwiftCode',
       rules: [{ required: false }],
     },
   ];
@@ -113,7 +110,7 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
     {
       title: '对私账户信息',
       label: '银行卡',
-      name: ['bankBindingInfo', 'bankPhoto'],
+      name: 'bankPhoto',
       type: 'upload',
       maxFile: 1,
       maxSize: 1024,
@@ -124,17 +121,13 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
         let imgUrl = await aliOssUpload(val);
         if (imgUrl) {
           form.setFieldsValue({
-            bankBindingInfo: {
-              bankPhoto: imgUrl[0],
-            },
+            bankPhoto: imgUrl[0],
           });
           fetchGetOcrIdBankCard({ pic: imgUrl[0] }, (res) => {
             const { number, enterpriseBankName = '' } = res;
             form.setFieldsValue({
-              bankBindingInfo: {
-                cardNo: number,
-                bankBranchName: enterpriseBankName,
-              },
+              cardNo: number,
+              bankBranchName: enterpriseBankName,
             });
           });
         }
@@ -142,12 +135,12 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
     },
     {
       label: '银行卡号',
-      name: ['bankBindingInfo', 'cardNo'],
+      name: 'cardNo',
       disabled,
     },
     {
       label: '开户支行',
-      name: ['bankBindingInfo', 'bankBranchName'],
+      name: 'bankBranchName',
     },
     {
       label: '开户城市',
@@ -157,13 +150,8 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
     },
     {
       label: '银行预留手机号',
-      name: ['bankBindingInfo', 'legalMp'],
+      name: 'legalMp',
       addRules: [{ pattern: PHONE_PATTERN, message: '手机号格式不正确' }],
-    },
-    {
-      label: '开户行号',
-      name: ['bankBindingInfo', 'bankSwiftCode'],
-      rules: [{ required: false }],
     },
   ];
 
@@ -174,7 +162,7 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
     {
       title: `${labelBefor}身份信息`,
       label: `${labelBefor}身份证正面照`,
-      name: ['bankBindingInfo', 'certFrontPhoto'],
+      name: 'certFrontPhoto',
       type: 'upload',
       maxFile: 1,
       maxSize: 1024,
@@ -182,21 +170,17 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
       onChange: async (val) => {
         let imgUrl = await aliOssUpload(val);
         if (imgUrl) {
-          form.setFieldsValue({
-            bankBindingInfo: { certFrontPhoto: imgUrl[0] },
-          });
+          form.setFieldsValue({ certFrontPhoto: imgUrl[0] });
           fetchGetOcrIdCardFront({ imageUrl: imgUrl[0] }, (res) => {
             const { name = '', num = '' } = res;
-            form.setFieldsValue({
-              bankBindingInfo: { legalPerson: name, legalCertId: num },
-            });
+            form.setFieldsValue({ legalPerson: name, legalCertId: num });
           });
         }
       },
     },
     {
       label: `${labelBefor}身份证反面照`,
-      name: ['bankBindingInfo', 'certReversePhoto'],
+      name: 'certReversePhoto',
       type: 'upload',
       maxFile: 1,
       maxSize: 1024,
@@ -204,9 +188,7 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
       onChange: async (val) => {
         let imgUrl = await aliOssUpload(val);
         if (imgUrl) {
-          form.setFieldsValue({
-            bankBindingInfo: { certReversePhoto: imgUrl[0] },
-          });
+          form.setFieldsValue({ certReversePhoto: imgUrl[0] });
           fetchGetOcrIdCardBack({ imageUrl: imgUrl[0] }, (res) => {
             let { startDate, endDate } = res;
             if (endDate == '长期' || !endDate) {
@@ -222,12 +204,12 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
     {
       label: `${labelBefor}姓名`,
       disabled,
-      name: ['bankBindingInfo', 'legalPerson'],
+      name: 'legalPerson',
     },
     {
       label: `${labelBefor}身份证号码`,
       disabled,
-      name: ['bankBindingInfo', 'legalCertId'],
+      name: 'legalCertId',
     },
     {
       label: `${labelBefor}身份有效期`,
@@ -237,15 +219,35 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
     },
     {
       label: '法人手机号',
-      name: ['bankBindingInfo', 'legalMp'],
+      name: 'legalMp',
       visible: bankAccount === '1',
       addRules: [{ pattern: PHONE_PATTERN, message: '手机号格式不正确' }],
     },
   ];
 
+  // 补充描述和凭证
+  const formOther = [
+    {
+      title: '补充描述和凭证',
+      label: '补充描述',
+      name: 'additionalDesc',
+      type: 'textArea',
+      maxLength: 200,
+      rules: [{ required: false }],
+    },
+    {
+      label: '凭证',
+      name: 'additionalVoucher',
+      type: 'upload',
+      maxFile: 1,
+      isCut: false,
+      rules: [{ required: false }],
+    },
+  ];
+
   const formItemArr = {
-    1: [...formItems, ...formItemsLegal],
-    2: [...formItemsOwn, ...formItemsLegal],
+    1: [...formItems, ...formItemsLegal], // 1 对公
+    2: [...formItemsOwn, ...formItemsLegal, ...formOther], // 2 对私
   }[bankAccount];
 
   return <FormCondition formItems={formItemArr} form={form} initialValues={initialValues} />;

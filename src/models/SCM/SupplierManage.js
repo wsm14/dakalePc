@@ -2,6 +2,8 @@ import { notification } from 'antd';
 import {
   fetchGetSupplierManageList,
   fetchGetSupplierManageDetail,
+  fetchSupplierCorpAccount,
+  fetchSupplierPersonAccount,
   fetchSupplierVerifyAllow,
   fetchSupplierVerifyReject,
 } from '@/services/SCMServices';
@@ -41,6 +43,18 @@ export default {
       if (!response) return;
       const { content } = response;
       callback(content.supplierDetail);
+    },
+    *fetchSupplierActivateAccount({ payload, callback }, { call, put }) {
+      const { bankAccount } = payload;
+      // 1 对公 2 对私
+      const fetchApi = [false, fetchSupplierCorpAccount, fetchSupplierPersonAccount][bankAccount];
+      const response = yield call(fetchApi, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '审核已提交',
+      });
+      callback();
     },
     *fetchSupplierVerifyAllow({ payload, callback }, { call, put }) {
       const response = yield call(fetchSupplierVerifyAllow, payload);
