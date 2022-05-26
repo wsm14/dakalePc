@@ -56,7 +56,6 @@ const SupplierSettlement = (props) => {
       dataIndex: 'createTime',
     },
     {
-      title: '操作',
       type: 'handle',
       dataIndex: 'supplierSettlementId',
       render: (val, row, index) => [

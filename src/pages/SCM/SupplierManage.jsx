@@ -109,8 +109,8 @@ const SupplierManage = (props) => {
       dataIndex: 'settleTime',
     },
     {
-      title: '操作',
       type: 'handle',
+      width: 200,
       dataIndex: 'id',
       render: (val, row) => [
         {
@@ -119,27 +119,26 @@ const SupplierManage = (props) => {
         },
         {
           type: 'edit',
-          visible: val === '0',
           click: () => fetchDel(val, row.momentCommentIdString),
         },
         {
           type: 'activate',
-          visible: val === '0',
+          visible: ['0', '2'].includes(row.bankStatus), // 未激活 激活失败
           click: () => fetchDel(val, row.momentCommentIdString),
         },
         {
           type: 'brand',
-          visible: val === '0',
+          visible: ['1'].includes(row.status), // 启用
           click: () => fetchDel(val, row.momentCommentIdString),
         },
         {
           type: 'diary',
-          visible: val === '0',
           click: () => fetchDel(val, row.momentCommentIdString),
         },
       ],
     },
   ];
+
   const fetchDel = (deleteFlag) => {
     dispatch({
       type: 'commentManage/fetchUpdateCommentsDeleteFlag',

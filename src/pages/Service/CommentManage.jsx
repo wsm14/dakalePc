@@ -71,7 +71,6 @@ const CommentManage = (props) => {
       render: (val) => COMMENT_DELETFLAG[val],
     },
     {
-      title: '操作',
       type: 'handle',
       dataIndex: 'deleteFlag',
       render: (val, row) => [
