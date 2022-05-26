@@ -755,7 +755,7 @@ export default {
       });
       if (!response) return;
       const { content } = response;
-      const newList = content.recordList.map((item) => ({
+      const newList = content.supplierDetailList.map((item) => ({
         name: `${item.name} ${item.supplierId}`,
         value: item.supplierId,
         option: item,

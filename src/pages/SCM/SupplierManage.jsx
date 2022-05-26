@@ -12,9 +12,8 @@ const SupplierManage = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '用户',
+      label: '供应商名称',
       name: 'userId',
-      type: 'user',
     },
     {
       label: '视频ID',
@@ -100,14 +99,14 @@ const SupplierManage = (props) => {
       callback: childRef.current.fetchGetData,
     });
   };
+
   const btnList = [
     {
-      auth: 'del',
-      disabled: !commentList.length,
+      auth: 'save',
       onClick: fetchDel,
-      text: '批量删除',
     },
   ];
+
   return (
     <TableDataBlock
       cRef={childRef}
