@@ -848,7 +848,7 @@ export default [
             path: '/SCM/supplierManage',
             name: '供应商列表',
             component: './SCM/SupplierManage',
-            buttons: ['info', 'edit', 'activate', 'status', 'brand', 'diary'],
+            buttons: ['save', 'info', 'edit', 'activate', 'status', 'brand', 'diary'],
           },
           {
             path: '/SCM/supplierSettlement',

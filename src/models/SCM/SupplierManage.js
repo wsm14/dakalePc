@@ -40,7 +40,7 @@ export default {
       const response = yield call(fetchGetSupplierManageDetail, payload);
       if (!response) return;
       const { content } = response;
-      callback(content);
+      callback(content.supplierDetail);
     },
     *fetchSupplierVerifyAllow({ payload, callback }, { call, put }) {
       const response = yield call(fetchSupplierVerifyAllow, payload);
