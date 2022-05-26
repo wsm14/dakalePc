@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Form, Button } from 'antd';
-import ActivateAccountInfo from './Form/ActivateAccountInfo';
+import aliOssUpload from '@/utils/aliOssUpload';
 import DrawerCondition from '@/components/DrawerCondition';
+import ActivateAccountInfo from './Form/ActivateAccountInfo';
 
 /**
  * 对公对私激活
@@ -19,13 +20,16 @@ const SupplierActivate = (props) => {
 
   // 提交数据
   const fetchUpData = () => {
-    form.validateFields().then((values) => {
-      const { city, activeBeginDate = [] } = values;
+    form.validateFields().then(async (values) => {
+      const { city, activeBeginDate = [], additionalVoucher, ...other } = values;
+      const imgUrl = await aliOssUpload(additionalVoucher);
       dispatch({
         type: 'supplierManage/fetchSupplierActivateAccount',
         payload: {
+          ...other,
           supplierId,
           bankAccount,
+          additionalVoucher: imgUrl.toString(),
           provCode: city[0].includes('00') ? city[0] : '00' + city[0],
           areaCode: city[1] || undefined,
           startDate: activeBeginDate[0]?.format('YYYYMMDD') || undefined,
