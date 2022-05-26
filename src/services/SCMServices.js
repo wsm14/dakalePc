@@ -1,5 +1,15 @@
 import request from '@/utils/request';
 
+// 供应商管理
+// get 供应商管理 - 列表
+export async function fetchGetSupplierManageList(params) {
+  return request('/admin/supplier/pageListSupplier', {
+    params,
+  });
+}
+
+// 供应商管理 end
+
 // 供应商审核
 // get 供应商审核 - 列表
 export async function fetchGetSupplierVerifyList(params) {
@@ -32,6 +42,7 @@ export function fetchSupplierVerifyReject(data) {
 }
 // 供应商审核 end
 
+// 结算明细
 // get 结算明细 - 列表
 export async function fetchGetSupplierSettlementList(params) {
   return request('/admin/supplier/settlement/pageListSupplierSettlement', {
@@ -61,3 +72,4 @@ export function fetchSupplierSettlementEdit(data) {
     data,
   });
 }
+// 结算明细 end

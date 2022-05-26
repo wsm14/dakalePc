@@ -9,15 +9,15 @@ const SettlementDetail = ({ detail = {} }) => {
     },
     {
       label: '收款方户名',
-      name: 'ownerName',
+      name: 'legalPerson',
     },
     {
       label: '收款方账号',
-      name: 'paysscount',
+      name: 'cardNo',
     },
     {
       label: '收款方银行',
-      name: 'coupo3nName',
+      name: 'bankBranchName',
     },
     {
       label: '结算金额(元)',

@@ -1,12 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import TableDataBlock from '@/components/TableDataBlock';
 import { COMMENT_DELETFLAG } from '@/common/constant';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const SupplierManage = (props) => {
-  const { commentManage, loading, dispatch } = props;
+  const { supplierManage, loading, dispatch } = props;
+
   const childRef = useRef();
   const [commentList, setCommentList] = useState([]);
+
   // 搜索参数
   const searchItems = [
     {
@@ -114,13 +116,13 @@ const SupplierManage = (props) => {
       searchItems={searchItems}
       columns={getColumns}
       rowKey={(record) => `${record.momentCommentIdString}`}
-      dispatchType="commentManage/fetchGetList"
+      dispatchType="supplierManage/fetchGetList"
       rowSelection={{ onChange: setCommentList }}
-      {...commentManage}
+      {...supplierManage}
     ></TableDataBlock>
   );
 };
-export default connect(({ commentManage, loading }) => ({
-  commentManage,
-  loading: loading.models.commentManage,
+export default connect(({ supplierManage, loading }) => ({
+  supplierManage,
+  loading: loading.models.supplierManage,
 }))(SupplierManage);

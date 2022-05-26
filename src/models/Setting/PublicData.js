@@ -2,6 +2,7 @@ import { notification } from 'antd';
 import oss from 'ali-oss';
 import lodash from 'lodash';
 import { uuid } from '@/utils/utils';
+import { fetchGetSupplierManageList } from '@/services/SCMServices';
 import { fetchMerchantList, fetchMerchantGroup } from '@/services/BusinessServices';
 import {
   fetchGetOss,
@@ -78,6 +79,7 @@ export default {
     allCouponList: { list: [], total: 0 },
     configGoodsTagList: [],
     resourceList: [],
+    sipploerList: [],
   },
 
   reducers: {
@@ -741,6 +743,30 @@ export default {
           })),
         },
       });
+    },
+    // 供应商列表搜索
+    *fetchSearchSupplierManage({ payload, callback }, { put, call }) {
+      const response = yield call(fetchGetSupplierManageList, {
+        ...payload,
+        status: 1,
+        accountStatus: 1,
+        limit: 50,
+        page: 1,
+      });
+      if (!response) return;
+      const { content } = response;
+      const newList = content.recordList.map((item) => ({
+        name: `${item.name} ${item.supplierId}`,
+        value: item.supplierId,
+        option: item,
+      }));
+      yield put({
+        type: 'save',
+        payload: {
+          sipploerList: newList,
+        },
+      });
+      callback && callback(newList);
     },
   },
 };
