@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Tag, Badge } from 'antd';
 import { checkCityName } from '@/utils/utils';
@@ -10,11 +10,13 @@ import {
 } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
+import SupplierManageDetail from './components/SupplierManage/SupplierManageDetail';
 
 const SupplierManage = (props) => {
   const { supplierManage, loading, dispatch } = props;
 
   const childRef = useRef();
+  const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
 
   // 搜索参数
   const searchItems = [
@@ -112,62 +114,73 @@ const SupplierManage = (props) => {
       type: 'handle',
       width: 200,
       dataIndex: 'id',
-      render: (val, row) => [
+      render: (val, row, index) => [
         {
           type: 'info',
-          click: () => fetchDel(val, row.momentCommentIdString),
+          click: () => fetchGetDetail(index),
         },
         {
           type: 'edit',
-          click: () => fetchDel(val, row.momentCommentIdString),
+          click: () => fetchGetDetail(val, row.momentCommentIdString),
         },
         {
           type: 'activate',
           visible: ['0', '2'].includes(row.bankStatus), // 未激活 激活失败
-          click: () => fetchDel(val, row.momentCommentIdString),
+          click: () => fetchGetDetail(val, row.momentCommentIdString),
         },
         {
           type: 'brand',
           visible: ['1'].includes(row.status), // 启用
-          click: () => fetchDel(val, row.momentCommentIdString),
+          click: () => fetchGetDetail(val, row.momentCommentIdString),
         },
         {
           type: 'diary',
-          click: () => fetchDel(val, row.momentCommentIdString),
+          click: () => fetchGetDetail(val, row.momentCommentIdString),
         },
       ],
     },
   ];
 
-  const fetchDel = (deleteFlag) => {
+  // 获取详情
+  const fetchGetDetail = (index) => {
+    const { id } = supplierManage.list[index];
     dispatch({
-      type: 'commentManage/fetchUpdateCommentsDeleteFlag',
-      payload: {
-        deleteFlag: deleteFlag == '0' ? 1 : 0,
+      type: 'supplierManage/fetchGetSupplierManageDetail',
+      payload: { supplierId: id },
+      callback: (detail) => {
+        setVisibleInfo({ detail, show: true });
       },
-      callback: childRef.current.fetchGetData,
     });
   };
 
   const btnList = [
     {
       auth: 'save',
-      onClick: fetchDel,
+      onClick: fetchGetDetail,
     },
   ];
 
   return (
-    <TableDataBlock
-      order
-      cRef={childRef}
-      btnExtra={btnList}
-      loading={loading}
-      searchItems={searchItems}
-      columns={getColumns}
-      rowKey={(record) => `${record.id}`}
-      dispatchType="supplierManage/fetchGetList"
-      {...supplierManage}
-    ></TableDataBlock>
+    <>
+      <TableDataBlock
+        order
+        cRef={childRef}
+        btnExtra={btnList}
+        loading={loading}
+        searchItems={searchItems}
+        columns={getColumns}
+        rowKey={(record) => `${record.id}`}
+        dispatchType="supplierManage/fetchGetList"
+        {...supplierManage}
+      ></TableDataBlock>
+      {/* 详情 */}
+      <SupplierManageDetail
+        cRef={childRef}
+        visible={visibleInfo}
+        getDetail={fetchGetDetail}
+        onClose={() => setVisibleInfo(false)}
+      ></SupplierManageDetail>
+    </>
   );
 };
 export default connect(({ supplierManage, loading }) => ({
