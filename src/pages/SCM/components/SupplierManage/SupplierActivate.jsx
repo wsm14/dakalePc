@@ -16,7 +16,7 @@ const SupplierActivate = (props) => {
   const [form] = Form.useForm();
   const [bankAccount, setBankAccount] = useState('1'); // 1 对公 2 对私
 
-  const { id: supplierId } = detail;
+  const { id: memberId } = detail;
 
   // 提交数据
   const fetchUpData = () => {
@@ -27,7 +27,7 @@ const SupplierActivate = (props) => {
         type: 'supplierManage/fetchSupplierActivateAccount',
         payload: {
           ...other,
-          supplierId,
+          memberId,
           bankAccount,
           additionalVoucher: imgUrl.toString(),
           provCode: city[0].includes('00') ? city[0] : '00' + city[0],
