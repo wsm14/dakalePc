@@ -8,46 +8,22 @@ const WarehouseInfo = (props) => {
 
   const itemArr = [
     {
-      label: '供应商类型',
+      label: '收货人',
       name: ['supplierObject', 'type'],
       render: (val) => SUPPLIER_AUTH_TYPE[val],
     },
     {
-      label: '供应商名称',
+      label: '手机号码',
       name: 'supplierName',
     },
     {
-      label: '供应商ID',
+      label: '所在地区',
       name: 'identifyId',
-    },
-    {
-      label: '主营类目',
-      name: ['supplierObject', 'classifyNames'],
-    },
-    {
-      label: '所属地区',
-      name: ['supplierObject', 'districtCode'],
       render: (val) => checkCityName(val),
     },
     {
       label: '详细地址',
-      name: 'createTime',
-    },
-    {
-      label: '入驻时间',
-      name: 'createTime',
-    },
-    {
-      label: '激活时间',
-      name: 'createTime',
-    },
-    {
-      label: '供应商状态',
-      name: 'createTime',
-    },
-    {
-      label: '禁用原因',
-      name: 'createTime',
+      name: ['supplierObject', 'classifyNames'],
     },
   ];
 

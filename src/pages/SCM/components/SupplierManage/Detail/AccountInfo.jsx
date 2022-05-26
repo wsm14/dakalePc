@@ -8,45 +8,49 @@ const AccountInfo = (props) => {
 
   const itemArr = [
     {
-      label: '供应商类型',
+      label: '银行卡',
       name: ['supplierObject', 'type'],
       render: (val) => SUPPLIER_AUTH_TYPE[val],
     },
     {
-      label: '供应商名称',
+      label: '银行卡号',
       name: 'supplierName',
     },
     {
-      label: '供应商ID',
+      label: '开户支行',
       name: 'identifyId',
     },
     {
-      label: '主营类目',
+      label: '开户城市',
       name: ['supplierObject', 'classifyNames'],
     },
     {
-      label: '所属地区',
+      label: '银行预留手机号',
       name: ['supplierObject', 'districtCode'],
       render: (val) => checkCityName(val),
     },
     {
-      label: '详细地址',
+      label: '结算人身份证正面照',
       name: 'createTime',
     },
     {
-      label: '入驻时间',
+      label: '结算人身份证反面照',
       name: 'createTime',
     },
     {
-      label: '激活时间',
+      label: '姓名',
       name: 'createTime',
     },
     {
-      label: '供应商状态',
+      label: '身份证号码',
       name: 'createTime',
     },
     {
-      label: '禁用原因',
+      label: '有效期',
+      name: 'createTime',
+    },
+    {
+      label: '补充描述和凭证',
       name: 'createTime',
     },
   ];
