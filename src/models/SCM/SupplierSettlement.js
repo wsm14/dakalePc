@@ -41,9 +41,13 @@ export default {
       const response = yield call(fetchGetSupplierSettlementDetail, payload);
       if (!response) return;
       const { mode } = payload;
-      const { supplierSettlementDetail = {} } = response;
+      const { content } = response;
+      const { supplierSettlementDetail = {} } = content;
       const { settleTime } = supplierSettlementDetail;
-      callback({ ...supplierSettlementDetail, settleTime: mode === 'info' ? settleTime : moment(settleTime) });
+      callback({
+        ...supplierSettlementDetail,
+        settleTime: mode === 'info' ? settleTime : moment(settleTime),
+      });
     },
     *fetchSupplierSettlementAdd({ payload, callback }, { call, put }) {
       const response = yield call(fetchSupplierSettlementAdd, payload);

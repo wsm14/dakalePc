@@ -21,6 +21,21 @@ const SettlementEdit = (props) => {
     });
   }, 500);
 
+  // 获取供应商详情 获取收款信息
+  const fetchGetSupplierDetail = (supplierId) => {
+    dispatch({
+      type: 'supplierManage/fetchGetSupplierManageDetail',
+      payload: { supplierId },
+      callback: (detail) =>
+        form.setFieldsValue({
+          supplierName: detail.name,
+          legalPerson: detail.legalPerson,
+          cardNo: detail.cardNo,
+          bankBranchName: detail.bankBranchName,
+        }),
+    });
+  };
+
   const formItems = [
     {
       label: '供应商名称',
@@ -29,16 +44,11 @@ const SettlementEdit = (props) => {
       select: selectList,
       loading,
       onSearch: (val) => fetchGetSearch(val),
-      onChange: (val, option) => {
-        form.setFieldsValue({
-          supplierName: option.option.name,
-        });
-      },
+      onChange: fetchGetSupplierDetail,
     },
     {
       label: '供应商名',
       name: 'supplierName',
-      rules: [{ required: false }],
       hidden: true,
     },
     {

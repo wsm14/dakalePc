@@ -1,7 +1,7 @@
 import { notification } from 'antd';
 import {
   fetchGetSupplierManageList,
-  fetchGetSupplierVerifyDetail,
+  fetchGetSupplierManageDetail,
   fetchSupplierVerifyAllow,
   fetchSupplierVerifyReject,
 } from '@/services/SCMServices';
@@ -36,11 +36,11 @@ export default {
         },
       });
     },
-    *fetchGetSupplierVerifyDetail({ payload, callback }, { call, put }) {
-      const response = yield call(fetchGetSupplierVerifyDetail, payload);
+    *fetchGetSupplierManageDetail({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetSupplierManageDetail, payload);
       if (!response) return;
       const { content } = response;
-      callback(content.supplierVerifyDetail);
+      callback(content);
     },
     *fetchSupplierVerifyAllow({ payload, callback }, { call, put }) {
       const response = yield call(fetchSupplierVerifyAllow, payload);

@@ -41,7 +41,7 @@ const SupplierSettlement = (props) => {
     {
       title: '结算金额',
       dataIndex: 'settleAmount',
-      render: (val, row) => `￥${row.mobile}`,
+      render: (val) => `￥${val}`,
     },
     {
       title: '结算时间',

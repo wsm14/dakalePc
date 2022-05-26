@@ -8,6 +8,13 @@ export async function fetchGetSupplierManageList(params) {
   });
 }
 
+// get 供应商管理 - 详情
+export async function fetchGetSupplierManageDetail(params) {
+  return request('/admin/supplier/getSupplier', {
+    params,
+  });
+}
+
 // 供应商管理 end
 
 // 供应商审核
