@@ -5,7 +5,7 @@ const SettlementDetail = ({ detail = {} }) => {
   const detailItems = [
     {
       label: '供应商名称',
-      name: 'ownerType',
+      name: 'supplierName',
     },
     {
       label: '收款方户名',
@@ -13,7 +13,7 @@ const SettlementDetail = ({ detail = {} }) => {
     },
     {
       label: '收款方账号',
-      name: 'merchantIdList',
+      name: 'paysscount',
     },
     {
       label: '收款方银行',
@@ -21,28 +21,28 @@ const SettlementDetail = ({ detail = {} }) => {
     },
     {
       label: '结算金额(元)',
-      name: 'coupo1nName',
+      name: 'settleAmount',
     },
     {
       label: '付款方账号',
-      name: 'couponN2ame',
+      name: 'payerAccount',
     },
     {
       label: '结算流水号',
-      name: 'couposnName',
+      name: 'settleNum',
     },
     {
       label: '交易时间',
-      name: 'coupo2nName',
+      name: 'settleTime',
     },
     {
       label: '凭证',
       type: 'upload',
-      name: 'couponDetailImg',
+      name: 'certificate',
     },
     {
       label: '备注',
-      name: 'couponDetail',
+      name: 'remarks',
     },
   ];
 

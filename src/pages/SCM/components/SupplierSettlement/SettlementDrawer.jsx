@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import moment from 'moment';
@@ -25,17 +25,19 @@ const SupplierSettlementDrawer = (props) => {
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
-      const { shareImg = '', shasdrsdeImg, shasdreImg } = values;
-      aliOssUpload(shareImg).then((res) => {
+      const { certificate = '', payerAccount, settleTime } = values;
+      aliOssUpload(certificate).then((res) => {
         dispatch({
-          type: 'supplierSettlement/fetchCouponManageShareEdit',
+          type: {
+            add: 'supplierSettlement/fetchSupplierSettlementAdd',
+            edit: 'supplierSettlement/fetchSupplierSettlementEdit',
+          }[mode],
           payload: {
             ...values,
-            ownerCouponIdString,
-            ownerIdString,
-            shareImg: res.toString(),
-            shasdrsdeImg: shasdrsdeImg.replace(/\s*/g, ''),
-            shasdreImg: shasdreImg.format('YYYY-MM-DD HH:mm'),
+            supplierSettlementId: detail.supplierSettlementId,
+            certificate: res.toString(),
+            payerAccount: payerAccount.replace(/\s*/g, ''),
+            settleTime: settleTime.format('YYYY-MM-DD HH:mm'),
           },
           callback: () => {
             childRef.current.fetchGetData();
@@ -57,7 +59,7 @@ const SupplierSettlementDrawer = (props) => {
       children: (
         <SettlementEdit
           initialValues={{
-            shasdreImg: moment(),
+            settleTime: moment(),
           }}
           form={form}
         ></SettlementEdit>
@@ -93,6 +95,8 @@ const SupplierSettlementDrawer = (props) => {
 
 export default connect(({ loading, supplierSettlement }) => ({
   total: supplierSettlement.list.length,
-  loading: loading.effects['supplierSettlement/fetchCouponSave'],
-  loadingDetail: loading.effects['supplierSettlement/fetchCouponDetail'],
+  loading:
+    loading.effects['supplierSettlement/fetchSupplierSettlementAdd'] ||
+    loading.effects['supplierSettlement/fetchSupplierSettlementEdit'],
+  loadingDetail: loading.effects['supplierSettlement/fetchGetSupplierSettlementDetail'],
 }))(SupplierSettlementDrawer);

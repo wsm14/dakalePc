@@ -40,20 +40,20 @@ const SupplierSettlement = (props) => {
     },
     {
       title: '结算金额',
-      dataIndex: 'createTime',
+      dataIndex: 'settleAmount',
       render: (val, row) => `￥${row.mobile}`,
     },
     {
       title: '结算时间',
-      dataIndex: 'username',
+      dataIndex: 'settleTime',
     },
     {
       title: '制单人',
-      dataIndex: 'momentIdString',
+      dataIndex: 'preparer',
     },
     {
       title: '制单时间',
-      dataIndex: 'deleteFlag',
+      dataIndex: 'createTime',
     },
     {
       title: '操作',
@@ -77,7 +77,7 @@ const SupplierSettlement = (props) => {
     const { supplierSettlementId } = supplierSettlement.list[index];
     dispatch({
       type: 'supplierSettlement/fetchGetSupplierSettlementDetail',
-      payload: { supplierSettlementId },
+      payload: { supplierSettlementId, mode },
       callback: (detail) => {
         setVisible({ mode, show: true, index, detail });
       },

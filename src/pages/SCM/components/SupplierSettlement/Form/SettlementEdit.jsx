@@ -8,13 +8,13 @@ const SettlementEdit = (props) => {
   const formItems = [
     {
       label: '供应商名称',
-      name: 'customTitle',
+      name: 'supplierId',
       type: 'select',
       select: [],
     },
     {
       label: '收款方户名',
-      name: 'customTssditle',
+      name: 'supplierName',
       readOnly: true,
       bordered: false,
       rules: [{ required: false }],
@@ -35,16 +35,16 @@ const SettlementEdit = (props) => {
     },
     {
       label: '结算金额',
+      name: 'settleAmount',
       type: 'number',
       suffix: '元',
       precision: 2,
       min: 0,
       max: 9999999999.99,
-      name: 'customTssdsditle',
     },
     {
       label: '付款方账号',
-      name: 'shasdrsdeImg',
+      name: 'payerAccount',
       maxLength: 24,
       normalize: (val) => {
         let str = val;
@@ -58,11 +58,11 @@ const SettlementEdit = (props) => {
     },
     {
       label: '结算流水号',
-      name: 'shardeImg',
+      name: 'settleNum',
     },
     {
       label: '交易时间',
-      name: 'shasdreImg',
+      name: 'settleTime',
       type: 'dataPicker',
       format: 'YYYY-MM-DD HH:mm',
       showTime: true,
@@ -70,7 +70,7 @@ const SettlementEdit = (props) => {
     },
     {
       label: '凭证',
-      name: 'friendShareImg',
+      name: 'certificate',
       type: 'upload',
       maxFile: 1,
       isCut: false,
@@ -78,7 +78,7 @@ const SettlementEdit = (props) => {
     },
     {
       label: '备注',
-      name: 'customTitle',
+      name: 'remarks',
       type: 'textArea',
       maxLength: 200,
       rules: [{ required: false }],

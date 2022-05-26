@@ -32,7 +32,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.recordList,
+          list: content.supplierSettlementDetailList,
           total: content.total,
         },
       });
@@ -40,9 +40,10 @@ export default {
     *fetchGetSupplierSettlementDetail({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetSupplierSettlementDetail, payload);
       if (!response) return;
-      const { auditDetail = {} } = response;
-      const { shasdreImg } = auditDetail;
-      callback({ ...auditDetail, shasdreImg: moment(shasdreImg) });
+      const { mode } = payload;
+      const { supplierSettlementDetail = {} } = response;
+      const { settleTime } = supplierSettlementDetail;
+      callback({ ...supplierSettlementDetail, settleTime: mode === 'info' ? settleTime : moment(settleTime) });
     },
     *fetchSupplierSettlementAdd({ payload, callback }, { call, put }) {
       const response = yield call(fetchSupplierSettlementAdd, payload);
