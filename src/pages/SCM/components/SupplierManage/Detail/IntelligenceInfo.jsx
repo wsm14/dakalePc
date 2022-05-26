@@ -8,47 +8,47 @@ const IntelligenceInfo = (props) => {
     {
       label: '营业执照',
       type: 'upload',
-      name: ['supplierObject', 'proofInfoObject', 'businessLicenseImg'],
+      name: ['proofInfoObject', 'businessLicenseImg'],
     },
     {
       label: '公司名称',
-      name: ['supplierObject', 'proofInfoObject', 'businessName'],
+      name: ['proofInfoObject', 'businessName'],
     },
     {
       label: '统一社会信用代码',
-      name: ['supplierObject', 'proofInfoObject', 'socialCreditCode'],
+      name: ['proofInfoObject', 'socialCreditCode'],
     },
     {
       label: '注册地址',
-      name: ['supplierObject', 'proofInfoObject', 'signInAddress'],
+      name: ['proofInfoObject', 'signInAddress'],
     },
     {
       label: '营业期限',
-      name: ['supplierObject', 'proofInfoObject', 'establishDate'],
+      name: ['proofInfoObject', 'establishDate'],
     },
     {
       label: '经营范围',
-      name: ['supplierObject', 'proofInfoObject', 'businessScope'],
+      name: ['proofInfoObject', 'businessScope'],
     },
     {
       label: '生产/经营许可证',
       type: 'upload',
-      name: ['supplierObject', 'proofInfoObject', 'productLicense'],
+      name: ['proofInfoObject', 'productLicense'],
     },
     {
       label: '体系认证',
       type: 'upload',
-      name: ['supplierObject', 'proofInfoObject', 'systemApprove'],
+      name: ['proofInfoObject', 'systemApprove'],
     },
     {
       label: '产品认证',
       type: 'upload',
-      name: ['supplierObject', 'proofInfoObject', 'productApprove'],
+      name: ['proofInfoObject', 'productApprove'],
     },
     {
       label: '授权证书',
       type: 'upload',
-      name: ['supplierObject', 'proofInfoObject', 'authorizeImg'],
+      name: ['proofInfoObject', 'authorizeImg'],
     },
   ];
 
