@@ -31,7 +31,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.recordList,
+          list: content.supplierVerifyDetailList,
           total: content.total,
         },
       });
@@ -40,7 +40,7 @@ export default {
       const response = yield call(fetchGetSupplierVerifyDetail, payload);
       if (!response) return;
       const { content } = response;
-      callback(content);
+      callback(content.supplierVerifyDetail);
     },
     *fetchSupplierVerifyAllow({ payload, callback }, { call, put }) {
       const response = yield call(fetchSupplierVerifyAllow, payload);

@@ -104,7 +104,7 @@ const SpecialGoodCheckDetail = (props) => {
         {
           label: '介绍人账号',
           name: ['supplierObject', 'inducer'],
-          show: detail.supplierObject.anyInducer == 1,
+          show: detail?.supplierObject?.anyInducer == 1,
           render: (val) => `${val.inducerName} ${val.inducerMobile} ${val.inducerBeanCode}`,
         },
       ],
@@ -211,6 +211,7 @@ const SpecialGoodCheckDetail = (props) => {
           <TabPane tab="基础信息" key="1">
             {baseItemArr.map((item) => (
               <DescriptionsCondition
+                key={item.title}
                 title={item.title}
                 formItems={item.formItems}
                 initialValues={detail}
