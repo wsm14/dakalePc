@@ -102,12 +102,17 @@ const SupplierManageDetail = (props) => {
           {/* <TabPane tab="仓库信息" key="3">
             <WarehouseInfo  detail={detail}></WarehouseInfo>
           </TabPane> */}
-          <TabPane tab="账户信息" key="4">
-            <AccountInfo detail={detail}></AccountInfo>
-          </TabPane>
-          <TabPane tab="结算记录" key="5">
-            <SettlementInfo detail={detail}></SettlementInfo>
-          </TabPane>
+          {/* 未激活时不显示账户信息和结算记录 */}
+          {detail.bankStatus === "3" && (
+            <>
+              <TabPane tab="账户信息" key="4">
+                <AccountInfo detail={detail}></AccountInfo>
+              </TabPane>
+              <TabPane tab="结算记录" key="5">
+                <SettlementInfo detail={detail}></SettlementInfo>
+              </TabPane>
+            </>
+          )}
         </Tabs>
       </DrawerCondition>
       {/* 禁用原因 */}

@@ -44,6 +44,7 @@ const BaseInfo = (props) => {
         {
           label: '激活时间',
           name: 'activationTime',
+          show: detail.bankStatus === '3',
         },
         {
           label: '供应商状态',
