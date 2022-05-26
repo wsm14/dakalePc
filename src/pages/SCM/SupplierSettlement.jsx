@@ -13,18 +13,17 @@ const SupplierSettlement = (props) => {
   const searchItems = [
     {
       label: '供应商名称',
-      name: 'userId',
-      type: 'user',
+      name: 'supplierName',
     },
     {
       label: '结算流水号',
-      name: 'momentId',
+      name: 'settleNum',
     },
     {
       label: '结算时间',
       type: 'rangePicker',
-      name: 'createBeginTime',
-      end: 'createEndTime',
+      name: 'settleBeginTime',
+      end: 'settleEndTime',
     },
   ];
 
@@ -32,12 +31,12 @@ const SupplierSettlement = (props) => {
   const getColumns = [
     {
       title: '供应商名称',
-      dataIndex: 'momentCommentIdString',
+      dataIndex: 'supplierName',
       ellipsis: { length: 15 },
     },
     {
       title: '结算流水号',
-      dataIndex: 'deleteFlag',
+      dataIndex: 'settleNum',
     },
     {
       title: '结算金额',
@@ -46,7 +45,7 @@ const SupplierSettlement = (props) => {
     },
     {
       title: '结算时间',
-      dataIndex: 'u sername',
+      dataIndex: 'username',
     },
     {
       title: '制单人',
@@ -59,7 +58,7 @@ const SupplierSettlement = (props) => {
     {
       title: '操作',
       type: 'handle',
-      dataIndex: 'deleteFlag',
+      dataIndex: 'supplierSettlementId',
       render: (val, row, index) => [
         {
           type: 'info',
@@ -75,12 +74,12 @@ const SupplierSettlement = (props) => {
 
   // 获取详情
   const fetchGetSettlementDetail = (index, mode) => {
-    const { hittingId } = supplierSettlement.list[index];
+    const { supplierSettlementId } = supplierSettlement.list[index];
     dispatch({
-      type: 'pointManage/fetchGetHittingById',
-      payload: { hittingId },
+      type: 'supplierSettlement/fetchGetSupplierSettlementDetail',
+      payload: { supplierSettlementId },
       callback: (detail) => {
-        setVisible({ mode, show: true, index, detail, hittingId });
+        setVisible({ mode, show: true, index, detail });
       },
     });
   };
@@ -102,7 +101,7 @@ const SupplierSettlement = (props) => {
         loading={loading}
         searchItems={searchItems}
         columns={getColumns}
-        rowKey={(record) => `${record.momentCommentIdString}`}
+        rowKey={(record) => `${record.supplierSettlementId}`}
         dispatchType="supplierSettlement/fetchGetList"
         {...supplierSettlement}
       ></TableDataBlock>
