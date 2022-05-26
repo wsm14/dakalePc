@@ -4,7 +4,7 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const SettlementInfo = (props) => {
   const { detail = {} } = props;
-  const { list = [] } = detail;
+  const { supplierSettlementDetailList = [] } = detail;
 
   const itemArr = [
     {
@@ -12,15 +12,15 @@ const SettlementInfo = (props) => {
       name: 'settleAmount',
     },
     {
-      label: '收款方户名',
+      label: '付款方户名',
       name: 'legalPerson',
     },
     {
-      label: '收款方账号',
+      label: '付款方账号',
       name: 'cardNo',
     },
     {
-      label: '收款方银行',
+      label: '付款方银行',
       name: 'bankBranchName',
     },
     {
@@ -50,7 +50,7 @@ const SettlementInfo = (props) => {
         // action={'UNDO'}
         style={{ marginBottom: 10 }}
       />
-      {list.map((data) => (
+      {supplierSettlementDetailList.map((data) => (
         <DescriptionsCondition formItems={itemArr} initialValues={data}></DescriptionsCondition>
       ))}
     </>

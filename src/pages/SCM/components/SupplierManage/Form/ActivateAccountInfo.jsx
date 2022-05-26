@@ -126,7 +126,7 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
           fetchGetOcrIdBankCard({ pic: imgUrl[0] }, (res) => {
             const { number, enterpriseBankName = '' } = res;
             form.setFieldsValue({
-              cardNo: number,
+              [{ 1: 'cardNo', 2: 'cardId' }[bankAccount]]: number,
               bankBranchName: enterpriseBankName,
             });
           });
@@ -134,8 +134,13 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
       },
     },
     {
+      label: '开户名称',
+      name: 'cardName',
+      visible: bankAccount === '2',
+    },
+    {
       label: '银行卡号',
-      name: 'cardNo',
+      name: { 1: 'cardNo', 2: 'cardId' }[bankAccount],
       disabled,
     },
     {
@@ -150,7 +155,7 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
     },
     {
       label: '银行预留手机号',
-      name: 'legalMp',
+      name: { 1: 'legalMp', 2: 'telNo' }[bankAccount],
       addRules: [{ pattern: PHONE_PATTERN, message: '手机号格式不正确' }],
     },
   ];
@@ -173,7 +178,10 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
           form.setFieldsValue({ certFrontPhoto: imgUrl[0] });
           fetchGetOcrIdCardFront({ imageUrl: imgUrl[0] }, (res) => {
             const { name = '', num = '' } = res;
-            form.setFieldsValue({ legalPerson: name, legalCertId: num });
+            form.setFieldsValue({
+              legalPerson: name,
+              [{ 1: 'legalCertId', 2: 'certId' }[bankAccount]]: num,
+            });
           });
         }
       },
@@ -209,7 +217,7 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
     {
       label: `${labelBefor}身份证号码`,
       disabled,
-      name: 'legalCertId',
+      name: { 1: 'legalCertId', 2: 'certId' }[bankAccount],
     },
     {
       label: `${labelBefor}身份有效期`,
