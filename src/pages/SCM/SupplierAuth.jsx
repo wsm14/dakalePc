@@ -62,8 +62,8 @@ const SupplierAuth = (props) => {
   // tab自组件Table公用的colum数据部分
   const getColumns = [
     {
-      title: '供应商名称/ID',
-      dataIndex: 'supplierId',
+      title: tabkey == '1' ? '供应商名称' : '供应商名称/ID',
+      dataIndex: 'identifyId',
       render: (val, row) => (
         <div>
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -74,7 +74,7 @@ const SupplierAuth = (props) => {
               {row.supplierName}
             </Ellipsis>
           </div>
-          <div>{val}</div>
+          {tabkey !== '0' && <div>{val}</div>}
         </div>
       ),
     },

@@ -62,7 +62,8 @@ const SpecialGoodCheckDetail = (props) => {
         },
         {
           label: '供应商ID',
-          name: ['supplierObject', 'id'],
+          name: 'identifyId',
+          show: mode === 'info',
         },
         {
           label: '主营类目',
@@ -74,8 +75,8 @@ const SpecialGoodCheckDetail = (props) => {
           render: (val) => checkCityName(val),
         },
         {
-          label: '详细地址',
-          name: ['supplierObject', 'address'],
+          label: '申请时间',
+          name: 'createTime',
         },
       ],
     },
@@ -98,14 +99,13 @@ const SpecialGoodCheckDetail = (props) => {
         {
           label: '有无介绍人',
           name: ['supplierObject', 'anyInducer'],
+          render: (val) => ['无', '有'][val],
         },
         {
           label: '介绍人账号',
           name: ['supplierObject', 'inducer'],
-          render: (val, row) =>
-            row.supplierObject.anyInducer == 0
-              ? '无'
-              : `${val.inducerName} ${val.inducerMobile} ${val.inducerBeanCode}`,
+          show: detail.supplierObject.anyInducer == 1,
+          render: (val) => `${val.inducerName} ${val.inducerMobile} ${val.inducerBeanCode}`,
         },
       ],
     },
@@ -199,7 +199,14 @@ const SpecialGoodCheckDetail = (props) => {
   return (
     <>
       <DrawerCondition {...modalProps}>
-        <Alert message="仅本地使用" type="error" banner style={{ marginBottom: 5 }}></Alert>
+        {detail.rejectReason && (
+          <Alert
+            message={detail.rejectReason}
+            type="error"
+            banner
+            style={{ marginBottom: 5 }}
+          ></Alert>
+        )}
         <Tabs type="card">
           <TabPane tab="基础信息" key="1">
             {baseItemArr.map((item) => (
