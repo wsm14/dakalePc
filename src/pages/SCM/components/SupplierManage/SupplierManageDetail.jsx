@@ -6,8 +6,8 @@ import ExtraButton from '@/components/ExtraButton';
 import DrawerCondition from '@/components/DrawerCondition';
 import BaseInfo from './Detail/BaseInfo';
 import IntelligenceInfo from './Detail/IntelligenceInfo';
-import WarehouseInfo from './Detail/WarehouseInfo';
 import AccountInfo from './Detail/AccountInfo';
+import SettlementInfo from './Detail/SettlementInfo';
 
 const { TabPane } = Tabs;
 
@@ -97,13 +97,16 @@ const SupplierManageDetail = (props) => {
             <BaseInfo detail={detail}></BaseInfo>
           </TabPane>
           <TabPane tab="供应商资质" key="2">
-            <IntelligenceInfo  detail={detail}></IntelligenceInfo>
+            <IntelligenceInfo detail={detail}></IntelligenceInfo>
           </TabPane>
-          <TabPane tab="仓库信息" key="3">
+          {/* <TabPane tab="仓库信息" key="3">
             <WarehouseInfo  detail={detail}></WarehouseInfo>
-          </TabPane>
+          </TabPane> */}
           <TabPane tab="账户信息" key="4">
-            <AccountInfo  detail={detail}></AccountInfo>
+            <AccountInfo detail={detail}></AccountInfo>
+          </TabPane>
+          <TabPane tab="结算记录" key="5">
+            <SettlementInfo detail={detail}></SettlementInfo>
           </TabPane>
         </Tabs>
       </DrawerCondition>
