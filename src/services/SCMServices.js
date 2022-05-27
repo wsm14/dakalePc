@@ -63,6 +63,44 @@ export function fetchSupplierEnable(data) {
   });
 }
 
+// get 供应商管理 - 品牌 - 列表
+export function fetchSupplierBrandList(params) {
+  return request('/admin/supplier/brand/pageListSupplierBrand', {
+    params,
+  });
+}
+
+// get 供应商管理 - 品牌 - 详情
+export function fetchSupplierBrandDetail(params) {
+  return request('/admin/supplier/brand/getSupplierBrand', {
+    params,
+  });
+}
+
+// get 供应商管理 - 品牌 - 新增
+export function fetchSupplierBrandAdd(data) {
+  return request('/admin/supplier/brand/saveSupplierBrand', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 供应商管理 - 品牌 - 修改
+export function fetchSupplierBrandEdit(data) {
+  return request('/admin/supplier/brand/updateSupplierBrand', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 供应商管理 - 品牌 - 删除
+export function fetchSupplierBrandDel(data) {
+  return request('/admin/supplier/brand/deleteSupplierBrand', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 供应商管理 end
 
 // 供应商审核

@@ -11,6 +11,7 @@ import {
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import SupplierActivate from './components/SupplierManage/SupplierActivate';
+import SupplierManageBrand from './components/SupplierManage/SupplierManageBrand';
 import SupplierManageDetail from './components/SupplierManage/SupplierManageDetail';
 import SupplierManageAddEdit from './components/SupplierManage/SupplierManageAddEdit';
 
@@ -20,6 +21,7 @@ const SupplierManage = (props) => {
   const childRef = useRef();
   const [visibleSet, setVisibleSet] = useState(false); // 新增修改
   const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
+  const [visibleBrand, setVisibleBrand] = useState(false); // 品牌管理
   const [visibleActivate, setVisibleActivate] = useState(false); // 账户激活
 
   // 搜索参数
@@ -135,7 +137,7 @@ const SupplierManage = (props) => {
         {
           type: 'brand',
           visible: ['1'].includes(row.status), // 启用
-          click: () => fetchGetDetail(val, row.momentCommentIdString),
+          click: () => setVisibleBrand({ show: true, id: val }),
         },
       ],
     },
@@ -193,10 +195,15 @@ const SupplierManage = (props) => {
         visible={visibleSet}
         onClose={() => setVisibleSet(false)}
       ></SupplierManageAddEdit>
+      {/* 品牌管理 */}
+      <SupplierManageBrand
+        visible={visibleBrand}
+        onClose={() => setVisibleBrand(false)}
+      ></SupplierManageBrand>
     </>
   );
 };
 export default connect(({ supplierManage, loading }) => ({
-  supplierManage,
+  supplierManage: supplierManage.list,
   loading: loading.models.supplierManage,
 }))(SupplierManage);

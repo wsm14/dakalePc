@@ -130,5 +130,5 @@ const SupplierManageDetail = (props) => {
 
 export default connect(({ loading, supplierManage }) => ({
   loading,
-  total: supplierManage.list.length,
+  total: supplierManage.list.list.length,
 }))(SupplierManageDetail);

@@ -9,14 +9,19 @@ import {
   fetchSupplierPersonAccount,
   fetchGetSupplierManageList,
   fetchGetSupplierManageDetail,
+  fetchSupplierBrandList,
+  fetchSupplierBrandDetail,
+  fetchSupplierBrandAdd,
+  fetchSupplierBrandEdit,
+  fetchSupplierBrandDel,
 } from '@/services/SCMServices';
 
 export default {
   namespace: 'supplierManage',
 
   state: {
-    list: [],
-    total: 0,
+    list: { list: [], total: 0 },
+    brandList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -36,8 +41,18 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.supplierDetailList,
-          total: content.total,
+          list: { list: content.supplierDetailList, total: content.total },
+        },
+      });
+    },
+    *fetchSupplierBrandList({ payload }, { call, put }) {
+      const response = yield call(fetchSupplierBrandList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          brandList: { list: content.supplierBrandDetailList, total: content.total },
         },
       });
     },
@@ -107,6 +122,38 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '禁用成功',
+      });
+      callback();
+    },
+    *fetchSupplierBrandDetail({ payload, callback }, { call, put }) {
+      const { mode, ...other } = payload;
+      const response = yield call(fetchSupplierBrandDetail, other);
+      if (!response) return;
+      const { content } = response;
+      let detailData = content.supplierBrandDetail || {};
+      if (mode === 'edit') {
+        const { endDate, startDate, ...other } = detailData;
+        detailData = {
+          ...other,
+          timeData: [moment(startDate), moment(endDate)],
+        };
+      }
+      callback(detailData);
+    },
+    *fetchSupplierBrandSet({ payload, callback }, { call, put }) {
+      const { mode, ...other } = payload;
+      // add 新增 edit 修改 del 删除
+      const fetchApi = {
+        add: fetchSupplierBrandAdd,
+        edit: fetchSupplierBrandEdit,
+        del: fetchSupplierBrandDel,
+      }[mode];
+      const fetchText = { add: '新增', edit: '修改', del: '删除' }[mode];
+      const response = yield call(fetchApi, other);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `品牌${fetchText}成功`,
       });
       callback();
     },
