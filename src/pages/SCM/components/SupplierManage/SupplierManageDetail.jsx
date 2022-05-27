@@ -64,7 +64,10 @@ const SupplierManageDetail = (props) => {
       auth: 'edit',
       text: '编辑',
       typeBtn: 'primary',
-      onClick: () => handleVerifyAllow,
+      onClick: () => {
+        onClose();
+        getDetail(index, 'edit');
+      },
     },
   ];
 

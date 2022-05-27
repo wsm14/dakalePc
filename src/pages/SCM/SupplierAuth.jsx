@@ -67,7 +67,7 @@ const SupplierAuth = (props) => {
       render: (val, row) => (
         <div>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Tag color={row.supplierObject.type === '1' ? 'magenta' : 'red'}>
+            <Tag color={row.supplierObject.type === '1' ? 'magenta' : 'cyan'}>
               {SUPPLIER_AUTH_TYPE[row.supplierObject.type]}
             </Tag>
             <Ellipsis tooltip length={8}>

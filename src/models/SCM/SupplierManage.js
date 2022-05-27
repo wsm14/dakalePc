@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { notification } from 'antd';
 import {
   fetchSupplierEnable,
@@ -41,10 +42,30 @@ export default {
       });
     },
     *fetchGetSupplierManageDetail({ payload, callback }, { call, put }) {
-      const response = yield call(fetchGetSupplierManageDetail, payload);
+      const { mode, ...other } = payload;
+      const response = yield call(fetchGetSupplierManageDetail, other);
       if (!response) return;
       const { content } = response;
-      callback(content.supplierDetail);
+      let detailData = content.supplierDetail || {};
+      if (mode === 'edit') {
+        const {
+          provinceCode,
+          cityCode,
+          districtCode,
+          classifyIds,
+          proofInfoObject,
+          ...other
+        } = detailData;
+        const { establishDate, validityPeriod } = proofInfoObject;
+        detailData = {
+          ...other,
+          activeValidity: [moment(establishDate), moment(validityPeriod)],
+          proofInfoObject,
+          classifyIds: classifyIds.split(','),
+          allCode: [provinceCode, cityCode, districtCode],
+        };
+      }
+      callback(detailData);
     },
     *fetchSupplierManageSet({ payload, callback }, { call, put }) {
       const { mode, ...other } = payload;

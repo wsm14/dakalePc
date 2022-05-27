@@ -105,7 +105,7 @@ const SpecialGoodCheckDetail = (props) => {
           label: '介绍人账号',
           name: ['supplierObject', 'inducer'],
           show: detail?.supplierObject?.anyInducer == 1,
-          render: (val) => `${val.inducerName} ${val.inducerMobile} ${val.inducerBeanCode}`,
+          render: (val) => val && `${val.inducerName} ${val.inducerMobile} ${val.inducerBeanCode}`,
         },
       ],
     },
@@ -230,7 +230,7 @@ const SpecialGoodCheckDetail = (props) => {
         handleUpData={fetchVerifyReject}
         onClose={() => setVisibleRefuse(false)}
         loading={loading.effects['supplierAuth/fetchGetSupplierVerifyReject']}
-        ></RefuseModal>
+      ></RefuseModal>
     </>
   );
 };

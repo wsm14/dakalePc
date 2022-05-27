@@ -12,11 +12,13 @@ import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import SupplierActivate from './components/SupplierManage/SupplierActivate';
 import SupplierManageDetail from './components/SupplierManage/SupplierManageDetail';
+import SupplierManageAddEdit from './components/SupplierManage/SupplierManageAddEdit';
 
 const SupplierManage = (props) => {
   const { supplierManage, loading, dispatch } = props;
 
   const childRef = useRef();
+  const [visibleSet, setVisibleSet] = useState(false); // 新增修改
   const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
   const [visibleActivate, setVisibleActivate] = useState(false); // 账户激活
 
@@ -74,7 +76,7 @@ const SupplierManage = (props) => {
       render: (val, row) => (
         <div>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Tag color={row.type === '1' ? 'magenta' : 'red'}>{SUPPLIER_AUTH_TYPE[row.type]}</Tag>
+            <Tag color={row.type === '1' ? 'magenta' : 'cyan'}>{SUPPLIER_AUTH_TYPE[row.type]}</Tag>
             <Ellipsis tooltip length={8}>
               {val}
             </Ellipsis>
@@ -119,11 +121,11 @@ const SupplierManage = (props) => {
       render: (val, row, index) => [
         {
           type: 'info',
-          click: () => fetchGetDetail(index),
+          click: () => fetchGetDetail(index, 'info'),
         },
         {
           type: 'edit',
-          click: () => fetchGetDetail(val, row.momentCommentIdString),
+          click: () => fetchGetDetail(index, 'edit'),
         },
         {
           type: 'activate',
@@ -140,13 +142,14 @@ const SupplierManage = (props) => {
   ];
 
   // 获取详情
-  const fetchGetDetail = (index) => {
+  const fetchGetDetail = (index, mode = 'info') => {
     const { id } = supplierManage.list[index];
     dispatch({
       type: 'supplierManage/fetchGetSupplierManageDetail',
-      payload: { supplierId: id },
+      payload: { supplierId: id, mode },
       callback: (detail) => {
-        setVisibleInfo({ detail, show: true });
+        if (mode === 'info') setVisibleInfo({ show: true, index, detail });
+        else if (mode === 'edit') setVisibleSet({ show: true, mode: 'edit', detail });
       },
     });
   };
@@ -154,7 +157,7 @@ const SupplierManage = (props) => {
   const btnList = [
     {
       auth: 'save',
-      onClick: fetchGetDetail,
+      onClick: () => setVisibleSet({ show: true, mode: 'add' }),
     },
   ];
 
@@ -184,6 +187,12 @@ const SupplierManage = (props) => {
         visible={visibleActivate}
         onClose={() => setVisibleActivate(false)}
       ></SupplierActivate>
+      {/* 新增 修改 */}
+      <SupplierManageAddEdit
+        cRef={childRef}
+        visible={visibleSet}
+        onClose={() => setVisibleSet(false)}
+      ></SupplierManageAddEdit>
     </>
   );
 };

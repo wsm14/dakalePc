@@ -45,6 +45,7 @@ import {
   fetchGlobalListPartner,
   fetchListHittingMain,
   fetchPageResourceTemplateContent,
+  fetchListClassify,
 } from '@/services/PublicServices';
 
 export default {
@@ -80,6 +81,7 @@ export default {
     configGoodsTagList: [],
     resourceList: [],
     sipploerList: [],
+    classifyParentList: [],
   },
 
   reducers: {
@@ -767,6 +769,18 @@ export default {
         },
       });
       callback && callback(newList);
+    },
+    // 类目管理（电商）-后台类目-根列表
+    *fetchParentListClassify({ payload }, { call, put }) {
+      const response = yield call(fetchListClassify, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          classifyParentList: content.childList,
+        },
+      });
     },
   },
 };
