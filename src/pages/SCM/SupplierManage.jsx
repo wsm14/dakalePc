@@ -137,7 +137,7 @@ const SupplierManage = (props) => {
         {
           type: 'brand',
           visible: ['1'].includes(row.status), // 启用
-          click: () => setVisibleBrand({ show: true, id: val }),
+          click: () => setVisibleBrand({ show: true, id: val, name: row.name }),
         },
       ],
     },

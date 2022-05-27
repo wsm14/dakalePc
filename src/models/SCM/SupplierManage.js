@@ -132,7 +132,7 @@ export default {
       const { content } = response;
       let detailData = content.supplierBrandDetail || {};
       if (mode === 'edit') {
-        const { endDate, startDate, ...other } = detailData;
+        const { startDate, endDate, ...other } = detailData;
         detailData = {
           ...other,
           timeData: [moment(startDate), moment(endDate)],

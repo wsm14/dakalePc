@@ -77,7 +77,6 @@ const SupplierSettlementDrawer = (props) => {
     visible: show,
     onClose,
     loading: loadingDetail,
-    closeCallBack: () => dispatch({ type: 'baseData/clearGroupMre' }), // 关闭清空搜索的商家数据
     dataPage: mode === 'info' && {
       current: index,
       total,

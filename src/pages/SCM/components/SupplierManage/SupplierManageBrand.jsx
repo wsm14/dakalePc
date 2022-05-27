@@ -2,12 +2,14 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
+import SupplierBrandDrawer from './Brand/SupplierBrandDrawer';
 
 const SupplierManageBrand = (props) => {
-  const { visible, onClose, brandList, loading } = props;
-  const { show = false, id } = visible;
+  const { visible, onClose, dispatch, brandList, loading } = props;
+  const { show = false, id, name } = visible;
 
   const childRef = useRef();
+  const [visibleDrawer, setVisibleDrawer] = useState({ mode: 'info', show: false, detail: {} });
 
   const getColumns = [
     {
@@ -75,35 +77,56 @@ const SupplierManageBrand = (props) => {
     });
   };
 
+  // 获取详情
+  const fetchGetDetail = (index, mode) => {
+    const { supplierBrandId } = brandList.list[index];
+    dispatch({
+      type: 'supplierManage/fetchSupplierBrandDetail',
+      payload: { supplierBrandId, mode },
+      callback: (detail) => {
+        setVisibleDrawer({ mode, show: true, index, detail });
+      },
+    });
+  };
+
   const btnList = [
     {
       auth: 'save',
-      onClick: () => setVisibleSet({ show: true, mode: 'add' }),
+      onClick: () => setVisibleDrawer({ show: true, mode: 'add' }),
     },
   ];
 
   return (
-    <Modal
-      title={'授权品牌列表'}
-      width={1150}
-      destroyOnClose
-      footer={null}
-      visible={show}
-      onCancel={onClose}
-    >
-      <TableDataBlock
-        size="middle"
-        noCard={false}
-        cRef={childRef}
-        btnExtra={btnList}
-        loading={loading}
-        columns={getColumns}
-        params={{ supplierId: id }}
-        rowKey={(row) => `${row.supplierBrandId}`}
-        dispatchType="supplierManage/fetchSupplierBrandList"
-        {...brandList}
-      ></TableDataBlock>
-    </Modal>
+    <>
+      <Modal
+        title={`授权品牌列表 - ${name}`}
+        width={1150}
+        destroyOnClose
+        footer={null}
+        visible={show}
+        onCancel={onClose}
+      >
+        <TableDataBlock
+          size="middle"
+          noCard={false}
+          cRef={childRef}
+          btnExtra={btnList}
+          loading={loading}
+          columns={getColumns}
+          params={{ supplierId: id }}
+          rowKey={(row) => `${row.supplierBrandId}`}
+          dispatchType="supplierManage/fetchSupplierBrandList"
+          {...brandList}
+        ></TableDataBlock>
+      </Modal>
+      <SupplierBrandDrawer
+        childRef={childRef}
+        supplierId={id}
+        visible={visibleDrawer}
+        getDetail={fetchGetDetail}
+        onClose={() => setVisibleDrawer(false)}
+      ></SupplierBrandDrawer>
+    </>
   );
 };
 
