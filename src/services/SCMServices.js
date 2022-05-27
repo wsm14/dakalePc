@@ -15,6 +15,22 @@ export async function fetchGetSupplierManageDetail(params) {
   });
 }
 
+// post 供应商管理 - 新增
+export function fetchSupplierManageAdd(data) {
+  return request('/admin/supplier/saveSupplier', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 供应商管理 - 编辑
+export function fetchSupplierManageEdit(data) {
+  return request('/admin/supplier/updateSupplier', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 供应商管理 - 对公激活
 export function fetchSupplierCorpAccount(data) {
   return request('/admin/supplier/account/createSupplierCorpAccount', {

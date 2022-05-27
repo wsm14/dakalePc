@@ -2,6 +2,8 @@ import { notification } from 'antd';
 import {
   fetchSupplierEnable,
   fetchSupplierDisable,
+  fetchSupplierManageAdd,
+  fetchSupplierManageEdit,
   fetchSupplierCorpAccount,
   fetchSupplierPersonAccount,
   fetchGetSupplierManageList,
@@ -44,11 +46,24 @@ export default {
       const { content } = response;
       callback(content.supplierDetail);
     },
+    *fetchSupplierManageSet({ payload, callback }, { call, put }) {
+      const { mode, ...other } = payload;
+      // add 新增 edit 修改
+      const fetchApi = { add: fetchSupplierManageAdd, edit: fetchSupplierManageEdit }[mode];
+      const fetchText = { add: '创建', edit: '修改' }[mode];
+      const response = yield call(fetchApi, other);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `${fetchText}审核已提交`,
+      });
+      callback();
+    },
     *fetchSupplierActivateAccount({ payload, callback }, { call, put }) {
-      const { bankAccount } = payload;
+      const { bankAccount, ...other } = payload;
       // 1 对公 2 对私
       const fetchApi = [false, fetchSupplierCorpAccount, fetchSupplierPersonAccount][bankAccount];
-      const response = yield call(fetchApi, payload);
+      const response = yield call(fetchApi, other);
       if (!response) return;
       notification.success({
         message: '温馨提示',
