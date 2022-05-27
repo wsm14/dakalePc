@@ -19,8 +19,14 @@ const TemplateDetail = (props) => {
 
   const formItems = [
     {
+      label: '关联类目',
+      name: 'classifyName',
+      visible: tabKey === 'commerceGoods',
+    },
+    {
       label: '关联行业',
       name: 'categoryName',
+      visible: tabKey !== 'commerceGoods',
     },
     {
       label: '类别',

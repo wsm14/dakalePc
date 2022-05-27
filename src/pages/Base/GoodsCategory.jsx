@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card } from 'antd';
-import TradeBackList from './components/Trade/Tab/TradeBackList';
-import TradeFrontList from './components/Trade/Tab/TradeFrontList';
+import CategoryBackList from './components/Category/Tab/CategoryBackList';
+import CategoryFrontList from './components/Category/Tab/CategoryFrontList';
 const tabList = [
   {
     key: 'back',
@@ -12,14 +12,14 @@ const tabList = [
     tab: '前台类目',
   },
 ];
-const TradeList = (props) => {
+const GoodsCategory = (props) => {
   const [tabkey, setTabKey] = useState('back');
 
   const listProps = { tabkey };
 
   const contentList = {
-    back: <TradeBackList {...listProps}></TradeBackList>,
-    front: <TradeFrontList {...listProps}></TradeFrontList>,
+    back: <CategoryBackList {...listProps}></CategoryBackList>,
+    front: <CategoryFrontList {...listProps}></CategoryFrontList>,
   };
 
   return (
@@ -30,4 +30,4 @@ const TradeList = (props) => {
     </>
   );
 };
-export default TradeList;
+export default GoodsCategory;
