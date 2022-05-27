@@ -281,6 +281,29 @@ export const checkFileData = (fileData) => {
   return aimg;
 };
 
+//递归更改TreeSelect格式
+export const TreeSelectFn = (arr, title, value, key, childName) => {
+  let list = [];
+  arr.forEach((item) => {
+    let obj = {};
+    if (item[title]) {
+      obj.title = item[title];
+    }
+    if (item[value]) {
+      obj.value = item[key];
+    }
+    if (item[key]) {
+      obj.key = item[key];
+    }
+    if (item[childName]) {
+      const other = TreeSelectFn(item[childName], title, value, key, childName);
+      obj.children = other;
+    }
+    list.push(obj);
+  });
+  return list;
+};
+
 // 获取城市名
 export const getCityName = (code) => {
   const cityIndex = cityJson.findIndex((item) => item.id === code);

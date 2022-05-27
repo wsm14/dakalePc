@@ -684,8 +684,8 @@ export const SUBMIT_TYPE_VIDEO = {
 export const SERVICE_TYPE = {
   specialGoods: '特惠商品 ',
   reduceCoupon: '优惠券',
-  rightGoods: '权益商品',
-  rightCoupon: '权益券',
+  // rightGoods: '权益商品',
+  // rightCoupon: '权益券',
   commerceGoods: '电商品',
 };
 
@@ -709,12 +709,30 @@ export const TEMPLATE_CREATE_TYPE = {
 
 // 分佣配置
 export const COMMISSION_TYPE = {
-  province: '省代分佣',
-  city: '地级市分佣',
-  district: '区县分佣',
-  userParent: '用户家主分佣',
-  merchantParent: '商家家主分佣',
-  daren: '哒人分佣',
+  specialGoods: {
+    province: '省代分佣',
+    city: '地级市分佣',
+    district: '区县分佣',
+    userParent: '用户家主分佣',
+    merchantParent: '商家家主分佣',
+    daren: '哒人分佣',
+  },
+  reduceCoupon: {
+    province: '省代分佣',
+    city: '地级市分佣',
+    district: '区县分佣',
+    userParent: '用户家主分佣',
+    merchantParent: '商家家主分佣',
+    daren: '哒人分佣',
+  },
+  commerceGoods: {
+    province: '省代分佣',
+    city: '地级市分佣',
+    district: '区县分佣',
+    userParent: '用户家主分佣',
+    // merchantParent: '商家家主分佣',
+    daren: '哒人分佣',
+  },
 };
 
 // 活动模版类型
@@ -1281,4 +1299,10 @@ export const GROUP_RULE_WIN = {
   3: '1',
   6: '2',
   10: '3',
+};
+
+//行业管理 - 前台类目
+export const TRADESET_SELECT = {
+  behind: '按后台类目',
+  h5: 'H5地址',
 };

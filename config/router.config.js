@@ -571,6 +571,12 @@ export default [
             component: './Base/PeasShare',
             buttons: ['save', 'del', 'edit'],
           },
+          {
+            path: '/base/category',
+            name: '商品类目管理 ',
+            component: './Base/GoodsCategory',
+            buttons: ['tradeAdd', 'del', 'edit', 'tradeSecondAdd'],
+          },
         ],
       },
       // 客服中心 service

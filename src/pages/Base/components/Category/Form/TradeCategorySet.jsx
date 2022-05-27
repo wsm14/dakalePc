@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
@@ -8,15 +8,16 @@ const TradeCategorySet = (props) => {
   const { dispatch, childRef, visible, onClose, loading } = props;
 
   const [form] = Form.useForm();
-  const { show = false, type = 'add', detail = {} } = visible;
+  const { show = false, status = 'add', detail = {} } = visible;
   const { ranking } = detail;
-
   // 提交表单
   const handleUpAudit = () => {
-    form.validateFields().then((values) => {
+    form.validateFields().then(async (values) => {
       const { isDelete, ...other } = values;
       dispatch({
-        type: { add: 'sysTradeList/fetchTradeAdd', edit: 'sysTradeList/fetchTradeSet' }[type],
+        type: { add: 'Category/fetchBackCategoryAdd', edit: 'Category/fetchBackCategoryEdit' }[
+          status
+        ],
         payload: {
           ...detail,
           ...other,
@@ -39,21 +40,25 @@ const TradeCategorySet = (props) => {
     },
     {
       label: '一级类目名称',
-      name: 'categoryName',
+      name: 'classifyName',
       visible: ranking === 'first',
       maxLength: 20,
     },
     {
       label: '二级类目名称',
       visible: ranking === 'second',
-      name: 'categoryName',
+      name: 'classifyName',
       maxLength: 20,
     },
     {
       label: '三级类目名称',
       visible: ranking === 'third',
-      name: 'categoryName',
+      name: 'classifyName',
       maxLength: 20,
+    },
+    {
+      label: '权重',
+      name: 'sortValue',
     },
     {
       label: '状态',
@@ -65,7 +70,7 @@ const TradeCategorySet = (props) => {
 
   // 弹出窗属性
   const modalProps = {
-    title: `${type === 'add' ? '新增类目' : '编辑类目'}`,
+    title: `${status === 'add' ? '新增类目' : '编辑类目'}`,
     visible: show,
     onClose,
     footer: (
@@ -84,5 +89,6 @@ const TradeCategorySet = (props) => {
 
 export default connect(({ loading }) => ({
   loading:
-    loading.effects['sysTradeList/fetchTradeAdd'] || loading.effects['sysTradeList/fetchTradeSet'],
+    loading.effects['Category/fetchBackCategoryAdd'] ||
+    loading.effects['Category/fetchBackCategoryEdit'],
 }))(TradeCategorySet);
