@@ -30,7 +30,6 @@ const SupplierActivate = (props) => {
           memberId,
           bankAccount,
           bondBean: 0,
-          commissionRatio: 12345789,
           additionalVoucher: imgUrl.toString(),
           provCode: city[0].includes('00') ? city[0] : '00' + city[0],
           areaCode: city[1] || undefined,
