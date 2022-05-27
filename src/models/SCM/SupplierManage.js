@@ -1,11 +1,11 @@
 import { notification } from 'antd';
 import {
-  fetchGetSupplierManageList,
-  fetchGetSupplierManageDetail,
+  fetchSupplierEnable,
+  fetchSupplierDisable,
   fetchSupplierCorpAccount,
   fetchSupplierPersonAccount,
-  fetchSupplierVerifyAllow,
-  fetchSupplierVerifyReject,
+  fetchGetSupplierManageList,
+  fetchGetSupplierManageDetail,
 } from '@/services/SCMServices';
 
 export default {
@@ -56,21 +56,21 @@ export default {
       });
       callback();
     },
-    *fetchSupplierVerifyAllow({ payload, callback }, { call, put }) {
-      const response = yield call(fetchSupplierVerifyAllow, payload);
+    *fetchSupplierEnable({ payload, callback }, { call, put }) {
+      const response = yield call(fetchSupplierEnable, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '审核已通过',
+        description: '启用成功',
       });
       callback();
     },
-    *fetchSupplierVerifyReject({ payload, callback }, { call, put }) {
-      const response = yield call(fetchSupplierVerifyReject, payload);
+    *fetchSupplierDisable({ payload, callback }, { call, put }) {
+      const response = yield call(fetchSupplierDisable, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '审核已拒绝',
+        description: '禁用成功',
       });
       callback();
     },

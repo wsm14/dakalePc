@@ -13,17 +13,17 @@ const { TabPane } = Tabs;
 
 const SupplierManageDetail = (props) => {
   const { visible, onClose, getDetail, loading, dispatch, total, cRef } = props;
-  const { show = false, detail = {}, index } = visible;
 
-  const { supplierVerifyId } = detail;
+  const { show = false, detail = {}, index } = visible;
+  const { supplierId } = detail;
 
   const [visibleRefuse, setVisibleRefuse] = useState(false); // 审核拒绝 下架原因
 
-  // 审核通过
-  const handleVerifyAllow = () => {
+  // 启用
+  const fetchSupplierEnable = () => {
     dispatch({
-      type: 'supplierAuth/fetchSupplierVerifyAllow',
-      payload: { supplierVerifyId },
+      type: 'supplierManage/fetchSupplierEnable',
+      payload: { supplierId },
       callback: () => {
         cRef.current.fetchGetData();
         onClose();
@@ -31,18 +31,18 @@ const SupplierManageDetail = (props) => {
     });
   };
 
-  // 审核驳回
-  const fetchVerifyReject = (values) => {
+  // 禁用
+  const fetchSupplierDisable = (values) => {
     dispatch({
-      type: 'supplierAuth/fetchSupplierVerifyReject',
+      type: 'supplierManage/fetchSupplierDisable',
       payload: {
         ...values,
-        supplierVerifyId,
+        supplierId,
       },
       callback: () => {
+        cRef.current.fetchGetData();
         setVisibleRefuse(false);
         onClose();
-        childRef.current.fetchGetData();
       },
     });
   };
@@ -50,20 +50,21 @@ const SupplierManageDetail = (props) => {
   // 禁用启用按钮
   const handleSupplierStatus = (type) => {
     if (!type) setVisibleRefuse({ show: true, formProps: { type: 'disable', key: 'reason' } });
-    else console.log(1);
+    else fetchSupplierEnable();
   };
 
   const btnList = [
     {
       auth: 'status',
-      onClick: () => handleSupplierStatus(1 ^ Number(detail.status)),
       text: ['启用', '禁用'][detail.status],
+      danger: [false, true][detail.status],
+      onClick: () => handleSupplierStatus(1 ^ Number(detail.status)),
     },
     {
       auth: 'edit',
-      onClick: () => handleVerifyAllow,
-      danger: true,
       text: '编辑',
+      typeBtn: 'primary',
+      onClick: () => handleVerifyAllow,
     },
   ];
 
@@ -81,10 +82,7 @@ const SupplierManageDetail = (props) => {
     footer: (
       <ExtraButton
         list={btnList}
-        loading={
-          loading.effects['supplierManage/fetchGetSupplierVerifyAllow'] ||
-          loading.effects['supplierManage/fetchGetSupplierVerifyReject']
-        }
+        loading={loading.effects['supplierManage/fetchSupplierEnable']}
       ></ExtraButton>
     ),
   };
@@ -103,7 +101,7 @@ const SupplierManageDetail = (props) => {
             <WarehouseInfo  detail={detail}></WarehouseInfo>
           </TabPane> */}
           {/* 未激活时不显示账户信息和结算记录 */}
-          {detail.bankStatus === "3" && (
+          {detail.bankStatus === '3' && (
             <>
               <TabPane tab="账户信息" key="4">
                 <AccountInfo detail={detail}></AccountInfo>
@@ -119,15 +117,15 @@ const SupplierManageDetail = (props) => {
       <RefuseModal
         cRef={cRef}
         visible={visibleRefuse}
-        handleUpData={fetchVerifyReject}
-        loading={loading}
+        handleUpData={fetchSupplierDisable}
         onClose={() => setVisibleRefuse(false)}
+        loading={loading.effects['supplierManage/fetchSupplierDisable']}
       ></RefuseModal>
     </>
   );
 };
 
 export default connect(({ loading, supplierManage }) => ({
-  total: supplierManage.list.length,
   loading,
+  total: supplierManage.list.length,
 }))(SupplierManageDetail);

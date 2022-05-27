@@ -31,6 +31,22 @@ export function fetchSupplierPersonAccount(data) {
   });
 }
 
+// post 供应商管理 - 禁用
+export function fetchSupplierDisable(data) {
+  return request('/admin/supplier/disableSupplier', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 供应商管理 - 启用
+export function fetchSupplierEnable(data) {
+  return request('/admin/supplier/enableSupplier', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 供应商管理 end
 
 // 供应商审核

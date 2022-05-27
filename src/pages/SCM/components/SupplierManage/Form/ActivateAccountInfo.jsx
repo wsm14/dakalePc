@@ -13,36 +13,15 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
   const disabled = loading;
 
   // ocr 识别开户许可证
-  const fetchGetOcrBankLicense = (payload, callback) => {
+  const fetchGetOcr = (type, payload, callback) => {
+    const api = {
+      bankLicense: 'groupSet/fetchGetOcrBankLicense', // ocr 识别开户许可证
+      bankCard: 'groupSet/fetchGetOcrIdBankCard', // ocr 识别银行卡
+      idCardFront: 'groupSet/fetchGetOcrIdCardFront', // 识别省份证正面信息
+      idCardBack: 'groupSet/fetchGetOcrIdCardBack', // 识别省份证反面信息
+    }[type];
     dispatch({
-      type: 'groupSet/fetchGetOcrBankLicense',
-      payload: payload,
-      callback: (val) => callback(val),
-    });
-  };
-
-  // ocr 识别银行卡
-  const fetchGetOcrIdBankCard = (payload, callback) => {
-    dispatch({
-      type: 'groupSet/fetchGetOcrIdBankCard',
-      payload: payload,
-      callback: (val) => callback(val),
-    });
-  };
-
-  // 识别省份证正面信息
-  const fetchGetOcrIdCardFront = (payload, callback) => {
-    dispatch({
-      type: 'groupSet/fetchGetOcrIdCardFront',
-      payload: payload,
-      callback: (val) => callback(val),
-    });
-  };
-
-  // 识别省份证反面信息
-  const fetchGetOcrIdCardBack = (payload, callback) => {
-    dispatch({
-      type: 'groupSet/fetchGetOcrIdCardBack',
+      type: api,
       payload: payload,
       callback: (val) => callback(val),
     });
@@ -65,7 +44,7 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
           form.setFieldsValue({
             openAccountPermit: imgUrl[0],
           });
-          fetchGetOcrBankLicense({ imageUrl: imgUrl[0] }, (res) => {
+          fetchGetOcr('bankLicense', { imageUrl: imgUrl[0] }, (res) => {
             const { enterpriseNameCH = '', enterpriseBankId = '', enterpriseBankName } = res;
             form.setFieldsValue({
               cardName: enterpriseNameCH,
@@ -123,7 +102,7 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
           form.setFieldsValue({
             bankPhoto: imgUrl[0],
           });
-          fetchGetOcrIdBankCard({ pic: imgUrl[0] }, (res) => {
+          fetchGetOcr('idBankCard', { pic: imgUrl[0] }, (res) => {
             const { number, enterpriseBankName = '' } = res;
             form.setFieldsValue({
               [{ 1: 'cardNo', 2: 'cardId' }[bankAccount]]: number,
@@ -176,7 +155,7 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
         let imgUrl = await aliOssUpload(val);
         if (imgUrl) {
           form.setFieldsValue({ certFrontPhoto: imgUrl[0] });
-          fetchGetOcrIdCardFront({ imageUrl: imgUrl[0] }, (res) => {
+          fetchGetOcr('idCardFront', { imageUrl: imgUrl[0] }, (res) => {
             const { name = '', num = '' } = res;
             form.setFieldsValue({
               legalPerson: name,
@@ -197,7 +176,7 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
         let imgUrl = await aliOssUpload(val);
         if (imgUrl) {
           form.setFieldsValue({ certReversePhoto: imgUrl[0] });
-          fetchGetOcrIdCardBack({ imageUrl: imgUrl[0] }, (res) => {
+          fetchGetOcr('idCardBack', { imageUrl: imgUrl[0] }, (res) => {
             let { startDate, endDate } = res;
             if (endDate == '长期' || !endDate) {
               endDate = '20991231';

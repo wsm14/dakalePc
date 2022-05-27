@@ -41,7 +41,7 @@ const SpecialGoodCheckDetail = (props) => {
       callback: () => {
         setVisibleRefuse(false);
         onClose();
-        childRef.current.fetchGetData();
+        cRef.current.fetchGetData();
       },
     });
   };
@@ -188,10 +188,7 @@ const SpecialGoodCheckDetail = (props) => {
     footer: mode === 'check' && (
       <ExtraButton
         list={btnList}
-        loading={
-          loading.effects['supplierAuth/fetchGetSupplierVerifyAllow'] ||
-          loading.effects['supplierAuth/fetchGetSupplierVerifyReject']
-        }
+        loading={loading.effects['supplierAuth/fetchGetSupplierVerifyAllow']}
       ></ExtraButton>
     ),
   };
@@ -231,9 +228,9 @@ const SpecialGoodCheckDetail = (props) => {
         cRef={cRef}
         visible={visibleRefuse}
         handleUpData={fetchVerifyReject}
-        loading={loading}
         onClose={() => setVisibleRefuse(false)}
-      ></RefuseModal>
+        loading={loading.effects['supplierAuth/fetchGetSupplierVerifyReject']}
+        ></RefuseModal>
     </>
   );
 };
