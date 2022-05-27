@@ -326,10 +326,3 @@ export function fetchPageResourceTemplateContent(params) {
     params,
   });
 }
-
-// get 类目管理（电商）-后台类目-列表
-export function fetchListClassify(params) {
-  return request('/admin/classify/listClassify', {
-    params,
-  });
-}

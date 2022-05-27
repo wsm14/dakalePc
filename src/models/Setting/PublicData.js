@@ -2,6 +2,7 @@ import { notification } from 'antd';
 import oss from 'ali-oss';
 import lodash from 'lodash';
 import { uuid } from '@/utils/utils';
+import { fetchBackCategoryList } from '@/services/BaseServices';
 import { fetchGetSupplierManageList } from '@/services/SCMServices';
 import { fetchMerchantList, fetchMerchantGroup } from '@/services/BusinessServices';
 import {
@@ -45,7 +46,6 @@ import {
   fetchGlobalListPartner,
   fetchListHittingMain,
   fetchPageResourceTemplateContent,
-  fetchListClassify,
 } from '@/services/PublicServices';
 
 export default {
@@ -772,7 +772,7 @@ export default {
     },
     // 类目管理（电商）-后台类目-根列表
     *fetchParentListClassify({ payload }, { call, put }) {
-      const response = yield call(fetchListClassify, payload);
+      const response = yield call(fetchBackCategoryList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
