@@ -104,6 +104,7 @@ const SupplierManageBrand = (props) => {
         destroyOnClose
         footer={null}
         visible={show}
+        zIndex={100}
         onCancel={onClose}
       >
         <TableDataBlock
