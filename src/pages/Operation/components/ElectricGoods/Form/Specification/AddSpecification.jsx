@@ -1,6 +1,5 @@
 import React from 'react';
-import { Form, Button, Input } from 'antd';
-import FormList from './AddSpecification/FormList';
+import { Button, Input } from 'antd';
 import update from 'immutability-helper';
 
 const AddSpecification = (props) => {

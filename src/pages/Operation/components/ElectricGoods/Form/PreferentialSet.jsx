@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import { connect } from 'umi';
-import { Button } from 'antd';
+import { Button, InputNumber } from 'antd';
 import CITYJSON from '@/common/city';
 import {
   GOODS_CLASS_TYPE,
@@ -21,7 +21,8 @@ import EditorForm from '@/components/EditorForm';
 import FormCondition from '@/components/FormCondition';
 import Shipping from './Shipping';
 import RefundLocation from './RefundLocation';
-import AddSpecification from './AddSpecification';
+import AddSpecification from './Specification/AddSpecification';
+import SpecificationList from './Specification/SpecificationList';
 import styles from './style.less';
 
 const PreferentialSet = ({
@@ -49,6 +50,52 @@ const PreferentialSet = ({
   const [visibleRefund, setVisibleRefund] = useState(false); // 退货地址modal
   const [refundList, setRefundList] = useState([]); // 退货地址数据暂存
   const [specificationTypeData, setSpecificationTypeData] = useState([]); // 规格类型数据暂存
+
+  useEffect(() => {
+    const newArr = specificationTypeData.map((item) =>
+      (item?.value || []).map((i) => ({
+        [item.name]: i,
+      })),
+    );
+    console.log('123', doExchange(newArr));
+    form.setFieldsValue({ skuInfoReqs: doExchange(newArr) });
+  }, [specificationTypeData]);
+
+  const doExchange = (arr = []) => {
+    let len = arr.length;
+    // 当数组大于等于2个的时候
+    if (len >= 2) {
+      // 第一个数组的长度
+      let len1 = arr[0].length;
+      // 第二个数组的长度
+      let len2 = arr[1].length;
+      // 2个数组产生的组合数
+      let lenBoth = len1 * len2;
+      //  申明一个新数组,做数据暂存
+      let items = new Array(lenBoth);
+      // 申明新数组的索引
+      let index = 0;
+      // 2层嵌套循环,将组合放到新数组中
+      for (let i = 0; i < len1; i++) {
+        for (let j = 0; j < len2; j++) {
+          items[index] = { ...arr[0][i], ...arr[1][j] };
+          index++;
+        }
+      }
+      // 将新组合的数组并到原数组中
+      let newArr = new Array(len - 1);
+      for (let i = 2; i < arr.length; i++) {
+        newArr[i - 1] = arr[i];
+      }
+      newArr[0] = items;
+      // 执行回调
+      return doExchange(newArr);
+    } else {
+      return (arr[0] || []).map((item) => ({
+        attributes: Object.keys(item).map((name) => ({ name, value: item[name] })),
+      }));
+    }
+  };
 
   //sku通用-是否需要设置佣金
   const getCommissionFlag = (categoryId) => {
@@ -177,6 +224,24 @@ const PreferentialSet = ({
       extra: '指供应商/店铺和哒卡乐平台的结算价',
     },
     {
+      label: '最小起订量',
+      name: 'b1',
+      type: 'number',
+      min: 0,
+      precision: 0,
+    },
+    {
+      label: '批采价',
+      name: 'a12',
+      type: 'formItem',
+      formItem: (
+        <>
+          <InputNumber style={{ width: 300 }}></InputNumber>
+          <Button type="link">设置阶梯价</Button>
+        </>
+      ),
+    },
+    {
       label: '售卖价格类型',
       name: ['paymentModeObject', 'type'],
       type: 'radio',
@@ -185,6 +250,14 @@ const PreferentialSet = ({
         setPriceType(e.target.value);
         form.setFieldsValue({ displayType: undefined });
       },
+    },
+    // {
+    //   type: 'noForm',
+    //   formItem: <SpecificationList></SpecificationList>,
+    // },
+    {
+      label: 'aaaa',
+      name: 'skuInfoReqs',
     },
     {
       label: '零售价',
