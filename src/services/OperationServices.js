@@ -1088,3 +1088,14 @@ export function fetchRuleDetailPage(params) {
 }
 
 // 券规则管理 end
+
+// 电商品
+
+// get 电商品 - 列表
+export function fetchListOnlineGoodsByPage(params) {
+  return request('/admin/online/goods/admin/listOnlineGoodsByPage', {
+    params,
+  });
+}
+
+// 电商品 end

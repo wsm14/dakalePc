@@ -752,6 +752,12 @@ export default [
         name: '商品/订单管理',
         routes: [
           {
+            path: '/operation/electricGoods',
+            name: '电商品',
+            component: './Operation/ElectricGoods',
+            // buttons: ['info', 'exportList', 'goodsView', 'goodsDeliver', 'routing', 'batchRouting'],
+          },
+          {
             path: '/operation/orders',
             name: '订单列表',
             component: './Operation/OrdersList',
