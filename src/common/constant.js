@@ -628,6 +628,13 @@ export const SPECIAL_RECOMMEND_DELSTATUS = ['已删除', '未删除'];
 // 特惠活动 - 介绍类型
 export const SPECIAL_DESC_TYPE = ['图文介绍', '富文本'];
 
+// 特惠活动 - 前端展示类型
+export const SPECIAL_SHOW_TYPE = {
+  one: '手动/列表展示',
+  two: '仅手动展示',
+  three: '不展示',
+};
+
 // 新手视频 - 状态 1-上架 3-下架
 export const VIDEO_NOVICE_STATUS = [false, '上架中', false, '已下架'];
 

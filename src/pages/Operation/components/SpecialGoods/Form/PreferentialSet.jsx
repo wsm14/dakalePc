@@ -7,6 +7,7 @@ import {
   SPECIAL_DESC_TYPE,
   BUSINESS_TYPE,
   BUSINESS_SALE_TYPE,
+  SPECIAL_SHOW_TYPE,
 } from '@/common/constant';
 import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import EditorForm from '@/components/EditorForm';
@@ -476,8 +477,8 @@ const PreferentialSet = ({
       title: `前端展示类型`,
       label: '选择介绍类型',
       type: 'radio',
-      name: 'goodsDescType',
-      select: SPECIAL_DESC_TYPE,
+      name: 'showType',
+      select: SPECIAL_SHOW_TYPE,
       onChange: (e) => setGoodsDescType(e.target.value),
     },
     {
