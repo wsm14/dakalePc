@@ -1,10 +1,38 @@
-import React from 'react';
-import { Alert } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'umi';
+import { Spin, Empty } from 'antd';
+import SearchCondition from '@/components/SearchCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const SettlementInfo = (props) => {
-  const { detail = {} } = props;
-  const { supplierSettlementDetailList = [] } = detail;
+  const { dispatch, loading, supplierId } = props;
+
+  const [supplierSettlementDetailList, setSupplierSettlementDetailList] = useState([]);
+
+  useEffect(() => {
+    fetchGetSettlement();
+  }, []);
+
+  // 搜索参数
+  const searchItems = [
+    {
+      label: '',
+      type: 'rangePicker',
+      name: 'settleBeginTime',
+      end: 'settleEndTime',
+    },
+  ];
+
+  // 获取详情
+  const fetchGetSettlement = (values = {}) => {
+    dispatch({
+      type: 'supplierSettlement/fetchGetList',
+      payload: { supplierId, page: 1, limit: 999, ...values },
+      callback: (list) => {
+        setSupplierSettlementDetailList(list);
+      },
+    });
+  };
 
   const itemArr = [
     {
@@ -44,17 +72,29 @@ const SettlementInfo = (props) => {
 
   return (
     <>
-      <Alert
-        type="success"
-        message="显示近10条结算记录"
-        // action={'UNDO'}
-        style={{ marginBottom: 10 }}
-      />
-      {supplierSettlementDetailList.map((data) => (
-        <DescriptionsCondition formItems={itemArr} initialValues={data}></DescriptionsCondition>
-      ))}
+      <SearchCondition
+        colForm={{ xxl: 24 }}
+        searchItems={searchItems}
+        handleSearch={fetchGetSettlement}
+      ></SearchCondition>
+      <Spin spinning={loading}>
+        {supplierSettlementDetailList.length ? (
+          supplierSettlementDetailList.map((data, index) => (
+            <DescriptionsCondition
+              key={`${index}${index}`}
+              formItems={itemArr}
+              initialValues={data}
+            ></DescriptionsCondition>
+          ))
+        ) : (
+          <Empty></Empty>
+        )}
+      </Spin>
     </>
   );
 };
 
-export default SettlementInfo;
+export default connect(({ supplierSettlement, loading }) => ({
+  supplierSettlement,
+  loading: loading.models.supplierSettlement,
+}))(SettlementInfo);

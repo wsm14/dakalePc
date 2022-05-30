@@ -25,7 +25,7 @@ export default {
   },
 
   effects: {
-    *fetchGetList({ payload }, { call, put }) {
+    *fetchGetList({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetSupplierSettlementList, payload);
       if (!response) return;
       const { content } = response;
@@ -36,6 +36,7 @@ export default {
           total: content.total,
         },
       });
+      callback && callback(content.supplierSettlementDetailList);
     },
     *fetchGetSupplierSettlementDetail({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetSupplierSettlementDetail, payload);
