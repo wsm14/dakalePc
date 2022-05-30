@@ -186,7 +186,7 @@ export const SHARE_STATUS = [
   '即将发布',
 ];
 
-//核销状态 0：未核销，1：已核销 2：已过期 3-申请退款中 4-关闭
+// 核销状态 0：未核销，1：已核销 2：已过期 3-申请退款中 4-关闭
 export const VERIFICATION_STATUS = ['未核销', '已核销', '已过期', '申请退款中', '关闭'];
 
 // 种草状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
@@ -652,6 +652,21 @@ export const CHECK_STATUS = ['审核通过', '审核驳回', '商家已确认', 
 // 银行卡变更审核结果
 export const BANK_CHECK_STATUS = ['审核驳回', '审核通过'];
 
+// 供应商状态
+export const SUPPLIER_STATUS = ['禁用', '启用'];
+
+// 供应商账户状态 搜索用
+export const SUPPLIER_ACCOUNT_STATUS = ['未激活', '已激活'];
+
+// 供应商账户状态
+export const SUPPLIER_ACCOUNT_STATUS_SHOW = ['未激活', '审核中', '激活失败', '已激活'];
+
+// 供应商审核状态
+export const SUPPLIER_AUTH_STATUS = ['审核拒绝', '审核通过'];
+
+// 供应商类型
+export const SUPPLIER_AUTH_TYPE = ['', '对公', '对私'];
+
 // 标签类型
 export const TAG_TYPE = {
   platform: '平台商品标签',
@@ -684,8 +699,8 @@ export const SUBMIT_TYPE_VIDEO = {
 export const SERVICE_TYPE = {
   specialGoods: '特惠商品 ',
   reduceCoupon: '优惠券',
-  rightGoods: '权益商品',
-  rightCoupon: '权益券',
+  // rightGoods: '权益商品',
+  // rightCoupon: '权益券',
   commerceGoods: '电商品',
 };
 
@@ -709,12 +724,30 @@ export const TEMPLATE_CREATE_TYPE = {
 
 // 分佣配置
 export const COMMISSION_TYPE = {
-  province: '省代分佣',
-  city: '地级市分佣',
-  district: '区县分佣',
-  userParent: '用户家主分佣',
-  merchantParent: '商家家主分佣',
-  daren: '哒人分佣',
+  specialGoods: {
+    province: '省代分佣',
+    city: '地级市分佣',
+    district: '区县分佣',
+    userParent: '用户家主分佣',
+    merchantParent: '商家家主分佣',
+    daren: '哒人分佣',
+  },
+  reduceCoupon: {
+    province: '省代分佣',
+    city: '地级市分佣',
+    district: '区县分佣',
+    userParent: '用户家主分佣',
+    merchantParent: '商家家主分佣',
+    daren: '哒人分佣',
+  },
+  commerceGoods: {
+    province: '省代分佣',
+    city: '地级市分佣',
+    district: '区县分佣',
+    userParent: '用户家主分佣',
+    // merchantParent: '商家家主分佣',
+    daren: '哒人分佣',
+  },
 };
 
 // 活动模版类型
@@ -1354,4 +1387,9 @@ export const FREIGHT_TYPE = {
 export const SETTLE_TYPE = {
   settle: '供应商',
   pingtai: '平台',
+};
+//行业管理 - 前台类目
+export const TRADESET_SELECT = {
+  behind: '按后台类目',
+  h5: 'H5地址',
 };

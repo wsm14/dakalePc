@@ -34,6 +34,7 @@ export const ROLE_BUTTON_TYPE = {
   blindDel: '盲盒新增',
   blindAdd: '盲盒新增',
   blindConfigEdit: '盲盒规则编辑',
+  brand: '品牌',
 
   copy: '复制',
   check: '审核',

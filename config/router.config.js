@@ -571,6 +571,12 @@ export default [
             component: './Base/PeasShare',
             buttons: ['save', 'del', 'edit'],
           },
+          {
+            path: '/base/category',
+            name: '商品类目管理 ',
+            component: './Base/GoodsCategory',
+            buttons: ['tradeAdd', 'del', 'edit', 'tradeSecondAdd'],
+          },
         ],
       },
       // 客服中心 service
@@ -839,7 +845,31 @@ export default [
           },
         ],
       },
-
+      // 供应链管理 SCM
+      {
+        path: '/SCM',
+        name: '供应链管理',
+        routes: [
+          {
+            path: '/SCM/supplierAuth',
+            name: '供应链审核',
+            component: './SCM/SupplierAuth',
+            buttons: ['info', 'check'],
+          },
+          {
+            path: '/SCM/supplierManage',
+            name: '供应商列表',
+            component: './SCM/SupplierManage',
+            buttons: ['save', 'info', 'edit', 'activate', 'status', 'brand'],
+          },
+          {
+            path: '/SCM/supplierSettlement',
+            name: '结算明细',
+            component: './SCM/SupplierSettlement',
+            buttons: ['save', 'info', 'edit'],
+          },
+        ],
+      },
       {
         name: '修改密码',
         path: '/password',

@@ -81,7 +81,6 @@ const TradeSceneList = (props) => {
         params={{ categoryId: record.categoryIdString }}
         dispatchType="sysTradeList/fetchSceneListById"
         pagination={false}
-        size="middle"
         {...sceneList}
       ></TableDataBlock>
       <TradeSceneSet

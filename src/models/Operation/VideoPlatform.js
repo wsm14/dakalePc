@@ -302,14 +302,14 @@ export default {
         // addressContentList = [], // 定位
         ugcAddressObject, // UGC定位
         videoContent,
-        ...ohter
+        ...other
       } = content.momentDetail;
       const editData =
         type !== 'info'
           ? {
               videoUrl: JSON.parse(videoContent || '{}').url,
               videoId: JSON.parse(videoContent || '{}').videoId,
-              categoryNode: [ohter.topCategoryIdString, ohter.categoryIdString],
+              categoryNode: [other.topCategoryIdString, other.categoryIdString],
               free: freeOwnerCouponList[0] || {},
               contact: [...activityGoodsList, ...ownerCouponList],
               age: age !== '0-100' ? 'age' : age,
@@ -331,7 +331,7 @@ export default {
             }
           : {};
       const newObj = {
-        ...ohter,
+        ...other,
         ...content2,
         age,
         area,

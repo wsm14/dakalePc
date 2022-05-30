@@ -19,7 +19,7 @@ const GlobalModalDrawerSet = (props) => {
   //保存
   const handleSave = () => {
     form.validateFields().then(async (values) => {
-      const { popUpImage, ...ohter } = values;
+      const { popUpImage, ...other } = values;
       const { version, area, cityCode, pageType, configGlobalPopUpId } = detail;
       const detailParam = { userOs, version, area, cityCode, pageType, configGlobalPopUpId };
       // 上传图片到oss -> 提交表单
@@ -30,12 +30,12 @@ const GlobalModalDrawerSet = (props) => {
           edit: 'marketConfigure/fetchGlobalPopUpEdit',
         }[type],
         payload: {
-          ...ohter,
+          ...other,
           ...detailParam,
           flag: { add: 'addConfig', edit: 'updateConfig' }[type],
           popUpImage: imgList.toString(),
-          activityBeginTime: ohter.activityBeginTime[0].format('YYYY-MM-DD HH:mm'),
-          activityEndTime: ohter.activityBeginTime[1].format('YYYY-MM-DD HH:mm'),
+          activityBeginTime: other.activityBeginTime[0].format('YYYY-MM-DD HH:mm'),
+          activityEndTime: other.activityBeginTime[1].format('YYYY-MM-DD HH:mm'),
         },
         callback: () => {
           onClose();

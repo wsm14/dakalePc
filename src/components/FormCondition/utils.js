@@ -79,6 +79,7 @@ export const delectFormProps = (data) => {
   delete divProps.checkedChildren;
   delete divProps.unCheckedChildren;
   delete divProps.allowClear;
+  delete divProps.bordered;
 
   return divProps;
 };

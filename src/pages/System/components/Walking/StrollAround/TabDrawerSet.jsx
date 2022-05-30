@@ -14,11 +14,11 @@ const TabDrawerSet = (props) => {
   //保存
   const handleSave = () => {
     form.validateFields().then((values) => {
-      const { cityCode, defaultTags = [], tags = [], ...ohter } = values;
+      const { cityCode, defaultTags = [], tags = [], ...other } = values;
       dispatch({
         type: 'walkingManage/fetchWanderAroundModuleAdd',
         payload: {
-          ...ohter,
+          ...other,
           userOs: tabKey,
           version: version,
           cityCode: cityCode && cityCode[1],

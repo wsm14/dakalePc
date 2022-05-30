@@ -16,7 +16,7 @@ const GlobalModalDrawerSet = (props) => {
   //保存
   const handleSave = () => {
     form.validateFields().then(async (values) => {
-      const { windowImage, ...ohter } = values;
+      const { windowImage, ...other } = values;
       const { userOs, version, area, cityCode, windowType, configFloatingWindowId } = detail;
       const detailParam = { userOs, version, area, cityCode, windowType, configFloatingWindowId };
       // 上传图片到oss -> 提交表单
@@ -27,12 +27,12 @@ const GlobalModalDrawerSet = (props) => {
           edit: 'marketConfigure/fetchFloatingWindowEdit',
         }[type],
         payload: {
-          ...ohter,
+          ...other,
           ...detailParam,
           flag: { add: 'addConfig', edit: 'updateConfig' }[type],
           windowImage: imgList.toString(),
-          activityBeginTime: ohter.activityBeginTime[0].format('YYYY-MM-DD HH:mm'),
-          activityEndTime: ohter.activityBeginTime[1].format('YYYY-MM-DD HH:mm'),
+          activityBeginTime: other.activityBeginTime[0].format('YYYY-MM-DD HH:mm'),
+          activityEndTime: other.activityBeginTime[1].format('YYYY-MM-DD HH:mm'),
         },
         callback: () => {
           onClose();

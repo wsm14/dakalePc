@@ -180,7 +180,6 @@ const BeanRedEnvelopes = (props) => {
       },
     },
     {
-      title: '操作',
       dataIndex: 'redEnvelopesIdString',
       type: 'handle',
       show: tabKey === '0',
