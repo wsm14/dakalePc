@@ -44,7 +44,9 @@ const PreferentialDrawer = (props) => {
 
   // 确认提交数据 - add 新增 /  edit 修改所有数据 / again 重新发布
   const handleUpData = () => {
-    formRuleAdd.validateFields().then((values) => {
+    form.validateFields().then((values) => {
+      console.log(values, 'values');
+      return;
       const { id } = detail;
       const {
         activityGoodsImg,
@@ -127,9 +129,19 @@ const PreferentialDrawer = (props) => {
           initialValues={{
             thirdFlag: '1',
             ownerType: 'merchant',
+            jiesuanType: 'merchant',
+            settleInfoReq: {
+              settlerType: 'merchant',
+            },
+            areaType: 'all',
             goodsType: 'single',
             goodsDescType: '0',
             packageGoodsObjects: [{}],
+            needOrder: 0,
+            allowRefund: 1,
+            allowExpireRefund: 1,
+            allowRefund: 1,
+            expireRefund: 1,
           }}
           onValuesChange={setShowHtmlData}
         ></PreferentialSet>
@@ -138,7 +150,7 @@ const PreferentialDrawer = (props) => {
     again: {
       title: '重新发布活动',
       children: (
-        <PreferentialSet {...listProp} form={formAgain} initialValues={detail}></PreferentialSet>
+        <PreferentialSet {...listProp} form={form} initialValues={detail}></PreferentialSet>
       ),
     },
     againUp: {
@@ -146,7 +158,7 @@ const PreferentialDrawer = (props) => {
       children: (
         <PreferentialSet
           {...listProp}
-          form={formAgainUp}
+          form={form}
           initialValues={detail}
           onValuesChange={setShowHtmlData}
         ></PreferentialSet>
@@ -155,7 +167,7 @@ const PreferentialDrawer = (props) => {
     edit: {
       title: '修改活动',
       children: (
-        <PreferentialSet {...listProp} form={formEdit} initialValues={detail}></PreferentialSet>
+        <PreferentialSet {...listProp} form={form} initialValues={detail}></PreferentialSet>
       ),
     },
   }[type];
@@ -199,7 +211,7 @@ const PreferentialDrawer = (props) => {
       <DrawerCondition {...modalProps}>
         {drawerProps.children}
         {/* <DrawerCondition {...ruleModalProps}> */}
-        <PreferentialRuleSet
+        {/* <PreferentialRuleSet
           editActive={type}
           form={formRuleAdd}
           initialValues={{
@@ -208,7 +220,7 @@ const PreferentialDrawer = (props) => {
             allowExpireRefund: 1,
             ...(saveData || detail),
           }}
-        ></PreferentialRuleSet>
+        ></PreferentialRuleSet> */}
         {/* </DrawerCondition> */}
       </DrawerCondition>
       {/* <Html5Simulate type="goods" show={show} data={showHtmlData}></Html5Simulate> */}

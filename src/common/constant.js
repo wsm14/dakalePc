@@ -635,6 +635,17 @@ export const SPECIAL_SHOW_TYPE = {
   three: '不展示',
 };
 
+//特惠活动 - 展示范围
+export const SPECIAL_AREA_TYPE = {
+  all: '全国',
+  city: '按市选择',
+};
+//特惠活动 - 结算人类型
+export const SPECIAL_BALANCE_TYPE = {
+  merchant: '店铺',
+  platform: '平台',
+};
+
 // 新手视频 - 状态 1-上架 3-下架
 export const VIDEO_NOVICE_STATUS = [false, '上架中', false, '已下架'];
 

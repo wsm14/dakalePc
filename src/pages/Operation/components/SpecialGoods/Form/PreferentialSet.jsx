@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import { connect } from 'umi';
+import moment from 'moment';
 import { Button } from 'antd';
 import {
   GOODS_CLASS_TYPE,
@@ -8,11 +9,22 @@ import {
   BUSINESS_TYPE,
   BUSINESS_SALE_TYPE,
   SPECIAL_SHOW_TYPE,
+  SPECIAL_AREA_TYPE,
+  COUPON_BUY_RULE,
+  COUPON_USER_TIME,
+  COUPON_TIME_TYPE,
+  COUPON_WEEK_TIME,
+  COUPON_ACTIVE_TYPE,
+  SPECIAL_USERTIME_TYPE,
+  SPECIAL_BALANCE_TYPE,
 } from '@/common/constant';
 import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
+import { NUM_INT_MAXEIGHT } from '@/common/regExp';
+import { DescSet } from '@/components/FormListCondition';
 import EditorForm from '@/components/EditorForm';
 import FormCondition from '@/components/FormCondition';
 import GoodsGroupSet from './GoodsGroupSet';
+import { CitySet } from '@/components/FormListCondition';
 
 const PreferentialSet = ({
   form,
@@ -35,14 +47,30 @@ const PreferentialSet = ({
   const [goodsType, setGoodsType] = useState('1'); // 商品类型： 特惠 自我游
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
   const [goodsDescType, setGoodsDescType] = useState('0'); // 商品介绍类型
-  const [radioData, setRadioData] = useState({ goodsType: 'single' }); // 商品类型 goodsType
+  const [radioData, setRadioData] = useState({
+    goodsType: 'single',
+    activeTime: '', // 活动时间
+    userTime: '', // 使用有效期
+    timeSplit: '', // 适用时段
+    timeType: 'all', // 时段内时间选择
+    buyRule: 'all', // 购买规则
+    disabledDate: [], // 限制时间
+  }); // 商品类型 goodsType
   const [goodsTaglist, setGoodsTaglist] = useState([]); // 商家商品标签
+  const [areaType, setAreaType] = useState('all'); // 地域选择
   const [mreList, setMreList] = useState({
     groupId: null,
     type: 'merchant',
     keys: [],
     list: [],
   }); // 店铺备选参数，选择店铺后回显的数据
+
+  const [validate, setValidate] = useState({
+    groupId: null,
+    type: 'merchant',
+    keys: [],
+    list: [],
+  });
 
   //编辑的时候数据回显的标签
   const { goodsTagList = [] } = initialValues;
@@ -55,6 +83,13 @@ const PreferentialSet = ({
   const goodsTypeName = GOODS_CLASS_TYPE[radioData.goodsType];
   useEffect(() => {
     if (initialValues.ownerName) {
+      const {
+        buyRule,
+        timeType,
+        timeSplit,
+        activityTimeRule: activeTime,
+        useTimeRule: userTime,
+      } = initialValues;
       // 商品类型： 特惠 自我游
       setGoodsType(initialValues.thirdFlag || '1');
       form.setFieldsValue({
@@ -66,7 +101,14 @@ const PreferentialSet = ({
         type: initialValues.ownerType,
         groupId: initialValues.ownerId,
       });
-      setRadioData({ goodsType: initialValues.goodsType });
+      setRadioData({
+        goodsType: initialValues.goodsType,
+        buyRule,
+        timeType,
+        timeSplit,
+        activeTime,
+        userTime,
+      });
       // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/商家商品标签
       fetchGetMre(initialValues.ownerName, initialValues.ownerType, (list = []) => {
         const mreFindIndex = list.findIndex((item) => item.value === initialValues.ownerId);
@@ -84,7 +126,6 @@ const PreferentialSet = ({
       }
     }
   }, [initialValues.ownerName]);
-
   //sku通用-sku挂靠商家列表
   const getMerchantList = () => {
     dispatch({
@@ -101,7 +142,6 @@ const PreferentialSet = ({
       },
     });
   };
-
   // 搜索店铺
   const fetchGetMre = debounce((name, type, callback) => {
     if (!name) return;
@@ -195,7 +235,7 @@ const PreferentialSet = ({
           keys: [],
           list: [],
         }); // 重置已选店铺数据
-        form.setFieldsValue({ ownerId: undefined }); // 重置数据
+        form.setFieldsValue({ ownerId: undefined, jiesuanType: e.target.value, cityList: [[]] }); // 重置数据
         dispatch({ type: 'baseData/clearGroupMre' }); // 清空选择数据
       },
     },
@@ -209,9 +249,19 @@ const PreferentialSet = ({
       disabled: commonDisabled,
       onSearch: fetchGetMre,
       onChange: (val, data) => {
+        console.log(val, data);
         const { option } = data;
-        const { businessStatus, status } = option;
-        form.setFieldsValue({ merchantIds: undefined, businessStatus, status });
+        const { businessStatus, status, districtCode } = option;
+        console.log([[districtCode.slice(0, 2), districtCode.slice(0, 4)]], '地区');
+        form.setFieldsValue({
+          merchantIds: undefined,
+          businessStatus,
+          status,
+          jiesuanId: val,
+          areaType: 'city',
+          cityList: [{ city: [districtCode.slice(0, 2), districtCode.slice(0, 4)] }],
+        });
+        setAreaType('city');
         setCommissionShow(false);
         getCommissionFlag(option.topCategoryId[0]);
         getTagsPlat(option.topCategoryId[0]);
@@ -275,6 +325,7 @@ const PreferentialSet = ({
           columns={getColumns}
           {...mreList}
           setMreList={(val) => {
+            console.log(val, 'val');
             saveMreData(val);
             form.setFieldsValue({ merchantIds: val.keys });
           }}
@@ -439,6 +490,292 @@ const PreferentialSet = ({
       formatter: (value) => `￥ ${value}`,
       // rules: [{ required: false }],
     },
+
+    {
+      title: '销售规则',
+      label: '活动时间',
+      type: 'radio',
+      select: COUPON_ACTIVE_TYPE,
+      disabled: editDisabled,
+      name: 'activityTimeRule',
+      onChange: (e) => saveSelectData({ activeTime: e.target.value }),
+    },
+    {
+      label: '设置时间',
+      name: 'activityStartTime',
+      type: 'rangePicker',
+      disabled: editDisabled,
+      visible: radioData.activeTime === 'fixed',
+      disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
+      onChange: (val) => form.setFieldsValue({ activeDate: undefined }),
+    },
+    {
+      label: '使用有效期',
+      type: 'radio',
+      select: SPECIAL_USERTIME_TYPE,
+      name: 'useTimeRule',
+      disabled: editDisabled,
+      onChange: (e) => saveSelectData({ userTime: e.target.value }),
+    },
+    {
+      label: '固定时间',
+      name: 'useStartTime',
+      type: 'rangePicker',
+      disabled: editDisabled,
+      visible: radioData.userTime === 'fixed',
+      disabledDate: (time) => {
+        const dates = form.getFieldValue('actsdiveDate');
+        const noewdate = moment().endOf('day').subtract(1, 'day');
+        if (!dates || dates.length === 0) return time < noewdate;
+        const tooLate = dates[0] && time < dates[0];
+        return tooLate;
+      },
+      onCalendarChange: (val) => saveSelectData({ disabledDate: val }),
+      addRules: [
+        {
+          validator: (rule, time) => {
+            const dates = form.getFieldValue('actsdiveDate');
+            if (dates && time && time[1] < dates[1]) {
+              return Promise.reject('有效期结束时间必须大于活动时间');
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
+    },
+    {
+      label: '领取后生效天数',
+      name: 'delayDays',
+      type: 'number',
+      max: 999,
+      min: 0,
+      precision: 0,
+      disabled: editDisabled,
+      visible: radioData.userTime === 'gain',
+    },
+    {
+      label: '有效期天数',
+      name: 'activeDays',
+      type: 'number',
+      disabled: editDisabled,
+      max: 999,
+      min: 0,
+      precision: 0,
+      visible: radioData.userTime === 'gain',
+    },
+    {
+      label: '适用时段',
+      type: 'radio',
+      select: COUPON_USER_TIME,
+      name: 'timeSplit',
+      onChange: (e) => saveSelectData({ timeSplit: e.target.value }),
+    },
+    {
+      label: '每周',
+      type: 'checkbox',
+      select: COUPON_WEEK_TIME,
+      name: 'useWeek',
+      visible: radioData.timeSplit === 'part',
+    },
+    {
+      label: '时间选择',
+      type: 'radio',
+      select: COUPON_TIME_TYPE,
+      name: 'timeType',
+      visible: radioData.timeSplit !== '',
+      onChange: (e) => saveSelectData({ timeType: e.target.value }),
+    },
+    {
+      label: '设置时间段',
+      name: 'useTime',
+      type: 'timePicker',
+      order: false,
+      visible: radioData.timeType === 'part',
+    },
+    {
+      label: '投放总量',
+      name: 'total',
+      addRules: [{ pattern: NUM_INT_MAXEIGHT, message: '投放总量必须为整数，且不可为0' }],
+      disabled: editDisabled,
+      suffix: '份',
+    },
+    {
+      title: '设置购买规则',
+      label: '购买上限',
+      type: 'radio',
+      name: 'buyRule',
+      select: COUPON_BUY_RULE,
+      onChange: (e) => saveSelectData({ buyRule: e.target.value }),
+    },
+    {
+      label: `单人${{ personLimit: '每人', dayLimit: '每天' }[radioData.buyRule]}购买份数`,
+      name: { personLimit: 'maxBuyAmount', dayLimit: 'dayMaxBuyAmount' }[radioData.buyRule],
+      suffix: '份',
+      addRules: [{ pattern: NUM_INT_MAXEIGHT, message: '份数必须为整数，且不可为0' }],
+      visible: ['personLimit', 'dayLimit'].includes(radioData.buyRule),
+    },
+    {
+      label: '是否需要预约购买',
+      type: 'switch',
+      name: 'needOrder',
+    },
+    {
+      label: '随时退',
+      type: 'switch',
+      name: 'allowRefund',
+    },
+    {
+      label: '过期退',
+      type: 'switch',
+      name: 'expireRefund',
+    },
+    {
+      label: '购买须知',
+      name: 'buyDesc',
+      type: 'formItem',
+      formItem: <DescSet name={'buyDesc'}></DescSet>,
+    },
+    {
+      title: '设置退款规则',
+      label: '是否允许随时退款',
+      type: 'switch',
+      hidden: true,
+      name: 'allowRefund',
+    },
+    {
+      label: '是否允许过期退款',
+      type: 'switch',
+      hidden: true,
+      name: 'allowExpireRefund',
+    },
+    {
+      title: `展示信息`,
+      label: '前端展示类型',
+      type: 'radio',
+      name: 'showType',
+      select: SPECIAL_SHOW_TYPE,
+      onChange: (e) => setGoodsDescType(e.target.value),
+    },
+    {
+      label: '展示范围',
+      name: 'areaType',
+      type: 'radio',
+      select: SPECIAL_AREA_TYPE,
+      onChange: (e) => {
+        form.setFieldsValue({ cityList: [[]] });
+        setAreaType(e.target.value);
+      },
+    },
+    {
+      label: '选择城市',
+      type: 'formItem',
+      visible: ['city'].includes(areaType),
+      formItem: (
+        <CitySet
+          name="cityList"
+          form={form}
+          maxLength={50}
+          areaType={areaType}
+          changeOnSelect={false}
+        ></CitySet>
+      ),
+    },
+    {
+      // label: '商家商品标签',
+      label: '平台商品标签',
+      name: 'goodsTags',
+      type: 'select',
+      mode: 'multiple',
+      placeholder: '请选择商家商品标签',
+      select: goodsTaglist,
+      fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
+      addRules: [
+        {
+          validator: (rule, value) => {
+            if (value.length > 3) {
+              return Promise.reject('最多选择3个标签');
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
+    },
+    {
+      title: '结算设置',
+      label: '结算人类型',
+      type: 'radio',
+      disabled: commonDisabled,
+      name: ['settleInfoReq', 'settlerType'],
+      select: SPECIAL_BALANCE_TYPE,
+      onChange: (e) => {
+        saveSelectData({ balanceType: e });
+      },
+    },
+    {
+      label: '结算店铺类型',
+      type: 'radio',
+      disabled: commonDisabled,
+      name: 'jiesuanType',
+      select: BUSINESS_TYPE,
+      disabled: true,
+      onChange: (e) => {
+        saveMreData({
+          type: e.target.value,
+          groupId: null,
+          ratio: 0,
+          keys: [],
+          list: [],
+        }); // 重置已选店铺数据
+        form.setFieldsValue({ jiesuanId: undefined }); // 重置数据
+        dispatch({ type: 'baseData/clearGroupMre' }); // 清空选择数据
+      },
+    },
+    {
+      label: `选择${BUSINESS_TYPE[mreList.type]}`,
+      type: 'select',
+      name: 'jiesuanId',
+      placeholder: '请输入搜索',
+      loading,
+      select: selectList,
+      disabled: commonDisabled,
+      onSearch: fetchGetMre,
+      disabled: true,
+      onChange: (val, data) => {
+        const { option } = data;
+        const { businessStatus, status } = option;
+        fetchCheckMreRate(val);
+      },
+    },
+    {
+      label: '适用店铺',
+      name: 'jiesuanIds',
+      type: 'formItem',
+      visible: mreList.type == 'group',
+      rules: [{ required: true, message: '请选择店铺' }],
+      formItem: (
+        <Button type="primary" ghost onClick={() => setVisible(true)} disabled={true}>
+          选择店铺
+        </Button>
+      ),
+    },
+    {
+      type: 'noForm',
+      visible: mreList.type === 'group',
+      formItem: (
+        <MreSelectShow
+          key="MreTable"
+          form={form}
+          disabled={true}
+          rowKey="merchantId"
+          columns={getColumns}
+          {...mreList}
+          setMreList={(val) => {
+            saveMreData(val);
+            form.setFieldsValue({ jiesuanIds: val.keys });
+          }}
+        ></MreSelectShow>
+      ),
+    },
     {
       title: `设置${goodsTypeName}介绍`,
       label: '选择介绍类型',
@@ -473,33 +810,6 @@ const PreferentialSet = ({
         ></EditorForm>
       ),
     },
-    {
-      title: `前端展示类型`,
-      label: '选择介绍类型',
-      type: 'radio',
-      name: 'showType',
-      select: SPECIAL_SHOW_TYPE,
-      onChange: (e) => setGoodsDescType(e.target.value),
-    },
-    {
-      label: '商家商品标签',
-      name: 'goodsTags',
-      type: 'select',
-      mode: 'multiple',
-      placeholder: '请选择商家商品标签',
-      select: goodsTaglist,
-      fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
-      addRules: [
-        {
-          validator: (rule, value) => {
-            if (value.length > 3) {
-              return Promise.reject('最多选择3个标签');
-            }
-            return Promise.resolve();
-          },
-        },
-      ],
-    },
   ];
 
   return (
@@ -519,8 +829,9 @@ const PreferentialSet = ({
         pagination={false}
         params={{ groupId: mreList.groupId }}
         onOk={(val) => {
+          console.log(val);
           saveMreData(val);
-          form.setFieldsValue({ merchantIds: val.keys });
+          form.setFieldsValue({ merchantIds: val.keys, hexiaoIds: val.keys });
         }}
         onCancel={() => setVisible(false)}
         columns={getColumns}
