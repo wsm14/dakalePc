@@ -17,6 +17,13 @@ import {
   fetchSceneUpdate,
   fetchTradeScanCommission,
   fetchTradeScanCommissionSet,
+  fetchFrontTradeList,
+  fetchFrontTradeAdd,
+  fetchFrontTradeSet,
+  fetchFrontTradeWeChat,
+  fetchFrontSortList,
+  fetchTradeDetail,
+  fetchFrontTradeDetail,
 } from '@/services/BaseServices';
 
 export default {
@@ -28,6 +35,7 @@ export default {
     platFormList: { list: [], total: 0 },
     sceneList: { list: [], total: 0 },
     cateList: [], //一级行业类目
+    frontList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -65,6 +73,33 @@ export default {
       });
       callback && callback(content.categoryDTOList);
     },
+    *fetchFrontGetList({ payload, callback }, { call, put }) {
+      const response = yield call(fetchFrontTradeList, payload);
+      if (!response) return;
+      const { content } = response;
+      const cateList = content.categoryFrontDTOList.map((items) => ({
+        categoryId: items.categoryIdString,
+        categoryName: items.categoryName,
+      }));
+
+      yield put({
+        type: 'save',
+        payload: {
+          frontList: { list: content.categoryFrontDTOList },
+          cateList,
+        },
+      });
+      callback && callback(content.categoryFrontDTOList);
+    },
+    *fetchFrontSortList({ payload, callback }, { call, put }) {
+      const response = yield call(fetchFrontSortList, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '排序完成',
+      });
+      callback && callback();
+    },
     *fetchTradePlatformList({ payload, callback }, { call, put }) {
       const response = yield call(fetchTradePlatformList, payload);
       if (!response) return;
@@ -97,9 +132,9 @@ export default {
         type: 'save',
         payload: {
           detailList: {
-            list: content[{ base: 'infrastructures', special: 'specialService' }[type]].map(
-              (item) => ({ name: item, value: item }),
-            ),
+            list: content[
+              { base: 'infrastructures', special: 'specialService' }[type]
+            ].map((item) => ({ name: item, value: item })),
           },
         },
       });
@@ -156,17 +191,45 @@ export default {
       });
       callback();
     },
+    *fetchFrontTradeAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchFrontTradeAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增类目成功',
+      });
+      callback();
+    },
     *fetchTradeSet({ payload, callback }, { call, put }) {
       const response = yield call(fetchTradeSet, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: `${payload.isDelete ? '删除' : '修改'}类目成功`,
+        description: `修改类目成功`,
+      });
+      callback();
+    },
+    *fetchFrontTradeSet({ payload, callback }, { call, put }) {
+      const response = yield call(fetchFrontTradeSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        // description: `${payload.isDelete ? '删除' : '修改'}类目成功`,
+        description: `修改类目成功`,
       });
       callback();
     },
     *fetchTradeWeChat({ payload, callback }, { call }) {
       const response = yield call(fetchTradeWeChat, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `类目设置成功`,
+      });
+      callback();
+    },
+    *fetchFrontTradeWeChat({ payload, callback }, { call }) {
+      const response = yield call(fetchFrontTradeWeChat, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
@@ -225,6 +288,16 @@ export default {
       if (!response) return;
       const { content } = response;
       callback(content.categoryScanRateDTO);
+    },
+    *fetchTradeDetail({ payload, callback }, { call, put }) {
+      const response = yield call(fetchTradeDetail, payload);
+      if (!response) return;
+      callback(response.content);
+    },
+    *fetchFrontTradeDetail({ payload, callback }, { call, put }) {
+      const response = yield call(fetchFrontTradeDetail, payload);
+      if (!response) return;
+      callback(response.content);
     },
   },
 };

@@ -6,7 +6,7 @@ import TemplateDrawSet from './components/CommissionTemplate/TemplateDrawSet';
 import TemplateDetail from './components/CommissionTemplate/TemplateDetail';
 
 const CommissionTempate = (props) => {
-  const { commissionTemplate, loading, dispatch, tradeList } = props;
+  const { commissionTemplate, loading, dispatch, tradeList, CategoryList } = props;
   const tableRef = useRef();
   const [tabKey, setTabKey] = useState('specialGoods');
   const [visibleSet, setVisibleSet] = useState(false);
@@ -21,6 +21,9 @@ const CommissionTempate = (props) => {
   const getCateList = () => {
     dispatch({
       type: 'sysTradeList/fetchGetList',
+    });
+    dispatch({
+      type: 'Category/fetchGetList',
     });
   };
 
@@ -48,19 +51,28 @@ const CommissionTempate = (props) => {
       select: DIVISION_TEMPLATE_TYPE,
     },
     {
+      label: '关联类目',
+      name: 'classifyId',
+      type: 'select',
+      select: CategoryList,
+      fieldNames: { label: 'classifyName', value: 'classifyId' },
+      show: tabKey === 'commerceGoods',
+    },
+    {
       label: '关联行业',
       name: 'categoryId',
       type: 'select',
       select: tradeList,
       fieldNames: { label: 'categoryName', value: 'categoryIdString' },
+      show: tabKey !== 'commerceGoods',
     },
   ];
 
   const globalColum = [
     {
-      title: '关联行业',
+      title: tabKey === 'commerceGoods' ? '关联类目' : '关联行业',
       align: 'center',
-      dataIndex: 'categoryName',
+      dataIndex: tabKey === 'commerceGoods' ? 'classifyName' : 'categoryName',
     },
     {
       title: '类别',
@@ -142,6 +154,7 @@ const CommissionTempate = (props) => {
         cRef={tableRef}
         tabKey={tabKey}
         tradeList={tradeList}
+        CategoryList={CategoryList}
         onClose={() => setVisibleSet(false)}
       ></TemplateDrawSet>
       {/* 详情 */}
@@ -155,8 +168,9 @@ const CommissionTempate = (props) => {
   );
 };
 
-export default connect(({ commissionTemplate, loading, sysTradeList }) => ({
+export default connect(({ commissionTemplate, loading, sysTradeList, Category }) => ({
   commissionTemplate,
   tradeList: sysTradeList.list.list,
+  CategoryList: Category.list.list,
   loading: loading.models.commissionTemplate,
 }))(CommissionTempate);

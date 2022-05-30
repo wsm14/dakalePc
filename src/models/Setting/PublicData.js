@@ -2,6 +2,8 @@ import { notification } from 'antd';
 import oss from 'ali-oss';
 import lodash from 'lodash';
 import { uuid } from '@/utils/utils';
+import { fetchBackCategoryList } from '@/services/BaseServices';
+import { fetchGetSupplierManageList } from '@/services/SCMServices';
 import { fetchMerchantList, fetchMerchantGroup } from '@/services/BusinessServices';
 import {
   fetchGetOss,
@@ -78,6 +80,8 @@ export default {
     allCouponList: { list: [], total: 0 },
     configGoodsTagList: [],
     resourceList: [],
+    sipploerList: [],
+    classifyParentList: [],
   },
 
   reducers: {
@@ -739,6 +743,42 @@ export default {
             name: item.name,
             value: item.resourceTemplateContentId,
           })),
+        },
+      });
+    },
+    // 供应商列表搜索
+    *fetchSearchSupplierManage({ payload, callback }, { put, call }) {
+      const response = yield call(fetchGetSupplierManageList, {
+        ...payload,
+        status: 1,
+        accountStatus: 1,
+        limit: 50,
+        page: 1,
+      });
+      if (!response) return;
+      const { content } = response;
+      const newList = content.supplierDetailList.map((item) => ({
+        name: `${item.name} ${item.supplierId}`,
+        value: item.supplierId,
+        option: item,
+      }));
+      yield put({
+        type: 'save',
+        payload: {
+          sipploerList: newList,
+        },
+      });
+      callback && callback(newList);
+    },
+    // 类目管理（电商）-后台类目-根列表
+    *fetchParentListClassify({ payload }, { call, put }) {
+      const response = yield call(fetchBackCategoryList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          classifyParentList: content.childList,
         },
       });
     },

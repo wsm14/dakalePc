@@ -9,13 +9,19 @@ const TradeCategorySet = (props) => {
 
   const [form] = Form.useForm();
   const { show = false, type = 'add', detail = {} } = visible;
+  const { ranking } = detail;
 
   // 提交表单
   const handleUpAudit = () => {
     form.validateFields().then((values) => {
+      const { isDelete, ...other } = values;
       dispatch({
         type: { add: 'sysTradeList/fetchTradeAdd', edit: 'sysTradeList/fetchTradeSet' }[type],
-        payload: { ...detail, ...values },
+        payload: {
+          ...detail,
+          ...other,
+          isDelete: isDelete ? (isDelete == 1 ? 0 : 1) : 1,
+        },
         callback: () => {
           onClose();
           childRef.current.fetchGetData();
@@ -28,26 +34,32 @@ const TradeCategorySet = (props) => {
     {
       label: '父级类目',
       name: 'parentName',
-      visible: detail.type === 'second',
+      visible: ['second', 'third'].includes(ranking),
       disabled: true,
     },
     {
       label: '一级类目名称',
       name: 'categoryName',
-      visible: detail.type === 'first',
-      maxLength: 10,
+      visible: ranking === 'first',
+      maxLength: 20,
     },
     {
       label: '二级类目名称',
-      visible: detail.type === 'second',
+      visible: ranking === 'second',
       name: 'categoryName',
-      maxLength: 10,
+      maxLength: 20,
     },
     {
-      label: '类目名称',
-      visible: type === 'edit',
+      label: '三级类目名称',
+      visible: ranking === 'third',
       name: 'categoryName',
-      maxLength: 10,
+      maxLength: 20,
+    },
+    {
+      label: '状态',
+      name: 'isDelete',
+      type: 'switch',
+      required: true,
     },
   ];
 

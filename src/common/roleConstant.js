@@ -34,6 +34,7 @@ export const ROLE_BUTTON_TYPE = {
   blindDel: '盲盒新增',
   blindAdd: '盲盒新增',
   blindConfigEdit: '盲盒规则编辑',
+  brand: '品牌',
 
   copy: '复制',
   check: '审核',
@@ -193,6 +194,7 @@ export const ROLE_BUTTON_TYPE = {
   targetSet: '营销卡豆充值设置',
   taskDetail: '营销卡豆充值补贴详情',
   tradeSecondAdd: '添加子类目',
+  isDelete: '删除',
   tabEdit: '首页tab配置-编辑',
   tabEditVersion: '首页tab配置-编辑版本',
   tabSaveVersion: '首页tab配置-新增版本',

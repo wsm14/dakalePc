@@ -95,7 +95,7 @@ const SearchCondition = (props) => {
     handleSearch({ ...values, ...formObj });
   };
 
-  const len = formItems.length;
+  const len = formItems.filter(({ show = true }) => show).length;
 
   // 不同屏幕大小显示个数
   let count = 4;

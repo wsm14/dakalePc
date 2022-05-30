@@ -60,7 +60,7 @@ export const createZip = (data, tabKey, setPercent, callback) => {
     img = {},
     name = {},
     codeType,
-    ...ohter
+    ...other
   } = data;
   // 获取不同类型进入渲染的区别项
   const typeProps = tabTypeProps[tabKey];
@@ -120,7 +120,7 @@ export const createZip = (data, tabKey, setPercent, callback) => {
         // 确认数据完整后返回zip包 生成zip文件
         if (dataList.length === Object.keys(zip.files).length) {
           zip.generateAsync({ type: 'blob' }).then((content) => {
-            callback(content, ohter);
+            callback(content, other);
           });
         }
       },
