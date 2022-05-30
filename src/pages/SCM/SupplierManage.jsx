@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import moment from 'moment';
 import { connect } from 'umi';
 import { Tag, Badge } from 'antd';
 import { checkCityName } from '@/utils/utils';
@@ -49,6 +50,7 @@ const SupplierManage = (props) => {
       type: 'rangePicker',
       name: 'settleBeginTime',
       end: 'settleEndTime',
+      disabledDate: (current) => current && current > moment().endOf('day').subtract(1, 'day'),
     },
     {
       label: '供应商类型',
