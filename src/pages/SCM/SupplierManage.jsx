@@ -6,7 +6,7 @@ import { checkCityName } from '@/utils/utils';
 import {
   SUPPLIER_STATUS,
   SUPPLIER_AUTH_TYPE,
-  BUSINESS_ACCOUNT_STATUS,
+  SUPPLIER_ACCOUNT_STATUS,
   SUPPLIER_ACCOUNT_STATUS_SHOW,
 } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
@@ -68,7 +68,7 @@ const SupplierManage = (props) => {
       label: '账户状态',
       name: 'accountStatus',
       type: 'select',
-      select: BUSINESS_ACCOUNT_STATUS,
+      select: SUPPLIER_ACCOUNT_STATUS,
     },
   ];
 
