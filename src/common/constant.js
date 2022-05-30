@@ -115,6 +115,14 @@ export const BUSINESS_STATUS = ['禁用', '启用'];
 // 店铺 类型
 export const BUSINESS_TYPE = { merchant: '单店', group: '集团' };
 
+//售卖价格类型
+export const BUSINESS_SALE_TYPE = {
+  one: '单店（可用卡豆抵扣）',
+  two: '现金（不可用卡豆抵扣）',
+  three: '卡豆+现金',
+  four: '免费',
+};
+
 // 店铺 审核状态 '待审核', '审核中', '审核驳回', '审核通过'
 export const BUSINESS_STATUS_AUDIT = ['待审核', '审核中', '审核驳回', '审核通过'];
 

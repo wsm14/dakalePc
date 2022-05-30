@@ -171,8 +171,8 @@ const PreferentialDrawer = (props) => {
       setSaveData(null);
     },
     footer: (
-      <Button onClick={handleUpAudit} disabled={!commissionShow} type="primary">
-        下一步
+      <Button type="primary" onClick={handleUpData} loading={loading}>
+        发布申请
       </Button>
     ),
   };
@@ -198,18 +198,18 @@ const PreferentialDrawer = (props) => {
     <>
       <DrawerCondition {...modalProps}>
         {drawerProps.children}
-        <DrawerCondition {...ruleModalProps}>
-          <PreferentialRuleSet
-            editActive={type}
-            form={formRuleAdd}
-            initialValues={{
-              needOrder: 0,
-              allowRefund: 1,
-              allowExpireRefund: 1,
-              ...(saveData || detail),
-            }}
-          ></PreferentialRuleSet>
-        </DrawerCondition>
+        {/* <DrawerCondition {...ruleModalProps}> */}
+        <PreferentialRuleSet
+          editActive={type}
+          form={formRuleAdd}
+          initialValues={{
+            needOrder: 0,
+            allowRefund: 1,
+            allowExpireRefund: 1,
+            ...(saveData || detail),
+          }}
+        ></PreferentialRuleSet>
+        {/* </DrawerCondition> */}
       </DrawerCondition>
       {/* <Html5Simulate type="goods" show={show} data={showHtmlData}></Html5Simulate> */}
     </>

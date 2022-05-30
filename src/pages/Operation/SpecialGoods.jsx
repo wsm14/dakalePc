@@ -521,7 +521,6 @@ const SpecialGoods = (props) => {
   return (
     <>
       <TableDataBlock
-        
         btnExtra={extraBtn}
         cardProps={{
           tabList: tabList,

@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import { connect } from 'umi';
 import { Button } from 'antd';
-import { GOODS_CLASS_TYPE, SPECIAL_DESC_TYPE, BUSINESS_TYPE } from '@/common/constant';
+import {
+  GOODS_CLASS_TYPE,
+  SPECIAL_DESC_TYPE,
+  BUSINESS_TYPE,
+  BUSINESS_SALE_TYPE,
+} from '@/common/constant';
 import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import EditorForm from '@/components/EditorForm';
 import FormCondition from '@/components/FormCondition';
@@ -173,26 +178,6 @@ const PreferentialSet = ({
   // 信息
   const formItems = [
     {
-      label: '商品类别',
-      name: 'thirdFlag',
-      type: 'radio',
-      disabled: commonDisabled,
-      select: { 1: '特惠商品', 2: '自我游商品' },
-      onChange: (e) => {
-        setGoodsType(e.target.value);
-      },
-    },
-    {
-      label: '自我游编码',
-      name: 'thirdCode',
-      visible: goodsType === '2',
-      onChange: (e) => {
-        form.setFieldsValue({
-          thirdCode: e.target.value.replace(/ /g, ''),
-        });
-      },
-    },
-    {
       title: '设置参与活动的店铺',
       label: '选择店铺类型',
       type: 'radio',
@@ -297,6 +282,26 @@ const PreferentialSet = ({
     },
     {
       title: '设置商品信息',
+      label: '商品类别',
+      name: 'thirdFlag',
+      type: 'radio',
+      disabled: commonDisabled,
+      select: { 1: '特惠商品', 2: '自我游商品' },
+      onChange: (e) => {
+        setGoodsType(e.target.value);
+      },
+    },
+    {
+      label: '自我游编码',
+      name: 'thirdCode',
+      visible: goodsType === '2',
+      onChange: (e) => {
+        form.setFieldsValue({
+          thirdCode: e.target.value.replace(/ /g, ''),
+        });
+      },
+    },
+    {
       label: '商品类型',
       name: 'goodsType',
       disabled: commonDisabled,
@@ -322,8 +327,9 @@ const PreferentialSet = ({
       formItem: <GoodsGroupSet key="packageGroupObjects" form={form}></GoodsGroupSet>,
     },
     {
-      title: '设置商品价格',
-      label: `${goodsTypeName}原价`,
+      title: '销售信息',
+      // label: `${goodsTypeName}原价`,
+      label: '原价',
       name: 'oriPrice',
       type: 'number',
       precision: 2,
@@ -333,29 +339,19 @@ const PreferentialSet = ({
       formatter: (value) => `￥ ${value}`,
     },
     {
-      label: '特惠价格',
-      name: 'realPrice',
+      label: '成本价',
+      name: 'chengbenajia',
       type: 'number',
       precision: 2,
       disabled: editDisabled,
       min: 0,
       max: 999999.99,
+      required: false,
+      rules: [{ required: false }],
       formatter: (value) => `￥ ${value}`,
-      addRules: [
-        {
-          validator: (rule, value) => {
-            const realPrice = Number(value);
-            const buyPrice = Number(form.getFieldValue('oriPrice'));
-            if (realPrice > buyPrice) {
-              return Promise.reject('特惠价格需小于套餐价格');
-            }
-            return Promise.resolve();
-          },
-        },
-      ],
     },
     {
-      label: '商家结算价',
+      label: '结算价',
       name: 'merchantPrice',
       type: 'number',
       precision: 2,
@@ -382,6 +378,55 @@ const PreferentialSet = ({
       ],
     },
     {
+      label: '售卖价格类型',
+      type: 'radio',
+      name: 'priceType',
+      select: BUSINESS_SALE_TYPE,
+      onChange: (e) => {},
+    },
+    {
+      // label: '特惠价格',
+      label: '零售价',
+      name: 'realPrice',
+      type: 'number',
+      precision: 2,
+      disabled: editDisabled,
+      min: 0,
+      max: 999999.99,
+      formatter: (value) => `￥ ${value}`,
+      addRules: [
+        {
+          validator: (rule, value) => {
+            const realPrice = Number(value);
+            const buyPrice = Number(form.getFieldValue('oriPrice'));
+            if (realPrice > buyPrice) {
+              return Promise.reject('特惠价格需小于套餐价格');
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
+    },
+    {
+      label: '其他平台价格',
+      name: 'otherPrice',
+      type: 'number',
+      precision: 2,
+      min: 0,
+      max: 999999.99,
+      required: false,
+      rules: [{ required: false }],
+      formatter: (value) => `￥ ${value}`,
+    },
+    {
+      label: '商品库存',
+      name: 'kucun',
+      type: 'number',
+      precision: 0,
+      min: 0,
+      max: 100000000,
+    },
+    {
       label: '佣金总额', // 手动分佣需要展示
       name: 'commission',
       type: 'number',
@@ -392,25 +437,6 @@ const PreferentialSet = ({
       visible: commissionShow == '1',
       formatter: (value) => `￥ ${value}`,
       // rules: [{ required: false }],
-    },
-    {
-      label: '商家商品标签',
-      name: 'goodsTags',
-      type: 'select',
-      mode: 'multiple',
-      placeholder: '请选择商家商品标签',
-      select: goodsTaglist,
-      fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
-      addRules: [
-        {
-          validator: (rule, value) => {
-            if (value.length > 3) {
-              return Promise.reject('最多选择3个标签');
-            }
-            return Promise.resolve();
-          },
-        },
-      ],
     },
     {
       title: `设置${goodsTypeName}介绍`,
@@ -445,6 +471,33 @@ const PreferentialSet = ({
           editCallback={(val) => setContent(val)}
         ></EditorForm>
       ),
+    },
+    {
+      title: `前端展示类型`,
+      label: '选择介绍类型',
+      type: 'radio',
+      name: 'goodsDescType',
+      select: SPECIAL_DESC_TYPE,
+      onChange: (e) => setGoodsDescType(e.target.value),
+    },
+    {
+      label: '商家商品标签',
+      name: 'goodsTags',
+      type: 'select',
+      mode: 'multiple',
+      placeholder: '请选择商家商品标签',
+      select: goodsTaglist,
+      fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
+      addRules: [
+        {
+          validator: (rule, value) => {
+            if (value.length > 3) {
+              return Promise.reject('最多选择3个标签');
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
     },
   ];
 
