@@ -125,7 +125,7 @@ const SysTradeSet = (props) => {
                 },
                 callback: (content) => {
                   const { categoryName: parentName } = content;
-                  const { isDelete, ...other } = record;
+                  const { isDelete, parentId, ...other } = record;
                   const detail = {
                     ...other,
                     parentName,

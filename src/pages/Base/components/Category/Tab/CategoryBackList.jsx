@@ -83,7 +83,7 @@ const CategoryBackList = (props) => {
                 },
                 callback: (content) => {
                   const { classifyName: parentName } = content;
-                  const { isDelete, ...other } = record;
+                  const { isDelete, parentId, ...other } = record;
                   const detail = {
                     ...other,
                     isDelete: isDelete === '0' ? true : false,
