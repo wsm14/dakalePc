@@ -2,17 +2,19 @@ import React, { useRef, useState } from 'react';
 import { Card } from 'antd';
 import { TAG_TYPE } from '@/common/constant';
 import ExtraButton from '@/components/ExtraButton';
-import TagSetDrawer from './components/GoodTag/Form/TagSetDrawer';
 import PlatTagList from './components/GoodTag/PlatTagList';
 import ShowTagList from './components/GoodTag/ShowTagList';
+import TagSetDrawer from './components/GoodTag/Form/TagSetDrawer';
+import ConnectedGoodsModal from './components/GoodTag/ConnectedGoodsModal';
 
 const GoodsTag = () => {
   const [tabkey, setTabKey] = useState('platform');
   const [visible, setVisible] = useState(false); // 修改新增框
+  const [visibleGoods, setVisibleGoods] = useState(false); // 关联商品弹窗
 
   const childRef = useRef();
 
-  const listProps = { tabkey, childRef, setVisible };
+  const listProps = { tabkey, childRef, setVisible, setVisibleGoods };
 
   const contentList = {
     platform: <PlatTagList {...listProps} />,
@@ -37,11 +39,17 @@ const GoodsTag = () => {
       >
         {contentList[tabkey]}
       </Card>
+      {/* 编辑新增 */}
       <TagSetDrawer
         cRef={childRef}
         visible={visible}
         onClose={() => setVisible(false)}
       ></TagSetDrawer>
+      {/* 关联商品 */}
+      <ConnectedGoodsModal
+        visible={visibleGoods}
+        onClose={() => setVisibleGoods(false)}
+      ></ConnectedGoodsModal>
     </>
   );
 };

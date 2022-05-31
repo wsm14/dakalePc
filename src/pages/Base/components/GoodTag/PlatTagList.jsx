@@ -4,7 +4,7 @@ import { DragHandle } from '@/components/TableDataBlock/SortBlock';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const TagManage = (props) => {
-  const { goodsTag, loading, dispatch, childRef, tabkey, setVisible } = props;
+  const { goodsTag, loading, dispatch, childRef, tabkey, setVisible, setVisibleGoods } = props;
 
   // 搜索参数
   const searchItems = [
@@ -56,15 +56,12 @@ const TagManage = (props) => {
       align: 'right',
       type: 'switch',
       dataIndex: 'status',
-      render: (val, row) => {
-        const { configGoodsTagId } = row;
-        return {
-          auth: 'edit',
-          noAuth: val === '1' ? '启用' : '停用',
-          checked: val === '1',
-          onClick: () => fetchSet({ configGoodsTagId, status: 1 ^ Number(val) }),
-        };
-      },
+      render: (val, { configGoodsTagId }) => ({
+        auth: 'edit',
+        noAuth: val === '1' ? '启用' : '停用',
+        checked: val === '1',
+        onClick: () => fetchSet({ configGoodsTagId, status: 1 ^ Number(val) }),
+      }),
     },
     {
       type: 'handle',
@@ -74,11 +71,7 @@ const TagManage = (props) => {
         return [
           {
             type: 'connectedGoods',
-            click: () =>
-              setVisible({
-                mode: 'edit',
-                detail: { ...record, tagType: tabkey },
-              }),
+            click: () => setVisibleGoods({ show: true, id: val, name: record.tagName }),
           },
           {
             type: 'edit',
