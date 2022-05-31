@@ -38,7 +38,7 @@ export default {
       });
       callback && callback(content.configGoodsTagDTOS);
     },
-    *fetchConfigGoodsList({ payload, callback }, { call, put }) {
+    *fetchConfigGoodsList({ payload }, { call, put }) {
       const response = yield call(fetchConfigGoodsList, payload);
       if (!response) return;
       const { content } = response;
@@ -48,7 +48,6 @@ export default {
           configGoodsList: { list: content.recordList, total: content.total },
         },
       });
-      callback && callback(content.configGoodsTagDTOS);
     },
     *fetchGoodsTagAdd({ payload, callback }, { call }) {
       const response = yield call(fetchGoodsTagAdd, payload);

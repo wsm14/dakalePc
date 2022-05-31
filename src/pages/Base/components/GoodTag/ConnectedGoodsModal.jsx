@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { Modal } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
+import ExtraButton from '@/components/ExtraButton';
 // import SupplierBrandDrawer from './Brand/SupplierBrandDrawer';
 
 const tabList = [
@@ -102,11 +103,10 @@ const ConnectedGoodsModal = (props) => {
             tabList: tabList,
             activeTabKey: tabKey,
             onTabChange: setTabKey,
+            tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
           }}
           size="middle"
-          noCard={false}
           cRef={childRef}
-          btnExtra={btnList}
           loading={loading}
           columns={getColumns}
           params={{ goodsTagId: id, goodsType: tabKey }}
