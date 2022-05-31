@@ -3,8 +3,8 @@ import { Card } from 'antd';
 import { TAG_TYPE } from '@/common/constant';
 import ExtraButton from '@/components/ExtraButton';
 import TagSet from './components/GoodTag/Form/TagSet';
-import PlatTag from './components/GoodTag/List/PlatTag';
-import ShowTag from './components/GoodTag/List/ShowTag';
+import PlatTagList from './components/GoodTag/PlatTagList';
+import ShowTagList from './components/GoodTag/ShowTagList';
 
 const GoodsTag = () => {
   const [tabkey, setTabKey] = useState('platform');
@@ -15,8 +15,8 @@ const GoodsTag = () => {
   const listProps = { tabkey, childRef, setVisible };
 
   const contentList = {
-    platform: <PlatTag {...listProps}></PlatTag>,
-    show: <ShowTag {...listProps}></ShowTag>,
+    platform: <PlatTagList {...listProps} />,
+    show: <ShowTagList {...listProps} />,
   };
 
   const extraBtn = [
