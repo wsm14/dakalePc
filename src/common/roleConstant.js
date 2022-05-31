@@ -45,6 +45,7 @@ export const ROLE_BUTTON_TYPE = {
   checkDetail: '审核记录',
   couponDetail: '优惠券详情',
   cancleRecommend: '取消推荐',
+  connectedGoods: '关联商品',
   configCondit: '条件配置',
   commerceSet: '带货设置',
 

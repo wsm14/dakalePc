@@ -78,6 +78,14 @@ const TagManage = (props) => {
           }));
         return [
           {
+            type: 'connectedGoods',
+            click: () =>
+              setVisible({
+                mode: 'edit',
+                detail: { ...record, tagType: tabkey },
+              }),
+          },
+          {
             type: 'edit',
             click: () =>
               setVisible({

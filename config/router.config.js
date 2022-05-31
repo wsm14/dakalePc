@@ -565,7 +565,7 @@ export default [
             path: '/base/goodsTag',
             name: '商品标签',
             component: './Base/GoodsTag',
-            buttons: ['save', 'edit'],
+            buttons: ['save', 'edit', 'connectedGoods'],
           },
           {
             path: '/base/bankSet',

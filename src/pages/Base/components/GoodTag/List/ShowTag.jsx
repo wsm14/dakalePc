@@ -55,6 +55,14 @@ const ShowTag = (props) => {
       dataIndex: 'configGoodsTagId',
       render: (val, record) => [
         {
+          type: 'connectedGoods',
+          click: () =>
+            setVisible({
+              mode: 'edit',
+              detail: { ...record, tagType: tabkey },
+            }),
+        },
+        {
           type: 'edit',
           click: () =>
             setVisible({
