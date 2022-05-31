@@ -6,7 +6,7 @@ import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
-// import SupplierBrandDrawer from './Brand/SupplierBrandDrawer';
+import GoodsSelectModal from './GoodsSelectModal';
 
 const tabList = [
   {
@@ -25,7 +25,7 @@ const ConnectedGoodsModal = (props) => {
 
   const childRef = useRef();
   const [tabKey, setTabKey] = useState('commerceGoods');
-  const [visibleDrawer, setVisibleDrawer] = useState({ mode: 'info', show: false, detail: {} });
+  const [visibleDrawer, setVisibleDrawer] = useState(false);
 
   useEffect(() => {
     childRef.current && childRef.current.fetchGetData({ goodsType: tabKey });
@@ -90,28 +90,33 @@ const ConnectedGoodsModal = (props) => {
     {
       type: 'handle',
       dataIndex: 'goodsId',
-      render: (val, row) => [
-        {
-          type: 'del',
-          title: '移除',
-          auth: true,
-          click: () => fetchConfigGoodsDel(row),
-        },
-      ],
+      render: (val, row) => {
+        const { goodsId, ownerId } = row;
+        return [
+          {
+            type: 'del',
+            title: '移除',
+            auth: true,
+            click: () => fetchConfigGoodsSet('del', [{ goodsId, ownerId, goodsType: tabKey }]),
+          },
+        ];
+      },
     },
   ];
 
-  // 移除
-  const fetchConfigGoodsDel = (row) => {
-    const { goodsId, ownerId } = row;
+  // 新增 移除
+  const fetchConfigGoodsSet = (mode, list, callback) => {
     dispatch({
       type: 'goodsTag/fetchConfigGoodsSet',
       payload: {
-        mode: 'del',
+        mode,
         configGoodsTagId: id,
-        configGoodsTagRelatedGoodsList: [{ goodsId, ownerId, goodsType: tabKey }],
+        configGoodsTagRelatedGoodsList: list,
       },
-      callback: childRef.current.fetchGetData,
+      callback: () => {
+        childRef.current.fetchGetData();
+        callback && callback();
+      },
     });
   };
 
@@ -151,13 +156,21 @@ const ConnectedGoodsModal = (props) => {
           {...configGoodsList}
         ></TableDataBlock>
       </Modal>
-      {/* <SupplierBrandDrawer
-        childRef={childRef}
-        supplierId={id}
+      <GoodsSelectModal
         visible={visibleDrawer}
-        getDetail={fetchGetDetail}
+        onSumbit={(data) => {
+          fetchConfigGoodsSet(
+            'add',
+            data.map((i) => ({
+              goodsId: i.activityGoodsId,
+              goodsType: i.activityType,
+              ownerId: i.ownerIdString,
+            })),
+            () => setVisibleDrawer(false),
+          );
+        }}
         onClose={() => setVisibleDrawer(false)}
-      ></SupplierBrandDrawer> */}
+      ></GoodsSelectModal>
     </>
   );
 };
