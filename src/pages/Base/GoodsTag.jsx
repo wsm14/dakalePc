@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Card } from 'antd';
 import { TAG_TYPE } from '@/common/constant';
 import ExtraButton from '@/components/ExtraButton';
-import TagSet from './components/GoodTag/Form/TagSet';
+import TagSetDrawer from './components/GoodTag/Form/TagSetDrawer';
 import PlatTagList from './components/GoodTag/PlatTagList';
 import ShowTagList from './components/GoodTag/ShowTagList';
 
@@ -37,7 +37,11 @@ const GoodsTag = () => {
       >
         {contentList[tabkey]}
       </Card>
-      <TagSet cRef={childRef} visible={visible} onClose={() => setVisible(false)}></TagSet>
+      <TagSetDrawer
+        cRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></TagSetDrawer>
     </>
   );
 };
