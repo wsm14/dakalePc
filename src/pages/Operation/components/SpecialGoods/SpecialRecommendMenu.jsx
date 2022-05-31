@@ -19,7 +19,7 @@ const SpecialRecommendMenu = (props) => {
   );
 
   return (
-    <Dropdown overlay={menu} placement="bottomCenter" disabled={disabled}>
+    <Dropdown overlay={menu} placement="bottom" disabled={disabled}>
       <Button type="primary">推荐{num ? `(已选${num})` : ''}</Button>
     </Dropdown>
   );

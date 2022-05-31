@@ -49,14 +49,17 @@ const SupplierManageBrand = (props) => {
       render: (val, row, index) => [
         {
           type: 'eye',
+          auth: true,
           click: () => fetchGetDetail(index, 'info'),
         },
         {
           type: 'edit',
+          auth: true,
           click: () => fetchGetDetail(index, 'edit'),
         },
         {
           type: 'del',
+          auth: true,
           popText: (
             <div>
               删除后该供应商将无法发布该品牌下的商品<div>确定要删除吗？</div>
@@ -91,7 +94,7 @@ const SupplierManageBrand = (props) => {
 
   const btnList = [
     {
-      auth: 'save',
+      text: '新增',
       onClick: () => setVisibleDrawer({ show: true, mode: 'add' }),
     },
   ];

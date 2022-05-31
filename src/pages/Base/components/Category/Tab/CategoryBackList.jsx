@@ -83,7 +83,7 @@ const CategoryBackList = (props) => {
                 },
                 callback: (content) => {
                   const { classifyName: parentName } = content;
-                  const { isDelete, ...other } = record;
+                  const { isDelete, parentId, ...other } = record;
                   const detail = {
                     ...other,
                     isDelete: isDelete === '0' ? true : false,
@@ -98,7 +98,8 @@ const CategoryBackList = (props) => {
           {
             type: 'del',
             visible: !record.childList,
-            click: () => fetchTradeSet({ classifyId: val, isDelete: 1 }, getList),
+            click: () =>
+              fetchTradeSet({ classifyId: val, isDelete: 1, flag: 'updateIsDelete' }, getList),
           },
           {
             type: 'tradeSecondAdd',

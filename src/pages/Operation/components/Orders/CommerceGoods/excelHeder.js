@@ -62,7 +62,7 @@ export default [
   {
     title: '发货时间',
     dataIndex: 'orderLogistics',
-    render: (val) => val.deliveryTime,
+    render: (val) => val?.deliveryTime || '-',
   },
   {
     title: '订单状态',

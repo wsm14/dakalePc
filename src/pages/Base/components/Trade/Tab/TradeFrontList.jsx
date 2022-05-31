@@ -125,7 +125,7 @@ const SysTradeSet = (props) => {
                 },
                 callback: (content) => {
                   const { categoryName: parentName } = content;
-                  const { isDelete, ...other } = record;
+                  const { isDelete, parentId, ...other } = record;
                   const detail = {
                     ...other,
                     parentName,
@@ -140,7 +140,8 @@ const SysTradeSet = (props) => {
           {
             type: 'del',
             visible: !record.childList,
-            click: () => fetchTradeSet({ categoryFrontId: val, isDelete: 1 }, getList),
+            click: () =>
+              fetchTradeSet({ categoryFrontId: val, isDelete: 1, flag: 'updateIsDelete' }, getList),
           },
           {
             type: 'tradeSecondAdd',

@@ -114,6 +114,9 @@ const SupplierManageDetail = (props) => {
               </TabPane>
             </>
           )}
+          <TabPane tab="结算记录" key="5">
+            <SettlementInfo supplierId={supplierId}></SettlementInfo>
+          </TabPane>
         </Tabs>
       </DrawerCondition>
       {/* 禁用原因 */}
