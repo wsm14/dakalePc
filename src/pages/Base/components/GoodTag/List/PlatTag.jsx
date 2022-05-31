@@ -70,12 +70,7 @@ const TagManage = (props) => {
       type: 'handle',
       dataIndex: 'configGoodsTagId',
       render: (val, record) => {
-        const { configGoodsTagCategoryList } = record;
-        const categoryList =
-          configGoodsTagCategoryList &&
-          configGoodsTagCategoryList.map((items) => ({
-            categoryId: items.categoryIdStr,
-          }));
+        const { configGoodsTagCategoryList: list = [] } = record;
         return [
           {
             type: 'connectedGoods',
@@ -90,7 +85,13 @@ const TagManage = (props) => {
             click: () =>
               setVisible({
                 mode: 'edit',
-                detail: { ...record, configGoodsTagCategoryList: categoryList, tagType: tabkey },
+                detail: {
+                  ...record,
+                  tagType: tabkey,
+                  configGoodsTagCategoryList: list.map((items) => ({
+                    categoryId: items.categoryIdStr,
+                  })),
+                },
               }),
           },
         ];
