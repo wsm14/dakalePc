@@ -50,7 +50,7 @@ const SupplierManage = (props) => {
       type: 'rangePicker',
       name: 'settleBeginTime',
       end: 'settleEndTime',
-      disabledDate: (current) => current && current > moment().endOf('day').subtract(1, 'day'),
+      disabledDate: (current) => current && current > moment().endOf('day'),
     },
     {
       label: '供应商类型',
