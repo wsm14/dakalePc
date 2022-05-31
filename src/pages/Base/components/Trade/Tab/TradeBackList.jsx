@@ -141,7 +141,7 @@ const SysTradeSet = (props) => {
           {
             type: 'del',
             visible: !record.categoryDTOList,
-            click: () => fetchTradeSet({ categoryId: val, isDelete: 1 }),
+            click: () => fetchTradeSet({ categoryId: val, isDelete: 1, flag: 'updateIsDelete' }),
           },
           {
             type: 'tradeSecondAdd',
