@@ -23,7 +23,7 @@ const tabList = [
 ];
 
 const ElectricGoods = (props) => {
-  const { list, loading, loadings, dispatch } = props;
+  const { list, loading, loadings, dispatch, classifyParentList } = props;
 
   const childRef = useRef();
   const [tabKey, setTabKey] = useState('0'); // tab
@@ -40,23 +40,19 @@ const ElectricGoods = (props) => {
   useEffect(() => {
     fetchGetGoodsClassify();
   }, []);
-  // 获取电商品类目
+  // 获取电商品后台类目
   const fetchGetGoodsClassify = () => {
-    // dispatch({
-    //   type: 'baseData/fetchGetHubData',
-    //   payload: {
-    //     districtCode,
-    //   },
-    // });
+    dispatch({ type: 'baseData/fetchParentListClassify' });
   };
 
   // 搜索参数
   const searchItems = [
     {
       label: '所属类目',
-      name: 'goodsName',
-      type: 'select',
-      select: [],
+      name: 'goodsId',
+      type: 'cascader',
+      select: classifyParentList,
+      fieldNames: { label: 'classifyName', value: 'classifyId', children: 'childList' },
     },
     {
       label: '商品状态',
@@ -311,6 +307,7 @@ const ElectricGoods = (props) => {
 };
 
 export default connect(({ electricGoods, baseData, loading }) => ({
+  classifyParentList: baseData.classifyParentList,
   list: electricGoods.list,
   loading: loading.models.electricGoods,
 }))(ElectricGoods);

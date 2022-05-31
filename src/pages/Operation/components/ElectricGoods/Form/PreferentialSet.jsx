@@ -23,12 +23,14 @@ import Shipping from './Shipping';
 import RefundLocation from './RefundLocation';
 import AddSpecification from './Specification/AddSpecification';
 import SpecificationList from './Specification/SpecificationList';
+import TieredPricing from './Specification/TieredPricing';
 import styles from './style.less';
 
 const PreferentialSet = ({
   form,
   editActive,
   loading,
+  loadings,
   selectList,
   dispatch,
   commissionShow,
@@ -36,6 +38,8 @@ const PreferentialSet = ({
   initialValues = {},
   skuMerchantList,
   setContent,
+  classifyParentList, // 电商品后台类目列表
+  brandList, // 供应商品牌列表
 }) => {
   // 是否 editActive = 'againUp' || 'again' || 'edit'三种都隐藏的数据
   const commonDisabled = ['againUp', 'again', 'edit'].includes(editActive);
@@ -43,24 +47,29 @@ const PreferentialSet = ({
   const editDisabled = ['edit'].includes(editActive);
 
   const [manualList, setManualList] = useState([]); // 分佣模版字段
-  const [supplierSelect, setSupplierSelect] = useState([]);
+  const [supplierSelect, setSupplierSelect] = useState([]); // 供应商列表
+  const [sellType, setSellType] = useState('single'); // 售卖类型
   const [priceType, setPriceType] = useState('defaultMode'); // 售卖价格类型
   const [freightType, setFreightType] = useState('free'); // 运费类型
   const [settleType, setSettleType] = useState('settle'); // 结算人类型
   const [visibleRefund, setVisibleRefund] = useState(false); // 退货地址modal
   const [refundList, setRefundList] = useState([]); // 退货地址数据暂存
   const [specificationTypeData, setSpecificationTypeData] = useState([]); // 规格类型数据暂存
+  const [tieredModal, setTieredModal] = useState(false); // 设置阶梯价model
 
+  const specificationDisabled = specificationTypeData.length > 0;
+
+  // 处理规格组数据
   useEffect(() => {
     const newArr = specificationTypeData.map((item) =>
       (item?.value || []).map((i) => ({
         [item.name]: i,
       })),
     );
-    console.log('123', doExchange(newArr));
     form.setFieldsValue({ skuInfoReqs: doExchange(newArr) });
   }, [specificationTypeData]);
 
+  // 处理规格组数据
   const doExchange = (arr = []) => {
     let len = arr.length;
     // 当数组大于等于2个的时候
@@ -97,12 +106,33 @@ const PreferentialSet = ({
     }
   };
 
+  // 搜索供应商
+  const fetchGetSearchSupplier = debounce((content) => {
+    if (!content.replace(/'/g, '')) return;
+    dispatch({
+      type: 'baseData/fetchSearchSupplierManage',
+      payload: {
+        name: content.replace(/'/g, ''),
+      },
+      callback: setSupplierSelect,
+    });
+  }, 500);
+
+  // 搜索品牌列表
+  const fetchBrandIdList = (supplierId = '') => {
+    if (typeof supplierId != 'string') return;
+    dispatch({
+      type: 'baseData/fetchSupplierBrandList',
+      payload: { supplierId },
+    });
+  };
+
   //sku通用-是否需要设置佣金
   const getCommissionFlag = (categoryId) => {
     dispatch({
       type: 'baseData/fetchGoodsIsCommission',
       payload: {
-        serviceType: 'specialGoods',
+        serviceType: 'commerceGoods',
         categoryId: categoryId,
       },
       callback: ({ manuallyFlag, manualDivisions }) => {
@@ -112,40 +142,33 @@ const PreferentialSet = ({
     });
   };
 
-  // 搜索供应商
-  const fetchGetSearchSupplier = debounce((content) => {
-    if (!content.replace(/'/g, '')) return;
-    // dispatch({
-    //   type: 'expertUserList/fetchGetBDList',
-    //   payload: {
-    //     sellName: content.replace(/'/g, ''),
-    //   },
-    //   callback: setSupplierSelect,
-    // });
-  }, 500);
-
   // 信息
   const formItems = [
     {
       title: '选择供应商',
       label: '供应商',
-      name: 'brandId',
+      name: 'relateId',
       type: 'select',
       select: supplierSelect,
-      // loading: loading.models.baseData,
+      loading: loadings.models.baseData,
       onSearch: (val) => fetchGetSearchSupplier(val),
-      // fieldNames: { label: 'categoryName', value: 'categoryIdString' },
+      onSelect: (val) => fetchBrandIdList(val),
+      rules: [{ required: false }],
     },
     {
       title: '商品信息',
       label: '商品类目',
-      name: 'a2',
+      name: 'categoryNode',
       type: 'cascader',
-      select: [],
+      select: classifyParentList,
+      fieldNames: { label: 'classifyName', value: 'classifyId', children: 'childList' },
+      onChange: (val, option) => {
+        getCommissionFlag(val[0]);
+      },
     },
     {
       label: '商品编码',
-      name: 'a3',
+      name: 'goodsCode',
       maxLength: 32,
       extra: '用于商家内部管理所使用的自定义简易编码',
       rules: [{ required: false }],
@@ -160,7 +183,7 @@ const PreferentialSet = ({
       label: '品牌',
       name: 'brandId',
       type: 'select',
-      select: ['0', '1'],
+      select: brandList,
       rules: [{ required: false }],
     },
     {
@@ -176,10 +199,13 @@ const PreferentialSet = ({
       name: 'sellType',
       type: 'radio',
       select: ELECTRICGOODS_SELL_STATUS,
+      onChange: (e) => {
+        setSellType(e.target.value);
+      },
     },
     {
       label: '库存单位',
-      name: 'a8',
+      name: 'stockUnit',
       type: 'select',
       select: ELECTRICGOODS_SKU,
     },
@@ -203,6 +229,7 @@ const PreferentialSet = ({
       addonBefore: '￥',
       min: 0,
       precision: 2,
+      visible: !specificationDisabled,
       extra: '用于指导售价调整和为消费者提供的一个参考价，如服装的吊牌价',
     },
     {
@@ -212,6 +239,7 @@ const PreferentialSet = ({
       addonBefore: '￥',
       min: 0,
       precision: 2,
+      visible: sellType == 'single',
       extra: '用于平台采买商品时记录成本',
     },
     {
@@ -221,43 +249,50 @@ const PreferentialSet = ({
       addonBefore: '￥',
       min: 0,
       precision: 2,
+      visible: !specificationDisabled && sellType != 'batch',
       extra: '指供应商/店铺和哒卡乐平台的结算价',
     },
     {
       label: '最小起订量',
-      name: 'b1',
+      name: 'minPurchaseNum',
       type: 'number',
       min: 0,
       precision: 0,
+      visible: sellType != 'single',
     },
     {
       label: '批采价',
       name: 'a12',
       type: 'formItem',
+      visible: sellType != 'single',
       formItem: (
-        <>
-          <InputNumber style={{ width: 300 }}></InputNumber>
-          <Button type="link">设置阶梯价</Button>
-        </>
+        <Button type="link" onClick={() => setTieredModal(true)}>
+          设置阶梯价
+        </Button>
       ),
     },
     {
       label: '售卖价格类型',
       name: ['paymentModeObject', 'type'],
       type: 'radio',
+      visible: sellType != 'batch',
       select: ELECTRICGOODS_SELL_PRICE_TYPE,
       onChange: (e) => {
         setPriceType(e.target.value);
         form.setFieldsValue({ displayType: undefined });
       },
     },
-    // {
-    //   type: 'noForm',
-    //   formItem: <SpecificationList></SpecificationList>,
-    // },
     {
-      label: 'aaaa',
-      name: 'skuInfoReqs',
+      type: 'noForm',
+      visible: specificationDisabled,
+      formItem: (
+        <SpecificationList
+          form={form}
+          specificationTypeData={specificationTypeData}
+          initialValues={initialValues}
+          sellType={sellType}
+        ></SpecificationList>
+      ),
     },
     {
       label: '零售价',
@@ -267,6 +302,7 @@ const PreferentialSet = ({
       min: 0,
       precision: 2,
       disabled: priceType == 'free',
+      visible: !specificationDisabled && sellType != 'batch',
       extra: '指用户购买的价格',
     },
     {
@@ -276,7 +312,7 @@ const PreferentialSet = ({
       addonAfter: '卡豆',
       min: 0,
       precision: 0,
-      visible: priceType == 'self',
+      visible: priceType == 'self' && sellType != 'batch',
       extra: '指用户购买的价格',
     },
     {
@@ -286,23 +322,13 @@ const PreferentialSet = ({
       precision: 0,
       min: 0,
       max: 100000000,
+      visible: !specificationDisabled,
       // rules: [{ required: true, message: '请输入不小于0, 不大于100000000的数值' }],
     },
-    {
-      title: '分佣设置',
-      // label: '佣金总额', // 手动分佣需要展示
-      // name: 'commission',
-      // type: 'number',
-      // precision: 2,
-      // min: 0,
-      // max: 999999.99,
-      // disabled: commonDisabled,
-      // visible: commissionShow == '1',
-      // formatter: (value) => `￥ ${value}`,
-    },
-    ...manualList.map((i) => ({
-      label: `${COMMISSION_TYPE[i.divisionParticipantType]}`,
-      name: ['serviceDivisionDTO', `${i.divisionParticipantType}Bean`],
+    ...manualList.map((i, index) => ({
+      title: index == 0 ? '分佣设置' : null,
+      label: `${COMMISSION_TYPE['commerceGoods'][i.divisionParticipantType]}`,
+      name: ['divisionParamInfoReq', `${i.divisionParticipantType}Bean`],
       type: 'number',
       precision: 0,
       min: 0,
@@ -332,7 +358,7 @@ const PreferentialSet = ({
     },
     {
       label: '平台商品标签',
-      name: 'a17',
+      name: 'platformTagIds',
       type: 'select',
       mode: 'multiple',
       select: [],
@@ -340,7 +366,7 @@ const PreferentialSet = ({
     },
     {
       label: '展示标签',
-      name: 'a18',
+      name: 'displayFilterTags',
       type: 'select',
       mode: 'multiple',
       select: [],
@@ -470,14 +496,21 @@ const PreferentialSet = ({
         refundList={refundList}
         setRefundList={setRefundList}
       ></RefundLocation>
-      {/* SkuConfigModule */}
+      <TieredPricing
+        // form={form}
+        visible={tieredModal}
+        onClose={() => setTieredModal(false)}
+      ></TieredPricing>
     </>
   );
 };
 
 export default connect(({ baseData, loading, specialGoods }) => ({
+  classifyParentList: baseData.classifyParentList,
+  brandList: baseData.brandList,
   specialGoods,
   skuMerchantList: baseData.skuMerchantList,
   selectList: baseData.groupMreList,
+  loadings: loading,
   loading: loading.effects['baseData/fetchGetGroupMreList'],
 }))(PreferentialSet);

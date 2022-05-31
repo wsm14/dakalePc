@@ -140,6 +140,8 @@ const UploadBlock = (props) => {
     imgRatio,
     disabled,
     multiple = true,
+    listType = 'picture-card',
+    children,
   } = props;
 
   const fileKeyName = Array.isArray(name)
@@ -291,7 +293,7 @@ const UploadBlock = (props) => {
           disabled={disabled}
           // 允许选择时裁剪的时候不允许多选
           multiple={isCut ? false : multiple}
-          listType="picture-card"
+          listType={listType}
           fileList={fileLists}
           beforeUpload={(file) => beforeUpload(file)}
           maxCount={maxFile}
@@ -309,7 +311,7 @@ const UploadBlock = (props) => {
             );
           }}
         >
-          {fileLists && fileLists.length < (maxFile || 999) && uploadButton}
+          {fileLists && fileLists.length < (maxFile || 999) && (children || uploadButton)}
         </Upload>
       </DragAndDropHOC>
       <Modal

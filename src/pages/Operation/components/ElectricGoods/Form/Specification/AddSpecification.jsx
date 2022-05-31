@@ -74,23 +74,20 @@ const AddSpecification = (props) => {
             <Input
               defaultValue={val.name}
               onBlur={(e) => updateSpecificationType(e, index)}
+              style={{ marginBottom: 10 }}
             ></Input>
             <div>
               {val?.value?.map((item, idx) => {
                 return (
                   <Input
                     key={`${val.name}${item}`}
-                    style={{ width: 50, marginRight: 10, marginTop: 10 }}
+                    style={{ width: 50, marginRight: 10, marginBottom: 10 }}
                     defaultValue={item}
                     onBlur={(e) => updateSpecificationValue(e, index, idx)}
                   ></Input>
                 );
               })}
-              <Button
-                style={{ marginTop: 10 }}
-                type="link"
-                onClick={() => addSpecificationValue(index)}
-              >
+              <Button type="link" onClick={() => addSpecificationValue(index)}>
                 添加规格值
               </Button>
             </div>

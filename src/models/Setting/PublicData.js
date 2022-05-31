@@ -3,7 +3,7 @@ import oss from 'ali-oss';
 import lodash from 'lodash';
 import { uuid } from '@/utils/utils';
 import { fetchBackCategoryList } from '@/services/BaseServices';
-import { fetchGetSupplierManageList } from '@/services/SCMServices';
+import { fetchGetSupplierManageList, fetchSupplierBrandList } from '@/services/SCMServices';
 import { fetchMerchantList, fetchMerchantGroup } from '@/services/BusinessServices';
 import {
   fetchGetOss,
@@ -82,6 +82,7 @@ export default {
     resourceList: [],
     sipploerList: [],
     classifyParentList: [],
+    brandList: [],
   },
 
   reducers: {
@@ -779,6 +780,28 @@ export default {
         type: 'save',
         payload: {
           classifyParentList: content.childList,
+        },
+      });
+    },
+    // get 供应商管理 - 品牌 - 列表
+    *fetchSupplierBrandList({ payload }, { call, put }) {
+      const response = yield call(fetchSupplierBrandList, {
+        ...payload,
+        status: 1,
+        limit: 100,
+        page: 1,
+      });
+      if (!response) return;
+      const { content } = response;
+      const newList = content.supplierBrandDetailList.map((item) => ({
+        name: item.brandName,
+        value: item.supplierBrandId,
+        option: item,
+      }));
+      yield put({
+        type: 'save',
+        payload: {
+          brandList: newList,
         },
       });
     },

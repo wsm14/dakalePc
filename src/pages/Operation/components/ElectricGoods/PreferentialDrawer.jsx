@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { checkFileData } from '@/utils/utils';
@@ -16,23 +16,6 @@ const PreferentialDrawer = (props) => {
   const [form] = Form.useForm(); // add
   const [content, setContent] = useState(''); // 输入的富文本内容
   const [commissionShow, setCommissionShow] = useState(false); // 佣金设置显示隐藏
-
-  // 搜索店铺
-  const fetchGetMre = () => {
-    const { merchantName, ownerType } = detail;
-    if (!merchantName) return;
-    dispatch({
-      type: 'baseData/fetchGetGroupMreList',
-      payload: {
-        limit: 999,
-        page: 1,
-        bankStatus: 3,
-        businessStatus: 1,
-        merchantName,
-        groupFlag: ownerType === 'merchant' ? 0 : 1,
-      },
-    });
-  };
 
   // 确认提交数据 - add 新增 /  edit 修改所有数据 / again 重新发布
   const handleUpData = () => {
@@ -52,6 +35,7 @@ const PreferentialDrawer = (props) => {
           {...listProp}
           form={form}
           initialValues={{
+            sellType: 'single', //
             thirdFlag: '1',
             ownerType: 'merchant',
             goodsType: 'single',
@@ -86,7 +70,7 @@ const PreferentialDrawer = (props) => {
     title: drawerProps.title,
     visible: show,
     onClose,
-    afterCallBack: () => fetchGetMre(),
+    afterCallBack: () => {},
     closeCallBack: () => {
       dispatch({ type: 'baseData/clearGroupMre' }); // 关闭清空搜索的商家数据
     },
