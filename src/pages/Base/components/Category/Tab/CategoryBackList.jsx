@@ -98,7 +98,8 @@ const CategoryBackList = (props) => {
           {
             type: 'del',
             visible: !record.childList,
-            click: () => fetchTradeSet({ classifyId: val, isDelete: 1 }, getList),
+            click: () =>
+              fetchTradeSet({ classifyId: val, isDelete: 1, flag: 'updateIsDelete' }, getList),
           },
           {
             type: 'tradeSecondAdd',

@@ -713,7 +713,7 @@ export const SUPPLIER_AUTH_TYPE = ['', '对公', '对私'];
 // 标签类型
 export const TAG_TYPE = {
   platform: '平台商品标签',
-  merchant: '店铺商品标签',
+  show: '展示标签',
 };
 
 // 集合页配置集合页状态

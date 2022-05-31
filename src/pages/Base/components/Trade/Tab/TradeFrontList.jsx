@@ -140,7 +140,8 @@ const SysTradeSet = (props) => {
           {
             type: 'del',
             visible: !record.childList,
-            click: () => fetchTradeSet({ categoryFrontId: val, isDelete: 1 }, getList),
+            click: () =>
+              fetchTradeSet({ categoryFrontId: val, isDelete: 1, flag: 'updateIsDelete' }, getList),
           },
           {
             type: 'tradeSecondAdd',
