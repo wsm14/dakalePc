@@ -212,7 +212,6 @@ const VideoCheck = (props) => {
     },
     {
       type: 'handle',
-      title: '操作',
       dataIndex: 'auditIdString',
       render: (val, record, index) => {
         const { auditStatus } = record;

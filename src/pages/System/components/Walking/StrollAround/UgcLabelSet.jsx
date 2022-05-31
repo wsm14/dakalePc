@@ -14,7 +14,7 @@ const UgcLabelSet = (props) => {
   const handleSave = () => {
     form.validateFields().then(async (values) => {
       console.log(values);
-      const { img, ...ohter } = values;
+      const { img, ...other } = values;
       // 上传图片到oss -> 提交表单
       const imgList = await aliOssUpload(img);
       dispatch({
@@ -23,7 +23,7 @@ const UgcLabelSet = (props) => {
           edit: 'globalConfig/fetchUpdateMomentTag',
         }[type],
         payload: {
-          ...ohter,
+          ...other,
           img: imgList.toString(),
           configMomentTagId: detail?.configMomentTagId,
         },

@@ -25,6 +25,7 @@ const SearchCondition = (props) => {
     handleSearch,
     btnExtra = [],
     componentSize = 'default',
+    colForm = {},
     initialValues = {},
   } = props;
 
@@ -95,7 +96,7 @@ const SearchCondition = (props) => {
     handleSearch({ ...values, ...formObj });
   };
 
-  const len = formItems.length;
+  const len = formItems.filter(({ show = true }) => show).length;
 
   // 不同屏幕大小显示个数
   let count = 4;
@@ -145,6 +146,7 @@ const SearchCondition = (props) => {
             lg={show === false ? 0 : i < colcount ? (componentSize !== 'default' ? 8 : 12) : 0}
             xl={show === false ? 0 : i < colcount ? 12 : 0}
             xxl={show === false ? 0 : i < colcount ? (componentSize !== 'default' ? 8 : 6) : 0}
+            {...colForm}
             key={i}
           >
             {block}

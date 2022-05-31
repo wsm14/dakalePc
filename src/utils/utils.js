@@ -296,6 +296,7 @@ export const TreeSelectFn = (arr, title, value, key, childName) => {
       obj.key = item[key];
     }
     if (item[childName]) {
+      obj.disabled = true;
       const other = TreeSelectFn(item[childName], title, value, key, childName);
       obj.children = other;
     }

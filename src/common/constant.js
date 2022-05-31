@@ -194,7 +194,7 @@ export const SHARE_STATUS = [
   '即将发布',
 ];
 
-//核销状态 0：未核销，1：已核销 2：已过期 3-申请退款中 4-关闭
+// 核销状态 0：未核销，1：已核销 2：已过期 3-申请退款中 4-关闭
 export const VERIFICATION_STATUS = ['未核销', '已核销', '已过期', '申请退款中', '关闭'];
 
 // 种草状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
@@ -677,6 +677,21 @@ export const CHECK_STATUS = ['审核通过', '审核驳回', '商家已确认', 
 
 // 银行卡变更审核结果
 export const BANK_CHECK_STATUS = ['审核驳回', '审核通过'];
+
+// 供应商状态
+export const SUPPLIER_STATUS = ['禁用', '启用'];
+
+// 供应商账户状态 搜索用
+export const SUPPLIER_ACCOUNT_STATUS = ['未激活', '已激活'];
+
+// 供应商账户状态
+export const SUPPLIER_ACCOUNT_STATUS_SHOW = ['未激活', '审核中', '激活失败', '已激活'];
+
+// 供应商审核状态
+export const SUPPLIER_AUTH_STATUS = ['审核拒绝', '审核通过'];
+
+// 供应商类型
+export const SUPPLIER_AUTH_TYPE = ['', '对公', '对私'];
 
 // 标签类型
 export const TAG_TYPE = {

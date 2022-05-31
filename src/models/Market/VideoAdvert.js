@@ -175,7 +175,7 @@ export default {
         activityGoodsList = [], // 特惠商品
         videoContent,
         param,
-        ...ohter
+        ...other
       } = content?.momentDetail || {};
       const editData =
         type !== 'info'
@@ -187,7 +187,7 @@ export default {
             }
           : {};
       const newObj = {
-        ...ohter,
+        ...other,
         ...content2,
         param: JSON.parse(param || '{}'),
         age,

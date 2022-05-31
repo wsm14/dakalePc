@@ -12,6 +12,8 @@ const InputBlock = (props) => {
     addonAfter,
     onChange,
     itemStyle,
+    readOnly,
+    bordered = true,
     ...other
   } = props;
 
@@ -35,6 +37,8 @@ const InputBlock = (props) => {
       {...divProps}
       maxLength={maxLength}
       style={itemStyle}
+      readOnly={readOnly}
+      bordered={bordered}
       addonAfter={addonAfter}
       suffix={dataNum || suffix || ''}
       onChange={(e) => {

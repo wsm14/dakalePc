@@ -31,12 +31,12 @@ const RewardCreate = (props) => {
   // 确认新增
   const handleRewardCreate = () => {
     form.validateFields().then((values) => {
-      const { rewardStartTime: time, ...ohter } = values;
+      const { rewardStartTime: time, ...other } = values;
       dispatch({
         type: 'videoPlatform/fetchNewShareRewardSave',
         payload: {
           ...params,
-          ...ohter,
+          ...other,
           beginDate: time && time[0].format('YYYY-MM-DD'),
           endDate: time && time[1].format('YYYY-MM-DD'),
         },

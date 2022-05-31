@@ -70,7 +70,6 @@ const EnvelopSet = (props) => {
       dataIndex: 'createTime',
     },
     {
-      title: '操作',
       dataIndex: 'configRedEnvelopeWhiteAccountId',
       type: 'handle',
       render: (val, row, index) => {

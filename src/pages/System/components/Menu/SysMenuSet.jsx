@@ -41,8 +41,6 @@ const SysMenuSet = (props) => {
     {
       label: '菜单路径',
       name: 'accessUrl',
-      rules: 'false',
-      extra: '父级节点不需要输入',
     },
     {
       label: '父节点',

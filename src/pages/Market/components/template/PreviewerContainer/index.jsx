@@ -74,14 +74,14 @@ const ActiveTemplateIframe = (props) => {
   // 显示对应的模块编辑内容
   const handleShowEditor = (cell = {}, index) => {
     console.log('drop', cell, index);
-    const { editorDom, dom, defaultImg, icon, ...ohter } = cell;
+    const { editorDom, dom, defaultImg, icon, ...other } = cell;
     // 高亮选择项目
     dispatchData({ type: 'showPanel', payload: index });
     // 编辑区域模组显示
     dispatchData({
       type: 'showEditor',
       payload: {
-        ...ohter,
+        ...other,
         id: cell?.id || new Date().getTime(), // 需要编辑的组件id
         index,
         data: cell?.data || cell?.defaultData || null,

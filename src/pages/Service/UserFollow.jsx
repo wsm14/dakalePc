@@ -127,7 +127,6 @@ const UserFollow = (props) => {
       dataIndex: 'followTime',
     },
     {
-      title: '操作',
       type: 'handle',
       dataIndex: 'userFollowUpId',
       render: (val, row) => [
