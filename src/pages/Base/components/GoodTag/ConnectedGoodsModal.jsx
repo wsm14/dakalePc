@@ -1,16 +1,32 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 // import SupplierBrandDrawer from './Brand/SupplierBrandDrawer';
 
+const tabList = [
+  {
+    key: 'commerceGoods',
+    tab: '电商品',
+  },
+  {
+    key: 'specialGoods',
+    tab: '特惠商品',
+  },
+];
+
 const ConnectedGoodsModal = (props) => {
-  const { visible, onClose, dispatch, brandList, loading } = props;
+  const { visible, onClose, dispatch, configGoodsList, loading } = props;
   const { show = false, id, name } = visible;
 
   const childRef = useRef();
+  const [tabKey, setTabKey] = useState('commerceGoods');
   const [visibleDrawer, setVisibleDrawer] = useState({ mode: 'info', show: false, detail: {} });
+
+  useEffect(() => {
+    childRef.current && childRef.current.fetchGetData({ goodsType: tabKey });
+  }, [tabKey]);
 
   const getColumns = [
     {
@@ -42,26 +58,12 @@ const ConnectedGoodsModal = (props) => {
     },
     {
       type: 'handle',
-      dataIndex: 'supplierBrandId',
+      dataIndex: 'goodsId',
       render: (val, row, index) => [
         {
-          type: 'eye',
-          auth: true,
-          click: () => fetchGetDetail(index, 'info'),
-        },
-        {
-          type: 'edit',
-          auth: true,
-          click: () => fetchGetDetail(index, 'edit'),
-        },
-        {
           type: 'del',
+          title: '移除',
           auth: true,
-          popText: (
-            <div>
-              删除后该供应商将无法发布该品牌下的商品<div>确定要删除吗？</div>
-            </div>
-          ),
           click: () => fetchDelBrand(val),
         },
       ],
@@ -77,18 +79,6 @@ const ConnectedGoodsModal = (props) => {
     });
   };
 
-  // 获取详情
-  const fetchGetDetail = (index, mode) => {
-    const { supplierBrandId } = brandList.list[index];
-    dispatch({
-      type: 'supplierManage/fetchSupplierBrandDetail',
-      payload: { supplierBrandId, mode },
-      callback: (detail) => {
-        setVisibleDrawer({ mode, show: true, index, detail });
-      },
-    });
-  };
-
   const btnList = [
     {
       text: '新增',
@@ -99,7 +89,7 @@ const ConnectedGoodsModal = (props) => {
   return (
     <>
       <Modal
-        title={`授权品牌列表 - ${name}`}
+        title={`关联商品 - ${name}`}
         width={1150}
         destroyOnClose
         footer={null}
@@ -108,16 +98,21 @@ const ConnectedGoodsModal = (props) => {
         onCancel={onClose}
       >
         <TableDataBlock
+          cardProps={{
+            tabList: tabList,
+            activeTabKey: tabKey,
+            onTabChange: setTabKey,
+          }}
           size="middle"
           noCard={false}
           cRef={childRef}
           btnExtra={btnList}
           loading={loading}
           columns={getColumns}
-          params={{ supplierId: id }}
-          rowKey={(row) => `${row.supplierBrandId}`}
-          dispatchType="supplierManage/fetchSupplierBrandList"
-          {...brandList}
+          params={{ goodsTagId: id, goodsType: tabKey }}
+          rowKey={(row) => `${row.goodsId}`}
+          dispatchType="goodsTag/fetchConfigGoodsList"
+          {...configGoodsList}
         ></TableDataBlock>
       </Modal>
       {/* <SupplierBrandDrawer
@@ -131,7 +126,7 @@ const ConnectedGoodsModal = (props) => {
   );
 };
 
-export default connect(({ supplierManage, loading }) => ({
-  brandList: supplierManage.brandList,
-  loading: loading.models.supplierManage,
+export default connect(({ goodsTag, loading }) => ({
+  configGoodsList: goodsTag.configGoodsList,
+  loading: loading.effects['goodsTag/fetchConfigGoodsList'],
 }))(ConnectedGoodsModal);

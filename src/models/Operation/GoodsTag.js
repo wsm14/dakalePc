@@ -5,6 +5,7 @@ import {
   fetchGoodsTagUpdate,
   fetchGoodsTagSort,
   fetchGoodsTagSwitchStatus,
+  fetchConfigGoodsList,
 } from '@/services/OperationServices';
 
 export default {
@@ -12,7 +13,7 @@ export default {
 
   state: {
     list: [],
-    total: 0,
+    configGoodsList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -33,7 +34,18 @@ export default {
         type: 'save',
         payload: {
           list: content.configGoodsTagDTOS,
-          // total: content.total,
+        },
+      });
+      callback && callback(content.configGoodsTagDTOS);
+    },
+    *fetchConfigGoodsList({ payload, callback }, { call, put }) {
+      const response = yield call(fetchConfigGoodsList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          configGoodsList: { list: content.recordList, total: content.total },
         },
       });
       callback && callback(content.configGoodsTagDTOS);

@@ -720,6 +720,13 @@ export function fetchGoodsTagSwitchStatus(data) {
   });
 }
 
+// 商品标签 - 关联商品列表
+export function fetchConfigGoodsList(params) {
+  return request('/admin/goodsTag/pageListConfigGoodsTagRelatedGoods', {
+    params,
+  });
+}
+
 // 分类列表 end
 
 // 优惠券管理

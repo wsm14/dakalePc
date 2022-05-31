@@ -112,5 +112,5 @@ const TagManage = (props) => {
 
 export default connect(({ goodsTag, loading }) => ({
   goodsTag,
-  loading: loading.models.goodsTag,
+  loading: loading.effects['goodsTag/fetchGoodsTagList'],
 }))(TagManage);
