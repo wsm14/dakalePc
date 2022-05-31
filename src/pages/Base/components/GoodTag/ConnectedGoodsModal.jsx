@@ -85,29 +85,32 @@ const ConnectedGoodsModal = (props) => {
       title: '商品状态',
       align: 'center',
       dataIndex: 'status',
-      render: (val) => (
-        <Badge status={val === '1' ? 'success' : 'error'} text={GOODS_TYPE[val]} />
-      ),
+      render: (val) => <Badge status={val === '1' ? 'success' : 'error'} text={GOODS_TYPE[val]} />,
     },
     {
       type: 'handle',
       dataIndex: 'goodsId',
-      render: (val, row, index) => [
+      render: (val, row) => [
         {
           type: 'del',
           title: '移除',
           auth: true,
-          click: () => fetchConfigGoodsDel(val),
+          click: () => fetchConfigGoodsDel(row),
         },
       ],
     },
   ];
 
-  // 删除
-  const fetchConfigGoodsDel = () => {
+  // 移除
+  const fetchConfigGoodsDel = (row) => {
+    const { goodsId, ownerId } = row;
     dispatch({
       type: 'goodsTag/fetchConfigGoodsSet',
-      payload: { configGoodsTagId: id, mode: 'del' },
+      payload: {
+        mode: 'del',
+        configGoodsTagId: id,
+        configGoodsTagRelatedGoodsList: [{ goodsId, ownerId, goodsType: tabKey }],
+      },
       callback: childRef.current.fetchGetData,
     });
   };
