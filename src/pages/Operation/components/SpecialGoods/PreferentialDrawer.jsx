@@ -45,30 +45,66 @@ const PreferentialDrawer = (props) => {
   // 确认提交数据 - add 新增 /  edit 修改所有数据 / again 重新发布
   const handleUpData = () => {
     form.validateFields().then((values) => {
-      console.log(values, 'values');
-      return;
       const { id } = detail;
       const {
-        activityGoodsImg,
+        goodsImg,
         goodsDescImg,
         goodsTags = [],
         merchantIds = [],
         businessStatus,
         status,
-        ...preOther
-      } = visibleRule.preData;
-      const {
-        activityStartTime,
+        activityStartDate,
         useStartTime,
         timeSplit,
         timeType,
         useWeek,
         useTime,
         buyDesc = [],
+        settlerType,
+        settlerIds = [],
+        startDate,
+        availableAreas,
+        cityList,
+        useTimeRuleObject = {},
         ...other
       } = values;
-      const aimg = checkFileData(activityGoodsImg);
+      const aimg = checkFileData(goodsImg);
       const gimg = checkFileData(goodsDescImg);
+      const cityIds = cityList.map((item) => {
+        return item?.city[item?.city.length - 1];
+      });
+
+      // aliOssUpload([...aimg, ...gimg]).then((res) => {
+      //   console.log(cityIds, settlerIds, timeSplit, useWeek);
+      //   console.log({
+      //     id,
+      //     ...other,
+      //     richText: content, // 富文本内容
+      //     goodsTags: goodsTags.toString(),
+      //     merchantIds: merchantIds.toString(),
+      //     goodsImg: res.slice(0, aimg.length).toString(),
+      //     goodsDescImg: res.slice(aimg.length).toString(),
+      //     activityStartDate: activityStartDate && activityStartDate[0].format('YYYY-MM-DD'),
+      //     activityEndDate: activityStartDate && activityStartDate[1].format('YYYY-MM-DD'),
+      //     settleInfoReq: {
+      //       settlerId: settlerIds.toString(),
+      //       settlerType: settlerType,
+      //     },
+      //     availableAreas: availableAreas === 'all' ? availableAreas : cityIds.toString(),
+      //     useTimeRuleObject: {
+      //       ...useTimeRuleObject,
+      //       startDate: startDate && startDate[0].format('YYYY-MM-DD'),
+      //       useEndTime: startDate && startDate[1].format('YYYY-MM-DD'),
+      //       useWeek: timeSplit !== 'part' ? timeSplit : useWeek.toString(),
+      //       useDay:
+      //         timeType !== 'part'
+      //           ? timeType
+      //           : `${useTime[0].format('HH:mm')}-${useTime[1].format('HH:mm')}`,
+      //     },
+      //     buyDesc: buyDesc.filter((i) => i).length ? buyDesc.filter((i) => i) : undefined,
+      //   });
+      // });
+      // return;
       aliOssUpload([...aimg, ...gimg]).then((res) => {
         dispatch({
           type: {
@@ -79,23 +115,30 @@ const PreferentialDrawer = (props) => {
           }[type],
           payload: {
             id,
-            ...preOther,
             ...other,
             richText: content, // 富文本内容
             goodsTags: goodsTags.toString(),
             merchantIds: merchantIds.toString(),
-            activityGoodsImg: res.slice(0, aimg.length).toString(),
+            goodsImg: res.slice(0, aimg.length).toString(),
             goodsDescImg: res.slice(aimg.length).toString(),
-            activityStartTime: activityStartTime && activityStartTime[0].format('YYYY-MM-DD'),
-            activityEndTime: activityStartTime && activityStartTime[1].format('YYYY-MM-DD'),
-            useStartTime: useStartTime && useStartTime[0].format('YYYY-MM-DD'),
-            useEndTime: useStartTime && useStartTime[1].format('YYYY-MM-DD'),
-            useWeek: timeSplit !== 'part' ? timeSplit : useWeek.toString(),
+            activityStartDate: activityStartDate && activityStartDate[0].format('YYYY-MM-DD'),
+            activityEndDate: activityStartDate && activityStartDate[1].format('YYYY-MM-DD'),
+            settleInfoReq: {
+              settlerId: settlerIds.toString(),
+              settlerType: settlerType,
+            },
+            availableAreas: availableAreas === 'all' ? availableAreas : cityIds.toString(),
+            useTimeRuleObject: {
+              ...useTimeRuleObject,
+              startDate: startDate && startDate[0].format('YYYY-MM-DD'),
+              useEndTime: startDate && startDate[1].format('YYYY-MM-DD'),
+              useWeek: timeSplit !== 'part' ? timeSplit : useWeek.toString(),
+              useDay:
+                timeType !== 'part'
+                  ? timeType
+                  : `${useTime[0].format('HH:mm')}-${useTime[1].format('HH:mm')}`,
+            },
             buyDesc: buyDesc.filter((i) => i).length ? buyDesc.filter((i) => i) : undefined,
-            useTime:
-              timeType !== 'part'
-                ? timeType
-                : `${useTime[0].format('HH:mm')}-${useTime[1].format('HH:mm')}`,
           },
           callback: () => {
             onClose();
@@ -129,18 +172,14 @@ const PreferentialDrawer = (props) => {
           initialValues={{
             thirdFlag: '1',
             ownerType: 'merchant',
-            jiesuanType: 'merchant',
-            settleInfoReq: {
-              settlerType: 'merchant',
-            },
-            areaType: 'all',
-            goodsType: 'single',
-            goodsDescType: '0',
+            settlerType: 'merchant',
+            availableAreas: 'all',
+            productType: 'single',
+            descType: '0',
             packageGoodsObjects: [{}],
             needOrder: 0,
             allowRefund: 1,
             allowExpireRefund: 1,
-            allowRefund: 1,
             expireRefund: 1,
           }}
           onValuesChange={setShowHtmlData}

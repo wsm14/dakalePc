@@ -117,10 +117,10 @@ export const BUSINESS_TYPE = { merchant: '单店', group: '集团' };
 
 //售卖价格类型
 export const BUSINESS_SALE_TYPE = {
-  one: '单店（可用卡豆抵扣）',
-  two: '现金（不可用卡豆抵扣）',
-  three: '卡豆+现金',
-  four: '免费',
+  defaultMode: '单店（可用卡豆抵扣）',
+  self: '现金（不可用卡豆抵扣）',
+  cashMode: '卡豆+现金',
+  free: '免费',
 };
 
 // 店铺 审核状态 '待审核', '审核中', '审核驳回', '审核通过'
@@ -630,9 +630,25 @@ export const SPECIAL_DESC_TYPE = ['图文介绍', '富文本'];
 
 // 特惠活动 - 前端展示类型
 export const SPECIAL_SHOW_TYPE = {
-  one: '手动/列表展示',
-  two: '仅手动展示',
-  three: '不展示',
+  defaultMode: {
+    manualOrList: '手动/列表展示',
+    manual: '仅手动展示',
+    notDisplay: '不展示',
+  },
+  self: {
+    manualOrList: '手动/列表展示',
+    manual: '仅手动展示',
+    notDisplay: '不展示',
+  },
+  cashMode: {
+    manualOrList: '手动/列表展示',
+    manual: '仅手动展示',
+    notDisplay: '不展示',
+  },
+  free: {
+    manual: '仅手动展示',
+    notDisplay: '不展示',
+  },
 };
 
 //特惠活动 - 展示范围
@@ -643,6 +659,7 @@ export const SPECIAL_AREA_TYPE = {
 //特惠活动 - 结算人类型
 export const SPECIAL_BALANCE_TYPE = {
   merchant: '店铺',
+  group: '集团',
   platform: '平台',
 };
 

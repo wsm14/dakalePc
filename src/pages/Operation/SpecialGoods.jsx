@@ -192,9 +192,9 @@ const SpecialGoods = (props) => {
             }}
           >
             <div style={{ display: 'flex' }}>
-              <Tag color={row.goodsType === 'single' ? 'orange' : 'magenta'}>
+              {/* <Tag color={row.goodsType === 'single' ? 'orange' : 'magenta'}>
                 {GOODS_CLASS_TYPE[row.goodsType]}
-              </Tag>
+              </Tag> */}
               <Ellipsis length={10} tooltip>
                 {row.goodsName}
               </Ellipsis>
@@ -221,7 +221,7 @@ const SpecialGoods = (props) => {
       align: 'right',
       dataIndex: 'oriPrice',
       render: (val, row) => {
-        const zhe = (Number(row.realPrice) / Number(val)) * 10;
+        const zhe = (Number(row.sellPrice) / Number(val)) * 10;
         return (
           <div>
             <div style={{ textDecoration: 'line-through', color: '#999999' }}>
@@ -229,7 +229,7 @@ const SpecialGoods = (props) => {
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Tag color={'red'}>{`${zhe}`.substring(0, 4)}折</Tag>
-              <div>￥{Number(row.realPrice).toFixed(2)}</div>
+              <div>￥{Number(row.sellPrice).toFixed(2)}</div>
             </div>
           </div>
         );
@@ -308,7 +308,7 @@ const SpecialGoods = (props) => {
       title: '创建时间',
       align: 'center',
       dataIndex: 'createTime',
-      render: (val, row) => `${val}\n${SUBMIT_TYPE[row.creatorType]}--${row.creatorName || ''}`,
+      render: (val, row) => `${val}\n${SUBMIT_TYPE[row?.creatorType]}--${row?.creatorName || ''}`,
     },
     {
       title: '推广位置',
@@ -316,7 +316,7 @@ const SpecialGoods = (props) => {
       dataIndex: 'recommendType',
       render: (val, row) =>
         val
-          .split(',')
+          ?.split(',')
           .map((item) => SPECIAL_RECOMMEND_TYPE[item])
           .join('\n'),
     },

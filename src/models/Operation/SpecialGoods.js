@@ -44,7 +44,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.recordList,
+          list: content.offlineDetails,
           total: content.total,
         },
       });

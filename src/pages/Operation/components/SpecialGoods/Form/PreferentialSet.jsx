@@ -48,7 +48,7 @@ const PreferentialSet = ({
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
   const [goodsDescType, setGoodsDescType] = useState('0'); // 商品介绍类型
   const [radioData, setRadioData] = useState({
-    goodsType: 'single',
+    productType: 'single',
     activeTime: '', // 活动时间
     userTime: '', // 使用有效期
     timeSplit: '', // 适用时段
@@ -61,8 +61,13 @@ const PreferentialSet = ({
   const [mreList, setMreList] = useState({
     groupId: null,
     type: 'merchant',
+    settlerType: 'merchant',
+    settlerType: 'merchant',
     keys: [],
     list: [],
+    settlerKeys: [],
+    settlerList: [],
+    storeStatus: 'top', //店铺类型  top/bottom
   }); // 店铺备选参数，选择店铺后回显的数据
 
   const [validate, setValidate] = useState({
@@ -80,7 +85,7 @@ const PreferentialSet = ({
     .map((key) => key.configGoodsTagId);
   initialValues.goodsTags = goodsTags;
 
-  const goodsTypeName = GOODS_CLASS_TYPE[radioData.goodsType];
+  const goodsTypeName = GOODS_CLASS_TYPE[radioData.productType];
   useEffect(() => {
     if (initialValues.ownerName) {
       const {
@@ -99,10 +104,11 @@ const PreferentialSet = ({
       setGoodsDescType(initialValues.goodsDescType);
       setMreList({
         type: initialValues.ownerType,
+        settlerType: initialValues.settlerType,
         groupId: initialValues.ownerId,
       });
       setRadioData({
-        goodsType: initialValues.goodsType,
+        productType: initialValues.productType,
         buyRule,
         timeType,
         timeSplit,
@@ -149,7 +155,7 @@ const PreferentialSet = ({
       type: 'baseData/fetchGetGroupMreList',
       payload: {
         name,
-        type: type || mreList.type,
+        type: type || mreList.type || mreList.settlerType,
         groupFlag: 0, // 不允许选择子门店
       },
       callback,
@@ -215,7 +221,6 @@ const PreferentialSet = ({
       ellipsis: true,
     },
   ];
-
   // 信息
   const formItems = [
     {
@@ -230,12 +235,16 @@ const PreferentialSet = ({
         saveSelectData({ shopType: '0' });
         saveMreData({
           type: e.target.value,
+          settlerType: e.target.value,
           groupId: null,
           ratio: 0,
           keys: [],
           list: [],
+          settlerKeys: [],
+          settlerList: [],
+          storeStatus: 'top',
         }); // 重置已选店铺数据
-        form.setFieldsValue({ ownerId: undefined, jiesuanType: e.target.value, cityList: [[]] }); // 重置数据
+        form.setFieldsValue({ ownerId: undefined, settlerType: e.target.value, cityList: [[]] }); // 重置数据
         dispatch({ type: 'baseData/clearGroupMre' }); // 清空选择数据
       },
     },
@@ -249,16 +258,14 @@ const PreferentialSet = ({
       disabled: commonDisabled,
       onSearch: fetchGetMre,
       onChange: (val, data) => {
-        console.log(val, data);
         const { option } = data;
         const { businessStatus, status, districtCode } = option;
-        console.log([[districtCode.slice(0, 2), districtCode.slice(0, 4)]], '地区');
         form.setFieldsValue({
           merchantIds: undefined,
           businessStatus,
           status,
-          jiesuanId: val,
-          areaType: 'city',
+          settlerId: val,
+          availableAreas: 'city',
           cityList: [{ city: [districtCode.slice(0, 2), districtCode.slice(0, 4)] }],
         });
         setAreaType('city');
@@ -308,7 +315,17 @@ const PreferentialSet = ({
       visible: mreList.type == 'group',
       rules: [{ required: true, message: '请选择店铺' }],
       formItem: (
-        <Button type="primary" ghost onClick={() => setVisible(true)} disabled={commonDisabled}>
+        <Button
+          type="primary"
+          ghost
+          onClick={() => {
+            setVisible(true);
+            saveMreData({
+              storeStatus: 'top',
+            });
+          }}
+          disabled={commonDisabled}
+        >
           选择店铺
         </Button>
       ),
@@ -325,8 +342,7 @@ const PreferentialSet = ({
           columns={getColumns}
           {...mreList}
           setMreList={(val) => {
-            console.log(val, 'val');
-            saveMreData(val);
+            saveMreData({ ...val, settlerKeys: val.keys, settlerList: val.list });
             form.setFieldsValue({ merchantIds: val.keys });
           }}
         ></MreSelectShow>
@@ -355,15 +371,15 @@ const PreferentialSet = ({
     },
     {
       label: '商品类型',
-      name: 'goodsType',
+      name: 'productType',
       disabled: commonDisabled,
       type: 'radio',
       select: GOODS_CLASS_TYPE,
-      onChange: (e) => saveSelectData({ goodsType: e.target.value }),
+      onChange: (e) => saveSelectData({ productType: e.target.value }),
     },
     {
       label: `${goodsTypeName}轮播图`,
-      name: 'activityGoodsImg',
+      name: 'goodsImg',
       type: 'upload',
       maxFile: 5,
       maxSize: 500,
@@ -375,14 +391,14 @@ const PreferentialSet = ({
     },
     {
       type: 'noForm',
-      visible: radioData.goodsType == 'package',
+      visible: radioData.productType == 'package',
       formItem: <GoodsGroupSet key="packageGroupObjects" form={form}></GoodsGroupSet>,
     },
     {
       title: '销售信息',
       // label: `${goodsTypeName}原价`,
       label: '原价',
-      name: 'oriPrice',
+      name: ['skuInfoReq', 'oriPrice'],
       type: 'number',
       precision: 2,
       disabled: editDisabled,
@@ -392,7 +408,7 @@ const PreferentialSet = ({
     },
     {
       label: '成本价',
-      name: 'chengbenajia',
+      name: ['skuInfoReq', 'costPrice'],
       type: 'number',
       precision: 2,
       disabled: editDisabled,
@@ -404,7 +420,7 @@ const PreferentialSet = ({
     },
     {
       label: '结算价',
-      name: 'merchantPrice',
+      name: ['skuInfoReq', 'settlePrice'],
       type: 'number',
       precision: 2,
       disabled: editDisabled,
@@ -415,7 +431,7 @@ const PreferentialSet = ({
         {
           validator: (rule, value) => {
             const merchantPrice = Number(value);
-            const buyPrice = Number(form.getFieldValue('realPrice'));
+            const buyPrice = Number(form.getFieldValue(['skuInfoReq', 'sellPrice']));
             if (merchantPrice > buyPrice) {
               return Promise.reject('商家结算价不可超过售卖价格');
             }
@@ -432,27 +448,33 @@ const PreferentialSet = ({
     {
       label: '售卖价格类型',
       type: 'radio',
-      name: 'priceType',
+      name: 'paymentModeType',
       select: BUSINESS_SALE_TYPE,
-      onChange: (e) => {},
+      onChange: (e) => {
+        saveMreData({ paymentModeType: e.target.value });
+      },
     },
     {
       // label: '特惠价格',
       label: '零售价',
-      name: 'realPrice',
+      name: ['skuInfoReq', 'sellPrice'],
       type: 'number',
       precision: 2,
       disabled: editDisabled,
       min: 0,
       max: 999999.99,
       formatter: (value) => `￥ ${value}`,
+      // suffix: `${parseInt(
+      //   form.getFieldValue(['skuInfoReq', 'sellPrice']) /
+      //     form.getFieldValue(['skuInfoReq', 'oriPrice']),
+      // )}折`,
       addRules: [
         {
           validator: (rule, value) => {
             const realPrice = Number(value);
-            const buyPrice = Number(form.getFieldValue('oriPrice'));
+            const buyPrice = Number(form.getFieldValue(['skuInfoReq', 'oriPrice']));
             if (realPrice > buyPrice) {
-              return Promise.reject('特惠价格需小于套餐价格');
+              return Promise.reject('零售价格需小于套餐价格');
             }
             return Promise.resolve();
           },
@@ -472,7 +494,7 @@ const PreferentialSet = ({
     },
     {
       label: '商品库存',
-      name: 'kucun',
+      name: ['skuInfoReq', 'initStock'],
       type: 'number',
       precision: 0,
       min: 0,
@@ -502,7 +524,8 @@ const PreferentialSet = ({
     },
     {
       label: '设置时间',
-      name: 'activityStartTime',
+      // name: 'activityStartTime',
+      name: 'activityStartDate',
       type: 'rangePicker',
       disabled: editDisabled,
       visible: radioData.activeTime === 'fixed',
@@ -513,18 +536,18 @@ const PreferentialSet = ({
       label: '使用有效期',
       type: 'radio',
       select: SPECIAL_USERTIME_TYPE,
-      name: 'activityTimeRule',
+      name: ['useTimeRuleObject', 'type'],
       disabled: editDisabled,
       onChange: (e) => saveSelectData({ userTime: e.target.value }),
     },
     {
       label: '固定时间',
-      name: 'useStartTime',
+      name: 'startDate',
       type: 'rangePicker',
       disabled: editDisabled,
       visible: radioData.userTime === 'fixed',
       disabledDate: (time) => {
-        const dates = form.getFieldValue('actsdiveDate');
+        const dates = form.getFieldValue('activityStartDate');
         const noewdate = moment().endOf('day').subtract(1, 'day');
         if (!dates || dates.length === 0) return time < noewdate;
         const tooLate = dates[0] && time < dates[0];
@@ -534,7 +557,7 @@ const PreferentialSet = ({
       addRules: [
         {
           validator: (rule, time) => {
-            const dates = form.getFieldValue('actsdiveDate');
+            const dates = form.getFieldValue('activityStartDate');
             if (dates && time && time[1] < dates[1]) {
               return Promise.reject('有效期结束时间必须大于活动时间');
             }
@@ -545,7 +568,7 @@ const PreferentialSet = ({
     },
     {
       label: '领取后生效天数',
-      name: 'delayDays',
+      name: ['useTimeRuleObject', 'delayDays'],
       type: 'number',
       max: 999,
       min: 0,
@@ -555,7 +578,7 @@ const PreferentialSet = ({
     },
     {
       label: '有效期天数',
-      name: 'activeDays',
+      name: ['useTimeRuleObject', 'activeDays'],
       type: 'number',
       disabled: editDisabled,
       max: 999,
@@ -587,14 +610,14 @@ const PreferentialSet = ({
     },
     {
       label: '设置时间段',
-      name: 'useTime',
+      name: 'useDay',
       type: 'timePicker',
       order: false,
       visible: radioData.timeType === 'part',
     },
     {
       label: '投放总量',
-      name: 'total',
+      name: ['useTimeRuleObject', 'total'],
       addRules: [{ pattern: NUM_INT_MAXEIGHT, message: '投放总量必须为整数，且不可为0' }],
       disabled: editDisabled,
       suffix: '份',
@@ -653,12 +676,12 @@ const PreferentialSet = ({
       label: '前端展示类型',
       type: 'radio',
       name: 'displayType',
-      select: SPECIAL_SHOW_TYPE,
+      select: SPECIAL_SHOW_TYPE[mreList.paymentModeType],
       onChange: (e) => setGoodsDescType(e.target.value),
     },
     {
       label: '展示范围',
-      name: 'areaType',
+      name: 'availableAreas',
       type: 'radio',
       select: SPECIAL_AREA_TYPE,
       onChange: (e) => {
@@ -702,78 +725,75 @@ const PreferentialSet = ({
     },
     {
       title: '结算设置',
-      label: '结算人类型',
+      label: '结算类型',
       type: 'radio',
       disabled: commonDisabled,
-      name: ['settleInfoReq', 'settlerType'],
+      name: 'settlerType',
       select: SPECIAL_BALANCE_TYPE,
       onChange: (e) => {
-        saveSelectData({ settlerType: e });
-      },
-    },
-    {
-      label: '结算店铺类型',
-      type: 'radio',
-      disabled: commonDisabled,
-      name: 'jiesuanType',
-      select: BUSINESS_TYPE,
-      disabled: true,
-      visible: ['merchant'].includes(mreList.settlerType),
-      onChange: (e) => {
         saveMreData({
-          type: e.target.value,
-          groupId: null,
-          ratio: 0,
-          keys: [],
-          list: [],
+          settlerType: e.target.value,
+          settlerKeys: [],
+          settlerList: [],
+          storeStatus: 'bottom',
         }); // 重置已选店铺数据
-        form.setFieldsValue({ jiesuanId: undefined }); // 重置数据
+        form.setFieldsValue({ settlerId: undefined }); // 重置数据
         dispatch({ type: 'baseData/clearGroupMre' }); // 清空选择数据
       },
     },
     {
       label: `选择${BUSINESS_TYPE[mreList.type]}`,
       type: 'select',
-      name: 'jiesuanId',
+      name: 'settlerId',
       placeholder: '请输入搜索',
       loading,
       select: selectList,
       disabled: commonDisabled,
       onSearch: fetchGetMre,
-      disabled: true,
-      visible: ['merchant'].includes(mreList.settlerType),
+      visible: !['platform'].includes(mreList.settlerType),
       onChange: (val, data) => {
-        const { option } = data;
-        const { businessStatus, status } = option;
         fetchCheckMreRate(val);
       },
     },
     {
       label: '适用店铺',
-      name: 'jiesuanIds',
+      name: 'settlerIds',
       type: 'formItem',
-      visible: ['merchant'].includes(mreList.settlerType),
+      visible:
+        !['platform'].includes(mreList.settlerType) && ['group'].includes(mreList.settlerType),
       rules: [{ required: true, message: '请选择店铺' }],
       formItem: (
-        <Button type="primary" ghost onClick={() => setVisible(true)} disabled={true}>
+        <Button
+          type="primary"
+          ghost
+          onClick={() => {
+            setVisible(true);
+            saveMreData({
+              storeStatus: 'bottom',
+            });
+          }}
+          disabled={commonDisabled}
+        >
           选择店铺
         </Button>
       ),
     },
     {
       type: 'noForm',
-      visible: ['merchant'].includes(mreList.settlerType),
+      visible:
+        !['platform'].includes(mreList.settlerType) && ['group'].includes(mreList.settlerType),
       formItem: (
         <MreSelectShow
           key="MreTable"
           form={form}
-          disabled={true}
+          disabled={commonDisabled}
           rowKey="merchantId"
           columns={getColumns}
-          {...mreList}
+          keys={mreList.settlerKeys}
+          list={mreList.settlerList}
           setMreList={(val) => {
-            saveMreData(val);
-            form.setFieldsValue({ jiesuanIds: val.keys });
+            saveMreData({ settlerKeys: val.keys, settlerList: val.list });
+            form.setFieldsValue({ settlerIds: val.keys });
           }}
         ></MreSelectShow>
       ),
@@ -782,7 +802,7 @@ const PreferentialSet = ({
       title: `设置${goodsTypeName}介绍`,
       label: '选择介绍类型',
       type: 'radio',
-      name: 'goodsDescType',
+      name: 'descType',
       select: SPECIAL_DESC_TYPE,
       onChange: (e) => setGoodsDescType(e.target.value),
     },
@@ -825,15 +845,19 @@ const PreferentialSet = ({
       <MreSelect
         dispatchType={'baseData/fetchSkuAvailableMerchant'}
         rowKey="merchantId"
-        keys={mreList.keys}
+        keys={['top'].includes(mreList.storeStatus) ? mreList.keys : mreList.settlerKeys}
         visible={visible}
-        mreList={mreList.list}
+        mreList={['top'].includes(mreList.storeStatus) ? mreList.keys : mreList.settlerList}
         pagination={false}
         params={{ groupId: mreList.groupId }}
         onOk={(val) => {
-          console.log(val);
-          saveMreData(val);
-          form.setFieldsValue({ merchantIds: val.keys, hexiaoIds: val.keys });
+          if (mreList.storeStatus === 'top') {
+            saveMreData({ ...val, settlerKeys: val.keys, settlerList: val.list });
+            form.setFieldsValue({ merchantIds: val.keys, settlerIds: val.keys });
+          } else {
+            saveMreData({ settlerKeys: val.keys, settlerList: val.list });
+            form.setFieldsValue({ settlerIds: val.keys });
+          }
         }}
         onCancel={() => setVisible(false)}
         columns={getColumns}
