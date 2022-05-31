@@ -461,7 +461,7 @@ const PreferentialSet = ({
     },
     {
       label: '其他平台价格',
-      name: 'otherPrice',
+      name: 'otherPlatformPrice',
       type: 'number',
       precision: 2,
       min: 0,
@@ -513,7 +513,7 @@ const PreferentialSet = ({
       label: '使用有效期',
       type: 'radio',
       select: SPECIAL_USERTIME_TYPE,
-      name: 'useTimeRule',
+      name: 'activityTimeRule',
       disabled: editDisabled,
       onChange: (e) => saveSelectData({ userTime: e.target.value }),
     },
@@ -652,7 +652,7 @@ const PreferentialSet = ({
       title: `展示信息`,
       label: '前端展示类型',
       type: 'radio',
-      name: 'showType',
+      name: 'displayType',
       select: SPECIAL_SHOW_TYPE,
       onChange: (e) => setGoodsDescType(e.target.value),
     },
@@ -708,7 +708,7 @@ const PreferentialSet = ({
       name: ['settleInfoReq', 'settlerType'],
       select: SPECIAL_BALANCE_TYPE,
       onChange: (e) => {
-        saveSelectData({ balanceType: e });
+        saveSelectData({ settlerType: e });
       },
     },
     {
@@ -718,6 +718,7 @@ const PreferentialSet = ({
       name: 'jiesuanType',
       select: BUSINESS_TYPE,
       disabled: true,
+      visible: ['merchant'].includes(mreList.settlerType),
       onChange: (e) => {
         saveMreData({
           type: e.target.value,
@@ -740,6 +741,7 @@ const PreferentialSet = ({
       disabled: commonDisabled,
       onSearch: fetchGetMre,
       disabled: true,
+      visible: ['merchant'].includes(mreList.settlerType),
       onChange: (val, data) => {
         const { option } = data;
         const { businessStatus, status } = option;
@@ -750,7 +752,7 @@ const PreferentialSet = ({
       label: '适用店铺',
       name: 'jiesuanIds',
       type: 'formItem',
-      visible: mreList.type == 'group',
+      visible: ['merchant'].includes(mreList.settlerType),
       rules: [{ required: true, message: '请选择店铺' }],
       formItem: (
         <Button type="primary" ghost onClick={() => setVisible(true)} disabled={true}>
@@ -760,7 +762,7 @@ const PreferentialSet = ({
     },
     {
       type: 'noForm',
-      visible: mreList.type === 'group',
+      visible: ['merchant'].includes(mreList.settlerType),
       formItem: (
         <MreSelectShow
           key="MreTable"

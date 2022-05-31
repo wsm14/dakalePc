@@ -16,7 +16,7 @@ export function fetchGiveGoods(data) {
 
 // get 周边特惠 - 列表
 export function fetchSpecialGoodsList(params) {
-  return request('/admin/specialGoodsManagement/listSpecialGoodsManagement', {
+  return request('/admin/offline/goods/admin/listOfflineGoodsByPage', {
     params,
   });
 }
