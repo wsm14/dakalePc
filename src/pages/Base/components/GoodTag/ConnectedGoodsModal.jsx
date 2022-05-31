@@ -29,6 +29,18 @@ const ConnectedGoodsModal = (props) => {
     childRef.current && childRef.current.fetchGetData({ goodsType: tabKey });
   }, [tabKey]);
 
+  // 搜索参数
+  const searchItems = [
+    {
+      label: '商品名称',
+      name: 'brandName',
+    },
+    {
+      label: '商品ID',
+      name: 'brandNsame',
+    },
+  ];
+
   const getColumns = [
     {
       title: '商品主图',
@@ -108,6 +120,7 @@ const ConnectedGoodsModal = (props) => {
           size="middle"
           cRef={childRef}
           loading={loading}
+          searchItems={searchItems}
           columns={getColumns}
           params={{ goodsTagId: id, goodsType: tabKey }}
           rowKey={(row) => `${row.goodsId}`}
