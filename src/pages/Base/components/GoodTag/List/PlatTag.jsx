@@ -1,14 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { connect } from 'umi';
-import TableDataBlock from '@/components/TableDataBlock';
-import TagSet from '../Form/TagSet';
 import { DragHandle } from '@/components/TableDataBlock/SortBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const TagManage = (props) => {
-  const { goodsTag, loading, dispatch, tabkey } = props;
-
-  const childRef = useRef();
-  const [visible, setVisible] = useState(false); // 修改新增框
+  const { goodsTag, loading, dispatch, childRef, tabkey, setVisible } = props;
 
   // 搜索参数
   const searchItems = [
@@ -56,14 +52,8 @@ const TagManage = (props) => {
       render: () => <DragHandle />,
     },
     {
-      title: '关联行业',
-      align: 'center',
-      dataIndex: 'configGoodsTagCategoryList',
-      render: (val, record) => val?.map((item) => item.categoryName).join(','),
-    },
-    {
       title: '启用状态',
-      align: 'center',
+      align: 'right',
       type: 'switch',
       dataIndex: 'status',
       render: (val, row) => {
@@ -91,8 +81,8 @@ const TagManage = (props) => {
             type: 'edit',
             click: () =>
               setVisible({
-                type: 'edit',
-                detail: { ...record, configGoodsTagCategoryList: categoryList, tabkey: tabkey },
+                mode: 'edit',
+                detail: { ...record, configGoodsTagCategoryList: categoryList, tagType: tabkey },
               }),
           },
         ];
@@ -100,32 +90,21 @@ const TagManage = (props) => {
     },
   ];
 
-  const extraBtn = [
-    {
-      text: '新增标签',
-      auth: 'save',
-      onClick: () => setVisible({ type: 'add', tabkey: tabkey }),
-    },
-  ];
-
   return (
-    <>
-      <TableDataBlock
-        btnExtra={extraBtn}
-        cRef={childRef}
-        loading={loading}
-        columns={getColumns}
-        searchItems={searchItems}
-        scroll={{ y: 500 }}
-        rowKey={(record) => `${record.configGoodsTagId}`}
-        dispatchType="goodsTag/fetchGoodsTagList"
-        params={{ tagType: tabkey }}
-        tableSort={{ key: 'configGoodsTagId', onSortEnd: fetchDetailSort }}
-        pagination={false}
-        {...goodsTag}
-      ></TableDataBlock>
-      <TagSet cRef={childRef} visible={visible} onClose={() => setVisible(false)}></TagSet>
-    </>
+    <TableDataBlock
+      noCard={false}
+      cRef={childRef}
+      loading={loading}
+      columns={getColumns}
+      scroll={{ y: 500 }}
+      searchItems={searchItems}
+      params={{ tagType: tabkey }}
+      dispatchType="goodsTag/fetchGoodsTagList"
+      rowKey={(record) => `${record.configGoodsTagId}`}
+      tableSort={{ key: 'configGoodsTagId', onSortEnd: fetchDetailSort }}
+      pagination={false}
+      {...goodsTag}
+    ></TableDataBlock>
   );
 };
 
