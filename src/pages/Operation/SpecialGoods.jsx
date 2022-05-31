@@ -192,9 +192,9 @@ const SpecialGoods = (props) => {
             }}
           >
             <div style={{ display: 'flex' }}>
-              {/* <Tag color={row.goodsType === 'single' ? 'orange' : 'magenta'}>
+              <Tag color={row.goodsType === 'single' ? 'orange' : 'magenta'}>
                 {GOODS_CLASS_TYPE[row.goodsType]}
-              </Tag> */}
+              </Tag>
               <Ellipsis length={10} tooltip>
                 {row.goodsName}
               </Ellipsis>
@@ -546,7 +546,7 @@ const SpecialGoods = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         params={{ deleteFlag: '1', selfTourFlag: tabKey }}
-        rowKey={(record) => `${record.specialGoodsId}`}
+        rowKey={(record) => `${record.goodsId}`}
         rowSelection={{
           getCheckboxProps: ({ status, deleteFlag }) => ({
             disabled: !['1', '2'].includes(status) || deleteFlag == '0', // 不是 活动中 即将开始 || 已删除

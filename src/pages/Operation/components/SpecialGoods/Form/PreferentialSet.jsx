@@ -851,6 +851,7 @@ const PreferentialSet = ({
         pagination={false}
         params={{ groupId: mreList.groupId }}
         onOk={(val) => {
+          console.log(val, 'val');
           if (mreList.storeStatus === 'top') {
             saveMreData({ ...val, settlerKeys: val.keys, settlerList: val.list });
             form.setFieldsValue({ merchantIds: val.keys, settlerIds: val.keys });
