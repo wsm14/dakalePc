@@ -1,9 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Modal } from 'antd';
+import { Modal, Badge } from 'antd';
+import { GOODS_TYPE } from '@/common/constant';
+import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
-import TableDataBlock from '@/components/TableDataBlock';
 import ExtraButton from '@/components/ExtraButton';
+import TableDataBlock from '@/components/TableDataBlock';
 // import SupplierBrandDrawer from './Brand/SupplierBrandDrawer';
 
 const tabList = [
@@ -45,29 +47,47 @@ const ConnectedGoodsModal = (props) => {
     {
       title: '商品主图',
       align: 'center',
-      dataIndex: 'brandName',
+      dataIndex: 'goodsImg',
       render: (val) => <PopImgShow url={val} />,
     },
     {
       title: '商品名称/ID',
       align: 'center',
-      dataIndex: 'authorizeCompany',
+      dataIndex: 'goodsName',
+      render: (val, row) => (
+        <div>
+          <Ellipsis length={8} tooltip>
+            {val}
+          </Ellipsis>
+          <div style={{ marginTop: 5 }}>{row.goodsId}</div>
+        </div>
+      ),
     },
     {
       title: '所属类目/供应商',
       align: 'center',
-      dataIndex: 'startDate',
+      dataIndex: 'ownerName',
+      render: (val, row) => (
+        <div>
+          <div style={{ marginTop: 5 }}>{row.categoryName}</div>
+          <Ellipsis length={8} tooltip>
+            {val}
+          </Ellipsis>
+        </div>
+      ),
     },
     {
       title: '零售价',
       align: 'center',
-      dataIndex: 'endDate',
+      dataIndex: 'price',
     },
     {
       title: '商品状态',
       align: 'center',
       dataIndex: 'status',
-      render: (val) => ['失效', '有效'][val],
+      render: (val) => (
+        <Badge status={val === '1' ? 'success' : 'error'} text={GOODS_TYPE[val]} />
+      ),
     },
     {
       type: 'handle',
@@ -77,17 +97,17 @@ const ConnectedGoodsModal = (props) => {
           type: 'del',
           title: '移除',
           auth: true,
-          click: () => fetchDelBrand(val),
+          click: () => fetchConfigGoodsDel(val),
         },
       ],
     },
   ];
 
   // 删除
-  const fetchDelBrand = (supplierBrandId) => {
+  const fetchConfigGoodsDel = () => {
     dispatch({
-      type: 'supplierManage/fetchSupplierBrandSet',
-      payload: { supplierBrandId, mode: 'del' },
+      type: 'goodsTag/fetchConfigGoodsSet',
+      payload: { configGoodsTagId: id, mode: 'del' },
       callback: childRef.current.fetchGetData,
     });
   };
@@ -141,5 +161,7 @@ const ConnectedGoodsModal = (props) => {
 
 export default connect(({ goodsTag, loading }) => ({
   configGoodsList: goodsTag.configGoodsList,
-  loading: loading.effects['goodsTag/fetchConfigGoodsList'],
+  loading:
+    loading.effects['goodsTag/fetchConfigGoodsList'] ||
+    loading.effects['goodsTag/fetchConfigGoodsSet'],
 }))(ConnectedGoodsModal);
