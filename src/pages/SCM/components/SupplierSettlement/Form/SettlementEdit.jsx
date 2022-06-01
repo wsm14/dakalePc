@@ -29,9 +29,9 @@ const SettlementEdit = (props) => {
       callback: (detail) =>
         form.setFieldsValue({
           supplierName: detail.name,
-          legalPerson: detail.legalPerson,
-          cardNo: detail.cardNo,
-          bankBranchName: detail.bankBranchName,
+          legalPerson: detail?.ownerBankBindingInfo?.bankBindingInfoObject?.legalPerson,
+          cardNo: detail?.ownerBankBindingInfo?.bankNumber,
+          bankBranchName: detail?.ownerBankBindingInfo?.bankName,
         }),
     });
   };
