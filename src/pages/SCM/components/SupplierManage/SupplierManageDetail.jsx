@@ -110,7 +110,7 @@ const SupplierManageDetail = (props) => {
                 <AccountInfo detail={detail}></AccountInfo>
               </TabPane>
               <TabPane tab="结算记录" key="5">
-                <SettlementInfo detail={detail}></SettlementInfo>
+                <SettlementInfo supplierId={supplierId} detail={detail}></SettlementInfo>
               </TabPane>
             </>
           )}

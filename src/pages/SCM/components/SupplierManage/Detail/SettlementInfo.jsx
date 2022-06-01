@@ -40,15 +40,15 @@ const SettlementInfo = (props) => {
       name: 'settleAmount',
     },
     {
-      label: '付款方户名',
+      label: '收款方户名',
       name: 'legalPerson',
     },
     {
-      label: '付款方账号',
+      label: '收款方账号',
       name: 'cardNo',
     },
     {
-      label: '付款方银行',
+      label: '收款方银行',
       name: 'bankBranchName',
     },
     {
