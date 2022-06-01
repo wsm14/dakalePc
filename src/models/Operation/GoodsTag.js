@@ -5,6 +5,9 @@ import {
   fetchGoodsTagUpdate,
   fetchGoodsTagSort,
   fetchGoodsTagSwitchStatus,
+  fetchConfigGoodsList,
+  fetchConfigGoodsDel,
+  fetchConfigGoodsAdd,
 } from '@/services/OperationServices';
 
 export default {
@@ -12,7 +15,7 @@ export default {
 
   state: {
     list: [],
-    total: 0,
+    configGoodsList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -33,10 +36,38 @@ export default {
         type: 'save',
         payload: {
           list: content.configGoodsTagDTOS,
-          // total: content.total,
         },
       });
       callback && callback(content.configGoodsTagDTOS);
+    },
+    *fetchConfigGoodsList({ payload }, { call, put }) {
+      const response = yield call(fetchConfigGoodsList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          configGoodsList: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+    *fetchConfigGoodsSet({ payload, callback }, { call }) {
+      const { mode, ...other } = payload;
+      const fetchApi = {
+        add: fetchConfigGoodsAdd,
+        del: fetchConfigGoodsDel,
+      }[mode];
+      const fetchText = {
+        add: '新增',
+        del: '移除',
+      }[mode];
+      const response = yield call(fetchApi, other);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `${fetchText}成功`,
+      });
+      callback();
     },
     *fetchGoodsTagAdd({ payload, callback }, { call }) {
       const response = yield call(fetchGoodsTagAdd, payload);

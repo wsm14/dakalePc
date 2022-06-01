@@ -720,6 +720,29 @@ export function fetchGoodsTagSwitchStatus(data) {
   });
 }
 
+// 商品标签 - 关联商品列表
+export function fetchConfigGoodsList(params) {
+  return request('/admin/goodsTag/pageListConfigGoodsTagRelatedGoods', {
+    params,
+  });
+}
+
+// 商品标签 - 关联商品列表 - 新增
+export function fetchConfigGoodsAdd(data) {
+  return request('/admin/goodsTag/batchSaveConfigGoodsTagRelatedGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 商品标签 - 关联商品列表 - 移除
+export function fetchConfigGoodsDel(data) {
+  return request('/admin/goodsTag/batchRemoveConfigGoodsTagRelatedGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 分类列表 end
 
 // 优惠券管理
