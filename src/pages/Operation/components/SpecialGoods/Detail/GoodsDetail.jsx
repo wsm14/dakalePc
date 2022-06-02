@@ -2,29 +2,22 @@ import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import SetMealTable from './SetMealTable';
 import MerchantListTable from './MerchantListTable';
-import { BUSINESS_TYPE, GOODS_CLASS_TYPE, SPECIAL_DESC_TYPE } from '@/common/constant';
+import {
+  BUSINESS_TYPE,
+  GOODS_CLASS_TYPE,
+  SPECIAL_DESC_TYPE,
+  BUSINESS_SALE_TYPE,
+} from '@/common/constant';
 
 const GoodsDetail = (props) => {
   const { detail, merchantList } = props;
-  const { goodsType, ownerType, goodsDescType, thirdFlag } = detail;
-
-  const GoodsTypeformItems = [
-    {
-      name: 'thirdFlag',
-      label: `商品类别`,
-      render: (val) => (val ? '自我游商品' : '特惠商品'),
-    },
-    {
-      name: 'thirdCode',
-      label: `自我游编码`,
-      show: thirdFlag == '2',
-    },
-  ];
+  const { ownerType, goodsDescType, thirdInfoResp = {}, productType } = detail;
+  const { thirdType } = thirdInfoResp;
 
   const ActiveformItems = [
     {
       title: '参与活动的店铺',
-      name: 'ownerType',
+      name: 'relateType',
       label: '店铺类型',
       render: (val) => BUSINESS_TYPE[val],
     },
@@ -36,23 +29,33 @@ const GoodsDetail = (props) => {
 
   const GoodFormItem = [
     {
-      name: 'goodsType',
+      name: ['thirdInfoResp', 'thirdType'],
+      label: `商品类别`,
+      render: (val) => (val ? '自我游商品' : '特惠商品'),
+    },
+    {
+      name: ['thirdInfoResp', 'thirdId'],
+      label: `自我游编码`,
+      show: thirdType == '2',
+    },
+    {
+      name: 'productType',
       label: '商品类型',
       render: (val) => GOODS_CLASS_TYPE[val],
     },
     {
-      name: 'activityGoodsImg',
-      label: `${GOODS_CLASS_TYPE[goodsType]}轮播图`,
+      name: 'goodsImg',
+      label: `${GOODS_CLASS_TYPE[productType]}轮播图`,
       type: 'upload',
     },
     {
       name: 'goodsName',
-      label: `${GOODS_CLASS_TYPE[goodsType]}名称`,
+      label: `${GOODS_CLASS_TYPE[productType]}名称`,
     },
     {
-      name: 'goodsType',
+      name: 'productType',
       label: '套餐单品',
-      show: goodsType == 'package',
+      show: productType == 'package',
       render: (val, row) => (
         <SetMealTable packageGroupObjects={row.packageGroupObjects || []}></SetMealTable>
       ),
@@ -61,20 +64,29 @@ const GoodsDetail = (props) => {
 
   const GoodPriceItem = [
     {
-      name: 'oriPrice',
-      label: `${GOODS_CLASS_TYPE[goodsType]}原价`,
+      name: ['skuInfoReq', 'oriPrice'],
+      label: `${GOODS_CLASS_TYPE[productType]}原价`,
     },
     {
-      name: 'realPrice',
+      name: ['skuInfoReq', 'costPrice'],
+      label: '成本价',
+    },
+    {
+      name: ['skuInfoReq', 'sellPrice'],
       label: '特惠价格',
     },
     {
-      name: 'merchantPrice',
+      name: ['skuInfoReq', 'settlePrice'],
       label: '商家结算价',
     },
     {
       name: 'otherPlatformPrice',
       label: '其他平台价格',
+    },
+    {
+      name: 'paymentModeType',
+      label: '售卖价格类型',
+      render: (val) => BUSINESS_SALE_TYPE[val],
     },
   ];
 
@@ -85,19 +97,19 @@ const GoodsDetail = (props) => {
       render: (val) => SPECIAL_DESC_TYPE[val],
     },
     {
-      label: `${GOODS_CLASS_TYPE[goodsType]}介绍`,
+      label: `${GOODS_CLASS_TYPE[productType]}介绍`,
       name: 'richText',
       show: goodsDescType === '1',
       render: (val) => <div dangerouslySetInnerHTML={{ __html: val }}></div>,
     },
     {
-      label: `${GOODS_CLASS_TYPE[goodsType]}介绍`,
+      label: `${GOODS_CLASS_TYPE[productType]}介绍`,
       name: 'goodsDesc',
       show: goodsDescType === '0',
       type: 'textArea',
     },
     {
-      label: `${GOODS_CLASS_TYPE[goodsType]}介绍图片`,
+      label: `${GOODS_CLASS_TYPE[productType]}介绍图片`,
       name: 'goodsDescImg',
       show: goodsDescType === '0',
       type: 'upload',
@@ -183,10 +195,6 @@ const GoodsDetail = (props) => {
 
   return (
     <>
-      <DescriptionsCondition
-        formItems={GoodsTypeformItems}
-        initialValues={detail}
-      ></DescriptionsCondition>
       <DescriptionsCondition
         title="参与活动的店铺"
         formItems={ActiveformItems}
