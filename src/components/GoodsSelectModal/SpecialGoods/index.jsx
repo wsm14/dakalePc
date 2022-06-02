@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
 import { GOODS_CLASS_TYPE, TAG_COLOR_TYPE } from '@/common/constant';
@@ -6,9 +6,22 @@ import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const SpecialGoods = (props) => {
-  const { id, specialGoodsList, selectType, handleSelectItem, loading } = props;
+  const {
+    visible,
+    searchValue,
+    selectItem,
+    specialGoodsList,
+    selectType,
+    handleSelectItem,
+    loading,
+  } = props;
 
-  const childRef = useRef();
+  const tableRef = useRef(null);
+
+  useEffect(() => {
+    const { id, ...other } = searchValue;
+    visible && id && tableRef.current.fetchGetData({ merchantId: id, ...other });
+  }, [visible, searchValue]);
 
   const getColumns = [
     {
@@ -59,7 +72,7 @@ const SpecialGoods = (props) => {
       title: '库存',
       align: 'right',
       dataIndex: 'remain',
-      render: (val) => `剩余${val}张`,
+      render: (val) => `剩 ${val}`,
     },
   ];
 
@@ -67,17 +80,15 @@ const SpecialGoods = (props) => {
     <TableDataBlock
       tableSize="small"
       noCard={false}
-      // firstFetch={false}
-      cRef={childRef}
+      firstFetch={false}
+      cRef={tableRef}
       loading={loading}
       columns={getColumns}
-      params={{
-        merchantId: '1425385024611303425',
-        goodsStatus: 1,
-      }}
+      params={{ goodsStatus: 1 }}
       scroll={{ y: 400 }}
       rowSelection={{
         type: selectType,
+        selectedRowKeys: selectItem.keys,
         preserveSelectedRowKeys: true,
         getCheckboxProps: (record) => ({
           disabled: record.name === '',
@@ -87,7 +98,7 @@ const SpecialGoods = (props) => {
           handleSelectItem(selectedRowKeys, selectedRows);
         },
       }}
-      rowKey={(row) => `${row.activityGoodsId}`}
+      rowKey={(row) => `${row.activityGoodsId || row.specialGoodsId}`}
       dispatchType="baseData/fetchGetSpecialGoodsSelect"
       {...specialGoodsList}
     ></TableDataBlock>

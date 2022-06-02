@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'umi';
 import { Modal, Tabs } from 'antd';
 import SearchCondition from '@/components/SearchCondition';
 import ReduceCoupon from './ReduceCoupon';
@@ -9,28 +8,28 @@ import CommerceGoods from './CommerceGoods';
 const { TabPane } = Tabs;
 /**
  * 商品选择弹窗
- * @param {String} selectType checkbox | radio
+ * @param {String} selectType 选择的类型 单选多选 默认多选 checkbox | radio
+ * @param {Array} hiddenTag 隐藏的类型 可选 ["reduceCoupon","specialGoods","commerceGoods"]
  * @returns
  */
 const GoodsSelectModal = (props) => {
   const {
-    couponList,
-    specialGoodsList,
-    merchantId,
-    dispatch,
-    visible,
-    onClose,
-    onOk,
-    loading,
+    visible = true,
     selectType = 'checkbox', // checkbox | radio
-    typeGoods = 'specialGoods',
+    hiddenTag = [],
+    onOk,
+    onClose,
   } = props;
 
   const [selectItem, setSelectItem] = useState({ keys: [] }); // 当前选择项
-  const [tabKey, setTabKey] = useState('reduceCoupon'); // tab类型
-  const [searchValue, setSearchValue] = useState(''); // 搜索值
+  const [searchValue, setSearchValue] = useState({}); // 搜索值
 
-  useEffect(() => {}, [visible, tabKey, searchValue]);
+  // 点击选择
+  const handleSelectItem = (newKeys = [], newlist = []) => {
+    setSelectItem(({ keys = [], list = [] }) => {
+      return { keys: [...keys, ...newKeys], list: [...list, ...newlist] };
+    });
+  };
 
   // 搜索参数
   const searchItems = [
@@ -46,57 +45,41 @@ const GoodsSelectModal = (props) => {
     },
   ];
 
-  // 获取特惠活动
-  const fetchSelectGoodsList = (data) => {
-    if (!data?.id) return;
-    const payload = {
-      reduceCoupon: {
-        type: 'baseData/fetchGetBuyCouponSelect',
-        data: {
-          merchantId: data.id,
-          couponName: data.goodsName,
-          goodsStatus: 1,
-          couponType: 'reduce',
-          buyFlag: 1, // 有价券
-        },
-      },
-      specialGoods: {
-        type: 'baseData/fetchGetSpecialGoodsSelect',
-        data: { goodsStatus: 1, merchantId: data.id },
-      },
-      rightGoods: {
-        type: 'baseData/fetchGetPlatformEquitySelect',
-        data: { buyFlag: 1, relateId: data.id },
-      },
-    }[typeGoods];
-    dispatch({
-      type: payload.type,
-      payload: {
-        ...payload.data,
-        page: 1,
-        limit: 999,
-      },
-    });
-  };
-
-  // 点击选择
-  const handleSelectItem = (keys = [], list = []) => {
-    setSelectItem({ keys, list });
-  };
-
   const propsComponents = {
+    visible,
     selectItem,
     selectType,
+    searchValue,
     handleSelectItem,
   };
+
+  const tabPaneList = [
+    {
+      tab: '有价券',
+      key: 'reduceCoupon',
+      show: !hiddenTag.includes('reduceCoupon'),
+      content: <ReduceCoupon {...propsComponents}></ReduceCoupon>,
+    },
+    {
+      tab: '特惠商品',
+      key: 'specialGoods',
+      show: !hiddenTag.includes('specialGoods'),
+      content: <SpecialGoods {...propsComponents}></SpecialGoods>,
+    },
+    {
+      tab: '电商品',
+      key: 'commerceGoods',
+      show: !hiddenTag.includes('commerceGoods'),
+      content: <CommerceGoods {...propsComponents}></CommerceGoods>,
+    },
+  ];
 
   return (
     <Modal
       title={`选择内容`}
       width={900}
-      visible={false}
+      visible={visible}
       afterClose={() => {
-        setTabKey('reduceCoupon');
         setSelectItem({});
       }}
       // maskStyle={{ background: 'none' }}
@@ -107,7 +90,7 @@ const GoodsSelectModal = (props) => {
         disabled: !selectItem.keys.length,
       }}
       onOk={() => {
-        onOk({ ...selectItem, promotionType: tabKey });
+        onOk({ ...selectItem });
         onClose();
       }}
       onCancel={onClose}
@@ -115,25 +98,20 @@ const GoodsSelectModal = (props) => {
       <SearchCondition
         colForm={{ xxl: 12 }}
         searchItems={searchItems}
-        handleSearch={fetchSelectGoodsList}
+        handleSearch={setSearchValue}
       ></SearchCondition>
-      <Tabs type="card" onChange={setTabKey} style={{ overflow: 'initial' }}>
-        <TabPane tab="有价券" key="reduceCoupon">
-          <ReduceCoupon {...propsComponents}></ReduceCoupon>
-        </TabPane>
-        <TabPane tab="特惠商品" key="specialGoods">
-          <SpecialGoods {...propsComponents}></SpecialGoods>
-        </TabPane>
-        <TabPane tab="电商品" key="commerceGoods">
-          <CommerceGoods {...propsComponents}></CommerceGoods>
-        </TabPane>
+      <Tabs destroyInactiveTabPane type="card" style={{ overflow: 'initial' }}>
+        {tabPaneList.map(
+          (pane) =>
+            pane.show && (
+              <TabPane tab={pane.tab} key={pane.key}>
+                {pane.content}
+              </TabPane>
+            ),
+        )}
       </Tabs>
     </Modal>
   );
 };
 
-export default connect(({ baseData, loading }) => ({
-  couponList: baseData.buyCoupon,
-  specialGoodsList: baseData.specialGoods,
-  loading,
-}))(GoodsSelectModal);
+export default GoodsSelectModal;
