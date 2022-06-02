@@ -154,7 +154,6 @@ const BusinessAuditList = (props) => {
   return (
     <>
       <TableDataBlock
-        
         btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
