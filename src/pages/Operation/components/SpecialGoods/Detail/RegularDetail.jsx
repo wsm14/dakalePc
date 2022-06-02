@@ -17,13 +17,13 @@ const RegularDetail = (props) => {
             )}`,
     },
     {
-      name: 'goodsType',
+      name: 'useTimeRuleObject',
       label: '使用有效期',
       render: (val, row) => {
-        const { useStartTime, useEndTime, useTimeRule, delayDays, activeDays } = row;
-        if (!useTimeRule) return '';
-        if (useTimeRule === 'fixed') {
-          return useStartTime[0].format('YYYY-MM-DD') + '~' + useStartTime[1].format('YYYY-MM-DD');
+        const { startDate, type, delayDays, activeDays } = val;
+        if (!type) return '';
+        if (type === 'fixed') {
+          return startDate[0].format('YYYY-MM-DD') + '~' + startDate[1].format('YYYY-MM-DD');
         } else {
           if (delayDays === '0') {
             return `领取后立即生效\n有效期${activeDays}天`;
@@ -33,9 +33,10 @@ const RegularDetail = (props) => {
       },
     },
     {
-      name: 'useTime', // COUPON_USER_TIME
+      name: 'useTimeRuleObject', // COUPON_USER_TIME
       label: '适用时段',
       render: (val, row) => {
+        const { useDay } = val;
         let week = '每周';
         if (row.timeSplit == 'part') {
           row.useWeek.forEach((item, index) => {
@@ -44,14 +45,14 @@ const RegularDetail = (props) => {
           });
         }
         const times =
-          val.length > 0
-            ? val[0].format('HH:mm:ss') + '-' + val[1].format('HH:mm:ss')
+          useDay.length > 0
+            ? useDay[0].format('HH:mm:ss') + '-' + useDay[1].format('HH:mm:ss')
             : row.timeType;
         return <>{row.timeSplit == 'part' ? `${week}--${times}` : `每天--${times}`}</>;
       },
     },
     {
-      name: 'total',
+      name: ['useTimeRuleObject', 'total'],
       label: '投放总量',
       render: (val) => (val ? `${val}份` : '--'),
     },
@@ -76,6 +77,16 @@ const RegularDetail = (props) => {
       render: (val) => (val == 1 ? '是' : '否'),
     },
     {
+      name: 'allowRefund',
+      label: '是否允许随时退款',
+      render: (val) => (val == 1 ? '是' : '否'),
+    },
+    {
+      name: 'expireRefund',
+      label: '是否允许过期退款',
+      render: (val) => (val == 1 ? '是' : '否'),
+    },
+    {
       name: 'buyDesc',
       label: '购买须知',
       render: (val) => val.map((items, ins) => <div key={ins}>{items}</div>),
@@ -97,6 +108,83 @@ const RegularDetail = (props) => {
       ),
     },
   ];
+  const ExhibitionItem = [
+    {
+      name: 'displayType',
+      label: '前端展示类型',
+      render: (val, row) => SPECIAL_SHOW_TYPE[row.paymentModeType][val],
+    },
+    {
+      name: 'displayType',
+      label: 'availableAreas',
+      render: (val, row) => val,
+    },
+    {
+      label: '平台商品标签',
+      name: 'platformGoodsTagList',
+      // show: detail.goodsTagList,
+      render: (val, row) => {
+        const { platformGoodsTagList = [] } = row;
+        const tags = platformGoodsTagList.filter((items) => items.tagType === 'platform');
+        return (
+          <>
+            {tags &&
+              tags.map((tag) => (
+                <span
+                  style={{
+                    display: 'inline-block',
+                    padding: 8,
+                    margin: '5px',
+                    border: '1px solid #ddd',
+                  }}
+                  key={tag.configGoodsTagId}
+                >
+                  {tag.tagName}
+                </span>
+              ))}
+          </>
+        );
+      },
+    },
+    {
+      label: '平台商品标签',
+      name: 'platformGoodsTagList',
+      // show: detail.goodsTagList,
+      render: (val, row) => {
+        const { platformGoodsTagList = [] } = row;
+        const tags = platformGoodsTagList.filter((items) => items.tagType === 'platform');
+        return (
+          <>
+            {tags &&
+              tags.map((tag) => (
+                <span
+                  style={{
+                    display: 'inline-block',
+                    padding: 8,
+                    margin: '5px',
+                    border: '1px solid #ddd',
+                  }}
+                  key={tag.configGoodsTagId}
+                >
+                  {tag.tagName}
+                </span>
+              ))}
+          </>
+        );
+      },
+    },
+  ];
+  const SettlementItem = [
+    {
+      name: 'settlerType',
+      label: '结算人类型',
+      render: (val, row) => SPECIAL_BALANCE_TYPE[val],
+    },
+    {
+      name: 'settlerType',
+      label: '结算店铺名称',
+    },
+  ];
 
   return (
     <>
@@ -108,6 +196,16 @@ const RegularDetail = (props) => {
       <DescriptionsCondition
         title="购买规则"
         formItems={BuyRegularItem}
+        initialValues={detail}
+      ></DescriptionsCondition>
+      <DescriptionsCondition
+        title="展示信息"
+        formItems={ExhibitionItem}
+        initialValues={detail}
+      ></DescriptionsCondition>
+      <DescriptionsCondition
+        title="结算信息"
+        formItems={SettlementItem}
         initialValues={detail}
       ></DescriptionsCondition>
     </>

@@ -53,38 +53,45 @@ export default {
       const { type, ...other } = payload;
       const response = yield call(fetchSpecialGoodsDetail, { ...other });
       if (!response) return;
-      const { ownerId, specialGoodsId } = payload;
+      const { ownerId, goodsId } = payload;
       const { content } = response;
-      const { specialGoodsInfo = {}, divisionFlag } = content;
+      const {
+        offlineDetail = {},
+        //  divisionFlag
+      } = content;
       const {
         allowRefund,
         allowExpireRefund,
         needOrder,
-        activityStartTime,
-        activityEndTime,
-        useStartTime,
-        useEndTime,
+        availableAreas, //城市
+        activityStartDate,
+        activityEndDate,
+        useTimeRuleObject = {}, //销售时间
+        settleInfoReq = {},
         buyDesc = '[]',
-        useTimeRule,
         activityTimeRule: activeTime,
-        useTime = '00:00-23:59',
+        // relateIdString: relateId,
+      } = offlineDetail;
+      const { settlerId, settlerType } = settleInfoReq;
+      const {
+        startDate,
+        endDate,
+        type: useTimeRule,
+        useDay = '00:00-23:59',
         useWeek = '1,2,3,4,5,6,7',
-        relateIdString: relateId,
-      } = specialGoodsInfo;
+      } = useTimeRuleObject;
       let newDetail = {};
 
       // 可编辑 info 查看 /  edit 修改所有数据 / again 重新发布 / againUp
       if (['info', 'edit', 'again', 'againUp'].includes(type)) {
         newDetail = {
-          activityStartTime:
-            activeTime === 'infinite' ? [] : [moment(activityStartTime), moment(activityEndTime)],
-          useStartTime: useTimeRule === 'fixed' ? [moment(useStartTime), moment(useEndTime)] : [],
+          activityStartDate:
+            activeTime === 'infinite' ? [] : [moment(activityStartDate), moment(activityEndDate)],
+          startDate: useTimeRule === 'fixed' ? [moment(startDate), moment(endDate)] : [],
           timeSplit: useWeek === '1,2,3,4,5,6,7' ? useWeek : 'part',
-          timeType: useTime === '00:00-23:59' ? useTime : 'part',
-          useTime:
-            useTime === '00:00-23:59'
-              ? []
-              : useTime.split('-').map((item) => moment(item, 'HH:mm')),
+          timeType: useDay === '00:00-23:59' ? useDay : 'part',
+          useDay:
+            useDay === '00:00-23:59' ? [] : useDay.split('-').map((item) => moment(item, 'HH:mm')),
           useWeek: useWeek === '1,2,3,4,5,6,7' ? [] : useWeek.split(','),
         };
       }
@@ -93,23 +100,35 @@ export default {
       if (type === 'again' && activeTime === 'fixed') {
         let d = new Date();
         const today = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
-        if (today > activityStartTime) {
+        if (today > activityStartDate) {
           activeTimes = {
-            activityStartTime: [],
+            activityStartDate: [],
           };
         }
       }
+
+      let cityList = [];
+      if (availableAreas !== 'all') {
+        cityList = availableAreas.split('.').map((item) => {
+          return { city: [item.slice(0, 2), item.slice(0, 4)] };
+        });
+      }
+
       callback({
-        ...content.specialGoodsInfo,
+        ...content.offlineDetail,
         ...newDetail,
         ...activeTimes,
-        relateId,
+        // relateId,
+        settlerId,
+        settlerType,
         ownerId,
-        id: specialGoodsId,
-        divisionFlag,
+        id: goodsId,
+        availableAreas: availableAreas === 'all' ? availableAreas : 'city',
+        cityList,
+        // divisionFlag,
         buyDesc: buyDesc.includes(']') ? JSON.parse(buyDesc || '[]') : [],
-        allowRefund: Number(allowRefund),
-        allowExpireRefund: Number(allowExpireRefund),
+        // allowRefund: Number(allowRefund),
+        // allowExpireRefund: Number(allowExpireRefund),
         needOrder: Number(needOrder),
       });
     },
@@ -118,7 +137,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '特惠活动新增成功，等待平台审核',
+        description: '特惠活动新增成功',
       });
       callback();
     },

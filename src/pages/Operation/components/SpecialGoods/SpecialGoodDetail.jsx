@@ -91,21 +91,17 @@ const SpecialGoodDetail = (props) => {
       {/* 驳回原因
       {status == '4' && <Alert message={`驳回原因：${detail.failureReason}`} type="error" banner />} */}
       {/* 信息展示 */}
-      <Tabs defaultActiveKey="1" onChange={handleTabChange}>
-        <Tabs.TabPane tab="商品信息" key="1">
-          <GoodsDetailForm
-            detail={detail}
-            form={form}
-            merchantList={merchantList}
-          ></GoodsDetailForm>
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="投放规则" key="2">
-          <RegularDetail detail={detail}></RegularDetail>
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="审核记录" key="3">
+      {/* <Tabs defaultActiveKey="1" onChange={handleTabChange}> */}
+      {/* <Tabs.TabPane tab="商品信息" key="1"> */}
+      <GoodsDetailForm detail={detail} form={form} merchantList={merchantList}></GoodsDetailForm>
+      {/* </Tabs.TabPane> */}
+      {/* <Tabs.TabPane tab="投放规则" key="2"> */}
+      {/* <RegularDetail detail={detail}></RegularDetail> */}
+      {/* </Tabs.TabPane> */}
+      {/* <Tabs.TabPane tab="审核记录" key="3">
           <CheckRecord recordList={recordList}></CheckRecord>
-        </Tabs.TabPane>
-      </Tabs>
+        </Tabs.TabPane> */}
+      {/* </Tabs> */}
       {/* 审核时输入 其他平台价格
       {status == '3' && (
         <FormCondition formItems={formItems} form={form} style={{ marginTop: 10 }}></FormCondition>

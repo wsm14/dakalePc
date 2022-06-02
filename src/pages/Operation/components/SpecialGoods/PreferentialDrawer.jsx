@@ -27,7 +27,7 @@ const PreferentialDrawer = (props) => {
 
   // 搜索店铺
   const fetchGetMre = () => {
-    const { merchantName, ownerType } = detail;
+    const { merchantName, relateType } = detail;
     if (!merchantName) return;
     dispatch({
       type: 'baseData/fetchGetGroupMreList',
@@ -37,7 +37,7 @@ const PreferentialDrawer = (props) => {
         bankStatus: 3,
         businessStatus: 1,
         merchantName,
-        groupFlag: ownerType === 'merchant' ? 0 : 1,
+        groupFlag: relateType === 'merchant' ? 0 : 1,
       },
     });
   };
@@ -49,8 +49,9 @@ const PreferentialDrawer = (props) => {
       const {
         goodsImg,
         goodsDescImg,
-        goodsTags = [],
-        merchantIds = [],
+        platformTagIds = [],
+        displayFilterTags = [],
+        relationOwnerIds = [],
         businessStatus,
         status,
         activityStartDate,
@@ -61,10 +62,12 @@ const PreferentialDrawer = (props) => {
         useTime,
         buyDesc = [],
         settlerType,
-        settlerIds = [],
+        settlerId,
         startDate,
         availableAreas,
-        cityList,
+        cityList = [],
+        thirdId,
+        thirdType,
         useTimeRuleObject = {},
         ...other
       } = values;
@@ -73,38 +76,6 @@ const PreferentialDrawer = (props) => {
       const cityIds = cityList.map((item) => {
         return item?.city[item?.city.length - 1];
       });
-
-      // aliOssUpload([...aimg, ...gimg]).then((res) => {
-      //   console.log(cityIds, settlerIds, timeSplit, useWeek);
-      //   console.log({
-      //     id,
-      //     ...other,
-      //     richText: content, // 富文本内容
-      //     goodsTags: goodsTags.toString(),
-      //     merchantIds: merchantIds.toString(),
-      //     goodsImg: res.slice(0, aimg.length).toString(),
-      //     goodsDescImg: res.slice(aimg.length).toString(),
-      //     activityStartDate: activityStartDate && activityStartDate[0].format('YYYY-MM-DD'),
-      //     activityEndDate: activityStartDate && activityStartDate[1].format('YYYY-MM-DD'),
-      //     settleInfoReq: {
-      //       settlerId: settlerIds.toString(),
-      //       settlerType: settlerType,
-      //     },
-      //     availableAreas: availableAreas === 'all' ? availableAreas : cityIds.toString(),
-      //     useTimeRuleObject: {
-      //       ...useTimeRuleObject,
-      //       startDate: startDate && startDate[0].format('YYYY-MM-DD'),
-      //       useEndTime: startDate && startDate[1].format('YYYY-MM-DD'),
-      //       useWeek: timeSplit !== 'part' ? timeSplit : useWeek.toString(),
-      //       useDay:
-      //         timeType !== 'part'
-      //           ? timeType
-      //           : `${useTime[0].format('HH:mm')}-${useTime[1].format('HH:mm')}`,
-      //     },
-      //     buyDesc: buyDesc.filter((i) => i).length ? buyDesc.filter((i) => i) : undefined,
-      //   });
-      // });
-      // return;
       aliOssUpload([...aimg, ...gimg]).then((res) => {
         dispatch({
           type: {
@@ -117,17 +88,24 @@ const PreferentialDrawer = (props) => {
             id,
             ...other,
             richText: content, // 富文本内容
-            goodsTags: goodsTags.toString(),
-            merchantIds: merchantIds.toString(),
+            ownerType: 'admin',
+            ownerId: '-1',
+            platformTagIds: platformTagIds.toString(),
+            displayFilterTags: displayFilterTags.toString(),
+            relationOwnerIds: relationOwnerIds.toString(),
             goodsImg: res.slice(0, aimg.length).toString(),
             goodsDescImg: res.slice(aimg.length).toString(),
             activityStartDate: activityStartDate && activityStartDate[0].format('YYYY-MM-DD'),
             activityEndDate: activityStartDate && activityStartDate[1].format('YYYY-MM-DD'),
             settleInfoReq: {
-              settlerId: settlerIds.toString(),
+              settlerId,
               settlerType: settlerType,
             },
             availableAreas: availableAreas === 'all' ? availableAreas : cityIds.toString(),
+            thirdInfoReq: {
+              thirdId,
+              thirdType,
+            },
             useTimeRuleObject: {
               ...useTimeRuleObject,
               startDate: startDate && startDate[0].format('YYYY-MM-DD'),
@@ -170,8 +148,8 @@ const PreferentialDrawer = (props) => {
           {...listProp}
           form={form}
           initialValues={{
-            thirdFlag: '1',
-            ownerType: 'merchant',
+            thirdType: '1',
+            relateType: 'merchant',
             settlerType: 'merchant',
             availableAreas: 'all',
             productType: 'single',

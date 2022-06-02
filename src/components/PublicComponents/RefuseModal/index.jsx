@@ -21,7 +21,7 @@ const RefuseModal = (props) => {
   const formItems = [
     {
       label: `${showProps}原因`,
-      type: 'textArea',
+      type: 'offShelfReason',
       name: key,
       maxLength,
       extra,

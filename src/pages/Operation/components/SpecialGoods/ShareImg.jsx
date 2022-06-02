@@ -12,7 +12,7 @@ const ShareImg = (props) => {
     show = false,
     goodsName,
     ownerName,
-    specialGoodsId = '',
+    goodsId = '',
     ownerIdString = '',
     initialValues = {},
   } = visible;
@@ -61,7 +61,7 @@ const ShareImg = (props) => {
       dispatch({
         type: 'specialGoods/fetchSpecialGoodsShareEdit',
         payload: {
-          id: specialGoodsId,
+          id: goodsId,
           ownerId: ownerIdString,
           shareImg: sImg.toString(),
           friendShareImg: fImg.toString(),
