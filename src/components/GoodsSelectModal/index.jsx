@@ -14,7 +14,7 @@ const { TabPane } = Tabs;
  */
 const GoodsSelectModal = (props) => {
   const {
-    visible = true,
+    visible = false,
     selectType = 'checkbox', // checkbox | radio
     hiddenTag = [],
     onOk,
