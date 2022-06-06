@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Modal, Tabs } from 'antd';
 import SearchCondition from '@/components/SearchCondition';
 import ReduceCoupon from './ReduceCoupon';
@@ -26,9 +26,7 @@ const GoodsSelectModal = (props) => {
 
   // 点击选择
   const handleSelectItem = (newKeys = [], newlist = []) => {
-    setSelectItem(({ keys = [], list = [] }) => {
-      return { keys: [...keys, ...newKeys], list: [...list, ...newlist] };
-    });
+    setSelectItem({ keys: newKeys, list: newlist });
   };
 
   // 搜索参数
@@ -90,7 +88,7 @@ const GoodsSelectModal = (props) => {
         disabled: !selectItem.keys.length,
       }}
       onOk={() => {
-        onOk({ ...selectItem });
+        onOk(selectItem);
         onClose();
       }}
       onCancel={onClose}
