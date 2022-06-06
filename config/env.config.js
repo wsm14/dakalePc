@@ -32,10 +32,10 @@ export default {
         target,
         changeOrigin: true,
       },
-      '/1034470': {
-        target: mockTarget,
-        changeOrigin: true,
-      },
+      // '/': {
+      //   target: mockTarget,
+      //   changeOrigin: true,
+      // },
     },
   },
   test: {

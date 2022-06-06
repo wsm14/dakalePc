@@ -16,14 +16,14 @@ export function fetchGiveGoods(data) {
 
 // get 周边特惠 - 列表
 export function fetchSpecialGoodsList(params) {
-  return request('/1034470/admin/offline/goods/admin/listOfflineGoodsByPage', {
+  return request('/admin/offline/goods/admin/listOfflineGoodsByPage', {
     params,
   });
 }
 
 // get 周边特惠 - 详情
 export function fetchSpecialGoodsDetail(params) {
-  return request('/1034470/admin/offline/goods/admin/getGoodsForUpdate', {
+  return request('/admin/offline/goods/admin/getGoodsForUpdate', {
     params,
   });
 }
@@ -44,7 +44,7 @@ export function fetchSpecialGoodsQrCode(params) {
 
 // post 周边特惠 - 下架
 export function fetchSpecialGoodsStatus(data) {
-  return request('/1034470//admin/offline/goods/admin/offShelfOffline', {
+  return request('/admin/offline/goods/admin/offShelfOffline', {
     method: 'POST',
     data,
   });
@@ -52,7 +52,7 @@ export function fetchSpecialGoodsStatus(data) {
 
 // post 周边特惠 - 分享图修改
 export function fetchSpecialGoodsShareEdit(data) {
-  return request('/1034470/admin/offline/goods/admin/updateOnlineGoods', {
+  return request('/admin/offline/goods/admin/updateOnlineGoods', {
     method: 'POST',
     data,
   });
@@ -60,7 +60,7 @@ export function fetchSpecialGoodsShareEdit(data) {
 
 // post 周边特惠 - 编辑
 export function fetchSpecialGoodsEdit(data) {
-  return request('/1034470/admin/offline/goods/admin/updateOnlineGoods', {
+  return request('/admin/offline/goods/admin/updateOnlineGoods', {
     method: 'POST',
     data,
   });
@@ -68,7 +68,7 @@ export function fetchSpecialGoodsEdit(data) {
 
 // post 周边特惠 - 新增
 export function fetchSpecialGoodsSave(data) {
-  return request('/1034470/admin/offline/goods/admin/saveOfflineGoods', {
+  return request('/admin/offline/goods/admin/saveOfflineGoods', {
     method: 'POST',
     data,
   });
@@ -106,7 +106,7 @@ export function fetchSpecialToTop(data) {
 
 // 特惠增加库存
 export function fetchSpecialGoodsAddRemain(data) {
-  return request('/1034470/admin/stock/admin/addStock', {
+  return request('/admin/stock/admin/addStock', {
     method: 'POST',
     data,
   });

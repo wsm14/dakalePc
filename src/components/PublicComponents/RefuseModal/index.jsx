@@ -8,7 +8,6 @@ const RefuseModal = (props) => {
   const { type = 'refuse', key = 'rejectReason', maxLength = 50 } = formProps;
 
   const [form] = Form.useForm();
-
   const showProps = { refuse: '驳回', down: '下架', disable: '禁用' }[type];
 
   // 确认提交
@@ -21,7 +20,7 @@ const RefuseModal = (props) => {
   const formItems = [
     {
       label: `${showProps}原因`,
-      type: 'offShelfReason',
+      type: 'textArea',
       name: key,
       maxLength,
       extra,

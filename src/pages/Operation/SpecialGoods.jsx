@@ -46,7 +46,7 @@ const SpecialGoods = (props) => {
   const [tabKey, setTabKey] = useState('0'); // tab
   const [visibleSet, setVisibleSet] = useState(false); // 新增特惠活动
   const [searchType, setSearchType] = useState(null); // 搜索类型
-  const [goodsList, setGoodsList] = useState([]); // 选择推荐的商品
+  // const [goodsList, setGoodsList] = useState([]); // 选择推荐的商品
   const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 审核拒绝 下架原因
   const [qrcode, setQrcode] = useState({ url: null, title: '' }); // 商品码
@@ -55,15 +55,15 @@ const SpecialGoods = (props) => {
 
   const search_recommend = { notPromoted: '未推广', ...SPECIAL_RECOMMEND_TYPE };
 
-  useEffect(() => {
-    childRef.current && childRef.current.fetchGetData({ deleteFlag: '1', selfTourFlag: tabKey });
-  }, [tabKey]);
+  // useEffect(() => {
+  //   childRef.current && childRef.current.fetchGetData({ deleteFlag: '1', selfTourFlag: tabKey });
+  // }, [tabKey]);
 
-  useEffect(() => {
-    if (childRef.current) {
-      childRef.current.fetchGetData();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (childRef.current) {
+  //     childRef.current.fetchGetData();
+  //   }
+  // }, []);
 
   // 获取商圈
   const fetchGetHubSelect = (districtCode) => {
@@ -81,11 +81,11 @@ const SpecialGoods = (props) => {
       label: '商品名称',
       name: 'goodsName',
     },
-    // {
-    //   label: '集团/店铺名',
-    //   name: 'ownerId',
-    //   type: 'merchant',
-    // },
+    {
+      label: '集团/店铺名',
+      name: 'relateName',
+      // type: 'merchant',
+    },
     {
       label: '活动状态',
       name: 'status',
@@ -99,13 +99,13 @@ const SpecialGoods = (props) => {
     //   allItem: false,
     //   select: ['已删除', '未删除'],
     // },
-    {
-      label: '活动有效期',
-      type: 'rangePicker',
-      name: 'activityStartDate',
-      end: 'activityEndDate',
-      disabledDate: () => false,
-    },
+    // {
+    //   label: '活动有效期',
+    //   type: 'rangePicker',
+    //   name: 'activityStartDate',
+    //   end: 'activityEndDate',
+    //   disabledDate: () => false,
+    // },
     // {
     //   label: '使用有效期',
     //   type: 'select',
@@ -235,7 +235,7 @@ const SpecialGoods = (props) => {
             </div>
             <div style={{ display: 'flex', marginTop: 5 }}>
               <Ellipsis length={10} tooltip>
-                {row.ownerName}
+                {checkCityName(row.districtCode)}
               </Ellipsis>
             </div>
           </div>
@@ -261,13 +261,13 @@ const SpecialGoods = (props) => {
         );
       },
     },
-    // {
-    //   title: '佣金',
-    //   align: 'right',
-    //   dataIndex: 'sellPrice',
-    //   render: (val, row) => `￥${val}`,
-    //   sorter: (a, b) => Number(a.commission) - Number(b.commission),
-    // },
+    {
+      title: '佣金',
+      align: 'right',
+      dataIndex: 'commission',
+      render: (val) => `￥${val}`,
+      sorter: (a, b) => Number(a.commission) - Number(b.commission),
+    },
     // {
     //   title: '其它平台价格',
     //   align: 'right',
@@ -277,24 +277,25 @@ const SpecialGoods = (props) => {
       title: '活动时间',
       align: 'center',
       dataIndex: 'activityStartDate',
-      render: (val, row) => (
-        <>
-          {row.activityTimeRule === 'infinite'
-            ? `${row.createTime} ~ 长期`
-            : `${val} ~ ${row.activityEndDate}`}
-          <div>
-            {row.deleteFlag === '0'
-              ? SPECIAL_RECOMMEND_DELSTATUS[row.deleteFlag]
-              : SPECIAL_STATUS[row.status]}
-          </div>
-        </>
-      ),
+      render: (val, row) => `${val}~\n${row.activityEndDate}`,
+      // render: (val, row) => (
+      //   <>
+      //     {row.activityTimeRule === 'infinite'
+      //       ? `${row.activityStartDate} ~ 长期`
+      //       : `${val} ~ ${row.activityEndDate}`}
+      //     <div>
+      //       {row.deleteFlag === '0'
+      //         ? SPECIAL_RECOMMEND_DELSTATUS[row.deleteFlag]
+      //         : SPECIAL_STATUS[row.status]}
+      //     </div>
+      //   </>
+      // ),
     },
     {
       title: '使用有效期',
       dataIndex: 'useTimeRuleObject',
       render: (val, row) => {
-        const { startDate, endDate, type, delayDays, activeDays } = val;
+        const { startDate = '', endDate, type, delayDays, activeDays } = val || {};
         if (!type) return '';
         if (type === 'fixed') {
           return startDate + '~' + endDate;
@@ -309,15 +310,15 @@ const SpecialGoods = (props) => {
 
     {
       title: '剩余库存',
-      align: 'right',
+      align: 'center',
       dataIndex: 'remain',
       sorter: (a, b) => a.remain - b.remain,
     },
     {
       title: '最后更新时间',
-      align: 'right',
+      align: 'center',
       dataIndex: 'updataTime',
-      render: (val, row) => `${moment(val).format('YYYY-MM-DD HH:mm')}\n${row.updater || ''}`,
+      render: (val, row) => `${moment(val).format('YYYY-MM-DD HH:mm')}\n${row.creatorName || ''}`,
     },
     {
       title: '商品状态',
@@ -371,17 +372,17 @@ const SpecialGoods = (props) => {
       dataIndex: 'goodsId',
       width: 150,
       render: (val, record, index) => {
-        const { goodsId, ownerIdString: merchantId, status, deleteFlag } = record;
+        const { goodsId, ownerId, status, stockId, deleteFlag } = record;
         return [
-          {
-            type: 'goodsCode',
-            visible: ['1', '2'].includes(status), // '活动中'
-            click: () =>
-              fetchSpecialGoodsQrCode({ goodsId }, `${record.ownerName}-${record.goodsName}`, {
-                goodsId,
-                merchantId,
-              }),
-          },
+          // {
+          //   type: 'goodsCode',
+          //   visible: ['1', '2'].includes(status), // '活动中'
+          //   click: () =>
+          //     fetchSpecialGoodsQrCode({ goodsId }, `${record.ownerName}-${record.goodsName}`, {
+          //       goodsId,
+          //       merchantId,
+          //     }),
+          // },
           {
             type: 'info',
             click: () => fetchSpecialGoodsDetail(index, 'info'),
@@ -421,7 +422,7 @@ const SpecialGoods = (props) => {
             title: '增加库存',
             type: 'addRemain',
             visible: ['1'].includes(status),
-            click: () => fetAddRemain(goodsId, record.ownerIdString, record.remain),
+            click: () => fetAddRemain(stockId, record.ownerId, record.remain),
           },
           {
             title: '分享配置',
@@ -435,10 +436,10 @@ const SpecialGoods = (props) => {
 
   // 分享配置
   const fetchShareImg = (record) => {
-    const { goodsId, ownerIdString, goodsName, ownerName } = record;
+    const { goodsId, ownerId, goodsName, relateName } = record;
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsDetail',
-      payload: { goodsId, ownerId: ownerIdString },
+      payload: { goodsId, ownerId },
       callback: (val) => {
         const { shareImg, friendShareImg, recommendReason, customTitle } = val;
         const initialValues = {
@@ -450,9 +451,9 @@ const SpecialGoods = (props) => {
         setVisibleShare({
           show: true,
           goodsName,
-          ownerName,
+          ownerName: relateName,
           goodsId,
-          ownerIdString,
+          ownerId,
           initialValues,
         });
       },
@@ -488,13 +489,13 @@ const SpecialGoods = (props) => {
 
   // 下架
   const fetchSpecialGoodsStatus = (values) => {
-    const { goodsId, ownerIdString } = visibleRefuse.detail;
+    const { goodsId, ownerId } = visibleRefuse.detail;
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsStatus',
       payload: {
         ...values,
         goodsId: goodsId,
-        ownerId: ownerIdString,
+        ownerId: ownerId,
       },
       callback: () => {
         setVisibleRefuse({ show: false, detail: {} });
@@ -514,7 +515,7 @@ const SpecialGoods = (props) => {
 
   // 获取详情
   const fetchSpecialGoodsDetail = (index, type) => {
-    const { goodsId, ownerIdString, ownerName, ownerType } = list[index];
+    const { goodsId, ownerId, relateName, ownerType } = list[index];
     // if (type === 'edit') {
     //   dispatch({
     //     type: 'specialGoods/fetchEditCurrentStatus',
@@ -532,29 +533,32 @@ const SpecialGoods = (props) => {
     // }
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsDetail',
-      payload: { goodsId, ownerId: ownerIdString, type },
+      payload: { goodsId, ownerId: ownerId, type },
       callback: (val) => {
         const { status } = val;
         const newProps = {
           show: true,
-          detail: { ...val, merchantName: ownerName, ownerType },
+          detail: { ...val, merchantName: relateName, ownerType },
         };
         if (type == 'info') {
-          setVisibleInfo({ status, index, ...newProps, goodsId, ownerIdString });
+          setVisibleInfo({ status, index, ...newProps, goodsId, ownerId });
         } else {
-          console.log({ type, ...newProps, goodsId, ownerIdString });
-          setVisibleSet({ type, ...newProps, goodsId, ownerIdString });
+          setVisibleSet({ type, ...newProps, goodsId, ownerId });
         }
       },
     });
   };
 
   const extraBtn = ({ get }) => [
+    // {
+    //   type: 'excel',
+    //   dispatch: 'specialGoods/fetchSpecialGoodsImport',
+    //   data: get(),
+    //   exportProps: excelProps,
+    // },
     {
-      type: 'excel',
-      dispatch: 'specialGoods/fetchSpecialGoodsImport',
-      data: get(),
-      exportProps: excelProps,
+      auth: 'save',
+      onClick: () => setVisibleSet({ type: 'add', show: true }),
     },
   ];
 
@@ -568,37 +572,37 @@ const SpecialGoods = (props) => {
     <>
       <TableDataBlock
         btnExtra={extraBtn}
-        cardProps={{
-          tabList: tabList,
-          activeTabKey: tabKey,
-          onTabChange: setTabKey,
-          extra: (
-            <ExtraButton list={btnList}>
-              <AuthConsumer auth={'recommendStatus'}>
-                <SpecialRecommendMenu
-                  num={goodsList.length}
-                  tabKey={tabKey}
-                  handleRecommend={(val) =>
-                    fetchSpecialGoodsRecommend({ goodsId: goodsList.toString(), ...val })
-                  }
-                  disabled={!goodsList.length}
-                ></SpecialRecommendMenu>
-              </AuthConsumer>
-            </ExtraButton>
-          ),
-        }}
+        // cardProps={{
+        //   tabList: tabList,
+        //   activeTabKey: tabKey,
+        //   onTabChange: setTabKey,
+        //   extra: (
+        //     <ExtraButton list={btnList}>
+        //       <AuthConsumer auth={'recommendStatus'}>
+        //         <SpecialRecommendMenu
+        //           num={goodsList.length}
+        //           tabKey={tabKey}
+        //           handleRecommend={(val) =>
+        //             fetchSpecialGoodsRecommend({ goodsId: goodsList.toString(), ...val })
+        //           }
+        //           disabled={!goodsList.length}
+        //         ></SpecialRecommendMenu>
+        //       </AuthConsumer>
+        //     </ExtraButton>
+        //   ),
+        // }}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ deleteFlag: '1', selfTourFlag: tabKey }}
+        // params={{ deleteFlag: '1', selfTourFlag: tabKey }}
         rowKey={(record) => `${record.goodsId}`}
-        rowSelection={{
-          getCheckboxProps: ({ status, deleteFlag }) => ({
-            disabled: !['1', '2'].includes(status) || deleteFlag == '0', // 不是 活动中 即将开始 || 已删除
-          }),
-          onChange: setGoodsList,
-        }}
+        // rowSelection={{
+        //   getCheckboxProps: ({ status, deleteFlag }) => ({
+        //     disabled: !['1', '2'].includes(status) || deleteFlag == '0', // 不是 活动中 即将开始 || 已删除
+        //   }),
+        //   onChange: setGoodsList,
+        // }}
         dispatchType="specialGoods/fetchGetList"
         {...specialGoods}
       ></TableDataBlock>
@@ -646,7 +650,8 @@ const SpecialGoods = (props) => {
 
 export default connect(({ specialGoods, baseData, loading }) => ({
   specialGoods,
-  hubData: baseData.hubData,
-  loading: loading.models.specialGoods || loading.effects['baseData/fetchGetLogDetail'],
+  // hubData: baseData.hubData,
+  // loading: loading.models.specialGoods,
+  loading: loading.effects['specialGoods/fetchGetList'],
   loadings: loading,
 }))(SpecialGoods);

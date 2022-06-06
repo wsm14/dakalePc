@@ -77,7 +77,7 @@ const PreferentialSet = ({
 
   const goodsTypeName = GOODS_CLASS_TYPE[mreList.productType];
   useEffect(() => {
-    if (initialValues.ownerName) {
+    if (initialValues.relateName) {
       const {
         skuInfoReq = {},
         timeType,
@@ -88,12 +88,10 @@ const PreferentialSet = ({
       const { buyLimitRuleObject = {} } = skuInfoReq;
       const { type } = buyLimitRuleObject; //购买上限
       // 商品类型： 特惠 自我游
-      setGoodsType(initialValues.thirdInfoResp.thirdType || '1');
+      setGoodsType(initialValues.thirdInfoResp?.thirdType || '1');
       // form.setFieldsValue({
       //   thirdType: initialValues.thirdType || '1',
       // });
-      // 展示类型
-      setGoodsDescType(initialValues.displayType);
       //发布城市
       setAreaType(initialValues.availableAreas);
 
@@ -102,6 +100,7 @@ const PreferentialSet = ({
         settlerType: initialValues.settlerType,
         groupId: initialValues.relateId,
         productType: initialValues.productType,
+        displayType: initialValues.displayType || 'manualOrList',
         buyRule: type,
         timeType,
         timeSplit,
@@ -109,7 +108,7 @@ const PreferentialSet = ({
         userTime,
       });
       // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/商家商品标签
-      fetchGetMre(initialValues.ownerName, initialValues.relateType, (list = []) => {
+      fetchGetMre(initialValues.relateName, initialValues.relateType, (list = []) => {
         const mreFindIndex = list.findIndex((item) => item.value === initialValues.relateId);
         const topCategoryId = list[mreFindIndex].topCategoryId[0];
         const { businessStatus, status } = list[mreFindIndex];
@@ -124,7 +123,7 @@ const PreferentialSet = ({
         getMerchantList();
       }
     }
-  }, [initialValues.ownerName]);
+  }, [initialValues.relateName]);
 
   useEffect(() => {
     //展示标签
@@ -413,6 +412,7 @@ const PreferentialSet = ({
       disabled: editDisabled,
       min: 0,
       max: 999999.99,
+      onchange: () => saveMreData({ oriPrice: e.target.value }),
       formatter: (value) => `￥ ${value}`,
     },
     {
@@ -436,23 +436,23 @@ const PreferentialSet = ({
       min: 0,
       max: 999999.99,
       formatter: (value) => `￥ ${value}`,
-      addRules: [
-        {
-          validator: (rule, value) => {
-            const merchantPrice = Number(value);
-            const buyPrice = Number(form.getFieldValue(['skuInfoReq', 'sellPrice']));
-            if (merchantPrice > buyPrice) {
-              return Promise.reject('商家结算价不可超过售卖价格');
-            }
-            // “商家结算价不可超过N（结算价≤特惠价格*（1-费率））”
-            const getPrice = buyPrice * (1 - mreList.ratio / 100);
-            if (merchantPrice > getPrice) {
-              return Promise.reject(`商家结算价不可超过${getPrice}`);
-            }
-            return Promise.resolve();
-          },
-        },
-      ],
+      // addRules: [
+      //   {
+      //     validator: (rule, value) => {
+      //       const merchantPrice = Number(value);
+      //       const buyPrice = Number(form.getFieldValue(['skuInfoReq', 'sellPrice']));
+      //       if (merchantPrice > buyPrice) {
+      //         return Promise.reject('商家结算价不可超过售卖价格');
+      //       }
+      //       // “商家结算价不可超过N（结算价≤特惠价格*（1-费率））”
+      //       const getPrice = buyPrice * (1 - mreList.ratio / 100);
+      //       if (merchantPrice > getPrice) {
+      //         return Promise.reject(`商家结算价不可超过${getPrice}`);
+      //       }
+      //       return Promise.resolve();
+      //     },
+      //   },
+      // ],
     },
     {
       label: '售卖价格类型',
@@ -473,6 +473,8 @@ const PreferentialSet = ({
       min: 0,
       max: 999999.99,
       formatter: (value) => `￥ ${value}`,
+      onchange: () => saveMreData({ sellPrice: e.target.value }),
+      addonAfter: '.com',
       // suffix: `${parseInt(
       //   form.getFieldValue(['skuInfoReq', 'sellPrice']) /
       //     form.getFieldValue(['skuInfoReq', 'oriPrice']),
@@ -668,25 +670,12 @@ const PreferentialSet = ({
       formItem: <DescSet name={'buyDesc'}></DescSet>,
     },
     {
-      title: '设置退款规则',
-      label: '是否允许随时退款',
-      type: 'switch',
-      hidden: true,
-      name: 'allowRefund',
-    },
-    {
-      label: '是否允许过期退款',
-      type: 'switch',
-      hidden: true,
-      name: 'allowExpireRefund',
-    },
-    {
       title: `展示信息`,
       label: '前端展示类型',
       type: 'radio',
       name: 'displayType',
       select: SPECIAL_SHOW_TYPE[mreList.paymentModeType],
-      onChange: (e) => setGoodsDescType(e.target.value),
+      onChange: (e) => saveMreData({ displayType: e.target.value }),
     },
     {
       label: '展示范围',
@@ -784,49 +773,6 @@ const PreferentialSet = ({
         fetchCheckMreRate(val);
       },
     },
-    // {
-    //   label: '适用店铺',
-    //   name: 'settlerIds',
-    //   type: 'formItem',
-    //   visible:
-    //     !['platform'].includes(mreList.settlerType) && ['group'].includes(mreList.settlerType),
-    //   rules: [{ required: true, message: '请选择店铺' }],
-    //   formItem: (
-    //     <Button
-    //       type="primary"
-    //       ghost
-    //       onClick={() => {
-    //         setVisible(true);
-    //         saveMreData({
-    //           storeStatus: 'bottom',
-    //         });
-    //       }}
-    //       disabled={commonDisabled}
-    //     >
-    //       选择店铺
-    //     </Button>
-    //   ),
-    // },
-    // {
-    //   type: 'noForm',
-    //   visible:
-    //     !['platform'].includes(mreList.settlerType) && ['group'].includes(mreList.settlerType),
-    //   formItem: (
-    //     <MreSelectShow
-    //       key="MreTable"
-    //       form={form}
-    //       disabled={commonDisabled}
-    //       rowKey="merchantId"
-    //       columns={getColumns}
-    //       keys={mreList.settlerKeys}
-    //       list={mreList.settlerList}
-    //       setMreList={(val) => {
-    //         saveMreData({ settlerKeys: val.keys, settlerList: val.list });
-    //         form.setFieldsValue({ settlerIds: val.keys });
-    //       }}
-    //     ></MreSelectShow>
-    //   ),
-    // },
     {
       title: `设置${goodsTypeName}介绍`,
       label: '选择介绍类型',

@@ -11,7 +11,7 @@ import {
 
 const GoodsDetail = (props) => {
   const { detail, merchantList } = props;
-  const { ownerType, goodsDescType, thirdInfoResp = {}, productType } = detail;
+  const { relateType, thirdInfoResp = {}, productType } = detail;
   const { thirdType } = thirdInfoResp;
 
   const ActiveformItems = [
@@ -22,8 +22,8 @@ const GoodsDetail = (props) => {
       render: (val) => BUSINESS_TYPE[val],
     },
     {
-      name: 'ownerName',
-      label: `${BUSINESS_TYPE[ownerType]}名称`,
+      name: 'relateName',
+      label: `${BUSINESS_TYPE[relateType]}名称`,
     },
   ];
 
@@ -87,32 +87,6 @@ const GoodsDetail = (props) => {
       name: 'paymentModeType',
       label: '售卖价格类型',
       render: (val) => BUSINESS_SALE_TYPE[val],
-    },
-  ];
-
-  const GoodDecItem = [
-    {
-      label: '介绍类型',
-      name: 'goodsDescType',
-      render: (val) => SPECIAL_DESC_TYPE[val],
-    },
-    {
-      label: `${GOODS_CLASS_TYPE[productType]}介绍`,
-      name: 'richText',
-      show: goodsDescType === '1',
-      render: (val) => <div dangerouslySetInnerHTML={{ __html: val }}></div>,
-    },
-    {
-      label: `${GOODS_CLASS_TYPE[productType]}介绍`,
-      name: 'goodsDesc',
-      show: goodsDescType === '0',
-      type: 'textArea',
-    },
-    {
-      label: `${GOODS_CLASS_TYPE[productType]}介绍图片`,
-      name: 'goodsDescImg',
-      show: goodsDescType === '0',
-      type: 'upload',
     },
   ];
 
@@ -200,7 +174,7 @@ const GoodsDetail = (props) => {
         formItems={ActiveformItems}
         initialValues={detail}
       ></DescriptionsCondition>
-      {ownerType === 'group' && (
+      {relateType === 'group' && (
         <div style={{ margin: '10px' }}>
           <MerchantListTable merchantList={merchantList || []}></MerchantListTable>
         </div>
@@ -215,24 +189,20 @@ const GoodsDetail = (props) => {
         formItems={GoodPriceItem}
         initialValues={detail}
       ></DescriptionsCondition>
-      <DescriptionsCondition
-        title="商品介绍"
-        formItems={GoodDecItem}
-        initialValues={detail}
-      ></DescriptionsCondition>
+
       {/* 当分佣方式为自定义佣金和手动分佣时才显示 */}
-      {detail.divisionFlag === '1' && (
+      {/* {detail.divisionFlag === '1' && (
         <DescriptionsCondition
           title="分佣配置"
           formItems={formItemComiss}
           initialValues={detail}
         ></DescriptionsCondition>
-      )}
-      <DescriptionsCondition
+      )} */}
+      {/* <DescriptionsCondition
         title="商品标签"
         formItems={formItemTag}
         initialValues={detail}
-      ></DescriptionsCondition>
+      ></DescriptionsCondition> */}
     </>
   );
 };

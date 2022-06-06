@@ -21,7 +21,7 @@ const SpecialGoodDetail = (props) => {
   };
 
   useEffect(() => {
-    if (show && detail.ownerType === 'group') {
+    if (show && detail.relateType === 'group') {
       getMerchantList();
     }
   }, [show]);
@@ -96,7 +96,7 @@ const SpecialGoodDetail = (props) => {
       <GoodsDetailForm detail={detail} form={form} merchantList={merchantList}></GoodsDetailForm>
       {/* </Tabs.TabPane> */}
       {/* <Tabs.TabPane tab="投放规则" key="2"> */}
-      {/* <RegularDetail detail={detail}></RegularDetail> */}
+      <RegularDetail detail={detail}></RegularDetail>
       {/* </Tabs.TabPane> */}
       {/* <Tabs.TabPane tab="审核记录" key="3">
           <CheckRecord recordList={recordList}></CheckRecord>

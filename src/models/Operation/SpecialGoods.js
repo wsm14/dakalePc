@@ -36,7 +36,7 @@ export default {
   effects: {
     *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchSpecialGoodsList, {
-        activityType: 'specialGoods', // 限制特惠商品搜索到电商商品
+        // activityType: 'specialGoods', // 限制特惠商品搜索到电商商品
         ...payload,
       });
       if (!response) return;
@@ -44,7 +44,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.offlineDetails,
+          list: content.offlineManagerResps,
           total: content.total,
         },
       });
@@ -182,7 +182,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '特惠活动修改成功，等待平台审核',
+        description: '特惠活动修改成功',
       });
       callback();
     },

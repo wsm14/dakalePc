@@ -1,29 +1,33 @@
 import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
-import { COUPON_BUY_RULE, COUPON_WEEK_TIME } from '@/common/constant';
+import {
+  COUPON_BUY_RULE,
+  COUPON_WEEK_TIME,
+  SPECIAL_SHOW_TYPE,
+  SPECIAL_BALANCE_TYPE,
+  SPECIAL_DESC_TYPE,
+  GOODS_CLASS_TYPE,
+} from '@/common/constant';
 
 const RegularDetail = (props) => {
   const { detail } = props;
+  const { productType, descType } = detail;
 
   const RegularItems = [
     {
       name: 'activityTimeRule',
       label: '活动时间',
       render: (val, row) =>
-        val == 'infinite'
-          ? `长期`
-          : `${row.activityStartTime[0].format('YYYY-MM-DD')}~${row.activityStartTime[1].format(
-              'YYYY-MM-DD',
-            )}`,
+        val == 'infinite' ? `长期` : `${row.activityStartTime}~${row.activityStartTime}`,
     },
     {
       name: 'useTimeRuleObject',
       label: '使用有效期',
       render: (val, row) => {
-        const { startDate, type, delayDays, activeDays } = val;
+        const { startDate = [], type, delayDays, activeDays } = val || {};
         if (!type) return '';
         if (type === 'fixed') {
-          return startDate[0].format('YYYY-MM-DD') + '~' + startDate[1].format('YYYY-MM-DD');
+          // return startDate[0].format('YYYY-MM-DD') + '~' + startDate[1].format('YYYY-MM-DD');
         } else {
           if (delayDays === '0') {
             return `领取后立即生效\n有效期${activeDays}天`;
@@ -36,7 +40,7 @@ const RegularDetail = (props) => {
       name: 'useTimeRuleObject', // COUPON_USER_TIME
       label: '适用时段',
       render: (val, row) => {
-        const { useDay } = val;
+        const { useDay } = val || {};
         let week = '每周';
         if (row.timeSplit == 'part') {
           row.useWeek.forEach((item, index) => {
@@ -44,10 +48,7 @@ const RegularDetail = (props) => {
             return week;
           });
         }
-        const times =
-          useDay.length > 0
-            ? useDay[0].format('HH:mm:ss') + '-' + useDay[1].format('HH:mm:ss')
-            : row.timeType;
+        const times = useDay ? useDay : row.timeType;
         return <>{row.timeSplit == 'part' ? `${week}--${times}` : `每天--${times}`}</>;
       },
     },
@@ -60,15 +61,17 @@ const RegularDetail = (props) => {
 
   const BuyRegularItem = [
     {
-      name: 'buyRule',
+      name: [('skuInfoReq', 'buyLimitRuleObject', 'type')],
       label: '购买上限',
       render: (val) => COUPON_BUY_RULE[val],
     },
     {
       label: `单人${
-        { personLimit: '每人', dayLimit: '每天', unlimited: '不限' }[detail.buyRule]
+        { personLimit: '每人', dayLimit: '每天', unlimited: '不限' }[
+          detail?.skuInfoReq?.buyLimitRuleObject?.type
+        ]
       }购买份数`,
-      name: { personLimit: 'maxBuyAmount', dayLimit: 'dayMaxBuyAmount' }[detail.buyRule],
+      name: [('skuInfoReq', 'buyLimitRuleObject', 'limitNum')],
       render: (val) => (val ? `${val}份` : '--'),
     },
     {
@@ -176,13 +179,39 @@ const RegularDetail = (props) => {
   ];
   const SettlementItem = [
     {
-      name: 'settlerType',
+      name: ['settleInfoResp', 'settlerType'],
       label: '结算人类型',
       render: (val, row) => SPECIAL_BALANCE_TYPE[val],
     },
     {
-      name: 'settlerType',
+      name: ['settleInfoResp', 'settlerName'],
       label: '结算店铺名称',
+    },
+  ];
+
+  const GoodDecItem = [
+    {
+      label: '介绍类型',
+      name: 'descType',
+      render: (val) => SPECIAL_DESC_TYPE[val],
+    },
+    {
+      label: `${GOODS_CLASS_TYPE[productType]}介绍`,
+      name: 'richText',
+      show: descType === '1',
+      render: (val) => <div dangerouslySetInnerHTML={{ __html: val }}></div>,
+    },
+    {
+      label: `${GOODS_CLASS_TYPE[productType]}介绍`,
+      name: 'goodsDesc',
+      show: descType === '0',
+      type: 'textArea',
+    },
+    {
+      label: `${GOODS_CLASS_TYPE[productType]}介绍图片`,
+      name: 'goodsDescImg',
+      show: descType === '0',
+      type: 'upload',
     },
   ];
 
@@ -206,6 +235,11 @@ const RegularDetail = (props) => {
       <DescriptionsCondition
         title="结算信息"
         formItems={SettlementItem}
+        initialValues={detail}
+      ></DescriptionsCondition>
+      <DescriptionsCondition
+        title="商品介绍"
+        formItems={GoodDecItem}
         initialValues={detail}
       ></DescriptionsCondition>
     </>
