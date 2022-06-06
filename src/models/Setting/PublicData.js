@@ -46,6 +46,8 @@ import {
   fetchGlobalListPartner,
   fetchListHittingMain,
   fetchPageResourceTemplateContent,
+  fetchListOnlineGoodsByPage,
+  fetchListOfflineGoodsByPage,
 } from '@/services/PublicServices';
 
 export default {
@@ -82,6 +84,9 @@ export default {
     resourceList: [],
     sipploerList: [],
     classifyParentList: [],
+    onlineGoods: { list: [], total: 0 },
+    offlineGoods: { list: [], total: 0 },
+    buyCouponList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -779,6 +784,45 @@ export default {
         type: 'save',
         payload: {
           classifyParentList: content.childList,
+        },
+      });
+    },
+    // get 获取线上电商品列表
+    *fetchListOnlineGoodsByPage({ payload }, { call, put }) {
+      const response = yield call(fetchListOnlineGoodsByPage, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          onlineGoods: { list: content.onlineManagerResps, total: content.total },
+        },
+      });
+    },
+    // get 获取线上电商品列表
+    *fetchListOfflineGoodsByPage({ payload }, { call, put }) {
+      const response = yield call(fetchListOfflineGoodsByPage, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          offlineGoods: { list: content.offlineManagerResps, total: content.total },
+        },
+      });
+    },
+    // get 获取有价券列表
+    *fetchGetBuyCouponList({ payload }, { call, put }) {
+      const response = yield call(fetchGetBuyCouponSelect, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          buyCouponList: {
+            list: content.ownerCouponList.map((i) => ({ ...i, goodsId: i.ownerCouponIdString })),
+            total: content.total,
+          },
         },
       });
     },

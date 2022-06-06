@@ -8,7 +8,7 @@ const ReduceCoupon = (props) => {
     visible,
     searchValue,
     selectItem,
-    couponList,
+    buyCouponList,
     selectType,
     handleSelectItem,
     loading,
@@ -97,14 +97,14 @@ const ReduceCoupon = (props) => {
           handleSelectItem(selectedRowKeys, selectedRows);
         },
       }}
-      rowKey={(row) => `${row.ownerCouponIdString}`}
-      dispatchType="baseData/fetchGetBuyCouponSelect"
-      {...couponList}
+      rowKey={(row) => `${row.goodsId}`}
+      dispatchType="baseData/fetchGetBuyCouponList"
+      {...buyCouponList}
     ></TableDataBlock>
   );
 };
 
 export default connect(({ baseData, loading }) => ({
-  couponList: baseData.buyCoupon,
-  loading: loading.effects['baseData/fetchGetBuyCouponSelect'],
+  buyCouponList: baseData.buyCouponList,
+  loading: loading.effects['baseData/fetchGetBuyCouponList'],
 }))(ReduceCoupon);

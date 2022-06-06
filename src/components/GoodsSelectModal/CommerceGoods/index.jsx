@@ -7,7 +7,7 @@ const CommerceGoods = (props) => {
   const {
     visible,
     searchValue,
-    specialGoodsList,
+    onlineGoods,
     selectType,
     selectItem,
     handleSelectItem,
@@ -18,7 +18,7 @@ const CommerceGoods = (props) => {
 
   useEffect(() => {
     const { id, ...other } = searchValue;
-    visible && id && tableRef.current.fetchGetData({ relateId: id, ...other });
+    visible && tableRef.current.fetchGetData(other);
   }, [visible, searchValue]);
 
   const getColumns = [
@@ -36,20 +36,14 @@ const CommerceGoods = (props) => {
     {
       title: '价格',
       align: 'right',
-      dataIndex: 'realPrice',
-      render: (val, row) => {
-        const { paymentModeObject = {} } = row;
-        return paymentModeObject.type === 'self'
-          ? `¥${paymentModeObject.cash}+${paymentModeObject.bean}卡豆`
-          : `¥${val}元`;
-      },
+      dataIndex: 'sellPriceRange',
     },
-    {
-      title: '库存',
-      align: 'right',
-      dataIndex: 'remain',
-      render: (val) => `剩 ${val}`,
-    },
+    // {
+    //   title: '库存',
+    //   align: 'right',
+    //   dataIndex: 'remain',
+    //   render: (val) => `剩 ${val}`,
+    // },
   ];
 
   return (
@@ -61,9 +55,8 @@ const CommerceGoods = (props) => {
       loading={loading}
       columns={getColumns}
       params={{
-        merchantId: -1,
-        activityType: 'commerceGoods',
-        goodsStatus: 1,
+        status: 1,
+        sellType: 'single',
       }}
       scroll={{ y: 400 }}
       rowSelection={{
@@ -78,14 +71,14 @@ const CommerceGoods = (props) => {
           handleSelectItem(selectedRowKeys, selectedRows);
         },
       }}
-      rowKey={(row) => `${row.activityGoodsId || row.specialGoodsId}`}
-      dispatchType="baseData/fetchGetSpecialGoodsSelect"
-      {...specialGoodsList}
+      rowKey={(row) => `${row.goodsId}`}
+      dispatchType="baseData/fetchListOnlineGoodsByPage"
+      {...onlineGoods}
     ></TableDataBlock>
   );
 };
 
 export default connect(({ baseData, loading }) => ({
-  specialGoodsList: baseData.specialGoods,
-  loading: loading.effects['baseData/fetchGetSpecialGoodsSelect'],
+  onlineGoods: baseData.onlineGoods,
+  loading: loading.effects['baseData/fetchListOnlineGoodsByPage'],
 }))(CommerceGoods);

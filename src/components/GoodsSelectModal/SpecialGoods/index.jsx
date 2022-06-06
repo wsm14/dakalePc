@@ -10,7 +10,7 @@ const SpecialGoods = (props) => {
     visible,
     searchValue,
     selectItem,
-    specialGoodsList,
+    offlineGoods,
     selectType,
     handleSelectItem,
     loading,
@@ -19,8 +19,8 @@ const SpecialGoods = (props) => {
   const tableRef = useRef(null);
 
   useEffect(() => {
-    const { id, ...other } = searchValue;
-    visible && id && tableRef.current.fetchGetData({ merchantId: id, ...other });
+    const { ...other } = searchValue;
+    visible && tableRef.current.fetchGetData({ ...other });
   }, [visible, searchValue]);
 
   const getColumns = [
@@ -28,7 +28,7 @@ const SpecialGoods = (props) => {
       title: '类型',
       align: 'center',
       width: 100,
-      dataIndex: 'goodsType',
+      dataIndex: 'productType',
       render: (val) => <Tag color={TAG_COLOR_TYPE[val]}>{GOODS_CLASS_TYPE[val]}</Tag>,
     },
     {
@@ -53,7 +53,7 @@ const SpecialGoods = (props) => {
     {
       title: '价格',
       align: 'right',
-      dataIndex: 'realPrice',
+      dataIndex: 'sellPrice',
       render: (val, row) => (
         <div>
           <div>¥{val}</div>
@@ -84,28 +84,28 @@ const SpecialGoods = (props) => {
       cRef={tableRef}
       loading={loading}
       columns={getColumns}
-      params={{ goodsStatus: 1 }}
+      // params={{ status: 1 }}
       scroll={{ y: 400 }}
       rowSelection={{
         type: selectType,
         selectedRowKeys: selectItem.keys,
         preserveSelectedRowKeys: true,
         getCheckboxProps: (record) => ({
-          disabled: record.name === '',
+          disabled: record.status === '0',
         }),
         onChange: (selectedRowKeys, selectedRows) => {
           console.log(`selectedRowKeys:`, selectedRowKeys, 'selectedRows: ', selectedRows);
           handleSelectItem(selectedRowKeys, selectedRows);
         },
       }}
-      rowKey={(row) => `${row.activityGoodsId || row.specialGoodsId}`}
-      dispatchType="baseData/fetchGetSpecialGoodsSelect"
-      {...specialGoodsList}
+      rowKey={(row) => `${row.goodsId}`}
+      dispatchType="baseData/fetchListOfflineGoodsByPage"
+      {...offlineGoods}
     ></TableDataBlock>
   );
 };
 
 export default connect(({ baseData, loading }) => ({
-  specialGoodsList: baseData.specialGoods,
-  loading: loading.effects['baseData/fetchGetSpecialGoodsSelect'],
+  offlineGoods: baseData.offlineGoods,
+  loading: loading.effects['baseData/fetchListOfflineGoodsByPage'],
 }))(SpecialGoods);

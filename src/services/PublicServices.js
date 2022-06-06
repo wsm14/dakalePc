@@ -326,3 +326,17 @@ export function fetchPageResourceTemplateContent(params) {
     params,
   });
 }
+
+// get 获取线上电商品列表
+export function fetchListOnlineGoodsByPage(params) {
+  return request('/admin/online/goods/admin/listOnlineGoodsByPage', {
+    params,
+  });
+}
+
+// get 获取线上本地生活品（特惠）列表
+export function fetchListOfflineGoodsByPage(params) {
+  return request('/admin/offline/goods/admin/listOfflineGoodsByPage', {
+    params,
+  });
+}

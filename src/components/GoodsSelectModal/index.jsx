@@ -21,6 +21,7 @@ const GoodsSelectModal = (props) => {
     onClose,
   } = props;
 
+  const [tabKey, setTabKey] = useState('reduceCoupon'); // tab类型
   const [selectItem, setSelectItem] = useState({ keys: [] }); // 当前选择项
   const [searchValue, setSearchValue] = useState({}); // 搜索值
 
@@ -36,10 +37,16 @@ const GoodsSelectModal = (props) => {
       name: 'id',
       type: 'merchant',
       required: true,
+      show: tabKey === 'reduceCoupon',
     },
     {
       label: '商品名称',
       name: 'goodsName',
+    },
+    {
+      label: '商品ID',
+      name: 'goodsId',
+      show: tabKey !== 'reduceCoupon',
     },
   ];
 
@@ -98,7 +105,7 @@ const GoodsSelectModal = (props) => {
         searchItems={searchItems}
         handleSearch={setSearchValue}
       ></SearchCondition>
-      <Tabs destroyInactiveTabPane type="card" style={{ overflow: 'initial' }}>
+      <Tabs destroyInactiveTabPane onChange={setTabKey} type="card" style={{ overflow: 'initial' }}>
         {tabPaneList.map(
           (pane) =>
             pane.show && (
