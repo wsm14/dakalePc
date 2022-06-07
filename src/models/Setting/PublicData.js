@@ -3,8 +3,9 @@ import oss from 'ali-oss';
 import lodash from 'lodash';
 import { uuid } from '@/utils/utils';
 import { fetchBackCategoryList } from '@/services/BaseServices';
-import { fetchGetSupplierManageList } from '@/services/SCMServices';
+import { fetchGetSupplierManageList, fetchSupplierBrandList } from '@/services/SCMServices';
 import { fetchMerchantList, fetchMerchantGroup } from '@/services/BusinessServices';
+import { fetchGoodsTagList } from '@/services/OperationServices';
 import {
   fetchGetOss,
   fetchGetMreTag,
@@ -87,6 +88,9 @@ export default {
     onlineGoods: { list: [], total: 0 },
     offlineGoods: { list: [], total: 0 },
     buyCouponList: { list: [], total: 0 },
+    brandList: [],
+    tagsPlatform: [],
+    tagsShow: [],
   },
 
   reducers: {
@@ -786,6 +790,53 @@ export default {
           classifyParentList: content.childList,
         },
       });
+    },
+    // get 供应商管理 - 品牌 - 列表
+    *fetchSupplierBrandList({ payload }, { call, put }) {
+      const response = yield call(fetchSupplierBrandList, {
+        ...payload,
+        status: 1,
+        limit: 100,
+        page: 1,
+      });
+      if (!response) return;
+      const { content } = response;
+      const newList = content.supplierBrandDetailList.map((item) => ({
+        name: item.brandName,
+        value: item.supplierBrandId,
+        option: item,
+      }));
+      yield put({
+        type: 'save',
+        payload: {
+          brandList: newList,
+        },
+      });
+    },
+    *fetchGoodsTagList({ payload, callback }, { call, put }) {
+      //获取平台商品标签
+      const response1 = yield call(fetchGoodsTagList, {
+        ...payload,
+        status: '1',
+        tagType: 'platform',
+      });
+      //获取展示标签
+      const response2 = yield call(fetchGoodsTagList, {
+        ...payload,
+        status: '1',
+        tagType: 'show',
+      });
+      if (!response1 && !response2) return;
+      const { content: content1 } = response1;
+      const { content: content2 } = response2;
+      yield put({
+        type: 'save',
+        payload: {
+          tagsPlatform: content1.configGoodsTagDTOS,
+          tagsShow: content2.configGoodsTagDTOS,
+        },
+      });
+      // callback && callback(content1.configGoodsTagDTOS);
     },
     // get 获取线上电商品列表
     *fetchListOnlineGoodsByPage({ payload }, { call, put }) {

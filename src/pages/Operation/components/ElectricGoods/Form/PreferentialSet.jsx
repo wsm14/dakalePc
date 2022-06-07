@@ -1,0 +1,583 @@
+import React, { useState, useEffect } from 'react';
+import debounce from 'lodash/debounce';
+import { connect } from 'umi';
+import { Button, InputNumber } from 'antd';
+import CITYJSON from '@/common/city';
+import {
+  GOODS_CLASS_TYPE,
+  SPECIAL_DESC_TYPE,
+  BUSINESS_TYPE,
+  COMMISSION_TYPE,
+  ELECTRICGOODS_SELL_STATUS,
+  ELECTRICGOODS_SKU,
+  ELECTRICGOODS_SELL_PRICE_TYPE,
+  FRONT_SHOW_TYPE,
+  FRONT_SHOW_TYPE_FREE,
+  FREIGHT_TYPE,
+  SETTLE_TYPE,
+} from '@/common/constant';
+import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
+import EditorForm from '@/components/EditorForm';
+import FormCondition from '@/components/FormCondition';
+import Shipping from './Shipping';
+import RefundLocation from './RefundLocation';
+import AddSpecification from './Specification/AddSpecification';
+import SpecificationList from './Specification/SpecificationList';
+import TieredPricing from './Specification/TieredPricing';
+import styles from './style.less';
+
+const PreferentialSet = ({
+  form,
+  editActive,
+  loading,
+  loadings,
+  selectList,
+  dispatch,
+  commissionShow,
+  setCommissionShow,
+  initialValues = {},
+  skuMerchantList,
+  setContent,
+  classifyParentList, // 电商品后台类目列表
+  brandList, // 供应商品牌列表
+  tagsPlatform, // 获取平台商品标签
+  tagsShow, // 获取展示标签
+}) => {
+  // 是否 editActive = 'againUp' || 'again' || 'edit'三种都隐藏的数据
+  const commonDisabled = ['againUp', 'again', 'edit'].includes(editActive);
+  //活动中隐藏的编辑项//edit 独有不展示
+  const editDisabled = ['edit'].includes(editActive);
+
+  const [manualList, setManualList] = useState([]); // 分佣模版字段
+  const [supplierSelect, setSupplierSelect] = useState([]); // 供应商列表
+  const [settlerSelect, setSettlerSelect] = useState([]); // 结算供应商列表
+  const [sellType, setSellType] = useState('single'); // 售卖类型
+  const [priceType, setPriceType] = useState('defaultMode'); // 售卖价格类型
+  const [freightType, setFreightType] = useState('free'); // 运费类型
+  const [settleType, setSettleType] = useState('settle'); // 结算人类型
+  const [visibleRefund, setVisibleRefund] = useState(false); // 退货地址modal
+  const [refundList, setRefundList] = useState([]); // 退货地址数据暂存
+  const [specificationTypeData, setSpecificationTypeData] = useState([]); // 规格类型数据暂存
+  const [tieredModal, setTieredModal] = useState(false); // 设置阶梯价model
+  const [batchOnOff, setBatchOnOff] = useState(false); // 批采价设置状态
+
+  // 是否是多规格
+  const specificationDisabled = specificationTypeData.length > 0;
+
+  useEffect(() => {
+    getTags();
+  }, []);
+
+  // 处理规格组数据
+  useEffect(() => {
+    const newArr = specificationTypeData.map((item) =>
+      (item?.value || []).map((i) => ({
+        [item.name]: i,
+      })),
+    );
+    form.setFieldsValue({ skuInfoReqs: doExchange(newArr), customSize: specificationTypeData });
+  }, [specificationTypeData]);
+
+  // 处理规格组数据
+  const doExchange = (arr = []) => {
+    let len = arr.length;
+    // 当数组大于等于2个的时候
+    if (len >= 2) {
+      // 第一个数组的长度
+      let len1 = arr[0].length;
+      // 第二个数组的长度
+      let len2 = arr[1].length;
+      // 2个数组产生的组合数
+      let lenBoth = len1 * len2;
+      //  申明一个新数组,做数据暂存
+      let items = new Array(lenBoth);
+      // 申明新数组的索引
+      let index = 0;
+      // 2层嵌套循环,将组合放到新数组中
+      for (let i = 0; i < len1; i++) {
+        for (let j = 0; j < len2; j++) {
+          items[index] = { ...arr[0][i], ...arr[1][j] };
+          index++;
+        }
+      }
+      // 将新组合的数组并到原数组中
+      let newArr = new Array(len - 1);
+      for (let i = 2; i < arr.length; i++) {
+        newArr[i - 1] = arr[i];
+      }
+      newArr[0] = items;
+      // 执行回调
+      return doExchange(newArr);
+    } else {
+      return (arr[0] || []).map((item) => ({
+        attributes: Object.keys(item).map((name) => ({ name, value: item[name] })),
+      }));
+    }
+  };
+
+  // 搜索供应商
+  const fetchGetSearchSupplier = debounce((content, type) => {
+    if (!content.replace(/'/g, '')) return;
+    dispatch({
+      type: 'baseData/fetchSearchSupplierManage',
+      payload: {
+        name: content.replace(/'/g, ''),
+      },
+      callback: (val) => {
+        if (type === 'all') {
+          setSupplierSelect(val);
+        }
+        setSettlerSelect(val);
+      },
+    });
+  }, 500);
+
+  // 搜索品牌列表
+  const fetchBrandIdList = (supplierId = '') => {
+    if (typeof supplierId != 'string') return;
+    form.setFieldsValue({
+      settleObject: {
+        settlerId: supplierId,
+      },
+    });
+    dispatch({
+      type: 'baseData/fetchSupplierBrandList',
+      payload: { supplierId },
+    });
+  };
+
+  //sku通用-是否需要设置佣金
+  const getCommissionFlag = (categoryId) => {
+    dispatch({
+      type: 'baseData/fetchGoodsIsCommission',
+      payload: {
+        serviceType: 'commerceGoods',
+        categoryId: categoryId,
+      },
+      callback: ({ manuallyFlag, manualDivisions }) => {
+        setCommissionShow(manuallyFlag);
+        setManualList(manualDivisions || []);
+      },
+    });
+  };
+
+  //获取平台商品标签  && 获取展示标签
+  const getTags = () => {
+    dispatch({
+      type: 'baseData/fetchGoodsTagList',
+      // payload: {
+      //   categoryId: categoryId,
+      // },
+      // callback: (list) => setGoodsTaglist(list),
+    });
+  };
+
+  // 信息
+  const formItems = [
+    {
+      title: '选择供应商',
+      label: '供应商',
+      name: 'relateId',
+      type: 'select',
+      select: supplierSelect,
+      loading: loadings.models.baseData,
+      onSearch: (val) => fetchGetSearchSupplier(val, 'all'),
+      onSelect: (val) => fetchBrandIdList(val),
+      rules: [{ required: false }],
+    },
+    {
+      title: '商品信息',
+      label: '商品类目',
+      name: 'categoryNode',
+      type: 'cascader',
+      select: classifyParentList,
+      fieldNames: { label: 'classifyName', value: 'classifyId', children: 'childList' },
+      onChange: (val, option) => {
+        getCommissionFlag(val[0]);
+      },
+    },
+    {
+      label: '商品编码',
+      name: 'goodsCode',
+      maxLength: 32,
+      extra: '用于商家内部管理所使用的自定义简易编码',
+      rules: [{ required: false }],
+    },
+    {
+      label: '商品名称',
+      name: 'goodsName',
+      type: 'textArea',
+      maxLength: 80,
+    },
+    {
+      label: '品牌',
+      name: 'brandId',
+      type: 'select',
+      select: brandList,
+      rules: [{ required: false }],
+    },
+    {
+      label: '商品轮播图',
+      name: 'goodsDescImg',
+      type: 'upload',
+      maxFile: 5,
+      extra: '限5张，第一张为主图，建议上传5:4比例的图片/视频；可以拖拽图片调整前后顺序。',
+    },
+    {
+      title: '销售信息',
+      label: '售卖类型',
+      name: 'sellType',
+      type: 'radio',
+      select: ELECTRICGOODS_SELL_STATUS,
+      onChange: (e) => {
+        setSellType(e.target.value);
+        if (e.target.value == 'batch') {
+          form.setFieldsValue({
+            paymentModeType: 'defaultMode',
+          });
+        }
+      },
+    },
+    {
+      label: '库存单位',
+      name: 'stockUnit',
+      type: 'select',
+      select: ELECTRICGOODS_SKU,
+    },
+    {
+      label: '规格设置',
+      name: 'customSize',
+      type: 'formItem',
+      formItem: (
+        <AddSpecification
+          form={form}
+          specificationTypeData={specificationTypeData}
+          setSpecificationTypeData={setSpecificationTypeData}
+        ></AddSpecification>
+      ),
+      extra: '如有颜色、尺码等多种规格，请添加商品规格。',
+    },
+    {
+      label: '原价',
+      name: 'oriPrice',
+      type: 'number',
+      addonBefore: '￥',
+      min: 0,
+      precision: 2,
+      visible: !specificationDisabled,
+      extra: '用于指导售价调整和为消费者提供的一个参考价，如服装的吊牌价',
+    },
+    {
+      label: '成本价',
+      name: 'costPrice',
+      type: 'number',
+      addonBefore: '￥',
+      min: 0,
+      precision: 2,
+      visible: sellType == 'single',
+      extra: '用于平台采买商品时记录成本',
+      rules: [{ required: false }],
+    },
+    {
+      label: '结算价',
+      name: 'settlePrice',
+      type: 'number',
+      addonBefore: '￥',
+      min: 0,
+      precision: 2,
+      visible: !specificationDisabled && sellType != 'batch',
+      extra: '指供应商/店铺和哒卡乐平台的结算价',
+    },
+    {
+      label: '最小起订量',
+      name: 'minPurchaseNum',
+      type: 'number',
+      min: 0,
+      precision: 0,
+      visible: !specificationDisabled && sellType != 'single',
+    },
+    {
+      label: '批采价',
+      name: 'batchLadderObjects',
+      type: 'formItem',
+      visible: !specificationDisabled && sellType != 'single',
+      formItem: (
+        <Button type="link" onClick={() => setTieredModal(true)}>
+          {batchOnOff ? '已设置' : '设置'}
+        </Button>
+      ),
+    },
+    {
+      label: '售卖价格类型',
+      name: 'paymentModeType',
+      type: 'radio',
+      hidden: sellType == 'batch',
+      select: ELECTRICGOODS_SELL_PRICE_TYPE,
+      onChange: (e) => {
+        setPriceType(e.target.value);
+        form.setFieldsValue({ displayType: undefined });
+      },
+    },
+    {
+      // name:'skuInfoReqs'
+      type: 'noForm',
+      visible: specificationDisabled,
+      formItem: (
+        <SpecificationList
+          form={form}
+          specificationTypeData={specificationTypeData}
+          initialValues={initialValues}
+          sellType={sellType}
+          priceType={priceType}
+        ></SpecificationList>
+      ),
+    },
+    {
+      label: '零售价',
+      name: 'sellPrice',
+      type: 'number',
+      addonBefore: '￥',
+      min: 0,
+      precision: 2,
+      visible: !specificationDisabled && sellType != 'batch' && priceType != 'free',
+      extra: '指用户购买的价格',
+    },
+    {
+      label: '卡豆',
+      name: 'sellBean',
+      type: 'number',
+      addonAfter: '卡豆',
+      min: 0,
+      precision: 0,
+      visible: !specificationDisabled && priceType == 'self' && sellType != 'batch',
+      extra: '指用户购买的价格',
+    },
+    {
+      label: '商品库存',
+      name: 'initStock',
+      type: 'number',
+      precision: 0,
+      min: 0,
+      max: 100000000,
+      visible: !specificationDisabled,
+      // rules: [{ required: true, message: '请输入不小于0, 不大于100000000的数值' }],
+    },
+    ...manualList.map((i, index) => ({
+      title: index == 0 ? '分佣设置' : null,
+      label: `${COMMISSION_TYPE['commerceGoods'][i.divisionParticipantType]}`,
+      name: ['divisionParamInfoReq', `${i.divisionParticipantType}Bean`],
+      type: 'number',
+      precision: 0,
+      min: 0,
+      max: 999999,
+      visible: commissionShow === '1',
+      disabled: commonDisabled,
+      suffix: '卡豆',
+      onChange: () => {
+        const keyArr = manualList.map((i) => [
+          'serviceDivisionDTO',
+          `${i.divisionParticipantType}Bean`,
+        ]);
+        const valObj = form.getFieldsValue(keyArr);
+        const { serviceDivisionDTO = {} } = valObj;
+        form.setFieldsValue({
+          commission:
+            Object.values(serviceDivisionDTO).reduce((pre, cur) => pre + Number(cur || 0), 0) / 100,
+        });
+      },
+    })),
+    {
+      title: '展示规则',
+      label: '前端展示类型',
+      name: 'displayType',
+      type: 'radio',
+      select: priceType == 'free' ? FRONT_SHOW_TYPE_FREE : FRONT_SHOW_TYPE,
+    },
+    {
+      label: '平台商品标签',
+      name: 'platformTagIds',
+      type: 'select',
+      mode: 'multiple',
+      select: tagsPlatform,
+      fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
+      rules: [{ required: false }],
+      addRules: [
+        {
+          validator: (rule, value) => {
+            if (value?.length > 5) {
+              return Promise.reject('最多选择5个标签');
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
+    },
+    {
+      label: '展示标签',
+      name: 'displayFilterTags',
+      type: 'select',
+      mode: 'multiple',
+      select: tagsShow,
+      fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
+      rules: [{ required: false }],
+      addRules: [
+        {
+          validator: (rule, value) => {
+            if (value?.length > 5) {
+              return Promise.reject('最多选择5个标签');
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
+    },
+    {
+      title: '发货设置',
+      label: '发货地',
+      name: ['shippingRuleObject', 'shippingAddress'],
+      type: 'cascader',
+      select: CITYJSON.map((item) => ({
+        ...item,
+        children: item.children.map((citem) => ({ ...citem, children: undefined })),
+      })),
+      rules: [{ required: false }],
+    },
+    {
+      label: '发货时效',
+      name: ['shippingRuleObject', 'shippingTime'],
+      type: 'formItem',
+      rules: [{ required: true }],
+      formItem: <Shipping />,
+    },
+    {
+      label: '七天无理由退换',
+      name: ['returnRuleObject', 'returnFlag'],
+      type: 'switch',
+    },
+    {
+      label: '运费',
+      name: ['postageRuleObject', 'type'],
+      type: 'radio',
+      select: FREIGHT_TYPE,
+      onChange: (e) => {
+        setFreightType(e.target.value);
+      },
+    },
+    {
+      label: '全国统一价',
+      name: ['postageRuleObject', 'fee'],
+      type: 'number',
+      addonBefore: '￥',
+      min: 0,
+      precision: 2,
+      visible: freightType == 'manual',
+      extra: '运费为全国统一价格，不支持按城市配置，且不可使用卡豆抵扣',
+    },
+    // {
+    //   title: '退款设置',
+    //   label: '退款地址',
+    //   name: 'a22',
+    //   type: 'formItem',
+    //   formItem: (
+    //     <Button
+    //       type="primary"
+    //       ghost
+    //       onClick={() => {
+    //         setVisibleRefund({ show: true });
+    //       }}
+    //     >
+    //       选择地址
+    //     </Button>
+    //   ),
+    // },
+    // {
+    //   type: 'noForm',
+    //   formItem: (
+    //     <>
+    //       <div className={styles.refund_box}>
+    //         <div className={styles.refund_box_1}>收货人</div>
+    //         <div style={{ flex: '1' }}>小圆脸</div>
+    //       </div>
+    //       <div className={styles.refund_box}>
+    //         <div className={styles.refund_box_1}>手机号码</div>
+    //         <div style={{ flex: '1' }}>18300938232</div>
+    //       </div>
+    //       <div className={styles.refund_box}>
+    //         <div className={styles.refund_box_1}>所在地区</div>
+    //         <div style={{ flex: '1' }}>浙江省/杭州市/萧山区</div>
+    //       </div>
+    //       <div className={styles.refund_box}>
+    //         <div className={styles.refund_box_1}>详细地址</div>
+    //         <div style={{ flex: '1' }}>国泰科技大厦999</div>
+    //       </div>
+    //     </>
+    //   ),
+    // },
+    {
+      title: '结算设置',
+      label: '结算人类型',
+      name: ['settleObject', 'settlerType'],
+      type: 'radio',
+      select: SETTLE_TYPE,
+      onChange: (e) => {
+        setSettleType(e.target.value);
+      },
+    },
+    {
+      label: '供应商',
+      name: ['settleObject', 'settlerId'],
+      type: 'select',
+      select: settlerSelect,
+      visible: settleType == 'settle',
+      loading: loadings.models.baseData,
+      onSearch: (val) => fetchGetSearchSupplier(val, 'settle'),
+      rules: [{ required: false }],
+    },
+    {
+      title: '商品介绍',
+      type: 'noForm',
+      formItem: (
+        <EditorForm
+          content={initialValues.richText}
+          editCallback={(val) => setContent(val)}
+        ></EditorForm>
+      ),
+    },
+  ];
+
+  return (
+    <>
+      <FormCondition
+        form={form}
+        formItems={formItems}
+        initialValues={initialValues}
+      ></FormCondition>
+      <RefundLocation
+        form={form}
+        visible={visibleRefund}
+        onClose={() => setVisibleRefund(false)}
+        refundList={refundList}
+        setRefundList={setRefundList}
+      ></RefundLocation>
+      <TieredPricing
+        form={form}
+        visible={tieredModal}
+        onClose={() => setTieredModal(false)}
+        setBatchOnOff={setBatchOnOff}
+        specificationDisabled={specificationDisabled}
+      ></TieredPricing>
+    </>
+  );
+};
+
+export default connect(({ baseData, loading, specialGoods }) => ({
+  classifyParentList: baseData.classifyParentList,
+  brandList: baseData.brandList,
+  tagsPlatform: baseData.tagsPlatform,
+  tagsShow: baseData.tagsShow,
+  specialGoods,
+  skuMerchantList: baseData.skuMerchantList,
+  selectList: baseData.groupMreList,
+  loadings: loading,
+  loading: loading.effects['baseData/fetchGetGroupMreList'],
+}))(PreferentialSet);

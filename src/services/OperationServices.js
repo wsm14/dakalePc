@@ -1111,3 +1111,37 @@ export function fetchRuleDetailPage(params) {
 }
 
 // 券规则管理 end
+
+// 电商品
+
+// get 电商品 - 列表
+export function fetchListOnlineGoodsByPage(params) {
+  return request('/admin/online/goods/admin/listOnlineGoodsByPage', {
+    params,
+  });
+}
+
+// post 电商品 - 新增
+export function fetchSaveOnlineGoods(data) {
+  return request('/admin/online/goods/admin/saveOnlineGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 电商品 - 详情
+export function fetchGetGoodsForUpdate(params) {
+  return request('/admin/online/goods/admin/getGoodsForUpdate', {
+    params,
+  });
+}
+
+// post 电商品 - 修改
+export function fetchUpdateOnlineGoods(data) {
+  return request('/admin/online/goods/admin/updateOnlineGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 电商品 end

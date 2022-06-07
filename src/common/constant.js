@@ -1324,6 +1324,78 @@ export const GROUP_RULE_WIN = {
   10: '3',
 };
 
+// 电商品 - 商品状态
+export const ELECTRICGOODS_STATUS = ['已下架', '上架中'];
+
+// 电商品 - 售卖类型
+export const ELECTRICGOODS_SELL_STATUS = {
+  single: '零售',
+  batch: '批采',
+};
+
+// 电商品 - 库存单位
+export const ELECTRICGOODS_SKU = {
+  件: '件',
+  只: '只',
+  瓶: '瓶',
+  袋: '袋',
+  包: '包',
+  箱: '箱',
+  盒: '盒',
+  条: '条',
+  听: '听',
+  杯: '杯',
+  提: '提',
+  捆: '捆',
+  码: '码',
+  把: '把',
+  本: '本',
+  台: '台',
+  块: '块',
+  对: '对',
+  套: '套',
+  双: '双',
+  克: '克',
+  钱: '钱',
+  两: '两',
+  斤: '斤',
+  公斤: '公斤',
+  吨: '吨',
+  千克: '千克',
+};
+
+// 电商品 - 售卖价格类型
+export const ELECTRICGOODS_SELL_PRICE_TYPE = {
+  defaultMode: '现金（可用卡豆抵扣）',
+  cashMode: '现金（不可用卡豆抵扣）',
+  self: '卡豆+现金',
+  free: '免费',
+};
+
+// 电商品 - 前端展示类型(不免费)
+export const FRONT_SHOW_TYPE = {
+  manualOrList: '手动/列表展示',
+  manual: '仅手动展示',
+  notDisplay: '不展示',
+};
+
+// 电商品 - 前端展示类型(免费)
+export const FRONT_SHOW_TYPE_FREE = {
+  manual: '仅手动展示',
+  notDisplay: '不展示',
+};
+
+// 电商品 - 运费类型
+export const FREIGHT_TYPE = {
+  free: '免邮',
+  manual: '全国统一价',
+};
+
+// 电商品 - 结算人类型
+export const SETTLE_TYPE = {
+  settle: '供应商',
+  pingtai: '平台',
+};
 //行业管理 - 前台类目
 export const TRADESET_SELECT = {
   behind: '按后台类目',
