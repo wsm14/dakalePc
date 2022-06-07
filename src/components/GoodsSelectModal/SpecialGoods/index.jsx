@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
 import { GOODS_CLASS_TYPE, TAG_COLOR_TYPE } from '@/common/constant';
+import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 
@@ -41,6 +42,14 @@ const SpecialGoods = (props) => {
     {
       title: '商品名称',
       dataIndex: 'goodsName',
+      render: (val, row) => (
+        <div>
+          <Ellipsis length={10} tooltip>
+            {val}
+          </Ellipsis>
+          <div style={{ display: 'flex' }}>{row?.goodsId}</div>
+        </div>
+      ),
     },
     {
       title: '活动时间',

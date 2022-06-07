@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'umi';
+import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 
@@ -32,6 +33,14 @@ const CommerceGoods = (props) => {
     {
       title: '商品名称',
       dataIndex: 'goodsName',
+      render: (val, row) => (
+        <>
+          <Ellipsis length={20} tooltip>
+            {val}
+          </Ellipsis>
+          <div>{row?.goodsId}</div>
+        </>
+      ),
     },
     {
       title: '价格',

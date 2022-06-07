@@ -7,7 +7,6 @@ import {
   ELECTRICGOODS_SELL_PRICE_TYPE,
 } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
-import debounce from 'lodash/debounce';
 import ExtraButton from '@/components/ExtraButton';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
