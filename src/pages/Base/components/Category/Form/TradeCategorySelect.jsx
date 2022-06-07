@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Form, TreeSelect, Button } from 'antd';
+import { Form, TreeSelect, Button, Cascader } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { TreeSelectFn } from '@/utils/utils';
 const TradeCategorySelect = (props) => {
   const { form, list = [], checkType } = props;
+  const displayRender = (labels) => labels[labels.length - 1];
   return (
     <Form.List
       name="classifyIdList"
@@ -45,6 +45,12 @@ const TradeCategorySelect = (props) => {
                   placeholder="请选择类目"
                   allowClear
                 ></TreeSelect>
+                {/* <Cascader
+                  options={list}
+                  placeholder="请选择类目"
+                  fieldNames={{ label: 'classifyName', value: 'classifyId', children: 'childList' }}
+                  displayRender={displayRender}
+                /> */}
               </Form.Item>
               {fields.length > 1 && index !== 0 ? (
                 <MinusCircleOutlined
