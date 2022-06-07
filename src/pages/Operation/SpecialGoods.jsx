@@ -521,13 +521,12 @@ const SpecialGoods = (props) => {
   return (
     <>
       <TableDataBlock
-        
         btnExtra={extraBtn}
         cardProps={{
           tabList: tabList,
           activeTabKey: tabKey,
           onTabChange: setTabKey,
-          extra: (
+          tabBarExtraContent: (
             <ExtraButton list={btnList}>
               <AuthConsumer auth={'recommendStatus'}>
                 <SpecialRecommendMenu

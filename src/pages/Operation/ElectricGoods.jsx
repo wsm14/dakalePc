@@ -111,17 +111,12 @@ const ElectricGoods = (props) => {
               {val}
             </Ellipsis>
           </div>
-          <div style={{ display: 'flex', marginTop: 5 }}>
-            <Ellipsis length={10} tooltip>
-              {row?.goodsId}
-            </Ellipsis>
-          </div>
+          <div style={{ display: 'flex', marginTop: 5 }}>{row?.goodsId}</div>
         </div>
       ),
     },
     {
       title: '所属类目/供应商',
-      align: 'right',
       dataIndex: 'categoryName',
       render: (val, row) => (
         <div>
