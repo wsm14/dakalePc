@@ -40,7 +40,7 @@ const SpecialGoods = (props) => {
       render: (val) => <PopImgShow width={60} url={val} />,
     },
     {
-      title: '商品名称',
+      title: '商品名称/ID',
       dataIndex: 'goodsName',
       render: (val, row) => (
         <div>
