@@ -1317,7 +1317,7 @@ export const GROUP_RULE_WIN = {
 };
 
 // 电商品 - 商品状态
-export const ELECTRICGOODS_STATUS = ['上架中', '已下架'];
+export const ELECTRICGOODS_STATUS = ['已下架', '上架中'];
 
 // 电商品 - 售卖类型
 export const ELECTRICGOODS_SELL_STATUS = {

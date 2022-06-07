@@ -4,7 +4,6 @@ import update from 'immutability-helper';
 
 const AddSpecification = (props) => {
   const { specificationTypeData = [], setSpecificationTypeData } = props;
-  console.log('specificationTypeData: ', specificationTypeData);
 
   // 添加规格项
   const addSpecificationType = () => {
@@ -22,6 +21,12 @@ const AddSpecification = (props) => {
           },
         ],
       ],
+    });
+    setSpecificationTypeData(newData);
+  };
+  const delSpecificationType = (index) => {
+    const newData = update(specificationTypeData, {
+      $splice: [[index, 1]],
     });
     setSpecificationTypeData(newData);
   };
@@ -61,11 +66,25 @@ const AddSpecification = (props) => {
     });
     setSpecificationTypeData(newData);
   };
+  const delSpecificationValue = (index, idx) => {
+    let list = specificationTypeData[index].value;
+    const newData = update(specificationTypeData, {
+      $splice: [
+        [
+          index,
+          1,
+          {
+            ...specificationTypeData[index],
+            value: update(list, {
+              $splice: [[idx, 1]],
+            }),
+          },
+        ],
+      ],
+    });
+    setSpecificationTypeData(newData);
+  };
 
-  // [
-  //     { name: 'aa', value: [1, 1, 11] },
-  //     { name: 'bb', value: [{ aa: 1 }, {aa: 3}] },
-  //   ]
   return (
     <>
       {specificationTypeData.map((val, index) => {
@@ -75,15 +94,17 @@ const AddSpecification = (props) => {
               defaultValue={val.name}
               onBlur={(e) => updateSpecificationType(e, index)}
               style={{ marginBottom: 10 }}
+              addonAfter={<div onClick={() => delSpecificationType(index)}>×</div>}
             ></Input>
             <div>
               {val?.value?.map((item, idx) => {
                 return (
                   <Input
                     key={`${val.name}${item}`}
-                    style={{ width: 50, marginRight: 10, marginBottom: 10 }}
+                    style={{ width: 80, marginRight: 10, marginBottom: 10 }}
                     defaultValue={item}
                     onBlur={(e) => updateSpecificationValue(e, index, idx)}
+                    addonAfter={<div onClick={() => delSpecificationValue(index, idx)}>×</div>}
                   ></Input>
                 );
               })}

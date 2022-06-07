@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'umi';
 import { Form, Modal } from 'antd';
 import FormCondition from '@/components/FormCondition';
+import RemainFormList from './RemainFormList';
 
 const RemainModal = (props) => {
   const { visible = {}, onClose, dispatch, loading, childRef } = props;
@@ -11,25 +12,25 @@ const RemainModal = (props) => {
   const handleOk = () => {
     form.validateFields().then((values) => {
       dispatch({
-        type: 'specialGoods/fetchSpecialGoodsAddRemain',
-        payload: {
-          id,
-          ownerId,
-          ...values,
-        },
-        callback: () => {
-          onClose();
-          childRef.current.fetchGetData();
-        },
+        // type: 'specialGoods/fetchSpecialGoodsAddRemain',
+        // payload: {
+        //   id,
+        //   ownerId,
+        //   ...values,
+        // },
+        // callback: () => {
+        //   onClose();
+        //   childRef.current.fetchGetData();
+        // },
       });
     });
   };
 
   const formItems = [
     {
-      label: `增加库存`,
+      label: `调整库存`,
       name: 'remainIncrement',
-      placeholder: `请输入库存增量`,
+      placeholder: `请输入调整后的库存`,
       extra: `剩余${remain}`,
       maxLength: 6,
       addRules: [
@@ -45,6 +46,10 @@ const RemainModal = (props) => {
           },
         },
       ],
+    },
+    {
+      type: 'noForm',
+      formItem: <RemainFormList form={form}></RemainFormList>,
     },
   ];
 

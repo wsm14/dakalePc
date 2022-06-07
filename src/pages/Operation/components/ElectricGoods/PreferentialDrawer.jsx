@@ -4,6 +4,7 @@ import { Button, Form } from 'antd';
 import { checkFileData } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
+import { getCityName } from '@/utils/utils';
 import PreferentialSet from './Form/PreferentialSet';
 import PreferentialRuleSet from './Form/PreferentialRuleSet';
 
@@ -19,8 +20,90 @@ const PreferentialDrawer = (props) => {
 
   // 确认提交数据 - add 新增 /  edit 修改所有数据 / again 重新发布
   const handleUpData = () => {
-    form.validateFields().then((values) => {
-      console.log('values', { ...values, content });
+    form.validateFields().then(async (values) => {
+      const {
+        categoryNode,
+        goodsDescImg,
+        customSize = [], // 规格设置的数组
+        oriPrice,
+        costPrice,
+        settlePrice,
+        sellPrice,
+        sellBean,
+        initStock,
+        minPurchaseNum,
+        batchLadderObjects,
+        platformTagIds,
+        displayFilterTags,
+        shippingRuleObject = {},
+        skuInfoReqs,
+        ...other
+      } = values;
+      const gImg = await aliOssUpload(goodsDescImg);
+
+      // console.log('values', { ...values, customSize, content });
+
+      // return;
+
+      const singleSku = [
+        {
+          oriPrice,
+          costPrice,
+          settlePrice,
+          sellPrice,
+          sellBean,
+          initStock,
+          minPurchaseNum,
+          batchLadderObjects,
+        },
+      ];
+      const payload = {
+        ...other,
+        ownerId: -1,
+        ownerType: 'admin',
+        relateType: 'supplier',
+        categoryId: categoryNode[categoryNode.length - 1],
+        categoryNode: categoryNode.join('.'),
+        goodsDescImg: gImg.toString(),
+        platformTagIds: platformTagIds.toString(),
+        displayFilterTags: displayFilterTags.toString(),
+        shippingRuleObject: {
+          ...shippingRuleObject,
+          shippingAddress: getCityName(shippingRuleObject.shippingAddress[1]),
+        },
+        descType: 'richText',
+        richText: content, // 富文本内容
+        skuInfoReqs: customSize.length > 0 ? skuInfoReqs : singleSku,
+      };
+
+      // console.log('payload: ', customSize, payload);
+      // return;
+      dispatch({
+        type: {
+          add: 'electricGoods/fetchSaveOnlineGoods',
+          edit: 'electricGoods/fetchUpdateOnlineGoods',
+          again: 'electricGoods/fetchSaveOnlineGoods',
+          againUp: 'electricGoods/fetchUpdateOnlineGoods',
+        }[type],
+        type: 'electricGoods/fetchSaveOnlineGoods',
+        payload: {
+          ...other,
+          ownerId: -1,
+          ownerType: 'admin',
+          relateType: 'supplier',
+          categoryId: categoryNode[categoryNode.length - 1],
+          categoryNode: categoryNode.join('.'),
+          goodsDescImg: gImg.toString(),
+          platformTagIds: platformTagIds.toString(),
+          displayFilterTags: displayFilterTags.toString(),
+          shippingRuleObject: {
+            ...shippingRuleObject,
+            shippingAddress: getCityName(shippingRuleObject.shippingAddress[1]),
+          },
+          richText: content, // 富文本内容
+          skuInfoReqs: customSize.length > 0 ? skuInfoReqs : singleSku,
+        },
+      });
     });
   };
 
@@ -36,11 +119,15 @@ const PreferentialDrawer = (props) => {
           form={form}
           initialValues={{
             sellType: 'single', //
-            thirdFlag: '1',
-            ownerType: 'merchant',
-            goodsType: 'single',
-            goodsDescType: '0',
-            packageGoodsObjects: [{}],
+            returnRuleObject: {
+              returnFlag: 1,
+            },
+            settleObject: {
+              settlerType: 'settle',
+            },
+            shippingRuleObject: {
+              shippingTime: '24小时内发货',
+            },
           }}
         ></PreferentialSet>
       ),

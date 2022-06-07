@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, InputNumber } from 'antd';
 import update from 'immutability-helper';
 import Upload from '@/components/FormCondition/Upload/Img';
 import aliOssUpload from '@/utils/aliOssUpload';
+import TieredPricing from './TieredPricing';
 import styles from './style.less';
 
 function FormList(props) {
@@ -12,7 +13,10 @@ function FormList(props) {
     form,
     initialValues,
     sellType, //售卖类型
+    priceType, // 售卖价格类型
   } = props;
+  const [batchOnOff, setBatchOnOff] = useState(false); // 批采价设置状态
+  const [tieredModal, setTieredModal] = useState(false); // 设置阶梯价model
 
   // 获取规格对象
   const specificationType = form
@@ -33,7 +37,7 @@ function FormList(props) {
           1,
           {
             ...dataList[index],
-            goodsImg: imgUrl.toString(),
+            image: imgUrl.toString(),
           },
         ],
       ],
@@ -50,19 +54,19 @@ function FormList(props) {
   return (
     <div key={field.key} style={{ display: 'flex' }}>
       <div className={styles.table_row_cell}>
-        <Form.Item name={[field.name, 'SKU']} noStyle>
+        <Form.Item name={[field.name, 'skuCode']} noStyle>
           <Input style={styleObj}></Input>
         </Form.Item>
       </div>
       <div className={styles.table_row_cell}>{specificationType}</div>
       <div className={`${styles.table_row_cell} ${styles.upload_box}`}>
         <Form.Item
-          name={[field.name, 'goodsImg']}
+          name={[field.name, 'image']}
           rules={[{ required: true, message: '请上传图片' }]}
           noStyle
         >
           <Upload
-            name={['skuInfoReqs', field.name, 'goodsImg']}
+            name={['skuInfoReqs', field.name, 'image']}
             maxFile={1}
             isCut={false}
             initialvalues={initialValues}
@@ -78,7 +82,7 @@ function FormList(props) {
           <InputNumber addonBefore="￥" precision={2} min={0} style={styleObj}></InputNumber>
         </Form.Item>
       </div>
-      // 零售时存在，批采时不存在
+      {/* // 零售时存在，批采时不存在 */}
       {sellType === 'single' && (
         <div className={styles.table_row_cell}>
           <Form.Item
@@ -90,8 +94,8 @@ function FormList(props) {
           </Form.Item>
         </div>
       )}
-      // 零售时存在，批采时不存在
-      {sellType === 'single' && (
+      {/* // 零售时存在，批采时不存在 */}
+      {sellType === 'single' && priceType !== 'free' && (
         <div className={styles.table_row_cell}>
           <Form.Item
             name={[field.name, 'sellPrice']}
@@ -102,7 +106,19 @@ function FormList(props) {
           </Form.Item>
         </div>
       )}
-      // 批采时存在，零售时不存在
+      {/* // 零售 且 支付方式为 卡豆+现金 时存在，批采时不存在 */}
+      {sellType === 'single' && priceType === 'self' && (
+        <div className={styles.table_row_cell}>
+          <Form.Item
+            name={[field.name, 'sellBean']}
+            rules={[{ required: true, message: '请输入卡豆' }]}
+            noStyle
+          >
+            <InputNumber addonAfter="卡豆" precision={0} min={0} style={styleObj}></InputNumber>
+          </Form.Item>
+        </div>
+      )}
+      {/* // 批采时存在，零售时不存在 */}
       {sellType === 'batch' && (
         <div className={styles.table_row_cell}>
           <Form.Item
@@ -114,7 +130,7 @@ function FormList(props) {
           </Form.Item>
         </div>
       )}
-      // 批采时存在，零售时不存在
+      {/* // 批采时存在，零售时不存在 */}
       {sellType === 'batch' && (
         <div className={styles.table_row_cell}>
           <Form.Item
@@ -122,7 +138,9 @@ function FormList(props) {
             rules={[{ required: true, message: '请输入批采价' }]}
             noStyle
           >
-            <Input style={styleObj}></Input>
+            <Button type="link" onClick={() => setTieredModal(true)}>
+              {batchOnOff ? '已设置' : '设置'}
+            </Button>
           </Form.Item>
         </div>
       )}
@@ -135,6 +153,14 @@ function FormList(props) {
           <InputNumber precision={0} min={0} style={styleObj}></InputNumber>
         </Form.Item>
       </div>
+      <TieredPricing
+        form={form}
+        visible={tieredModal}
+        onClose={() => setTieredModal(false)}
+        setBatchOnOff={setBatchOnOff}
+        specificationDisabled={true}
+        name={field.name}
+      ></TieredPricing>
     </div>
   );
 }

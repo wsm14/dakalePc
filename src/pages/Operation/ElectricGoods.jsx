@@ -1,37 +1,45 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { SUBMIT_TYPE, ELECTRICGOODS_STATUS } from '@/common/constant';
+import { Button } from 'antd';
+import {
+  SUBMIT_TYPE,
+  ELECTRICGOODS_STATUS,
+  ELECTRICGOODS_SELL_PRICE_TYPE,
+} from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
+import debounce from 'lodash/debounce';
 import ExtraButton from '@/components/ExtraButton';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import PreferentialDrawer from './components/ElectricGoods/PreferentialDrawer';
-import SpecialGoodDetail from './components/ElectricGoods/SpecialGoodDetail';
+import ElectricGoodDetail from './components/ElectricGoods/ElectricGoodDetail';
 import RemainModal from './components/ElectricGoods/Detail/RemainModal';
+import ShareImg from './components/ElectricGoods/ShareImg';
 
 // tab栏列表
 const tabList = [
   {
-    key: '0',
+    key: 'single',
     tab: '零售',
   },
   {
-    key: '1',
+    key: 'batch',
     tab: '批采',
   },
 ];
 
 const ElectricGoods = (props) => {
-  const { list, loading, loadings, dispatch, classifyParentList } = props;
+  const { list, loading, dispatch, classifyParentList } = props;
 
   const childRef = useRef();
-  const [tabKey, setTabKey] = useState('0'); // tab
+  const [tabKey, setTabKey] = useState('single'); // tab
 
   const [visibleSet, setVisibleSet] = useState(false); // 新增特惠活动
   const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 审核拒绝 下架原因
   const [visibleRemain, setVisibleRemain] = useState(false);
+  const [visibleShare, setVisibleShare] = useState(false); // 分享配置
 
   useEffect(() => {
     childRef.current && childRef.current.fetchGetData({ sellType: tabKey });
@@ -48,8 +56,20 @@ const ElectricGoods = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '所属类目',
+      label: '商品名称',
+      name: 'goodsName',
+    },
+    {
+      label: '商品id',
       name: 'goodsId',
+    },
+    {
+      label: '供应商',
+      name: 'supplierName',
+    },
+    {
+      label: '所属类目',
+      name: 'categoryId',
       type: 'cascader',
       select: classifyParentList,
       fieldNames: { label: 'classifyName', value: 'classifyId', children: 'childList' },
@@ -63,9 +83,9 @@ const ElectricGoods = (props) => {
     },
     {
       label: '最后更新时间',
-      name: 'activityStartTime',
+      name: 'updateStartDate',
       type: 'rangePicker',
-      end: 'activityEndTime',
+      end: 'updateEndDate',
     },
     {
       label: '最后操作人',
@@ -83,17 +103,17 @@ const ElectricGoods = (props) => {
     },
     {
       title: '商品名称/ID',
-      dataIndex: 'goodsImg',
+      dataIndex: 'goodsName',
       render: (val, row) => (
         <div>
           <div style={{ display: 'flex' }}>
             <Ellipsis length={10} tooltip>
-              {row.goodsName}
+              {val}
             </Ellipsis>
           </div>
           <div style={{ display: 'flex', marginTop: 5 }}>
             <Ellipsis length={10} tooltip>
-              {row.ownerName}
+              {row?.goodsId}
             </Ellipsis>
           </div>
         </div>
@@ -102,39 +122,38 @@ const ElectricGoods = (props) => {
     {
       title: '所属类目/供应商',
       align: 'right',
-      dataIndex: 'otherPlatformPrice',
+      dataIndex: 'categoryName',
+      render: (val, row) => (
+        <div>
+          <div style={{ display: 'flex' }}>
+            <Ellipsis length={10} tooltip>
+              {val}
+            </Ellipsis>
+          </div>
+          <div style={{ display: 'flex', marginTop: 5 }}>
+            <Ellipsis length={10} tooltip>
+              {row?.relateName}
+            </Ellipsis>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: '售卖价格类型',
+      dataIndex: 'paymentModeType',
+      render: (val) => ELECTRICGOODS_SELL_PRICE_TYPE[val],
     },
     {
       title: '零售价',
       align: 'right',
-      dataIndex: 'otherPlatformPrice',
+      dataIndex: 'sellPriceRange',
     },
     {
-      title: '佣金',
+      title: '佣金/库存',
       align: 'right',
-      dataIndex: 'commission',
-      render: (val, row) => `￥${val}`,
+      dataIndex: 'goodsId',
+      render: (val, row) => <Button type="link">查看</Button>,
     },
-    // {
-    //   title: '原价/售价',
-    //   align: 'right',
-    //   dataIndex: 'oriPrice',
-    //   render: (val, row) => {
-    //     const zhe = (Number(row.realPrice) / Number(val)) * 10;
-    //     return (
-    //       <div>
-    //         <div style={{ textDecoration: 'line-through', color: '#999999' }}>
-    //           ￥{Number(val).toFixed(2)}
-    //         </div>
-    //         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-    //           <Tag color={'red'}>{`${zhe}`.substring(0, 4)}折</Tag>
-    //           <div>￥{Number(row.realPrice).toFixed(2)}</div>
-    //         </div>
-    //       </div>
-    //     );
-    //   },
-    // },
-
     {
       title: '剩余库存',
       align: 'right',
@@ -142,34 +161,43 @@ const ElectricGoods = (props) => {
     },
     {
       title: '权重',
-      dataIndex: 'weight',
+      dataIndex: 'rightWeights',
       align: 'center',
+      // render: (val, row) => (
+      //   <TradeSortSet
+      //     detail={row}
+      //     onSubmit={fetchTradeSet}
+      //     getList={getList}
+      //     idName="goodsId"
+      //   ></TradeSortSet>
+      // ),
     },
     {
       title: '商品状态',
-      dataIndex: 'oriPrice',
+      dataIndex: 'status',
+      render: (val) => ELECTRICGOODS_STATUS[val],
     },
     {
       title: '最后更新时间',
       align: 'center',
-      dataIndex: 'createTime',
+      dataIndex: 'updateTime',
       render: (val, row) => `${val}\n${SUBMIT_TYPE[row.creatorType]}--${row.creatorName || ''}`,
     },
     {
       type: 'handle',
-      dataIndex: 'specialGoodsId',
+      dataIndex: 'goodsId',
       width: 150,
       render: (val, record, index) => {
         const { specialGoodsId, ownerIdString: merchantId, status, deleteFlag } = record;
         return [
           {
             type: 'info',
-            click: () => fetchSpecialGoodsDetail(index, 'info'),
+            click: () => fetchSpecialGoodsDetail(val, 'info'),
           },
           {
             title: '下架',
             auth: 'down',
-            visible: status == '1' && deleteFlag == '1', // 活动中 && 未删除
+            // visible: status == '1' && deleteFlag == '1', // 活动中 && 未删除
             click: () =>
               setVisibleRefuse({
                 show: true,
@@ -179,29 +207,34 @@ const ElectricGoods = (props) => {
           },
           {
             type: 'edit',
-            visible: ['1'].includes(status) && deleteFlag == '1', // 活动中 && 未删除
-            click: () => fetchSpecialGoodsDetail(index, 'edit'),
+            // visible: ['1'].includes(status) && deleteFlag == '1', // 活动中 && 未删除
+            click: () => fetchSpecialGoodsDetail(val, 'edit'),
           },
           {
             type: 'again', //重新发布
-            visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
-            click: () => fetchSpecialGoodsDetail(index, 'again'),
+            // visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
+            click: () => fetchSpecialGoodsDetail(val, 'again'),
           },
           {
             type: 'againUp', // 再次上架
             title: '编辑',
             visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
-            click: () => fetchSpecialGoodsDetail(index, 'againUp'),
+            click: () => fetchSpecialGoodsDetail(val, 'againUp'),
           },
-          {
-            type: 'diary',
-            click: () => fetchGetLogData({ type: 'specialGoods', identificationId: val }),
-          },
+          // {
+          //   type: 'diary', // 日志
+          //   click: () => fetchGetLogData({ type: 'specialGoods', identificationId: val }),
+          // },
           {
             title: '调整库存',
             type: 'changeRemain',
-            visible: ['1'].includes(status) && deleteFlag == '1',
+            // visible: ['1'].includes(status) && deleteFlag == '1',
             click: () => fetAddRemain(specialGoodsId, record.ownerIdString, record.remain),
+          },
+          {
+            title: '设置', // 分享配置
+            type: 'shareImg',
+            click: () => fetchShareImg(record),
           },
         ];
       },
@@ -209,10 +242,17 @@ const ElectricGoods = (props) => {
   ];
 
   // 获取日志信息
-  const fetchGetLogData = (payload) => {
-    dispatch({
-      type: 'baseData/fetchGetLogDetail',
-      payload,
+  // const fetchGetLogData = (payload) => {
+  //   dispatch({
+  //     type: 'baseData/fetchGetLogDetail',
+  //     payload,
+  //   });
+  // };
+
+  // 分享配置
+  const fetchShareImg = (record) => {
+    setVisibleShare({
+      show: true,
     });
   };
 
@@ -244,7 +284,22 @@ const ElectricGoods = (props) => {
   };
 
   // 获取详情
-  const fetchSpecialGoodsDetail = () => {};
+  const fetchSpecialGoodsDetail = (goodsId, type) => {
+    dispatch({
+      type: 'electricGoods/fetchGetGoodsForUpdate',
+      payload: {
+        goodsId,
+        ownerId: -1,
+      },
+      callback: (detail) =>
+        type == 'info'
+          ? setVisibleInfo({
+              show: true,
+              detail,
+            })
+          : '',
+    });
+  };
 
   const btnList = [
     {
@@ -265,7 +320,7 @@ const ElectricGoods = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ sellType: '0' }}
+        params={{ sellType: 'single' }}
         rowKey={(record) => `${record.goodsId}`}
         dispatchType="electricGoods/fetchGetList"
         {...list}
@@ -276,7 +331,7 @@ const ElectricGoods = (props) => {
         onClose={() => setVisibleSet({ show: false })}
       ></PreferentialDrawer>
       {/* 详情 */}
-      <SpecialGoodDetail
+      <ElectricGoodDetail
         visible={visibleInfo}
         getDetail={fetchSpecialGoodsDetail}
         onEdit={() =>
@@ -289,7 +344,7 @@ const ElectricGoods = (props) => {
           })
         }
         onClose={() => setVisibleInfo(false)}
-      ></SpecialGoodDetail>
+      ></ElectricGoodDetail>
       {/* 下架原因 */}
       <RefuseModal
         visible={visibleRefuse}
@@ -302,6 +357,8 @@ const ElectricGoods = (props) => {
         visible={visibleRemain}
         onClose={() => setVisibleRemain(false)}
       ></RemainModal>
+      {/* 分享配置 */}
+      <ShareImg visible={visibleShare} onClose={() => setVisibleShare(false)}></ShareImg>
     </>
   );
 };

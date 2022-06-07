@@ -4,7 +4,13 @@ import FormList from './FormList';
 import styles from './style.less';
 
 function SpecificationList(props) {
-  const { specificationTypeData, form, initialValues, sellType } = props;
+  const {
+    specificationTypeData,
+    form,
+    initialValues,
+    sellType, // 售卖类型
+    priceType, // 售卖价格类型
+  } = props;
   return (
     <Form.List label="规格信息" name="skuInfoReqs">
       {(fields, { add, remove, move }, { errors }) => {
@@ -17,13 +23,10 @@ function SpecificationList(props) {
               ) : null}
               <div>图片</div>
               <div>原价</div>
-
-              {sellType === 'single' ? (
-                <>
-                  <div>结算价</div>
-                  <div>零售价</div>
-                </>
-              ) : (
+              {sellType === 'single' && <div>结算价</div>}
+              {sellType === 'single' && priceType !== 'free' && <div>零售价</div>}
+              {sellType === 'single' && priceType === 'self' && <div>卡豆</div>}
+              {sellType === 'batch' && (
                 <>
                   <div>最小起订量</div>
                   <div>批采价</div>
@@ -33,13 +36,13 @@ function SpecificationList(props) {
             </div>
             {fields.map((field) => (
               <FormList
-                sellType={sellType}
                 initialValues={initialValues}
-                // name={['skuInfoReqs', 'subRewardList']}
                 key={field.fieldKey}
                 form={form}
                 fields={fields}
                 field={field}
+                sellType={sellType}
+                priceType={priceType}
               ></FormList>
             ))}
             <Form.ErrorList errors={errors} />

@@ -5,6 +5,7 @@ import { uuid } from '@/utils/utils';
 import { fetchBackCategoryList } from '@/services/BaseServices';
 import { fetchGetSupplierManageList, fetchSupplierBrandList } from '@/services/SCMServices';
 import { fetchMerchantList, fetchMerchantGroup } from '@/services/BusinessServices';
+import { fetchGoodsTagList } from '@/services/OperationServices';
 import {
   fetchGetOss,
   fetchGetMreTag,
@@ -83,6 +84,8 @@ export default {
     sipploerList: [],
     classifyParentList: [],
     brandList: [],
+    tagsPlatform: [],
+    tagsShow: [],
   },
 
   reducers: {
@@ -804,6 +807,31 @@ export default {
           brandList: newList,
         },
       });
+    },
+    *fetchGoodsTagList({ payload, callback }, { call, put }) {
+      //获取平台商品标签
+      const response1 = yield call(fetchGoodsTagList, {
+        ...payload,
+        status: '1',
+        tagType: 'platform',
+      });
+      //获取展示标签
+      const response2 = yield call(fetchGoodsTagList, {
+        ...payload,
+        status: '1',
+        tagType: 'show',
+      });
+      if (!response1 && !response2) return;
+      const { content: content1 } = response1;
+      const { content: content2 } = response2;
+      yield put({
+        type: 'save',
+        payload: {
+          tagsPlatform: content1.configGoodsTagDTOS,
+          tagsShow: content2.configGoodsTagDTOS,
+        },
+      });
+      // callback && callback(content1.configGoodsTagDTOS);
     },
   },
 };

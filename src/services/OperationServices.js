@@ -1098,4 +1098,27 @@ export function fetchListOnlineGoodsByPage(params) {
   });
 }
 
+// post 电商品 - 新增
+export function fetchSaveOnlineGoods(data) {
+  return request('/admin/online/goods/admin/saveOnlineGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 电商品 - 详情
+export function fetchGetGoodsForUpdate(params) {
+  return request('/admin/online/goods/admin/getGoodsForUpdate', {
+    params,
+  });
+}
+
+// post 电商品 - 修改
+export function fetchUpdateOnlineGoods(data) {
+  return request('/admin/online/goods/admin/updateOnlineGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 电商品 end
