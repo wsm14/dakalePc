@@ -6,7 +6,7 @@ import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
-import GoodsSelectModal from './GoodsSelectModal';
+import GoodsSelectModal from '@/components/GoodsSelectModal';
 
 const tabList = [
   {
@@ -69,9 +69,9 @@ const ConnectedGoodsModal = (props) => {
       dataIndex: 'ownerName',
       render: (val, row) => (
         <div>
-          <div style={{ marginTop: 5 }}>{row.categoryName}</div>
+          <div style={{ marginTop: 5 }}>{row.categoryName || '--'}</div>
           <Ellipsis length={8} tooltip>
-            {val}
+            {val || '--'}
           </Ellipsis>
         </div>
       ),
@@ -158,13 +158,14 @@ const ConnectedGoodsModal = (props) => {
       </Modal>
       <GoodsSelectModal
         visible={visibleDrawer}
-        onSumbit={(data) => {
+        hiddenTag={['reduceCoupon']}
+        onSumbit={({ list }) => {
           fetchConfigGoodsSet(
             'add',
-            data.map((i) => ({
-              goodsId: i.activityGoodsId,
-              goodsType: i.activityType,
-              ownerId: i.ownerIdString,
+            list.map((i) => ({
+              goodsId: i.goodsId,
+              goodsType: i.goodsType,
+              ownerId: i.ownerId,
             })),
             () => setVisibleDrawer(false),
           );

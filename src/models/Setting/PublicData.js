@@ -795,11 +795,14 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          onlineGoods: { list: content.onlineManagerResps, total: content.total },
+          onlineGoods: {
+            list: content.onlineManagerResps.map((i) => ({ ...i, goodsType: 'commerceGoods' })),
+            total: content.total,
+          },
         },
       });
     },
-    // get 获取线上电商品列表
+    // get 获取特惠商品列表
     *fetchListOfflineGoodsByPage({ payload }, { call, put }) {
       const response = yield call(fetchListOfflineGoodsByPage, payload);
       if (!response) return;
@@ -807,7 +810,10 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          offlineGoods: { list: content.offlineManagerResps, total: content.total },
+          offlineGoods: {
+            list: content.offlineManagerResps.map((i) => ({ ...i, goodsType: 'specialGoods' })),
+            total: content.total,
+          },
         },
       });
     },
@@ -820,7 +826,11 @@ export default {
         type: 'save',
         payload: {
           buyCouponList: {
-            list: content.ownerCouponList.map((i) => ({ ...i, goodsId: i.ownerCouponIdString })),
+            list: content.ownerCouponList.map((i) => ({
+              ...i,
+              goodsType: 'reduceCoupon',
+              goodsId: i.ownerCouponIdString,
+            })),
             total: content.total,
           },
         },

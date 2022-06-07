@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Tabs } from 'antd';
 import SearchCondition from '@/components/SearchCondition';
 import ReduceCoupon from './ReduceCoupon';
@@ -17,7 +17,7 @@ const GoodsSelectModal = (props) => {
     visible = false,
     selectType = 'checkbox', // checkbox | radio
     hiddenTag = [],
-    onOk,
+    onSumbit,
     onClose,
   } = props;
 
@@ -25,9 +25,27 @@ const GoodsSelectModal = (props) => {
   const [selectItem, setSelectItem] = useState({ keys: [] }); // 当前选择项
   const [searchValue, setSearchValue] = useState({}); // 搜索值
 
+  useEffect(() => {
+    if (visible) {
+      const showTab = tabPaneList.filter((i) => !hiddenTag.includes(i.key));
+      showTab.length && setTabKey(showTab[0].key);
+    }
+  }, [visible]);
+
   // 点击选择
   const handleSelectItem = (newKeys = [], newlist = []) => {
-    setSelectItem({ keys: newKeys, list: newlist });
+    setSelectItem((old) => {
+      const obj = {};
+      const { list = [] } = old;
+      const allList = [...list, ...newlist];
+      const checkList = allList
+        .filter((i) => i && newKeys.includes(i.goodsId))
+        .reduce((item, next) => {
+          next && obj[next.goodsId] ? '' : next && (obj[next.goodsId] = true && item.push(next));
+          return item;
+        }, []);
+      return { keys: newKeys, list: checkList };
+    });
   };
 
   // 搜索参数
@@ -62,19 +80,16 @@ const GoodsSelectModal = (props) => {
     {
       tab: '有价券',
       key: 'reduceCoupon',
-      show: !hiddenTag.includes('reduceCoupon'),
       content: <ReduceCoupon {...propsComponents}></ReduceCoupon>,
     },
     {
       tab: '特惠商品',
       key: 'specialGoods',
-      show: !hiddenTag.includes('specialGoods'),
       content: <SpecialGoods {...propsComponents}></SpecialGoods>,
     },
     {
       tab: '电商品',
       key: 'commerceGoods',
-      show: !hiddenTag.includes('commerceGoods'),
       content: <CommerceGoods {...propsComponents}></CommerceGoods>,
     },
   ];
@@ -85,7 +100,7 @@ const GoodsSelectModal = (props) => {
       width={900}
       visible={visible}
       afterClose={() => {
-        setSelectItem({});
+        setSelectItem({ keys: [] });
       }}
       // maskStyle={{ background: 'none' }}
       bodyStyle={{ paddingBottom: 0 }}
@@ -95,7 +110,8 @@ const GoodsSelectModal = (props) => {
         disabled: !selectItem.keys.length,
       }}
       onOk={() => {
-        onOk(selectItem);
+        console.log(selectItem);
+        onSumbit && onSumbit(selectItem);
         onClose();
       }}
       onCancel={onClose}
@@ -108,7 +124,7 @@ const GoodsSelectModal = (props) => {
       <Tabs destroyInactiveTabPane onChange={setTabKey} type="card" style={{ overflow: 'initial' }}>
         {tabPaneList.map(
           (pane) =>
-            pane.show && (
+            !hiddenTag.includes(pane.key) && (
               <TabPane tab={pane.tab} key={pane.key}>
                 {pane.content}
               </TabPane>
