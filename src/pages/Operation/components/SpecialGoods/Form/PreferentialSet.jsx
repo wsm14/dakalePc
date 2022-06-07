@@ -412,7 +412,7 @@ const PreferentialSet = ({
       disabled: editDisabled,
       min: 0,
       max: 999999.99,
-      onchange: () => saveMreData({ oriPrice: e.target.value }),
+      onChange: (e) => saveMreData({ oriPrice: e }),
       formatter: (value) => `￥ ${value}`,
     },
     {
@@ -473,12 +473,14 @@ const PreferentialSet = ({
       min: 0,
       max: 999999.99,
       formatter: (value) => `￥ ${value}`,
-      onchange: () => saveMreData({ sellPrice: e.target.value }),
-      addonAfter: '.com',
-      // suffix: `${parseInt(
-      //   form.getFieldValue(['skuInfoReq', 'sellPrice']) /
-      //     form.getFieldValue(['skuInfoReq', 'oriPrice']),
-      // )}折`,
+      onChange: (e) => {
+        saveMreData({ sellPrice: e });
+      },
+      addonAfter: `${
+        mreList.oriPrice && mreList.sellPrice
+          ? ((Number(mreList.sellPrice) / Number(mreList.oriPrice)) * 10).toString().substring(0, 4)
+          : 0
+      }折`,
       addRules: [
         {
           validator: (rule, value) => {
