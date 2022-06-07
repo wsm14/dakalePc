@@ -47,12 +47,12 @@ const CommerceGoods = (props) => {
       align: 'right',
       dataIndex: 'sellPriceRange',
     },
-    // {
-    //   title: '库存',
-    //   align: 'right',
-    //   dataIndex: 'remain',
-    //   render: (val) => `剩 ${val}`,
-    // },
+    {
+      title: '库存',
+      align: 'right',
+      dataIndex: 'remain',
+      render: (val) => `剩 ${val || 0}`,
+    },
   ];
 
   return (

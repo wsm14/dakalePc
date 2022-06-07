@@ -53,6 +53,7 @@ const SpecialGoods = (props) => {
     },
     {
       title: '活动时间',
+      align: 'center',
       dataIndex: 'activityTimeRule', // 使用有效期-固定时间-开始时间
       render: (val, row) => {
         const { activityStartTime, activityEndTime } = row;
