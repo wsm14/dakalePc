@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'umi';
-import { Card } from 'antd';
 import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import ResourceContentDrawer from './ResourceContentDrawer';
