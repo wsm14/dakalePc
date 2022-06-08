@@ -519,12 +519,10 @@ export default {
     },
     *fetchGetGroupMreList({ payload, callback }, { put, call }) {
       const { type = 'merchant', name, ...other } = payload;
-      console.log(type);
       const newPayload = {
         merchant: { merchantName: name }, // 单店
         group: { groupName: name }, // 集团
       }[type];
-      console.log(newPayload, type);
       const response = yield call(
         { merchant: fetchMerchantList, group: fetchMerchantGroup }[type],
         { limit: 50, page: 1, bankStatus: 3, ...newPayload, ...other },

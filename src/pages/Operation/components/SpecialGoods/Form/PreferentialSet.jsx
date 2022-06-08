@@ -105,7 +105,7 @@ const PreferentialSet = ({
         timeType,
         timeSplit,
         activeTime,
-        userTime,
+        userTime: initialValues?.useTimeRuleObject?.type,
         paymentModeType: initialValues.paymentModeType,
       });
       // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/商家商品标签
@@ -149,7 +149,6 @@ const PreferentialSet = ({
   };
   // 搜索店铺
   const fetchGetMre = debounce((name, type, callback) => {
-    console.log(name, type, 'name');
     if (!name) return;
     dispatch({
       type: 'baseData/fetchGetGroupMreList',
@@ -361,7 +360,7 @@ const PreferentialSet = ({
     {
       title: '设置商品信息',
       label: '商品类别',
-      name: ['thirdInfoResp', 'thirdType'],
+      name: ['thirdInfoRep', 'thirdType'],
       type: 'radio',
       disabled: commonDisabled,
       select: { 1: '特惠商品', 2: '自我游商品' },
@@ -371,7 +370,7 @@ const PreferentialSet = ({
     },
     {
       label: '自我游编码',
-      name: ['thirdInfoResp', 'thirdId'],
+      name: ['thirdInfoRep', 'thirdId'],
       visible: goodsType === '2',
       onChange: (e) => {
         form.setFieldsValue({
@@ -708,7 +707,6 @@ const PreferentialSet = ({
       ),
     },
     {
-      // label: '商家商品标签',
       label: '平台商品标签',
       name: 'platformTagIds',
       type: 'select',

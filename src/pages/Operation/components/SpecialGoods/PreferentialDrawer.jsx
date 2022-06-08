@@ -66,8 +66,6 @@ const PreferentialDrawer = (props) => {
         startDate,
         availableAreas,
         cityList = [],
-        thirdId,
-        thirdType,
         useTimeRuleObject = {},
         useDay,
         ...other
@@ -103,10 +101,6 @@ const PreferentialDrawer = (props) => {
               settlerType: settlerType,
             },
             availableAreas: availableAreas === 'all' ? availableAreas : cityIds.toString(),
-            thirdInfoReq: {
-              thirdId,
-              thirdType,
-            },
             useTimeRuleObject: {
               ...useTimeRuleObject,
               startDate: startDate && startDate[0].format('YYYY-MM-DD'),
@@ -195,7 +189,7 @@ const PreferentialDrawer = (props) => {
     title: drawerProps.title,
     visible: show,
     onClose,
-    afterCallBack: () => fetchGetMre(),
+    // afterCallBack: () => fetchGetMre(),
     closeCallBack: () => {
       dispatch({ type: 'baseData/clearGroupMre' }); // 关闭清空搜索的商家数据
       setSaveData(null);

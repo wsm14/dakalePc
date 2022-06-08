@@ -588,37 +588,11 @@ const SpecialGoods = (props) => {
     <>
       <TableDataBlock
         btnExtra={extraBtn}
-        // cardProps={{
-        //   tabList: tabList,
-        //   activeTabKey: tabKey,
-        //   onTabChange: setTabKey,
-        //   extra: (
-        //     <ExtraButton list={btnList}>
-        //       <AuthConsumer auth={'recommendStatus'}>
-        //         <SpecialRecommendMenu
-        //           num={goodsList.length}
-        //           tabKey={tabKey}
-        //           handleRecommend={(val) =>
-        //             fetchSpecialGoodsRecommend({ goodsId: goodsList.toString(), ...val })
-        //           }
-        //           disabled={!goodsList.length}
-        //         ></SpecialRecommendMenu>
-        //       </AuthConsumer>
-        //     </ExtraButton>
-        //   ),
-        // }}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        // params={{ deleteFlag: '1', selfTourFlag: tabKey }}
         rowKey={(record) => `${record.goodsId}`}
-        // rowSelection={{
-        //   getCheckboxProps: ({ status, deleteFlag }) => ({
-        //     disabled: !['1', '2'].includes(status) || deleteFlag == '0', // 不是 活动中 即将开始 || 已删除
-        //   }),
-        //   onChange: setGoodsList,
-        // }}
         dispatchType="specialGoods/fetchGetList"
         {...specialGoods}
       ></TableDataBlock>
