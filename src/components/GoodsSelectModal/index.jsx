@@ -5,12 +5,14 @@ import ReduceCoupon from './ReduceCoupon';
 import SpecialGoods from './SpecialGoods';
 import CommerceGoods from './CommerceGoods';
 import PlatformCoupon from './PlatformCoupon';
+import './index.less'
 
 const { TabPane } = Tabs;
 /**
  * 商品选择弹窗
  * @param {String} selectType 选择的类型 单选多选 默认多选 checkbox | radio
  * @param {Array} hiddenTag 隐藏的类型 可选
+ * @param {Array} showTag 显示的类型 可选
  * ["platformCoupon", "reduceCoupon","specialGoods","commerceGoods"]
  * @returns
  */
@@ -19,6 +21,7 @@ const GoodsSelectModal = (props) => {
     visible = false,
     selectType = 'checkbox', // checkbox | radio
     hiddenTag = [],
+    showTag = [],
     onSumbit,
     onClose,
   } = props;
@@ -136,7 +139,7 @@ const GoodsSelectModal = (props) => {
       <Tabs destroyInactiveTabPane onChange={setTabKey} type="card" style={{ overflow: 'initial' }}>
         {tabPaneList.map(
           (pane) =>
-            !hiddenTag.includes(pane.key) && (
+            (showTag.length ? showTag.includes(pane.key) : !hiddenTag.includes(pane.key)) && (
               <TabPane tab={pane.tab} key={pane.key}>
                 {pane.content}
               </TabPane>

@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'antd';
-import GoodsSelectModal from './GoodsSelectModal';
+import GoodsSelectModal from '@/components/GoodsSelectModal';
 import FormList from './FormList';
-
-import './coupon.less';
 
 const ShareCoupon = (props) => {
   const { type = '', form, data = [] } = props;
@@ -49,11 +47,13 @@ const ShareCoupon = (props) => {
           );
         }}
       </Form.List>
-      {/* // 特惠商品，电商品，自我游 */}
+      {/* 特惠商品，电商品，自我游 */}
       <GoodsSelectModal
-        typeList={type}
-        form={form}
+        showTag={[type]}
         visible={visible}
+        onSumbit={({ list }) => {
+          form.setFieldsValue({ [type]: list });
+        }}
         onClose={() => setVisible(false)}
       ></GoodsSelectModal>
     </>

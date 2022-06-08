@@ -88,7 +88,7 @@ export const platformCouponsDom = (item = {}, id = '', setSelectItem, onDel) => 
     <div style={{ width: 350 }} key={platformCouponId}>
       <Badge.Ribbon text={'平台券'}>
         <div
-          className={`share_Coupon share_item ${id.includes(platformCouponId) && 'select'}`}
+          className={`share_Coupon share_item ${id === platformCouponId && 'select'}`}
           style={{ marginBottom: 6 }}
           onClick={() => setSelectItem && setSelectItem(item)}
         >
@@ -144,17 +144,19 @@ export const goodsDom = (item = {}, id, setSelectItem, onDel) => {
     remain,
     specialGoodsId,
     activityGoodsId,
-    realPrice,
+    sellPrice,
     oriPrice,
-    goodsType = 'single',
+    productType = 'single',
     activityTimeRule = 'infinite',
-    activityStartTime,
-    activityEndTime,
+    activityStartDate,
+    activityEndDate,
+    buyFlag,
+    inputDom = null,
   } = item;
 
   return (
     <div style={{ width: 350 }} key={activityGoodsId || specialGoodsId}>
-      <Badge.Ribbon text={{ single: '单品', package: '套餐' }[goodsType]}>
+      <Badge.Ribbon text={{ single: '单品', package: '套餐' }[productType]}>
         <div
           className={`share_Coupon share_item ${id === specialGoodsId && 'select'}`}
           style={{ marginBottom: 6 }}
@@ -168,19 +170,19 @@ export const goodsDom = (item = {}, id, setSelectItem, onDel) => {
               background: `url(${goodsImg}) 100%/cover`,
             }}
           ></div>
-          <div className="share_title" style={{ lineHeight: 1.8 }}>
+          <div className="share_title" style={{ lineHeight: 1.6 }}>
             <div className="titile">{goodsName}</div>
             <div className="share_tip">
               活动时间：
               {
-                { fixed: `${activityStartTime} - ${activityEndTime}`, infinite: '长期' }[
+                { fixed: `${activityStartDate} - ${activityEndDate}`, infinite: '长期' }[
                   activityTimeRule
                 ]
               }
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div className="share_tip">
-                ¥{realPrice}{' '}
+                {buyFlag === '0' ? '免费 ' : `¥${sellPrice} `}
                 <span style={{ textDecoration: 'line-through', color: '#9e9e9e' }}>
                   ￥{oriPrice}
                 </span>
@@ -189,6 +191,7 @@ export const goodsDom = (item = {}, id, setSelectItem, onDel) => {
                 剩余{remain}张
               </div>
             </div>
+            {inputDom && inputDom()}
           </div>
           {!onDel ? (
             <div className="share_select_icon">
@@ -216,7 +219,7 @@ export const commerceDom = (item = {}, id, setSelectItem, onDel) => {
     realPrice,
     oriPrice,
     goodsType = 'single',
-    paymentModeObject = {},
+    sellPriceRange = 0,
     activityTimeRule = 'infinite',
     activityStartTime,
     activityEndTime,
@@ -226,7 +229,7 @@ export const commerceDom = (item = {}, id, setSelectItem, onDel) => {
     <div style={{ width: 350 }} key={activityGoodsId || specialGoodsId}>
       <Badge.Ribbon text={'电商商品'}>
         <div
-          className={`share_Coupon share_item ${id === specialGoodsId && 'select'}`}
+          className={`share_Coupon share_item ${id === activityGoodsId && 'select'}`}
           style={{ marginBottom: 6 }}
           onClick={() => setSelectItem && setSelectItem(item)}
         >
@@ -249,14 +252,7 @@ export const commerceDom = (item = {}, id, setSelectItem, onDel) => {
               }
             </div> */}
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <div className="share_tip">
-                {paymentModeObject.type === 'self'
-                  ? `¥${paymentModeObject.cash}+${paymentModeObject.bean}卡豆`
-                  : `¥${realPrice}元`}
-              </div>
-              <div className="share_tip" style={{ color: '#b1b1b1' }}>
-                剩余{remain}张
-              </div>
+              <div className="share_tip">{sellPriceRange}元</div>
             </div>
           </div>
           {!onDel ? (

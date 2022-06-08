@@ -10,7 +10,7 @@ import FormCondition from '@/components/FormCondition';
 import styles from './index.less';
 
 import GoodsSelectModal from './GoodsSelectModal';
-import { goodsDom, commerceDom } from '../ShareCoupon/CouponFreeDom';
+import { goodsDom, commerceDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
 
 const FormList = (props) => {
   const { name, form, field, remove, move, initialValues } = props;
