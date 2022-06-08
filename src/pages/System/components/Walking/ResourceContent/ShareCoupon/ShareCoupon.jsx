@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-// import { notification } from 'antd';
 import { Form, Button } from 'antd';
-import { commerceDom, goodsDom } from './CouponFreeDom';
 import GoodsSelectModal from './GoodsSelectModal';
 import FormList from './FormList';
 
@@ -51,15 +49,13 @@ const ShareCoupon = (props) => {
           );
         }}
       </Form.List>
-      {
-        //  特惠商品，电商品，自我游
-        <GoodsSelectModal
-          typeList={type}
-          form={form}
-          visible={visible}
-          onClose={() => setVisible(false)}
-        ></GoodsSelectModal>
-      }
+      {/* // 特惠商品，电商品，自我游 */}
+      <GoodsSelectModal
+        typeList={type}
+        form={form}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></GoodsSelectModal>
     </>
   );
 };

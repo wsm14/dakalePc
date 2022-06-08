@@ -6,7 +6,7 @@ import { ChromePicker } from 'react-color';
 import FormCondition from '@/components/FormCondition';
 import ShareCoupon from './ShareCoupon/ShareCoupon';
 import BrandModuleList from './BrandModuleList/BrandModuleList';
-import PlatformCouponList from './PlatformCouponList/PlatformCouponList';
+import PlatformCouponList from './PlatformCouponList';
 import PreviewDrawer from './PreviewDrawer';
 
 const { TabPane } = Tabs;
