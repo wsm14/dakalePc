@@ -61,18 +61,12 @@ const GoodsSelectModal = (props) => {
     },
     {
       label: '商品名称',
-      name: 'goodsName', // 有价券 特惠商品 电商品
-      show: ['reduceCoupon', 'specialGoods', 'commerceGoods'].includes(tabKey),
+      name: 'goodsName', // 有价券 特惠商品 电商品 平台券
     },
     {
       label: '商品ID',
       name: 'goodsId', // 特惠商品 电商品
       show: ['specialGoods', 'commerceGoods'].includes(tabKey),
-    },
-    {
-      label: '券名称',
-      name: 'couponName', // 平台券
-      show: ['platformCoupon'].includes(tabKey),
     },
     {
       label: '券编号',

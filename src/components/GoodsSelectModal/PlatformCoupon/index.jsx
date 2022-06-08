@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
 import { PLATFORM_TICKET_TYPE, TAG_COLOR_TYPE } from '@/common/constant';
+import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 
 // 平台券
@@ -19,13 +20,7 @@ const PlatformCoupon = (props) => {
   const tableRef = useRef(null);
 
   useEffect(() => {
-    const { id } = searchValue;
-    visible &&
-      id &&
-      tableRef.current.fetchGetData({
-        merchantId: id,
-        couponName: searchValue.goodsName,
-      });
+    visible && tableRef.current.fetchGetData({ couponName: searchValue.goodsName });
   }, [visible, searchValue]);
 
   const getColumns = [
@@ -35,7 +30,21 @@ const PlatformCoupon = (props) => {
       width: 100,
       dataIndex: 'classType',
       render: (val, row) => (
-        <Tag color={TAG_COLOR_TYPE[val]}>{PLATFORM_TICKET_TYPE[row.useScenesType][val]}</Tag>
+        <Tag color={TAG_COLOR_TYPE[row.useScenesType][val]}>
+          {PLATFORM_TICKET_TYPE[row.useScenesType][val]}
+        </Tag>
+      ),
+    },
+    {
+      title: '券名称/ID',
+      dataIndex: 'couponName',
+      render: (val, row) => (
+        <>
+          <Ellipsis length={10} tooltip>
+            {val}
+          </Ellipsis>
+          <div>{row?.goodsId}</div>
+        </>
       ),
     },
     {
@@ -43,14 +52,15 @@ const PlatformCoupon = (props) => {
       align: 'center',
       dataIndex: 'couponValue',
       render: (val, row) => (
-        <div style={{ display: 'flex' }}>
-          <div style={{ fontWeight: 'bold', fontSize: 20 }}>{val}</div>
+        <div>
+          <div style={{ fontWeight: 'bold', fontSize: 20 }}>￥{val}</div>
           <div>满{row.thresholdPrice}元可用</div>
         </div>
       ),
     },
     {
       title: '有效期',
+      align: 'right',
       dataIndex: 'activeDateStr', // 使用有效期-固定时间-开始时间
       render: (val, row) => {
         const {
@@ -63,8 +73,8 @@ const PlatformCoupon = (props) => {
         return (val && endDateStr) || (activeDate && endDate)
           ? `${val || activeDate} - ${endDateStr || endDate}`
           : delayDays != 0
-          ? `领取后${delayDays}天生效｜有效期${activeDays}天`
-          : `领取后${activeDays}天内`;
+          ? `领取后 ${delayDays} 天生效｜有效期 ${activeDays} 天`
+          : `领取后 ${activeDays} 天内`;
       },
     },
     {

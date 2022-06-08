@@ -20,10 +20,21 @@ export const TAG_COLOR_TYPE = {
   package: 'magenta', // 套餐
   commerceGoods: 'cyan', // 电商商品
   specialGoods: 'gold', // 特惠商品
-  "#f50": 'universal', // '商品通用券' 虚拟通用券 电商通用券
-  "#2db7f5": 'category', // '行业商品券',
-  "#2db7f5": 'merchant', // '店铺商品券',
-  "#108ee9": 'goods', // '指定商品券' 指定虚拟券 指定电商券
+  goodsBuy: {
+    universal: '#87d068', // 商品通用券
+    category: '#2db7f5', // 行业商品券
+    merchant: '#108ee9', // 店铺商品券
+    goods: '#f50', // 指定商品券
+  },
+  // scan: '扫码',
+  virtual: {
+    universal: '#a85bad', // 虚拟通用券
+    goods: '#bfa4c1', // 指定虚拟券
+  },
+  commerce: {
+    universal: '#6897ff', // 电商通用券
+    goods: '#1b851e', // 指定电商券,
+  },
 };
 
 // 排序纬度

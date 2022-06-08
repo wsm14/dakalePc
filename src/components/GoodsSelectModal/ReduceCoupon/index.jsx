@@ -40,6 +40,7 @@ const ReduceCoupon = (props) => {
     {
       title: '券名称',
       dataIndex: 'couponName',
+      ellipsis: true,
     },
     {
       title: '有效期',
