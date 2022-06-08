@@ -26,7 +26,6 @@ export const couponsDom = (item = {}, id, setSelectItem, type = 'free', onDel) =
       <Badge.Ribbon text={{ free: '免费券', valuable: '抵扣券' }[type]}>
         <div
           className={`share_Coupon share_item ${id === ownerCouponIdString && 'select'}`}
-          style={{ marginBottom: 6 }}
           onClick={() => setSelectItem && setSelectItem(item)}
         >
           <div className="share_left">
@@ -89,7 +88,6 @@ export const platformCouponsDom = (item = {}, id = '', setSelectItem, onDel) => 
       <Badge.Ribbon text={'平台券'}>
         <div
           className={`share_Coupon share_item ${id === platformCouponId && 'select'}`}
-          style={{ marginBottom: 6 }}
           onClick={() => setSelectItem && setSelectItem(item)}
         >
           <div className="pCoupon_share_left">
@@ -159,7 +157,6 @@ export const goodsDom = (item = {}, id, setSelectItem, onDel) => {
       <Badge.Ribbon text={{ single: '单品', package: '套餐' }[productType]}>
         <div
           className={`share_Coupon share_item ${id === specialGoodsId && 'select'}`}
-          style={{ marginBottom: 6 }}
           onClick={() => setSelectItem && setSelectItem(item)}
         >
           <div
@@ -230,7 +227,6 @@ export const commerceDom = (item = {}, id, setSelectItem, onDel) => {
       <Badge.Ribbon text={'电商商品'}>
         <div
           className={`share_Coupon share_item ${id === activityGoodsId && 'select'}`}
-          style={{ marginBottom: 6 }}
           onClick={() => setSelectItem && setSelectItem(item)}
         >
           <div
@@ -287,7 +283,6 @@ export const groupGoods = (item = {}, id, setSelectItem, onDel) => {
     <div style={{ width: 350 }} key={activityGoodsId || specialGoodsId}>
       <div
         className={`share_Coupon share_item ${id === specialGoodsId && 'select'}`}
-        style={{ marginBottom: 6 }}
         onClick={() => setSelectItem && setSelectItem(item)}
       >
         <div

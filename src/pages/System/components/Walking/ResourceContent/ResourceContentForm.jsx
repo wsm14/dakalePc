@@ -5,7 +5,7 @@ import reactCSS from 'reactcss';
 import { ChromePicker } from 'react-color';
 import FormCondition from '@/components/FormCondition';
 import ShareCoupon from './ShareCoupon/ShareCoupon';
-import BrandModuleList from './BrandModuleList/BrandModuleList';
+import BrandModuleList from './BrandModuleList';
 import PlatformCouponList from './PlatformCouponList';
 import PreviewDrawer from './PreviewDrawer';
 
@@ -213,7 +213,13 @@ const ResourceContentForm = (props) => {
       type: 'formItem',
       required: true,
       visible: typeList.includes('mixedList'),
-      formItem: <ShareCoupon type="mixedList" form={form}></ShareCoupon>,
+      formItem: (
+        <ShareCoupon
+          form={form}
+          showTag={['specialGoods', 'commerceGoods']}
+          dataType={'mixedList'}
+        ></ShareCoupon>
+      ),
     },
     {
       type: 'noForm',
@@ -224,12 +230,20 @@ const ResourceContentForm = (props) => {
           <Tabs tabPosition="left" style={{ paddingLeft: 24 }}>
             <TabPane tab="特惠商品" key="1" forceRender={true}>
               <div style={{ overflow: 'auto' }}>
-                <ShareCoupon type="specialGoods" form={form}></ShareCoupon>
+                <ShareCoupon
+                  type="specialGoods"
+                  showTag={['specialGoods']}
+                  form={form}
+                ></ShareCoupon>
               </div>
             </TabPane>
             <TabPane tab="电商品" key="2" forceRender={true}>
               <div style={{ overflow: 'auto' }}>
-                <ShareCoupon type="commerceGoods" form={form}></ShareCoupon>
+                <ShareCoupon
+                  type="commerceGoods"
+                  showTag={['commerceGoods']}
+                  form={form}
+                ></ShareCoupon>
               </div>
             </TabPane>
             {/* <TabPane tab="自我游" key="3" forceRender={true}>
@@ -243,22 +257,24 @@ const ResourceContentForm = (props) => {
     },
     {
       label: `商品列表类型`,
-      name: 'activityGoodsTypeSelfTravelList',
       type: 'noForm',
       visible: typeList.includes('classifiedListSelfTravel'),
       formItem: (
         <>
           <Tabs tabPosition="left">
-            <TabPane tab="自我游" key="3" forceRender={true}>
+            <TabPane tab="电商品" key="3" forceRender={true}>
               <div style={{ overflow: 'auto' }}>
-                <ShareCoupon type="selfTourGoods" form={form}></ShareCoupon>
+                <ShareCoupon
+                  showTag={['commerceGoods']}
+                  dataType={'commerceGoods'}
+                  form={form}
+                ></ShareCoupon>
               </div>
             </TabPane>
           </Tabs>
         </>
       ),
     },
-
     {
       label: `品牌列表`,
       type: 'formItem',

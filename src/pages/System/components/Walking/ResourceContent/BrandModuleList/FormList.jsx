@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import update from 'immutability-helper';
-import { Space, Form, InputNumber, Input, Radio, Card, Button } from 'antd';
+import { Space, Form, Card, Button } from 'antd';
 import { UpSquareOutlined, DownSquareOutlined, DeleteOutlined } from '@ant-design/icons';
 import aliOssUpload from '@/utils/aliOssUpload';
-import { MinusCircleOutlined } from '@ant-design/icons';
 import Upload from '@/components/FormCondition/Upload/Img';
-import Video from '@/components/FormCondition/Upload/Video';
-import FormCondition from '@/components/FormCondition';
 import styles from './index.less';
 
 import GoodsSelectModal from './GoodsSelectModal';
@@ -89,26 +86,6 @@ const FormList = (props) => {
               <>
                 <Form.ErrorList errors={errors} />
                 {fields2.map((field2) => {
-                  // const [nameIndex, setNameIndex] = useState(Number);
-                  // useEffect(() => {
-                  //   setNameIndex(field2.name + 1);
-                  // }, [field2]);
-
-                  // const inputDom = () => {
-                  //   return (
-                  //     <InputNumber
-                  //       size="small"
-                  //       value={nameIndex}
-                  //       onChange={(val) => setNameIndex(val)}
-                  //       onPressEnter={() => move(field2.name, nameIndex - 1)}
-                  //       precision={0}
-                  //       min={1}
-                  //       max={fields2.length}
-                  //       style={{ width: 60 }}
-                  //     ></InputNumber>
-                  //   );
-                  // };
-
                   return (
                     <div key={field2.key}>
                       <Space key={field2.key} className={styles.ifame_carouseal} align="baseline">
@@ -126,8 +103,9 @@ const FormList = (props) => {
                         </div>
 
                         {(() => {
-                          const item =
-                            form.getFieldValue(name)[field.name]['activityGoodsList'][field2.name];
+                          const item = form.getFieldValue(name)[field.name]['activityGoodsList'][
+                            field2.name
+                          ];
                           return {
                             specialGoods: goodsDom({ ...item }, item?.activityGoodsId), // 特惠，自我游
                             commerceGoods: commerceDom({ ...item }, item?.activityGoodsId), // 电商品

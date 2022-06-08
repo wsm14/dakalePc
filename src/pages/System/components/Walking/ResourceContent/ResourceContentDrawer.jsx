@@ -78,7 +78,7 @@ const CouponDrawer = (props) => {
             activityGoodsId: item.activityGoodsId,
             ownerId: item.ownerIdString,
           })),
-          selfTourGoods: selfTourGoods?.map((item) => ({
+          selfTourGoods: commerceGoods?.map((item) => ({
             activityGoodsId: item.activityGoodsId,
             ownerId: item.ownerIdString,
           })),

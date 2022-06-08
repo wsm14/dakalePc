@@ -29,7 +29,6 @@ export const goodsDom = (item = {}, id = '', setSelectItem, onDel) => {
       >
         <div
           className={`share_Coupon share_item ${id.includes(specialGoodsId) && 'select'}`}
-          style={{ marginBottom: 6 }}
           onClick={() => setSelectItem && setSelectItem(item)}
         >
           <div

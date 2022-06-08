@@ -6,7 +6,6 @@ import aliOssUpload from '@/utils/aliOssUpload';
 import Upload from '@/components/FormCondition/Upload/Img';
 import GoodsSelectModal from '@/components/GoodsSelectModal';
 import { platformCouponsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
-import FormCondition from '@/components/FormCondition';
 
 const FormList = (props) => {
   const { name, form, field, remove, move, initialValues } = props;
@@ -122,7 +121,7 @@ const FormList = (props) => {
       </Card>
       <GoodsSelectModal
         selectType="radio"
-        hiddenTag={['reduceCoupon', 'specialGoods', 'commerceGoods']}
+        showTag={['platformCoupon']}
         visible={visible}
         onSumbit={onOk}
         onClose={() => setVisible(false)}

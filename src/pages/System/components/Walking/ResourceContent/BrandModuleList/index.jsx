@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Form, Button } from 'antd';
-import { commerceDom, goodsDom } from './CouponFreeDom';
 import FormList from './FormList';
 import './coupon.less';
 

@@ -25,7 +25,6 @@ export const goodsDom = (item = {}, id = '', setSelectItem, onDel) => {
       <Badge.Ribbon text={{ single: '单品', package: '套餐' }[goodsType]}>
         <div
           className={`share_Coupon share_item ${id.includes(specialGoodsId) && 'select'}`}
-          style={{ marginBottom: 6 }}
           onClick={() => setSelectItem && setSelectItem(item)}
         >
           <div

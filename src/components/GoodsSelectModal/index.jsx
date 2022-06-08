@@ -5,13 +5,12 @@ import ReduceCoupon from './ReduceCoupon';
 import SpecialGoods from './SpecialGoods';
 import CommerceGoods from './CommerceGoods';
 import PlatformCoupon from './PlatformCoupon';
-import './index.less'
+import './index.less';
 
 const { TabPane } = Tabs;
 /**
  * 商品选择弹窗
  * @param {String} selectType 选择的类型 单选多选 默认多选 checkbox | radio
- * @param {Array} hiddenTag 隐藏的类型 可选
  * @param {Array} showTag 显示的类型 可选
  * ["platformCoupon", "reduceCoupon","specialGoods","commerceGoods"]
  * @returns
@@ -20,8 +19,7 @@ const GoodsSelectModal = (props) => {
   const {
     visible = false,
     selectType = 'checkbox', // checkbox | radio
-    hiddenTag = [],
-    showTag = [],
+    showTag = null,
     onSumbit,
     onClose,
   } = props;
@@ -32,10 +30,12 @@ const GoodsSelectModal = (props) => {
 
   useEffect(() => {
     if (visible) {
-      const showTab = tabPaneList.filter((i) => !hiddenTag.includes(i.key));
+      const showTab = tabPaneList.filter((i) => (showTag || allTag).includes(i.key));
       showTab.length && setTabKey(showTab[0].key);
     }
   }, [visible]);
+
+  const allTag = ['platformCoupon', 'reduceCoupon', 'specialGoods', 'commerceGoods'];
 
   // 点击选择
   const handleSelectItem = (newKeys = [], newlist = []) => {
@@ -52,31 +52,6 @@ const GoodsSelectModal = (props) => {
       return { keys: newKeys, list: checkList };
     });
   };
-
-  // 搜索参数
-  const searchItems = [
-    {
-      label: '集团/店铺名',
-      name: 'id',
-      type: 'merchant',
-      required: true, // 有价券
-      show: ['reduceCoupon'].includes(tabKey),
-    },
-    {
-      label: '商品名称',
-      name: 'goodsName', // 有价券 特惠商品 电商品 平台券
-    },
-    {
-      label: '商品ID',
-      name: 'goodsId', // 特惠商品 电商品
-      show: ['specialGoods', 'commerceGoods'].includes(tabKey),
-    },
-    {
-      label: '券编号',
-      name: 'platformCouponId', // 平台券
-      show: ['platformCoupon'].includes(tabKey),
-    },
-  ];
 
   const propsComponents = {
     visible,
@@ -106,6 +81,31 @@ const GoodsSelectModal = (props) => {
       tab: '电商品',
       key: 'commerceGoods',
       content: <CommerceGoods {...propsComponents}></CommerceGoods>,
+    },
+  ];
+
+  // 搜索参数
+  const searchItems = [
+    {
+      label: '集团/店铺名',
+      name: 'id',
+      type: 'merchant',
+      required: true, // 有价券
+      show: ['reduceCoupon'].includes(tabKey),
+    },
+    {
+      label: '商品名称',
+      name: 'goodsName', // 有价券 特惠商品 电商品 平台券
+    },
+    {
+      label: '商品ID',
+      name: 'goodsId', // 特惠商品 电商品
+      show: ['specialGoods', 'commerceGoods'].includes(tabKey),
+    },
+    {
+      label: '券编号',
+      name: 'platformCouponId', // 平台券
+      show: ['platformCoupon'].includes(tabKey),
     },
   ];
 
@@ -139,7 +139,7 @@ const GoodsSelectModal = (props) => {
       <Tabs destroyInactiveTabPane onChange={setTabKey} type="card" style={{ overflow: 'initial' }}>
         {tabPaneList.map(
           (pane) =>
-            (showTag.length ? showTag.includes(pane.key) : !hiddenTag.includes(pane.key)) && (
+            (showTag || allTag).includes(pane.key) && (
               <TabPane tab={pane.tab} key={pane.key}>
                 {pane.content}
               </TabPane>

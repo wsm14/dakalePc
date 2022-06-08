@@ -10,12 +10,12 @@ import GoodsSelectModal from '@/components/GoodsSelectModal';
 
 const tabList = [
   {
-    key: 'commerceGoods',
-    tab: '电商品',
-  },
-  {
     key: 'specialGoods',
     tab: '特惠商品',
+  },
+  {
+    key: 'commerceGoods',
+    tab: '电商品',
   },
 ];
 
@@ -24,7 +24,7 @@ const ConnectedGoodsModal = (props) => {
   const { show = false, id, name } = visible;
 
   const childRef = useRef();
-  const [tabKey, setTabKey] = useState('commerceGoods');
+  const [tabKey, setTabKey] = useState('specialGoods');
   const [visibleDrawer, setVisibleDrawer] = useState(false);
 
   useEffect(() => {
@@ -158,7 +158,7 @@ const ConnectedGoodsModal = (props) => {
       </Modal>
       <GoodsSelectModal
         visible={visibleDrawer}
-        hiddenTag={['reduceCoupon']}
+        showTag={['specialGoods', 'commerceGoods']}
         onSumbit={({ list }) => {
           fetchConfigGoodsSet(
             'add',
