@@ -37,13 +37,6 @@ export function fetchGetEquityCouponSelect(params) {
   });
 }
 
-// get 平台券列表
-export function fetchPlatformCouponSelect(params) {
-  return request('/admin/platform/coupon/pagePlatformCoupon', {
-    params,
-  });
-}
-
 // get 店铺选择有价券列表
 export function fetchGetBuyCouponSelect(params) {
   return request('/admin/coupon/listOwnerCouponNeedBuy', {
@@ -323,13 +316,6 @@ export function fetchGlobalListPartner(params) {
 //资源位内容配置-  分页列表
 export function fetchPageResourceTemplateContent(params) {
   return request('/admin/resourceTemplateContent/pageResourceTemplateContent', {
-    params,
-  });
-}
-
-// get 获取线上电商品列表
-export function fetchListOnlineGoodsByPage(params) {
-  return request('/admin/online/goods/admin/listOnlineGoodsByPage', {
     params,
   });
 }

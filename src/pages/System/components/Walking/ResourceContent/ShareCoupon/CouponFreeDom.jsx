@@ -145,7 +145,7 @@ export const couponsDom = (item = {}, id = '', setSelectItem, onDel) => {
 export const platformCouponsDom = (item = {}, id = '', setSelectItem, onDel) => {
   const {
     platformCouponId = '',
-    couponValue, // 券价值
+    couponValue, // 券价值 platformCoupon
     thresholdPrice, // 门槛
     useScenesType,
     classType,

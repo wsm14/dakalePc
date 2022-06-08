@@ -98,13 +98,13 @@ const ReduceCoupon = (props) => {
         },
       }}
       rowKey={(row) => `${row.goodsId}`}
-      dispatchType="baseData/fetchGetBuyCouponList"
+      dispatchType="publicModels/fetchGetBuyCouponList"
       {...buyCouponList}
     ></TableDataBlock>
   );
 };
 
-export default connect(({ baseData, loading }) => ({
-  buyCouponList: baseData.buyCouponList,
-  loading: loading.effects['baseData/fetchGetBuyCouponList'],
+export default connect(({ publicModels, loading }) => ({
+  buyCouponList: publicModels.buyCouponList,
+  loading: loading.effects['publicModels/fetchGetBuyCouponList'],
 }))(ReduceCoupon);

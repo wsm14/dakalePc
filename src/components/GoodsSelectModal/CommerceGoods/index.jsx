@@ -81,13 +81,13 @@ const CommerceGoods = (props) => {
         },
       }}
       rowKey={(row) => `${row.goodsId}`}
-      dispatchType="baseData/fetchListOnlineGoodsByPage"
+      dispatchType="publicModels/fetchListOnlineGoodsByPage"
       {...onlineGoods}
     ></TableDataBlock>
   );
 };
 
-export default connect(({ baseData, loading }) => ({
-  onlineGoods: baseData.onlineGoods,
-  loading: loading.effects['baseData/fetchListOnlineGoodsByPage'],
+export default connect(({ publicModels, loading }) => ({
+  onlineGoods: publicModels.onlineGoods,
+  loading: loading.effects['publicModels/fetchListOnlineGoodsByPage'],
 }))(CommerceGoods);

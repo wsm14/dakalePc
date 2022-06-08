@@ -109,13 +109,13 @@ const SpecialGoods = (props) => {
         },
       }}
       rowKey={(row) => `${row.goodsId}`}
-      dispatchType="baseData/fetchListOfflineGoodsByPage"
+      dispatchType="publicModels/fetchListOfflineGoodsByPage"
       {...offlineGoods}
     ></TableDataBlock>
   );
 };
 
-export default connect(({ baseData, loading }) => ({
-  offlineGoods: baseData.offlineGoods,
-  loading: loading.effects['baseData/fetchListOfflineGoodsByPage'],
+export default connect(({ publicModels, loading }) => ({
+  offlineGoods: publicModels.offlineGoods,
+  loading: loading.effects['publicModels/fetchListOfflineGoodsByPage'],
 }))(SpecialGoods);

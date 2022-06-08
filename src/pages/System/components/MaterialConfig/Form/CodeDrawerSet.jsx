@@ -41,7 +41,7 @@ const CodeDrawerSet = (props) => {
   const handleUpData = (zip, data) => {
     setPercent({ show: true, percent: 100, text: '文件上传中......' });
     dispatch({
-      type: 'baseData/fetchGetOssUploadFile',
+      type: 'publicModels/fetchGetOssUploadFile',
       payload: {
         file: zip, // 文件
         folderName: 'materials', // 文件夹名称
@@ -97,7 +97,7 @@ const CodeDrawerSet = (props) => {
         type="primary"
         onClick={handleSave}
         loading={
-          loading.effects['materialConfig/fetchGetOssUploadFile'] ||
+          loading.effects['publicModels/fetchGetOssUploadFile'] ||
           loading.effects['materialConfig/fetchMaterialConfigSave'] ||
           loading.effects['materialConfig/fetchMaterialConfigUserCode']
         }
