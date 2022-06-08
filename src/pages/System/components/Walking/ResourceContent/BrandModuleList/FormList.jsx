@@ -4,10 +4,9 @@ import { Space, Form, Card, Button } from 'antd';
 import { UpSquareOutlined, DownSquareOutlined, DeleteOutlined } from '@ant-design/icons';
 import aliOssUpload from '@/utils/aliOssUpload';
 import Upload from '@/components/FormCondition/Upload/Img';
-import styles from './index.less';
-
-import GoodsSelectModal from './GoodsSelectModal';
+import GoodsSelectModal from '@/components/GoodsSelectModal';
 import { goodsDom, commerceDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
+import styles from './index.less';
 
 const FormList = (props) => {
   const { name, form, field, remove, move, initialValues } = props;
@@ -109,7 +108,7 @@ const FormList = (props) => {
                           return {
                             specialGoods: goodsDom({ ...item }, item?.activityGoodsId), // 特惠，自我游
                             commerceGoods: commerceDom({ ...item }, item?.activityGoodsId), // 电商品
-                          }[item.activityType];
+                          }[item.goodsType];
                         })()}
                         <DeleteOutlined onClick={() => remove(field2.name)} />
                       </Space>
@@ -122,11 +121,9 @@ const FormList = (props) => {
         </Form.List>
       </Card>
       <GoodsSelectModal
-        typeGoods="subRewardList"
-        form={form}
+        showTag={['specialGoods', 'commerceGoods']}
         visible={visible}
-        indexNum={field.name}
-        onSumbit={(list) => {
+        onSumbit={({ list }) => {
           // 获取数据数组
           const dataList = form.getFieldValue(name);
           // 更新数据数组

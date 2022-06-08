@@ -93,6 +93,7 @@ const PlatformCoupon = (props) => {
       cRef={tableRef}
       loading={loading}
       columns={getColumns}
+      scroll={{ y: 400 }}
       params={{
         couponStatus: 1,
         giveType: 'manual', // 手动领取

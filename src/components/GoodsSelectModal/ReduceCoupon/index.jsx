@@ -82,6 +82,7 @@ const ReduceCoupon = (props) => {
       cRef={tableRef}
       loading={loading}
       columns={getColumns}
+      scroll={{ y: 400 }}
       params={{
         goodsStatus: 1,
         couponType: 'reduce',
