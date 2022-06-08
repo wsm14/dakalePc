@@ -4,6 +4,7 @@ import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 
+// 电商品
 const CommerceGoods = (props) => {
   const {
     visible,

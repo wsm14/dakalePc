@@ -20,6 +20,10 @@ export const TAG_COLOR_TYPE = {
   package: 'magenta', // 套餐
   commerceGoods: 'cyan', // 电商商品
   specialGoods: 'gold', // 特惠商品
+  "#f50": 'universal', // '商品通用券' 虚拟通用券 电商通用券
+  "#2db7f5": 'category', // '行业商品券',
+  "#2db7f5": 'merchant', // '店铺商品券',
+  "#108ee9": 'goods', // '指定商品券' 指定虚拟券 指定电商券
 };
 
 // 排序纬度

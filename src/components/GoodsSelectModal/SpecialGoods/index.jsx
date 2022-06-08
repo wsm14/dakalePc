@@ -6,6 +6,7 @@ import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 
+// 本地生活品（特惠商品）
 const SpecialGoods = (props) => {
   const {
     visible,

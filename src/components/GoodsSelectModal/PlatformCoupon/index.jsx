@@ -1,16 +1,17 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
+import { PLATFORM_TICKET_TYPE, TAG_COLOR_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 
-// 有价券
-const ReduceCoupon = (props) => {
+// 平台券
+const PlatformCoupon = (props) => {
   const {
     visible,
-    searchValue,
     selectItem,
-    buyCouponList,
     selectType,
+    searchValue,
+    platformCoupon,
     handleSelectItem,
     loading,
   } = props;
@@ -32,14 +33,21 @@ const ReduceCoupon = (props) => {
       title: '类型',
       align: 'center',
       width: 100,
-      dataIndex: 'buyFlag',
-      render: (val) => (
-        <Tag color={val === '0' ? 'orange' : 'magenta'}>{['免费券', '抵扣券'][val]}</Tag>
+      dataIndex: 'classType',
+      render: (val, row) => (
+        <Tag color={TAG_COLOR_TYPE[val]}>{PLATFORM_TICKET_TYPE[row.useScenesType][val]}</Tag>
       ),
     },
     {
-      title: '券名称',
-      dataIndex: 'couponName',
+      title: '券价值',
+      align: 'center',
+      dataIndex: 'couponValue',
+      render: (val, row) => (
+        <div style={{ display: 'flex' }}>
+          <div style={{ fontWeight: 'bold', fontSize: 20 }}>{val}</div>
+          <div>满{row.thresholdPrice}元可用</div>
+        </div>
+      ),
     },
     {
       title: '有效期',
@@ -60,12 +68,6 @@ const ReduceCoupon = (props) => {
       },
     },
     {
-      title: '使用门槛',
-      align: 'center',
-      dataIndex: 'thresholdPrice',
-      render: (val) => (val ? `满${val}元可用` : '无门槛'),
-    },
-    {
       title: '库存',
       align: 'right',
       dataIndex: 'remain',
@@ -82,9 +84,8 @@ const ReduceCoupon = (props) => {
       loading={loading}
       columns={getColumns}
       params={{
-        goodsStatus: 1,
-        couponType: 'reduce',
-        buyFlag: 1, // 有价券
+        couponStatus: 1,
+        giveType: 'manual', // 手动领取
       }}
       rowSelection={{
         type: selectType,
@@ -99,13 +100,13 @@ const ReduceCoupon = (props) => {
         },
       }}
       rowKey={(row) => `${row.goodsId}`}
-      dispatchType="publicModels/fetchGetBuyCouponList"
-      {...buyCouponList}
+      dispatchType="publicModels/fetchGetPlatformCouponList"
+      {...platformCoupon}
     ></TableDataBlock>
   );
 };
 
 export default connect(({ publicModels, loading }) => ({
-  buyCouponList: publicModels.buyCouponList,
-  loading: loading.effects['publicModels/fetchGetBuyCouponList'],
-}))(ReduceCoupon);
+  platformCoupon: publicModels.platformCoupon,
+  loading: loading.effects['publicModels/fetchGetPlatformCouponList'],
+}))(PlatformCoupon);
