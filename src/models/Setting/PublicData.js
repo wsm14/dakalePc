@@ -529,7 +529,8 @@ export default {
       );
       if (!response) return;
       const { content } = response;
-      const listData = content.recordList.map((item) => ({
+      const { recordList = [] } = content;
+      const listData = recordList.map((item) => ({
         name: `${item.merchantName || item.groupName} ${item.account || ''}`,
         otherData: item.address,
         value: item.userMerchantIdString || item.merchantGroupIdString,
@@ -576,7 +577,8 @@ export default {
       const response = yield call(fetchSkuDetailMerchantList, payload);
       if (!response) return;
       const { content } = response;
-      callback(content.merchantList);
+      const { merchantList = [] } = content;
+      callback(merchantList);
     },
     *fetchAuditMerchantList({ payload, callback }, { call }) {
       const response = yield call(fetchAuditMerchantList, payload);

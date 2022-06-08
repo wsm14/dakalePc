@@ -6,37 +6,18 @@ import {
   BUSINESS_TYPE,
   SPECIAL_STATUS,
   GOODS_CLASS_TYPE,
-  SPECIAL_USERTIME_TYPE,
   SPECIAL_RECOMMEND_TYPE,
-  SPECIAL_RECOMMEND_DELSTATUS,
-  SUBMIT_TYPE,
 } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
-import ExtraButton from '@/components/ExtraButton';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import SpecialRecommendMenu from './components/SpecialGoods/SpecialRecommendMenu';
 import PreferentialDrawer from './components/SpecialGoods/PreferentialDrawer';
 import SpecialGoodDetail from './components/SpecialGoods/SpecialGoodDetail';
 import QrCodeShow from './components/SpecialGoods/Detail/QrCodeShow';
-import excelProps from './components/SpecialGoods/ExcelProps';
 import RemainModal from './components/SpecialGoods/Detail/RemainModal';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import ShareImg from './components/SpecialGoods/ShareImg';
-import { checkCityName } from '@/utils/utils';
-
-// tab栏列表
-const tabList = [
-  {
-    key: '0',
-    tab: '特惠商品',
-  },
-  {
-    key: '1',
-    tab: '自我游',
-  },
-];
+import { checkCityName, changeTime } from '@/utils/utils';
 
 const SpecialGoods = (props) => {
   const { specialGoods, loading, loadings, hubData, dispatch } = props;
@@ -56,24 +37,10 @@ const SpecialGoods = (props) => {
   const search_recommend = { notPromoted: '未推广', ...SPECIAL_RECOMMEND_TYPE };
 
   // useEffect(() => {
-  //   childRef.current && childRef.current.fetchGetData({ deleteFlag: '1', selfTourFlag: tabKey });
-  // }, [tabKey]);
-
-  // useEffect(() => {
   //   if (childRef.current) {
   //     childRef.current.fetchGetData();
   //   }
   // }, []);
-
-  // 获取商圈
-  const fetchGetHubSelect = (districtCode) => {
-    dispatch({
-      type: 'baseData/fetchGetHubData',
-      payload: {
-        districtCode,
-      },
-    });
-  };
 
   // 搜索参数
   const searchItems = [
@@ -268,11 +235,6 @@ const SpecialGoods = (props) => {
       render: (val) => `￥${val}`,
       sorter: (a, b) => Number(a.commission) - Number(b.commission),
     },
-    // {
-    //   title: '其它平台价格',
-    //   align: 'right',
-    //   dataIndex: 'otherPlatformPrice',
-    // },
     {
       title: '活动时间',
       align: 'center',
@@ -321,49 +283,17 @@ const SpecialGoods = (props) => {
       title: '商品状态',
       align: 'right',
       dataIndex: 'status',
-      render: (val) => SPECIAL_STATUS[val],
+      render: (val, row) => {
+        const { activityStartDate, activityEndDate, status } = row;
+        let ident = '';
+        if (['1'].includes(status) && activityStartDate && activityEndDate) {
+          if ([0].includes(changeTime(activityStartDate, activityEndDate))) {
+            ident = '(即将开始)';
+          }
+        }
+        return `${SPECIAL_STATUS[val]}${ident}`;
+      },
     },
-    // {
-    //   title: '销量',
-    //   align: 'right',
-    //   dataIndex: 'soldGoodsCount',
-    //   sorter: (a, b) => a.soldGoodsCount - b.soldGoodsCount,
-    // },
-    // {
-    //   title: '核销数量',
-    //   align: 'right',
-    //   dataIndex: 'writeOffGoodsCount',
-    //   sorter: (a, b) => a.writeOffGoodsCount - b.writeOffGoodsCount,
-    // },
-    // {
-    //   title: '地区/行业',
-    //   align: 'center',
-    //   dataIndex: 'districtCode',
-    //   render: (val, row) => (
-    //     <>
-    //       <div> {checkCityName(val) || '--'} </div>
-    //       <div>
-    //         {row.topCategoryName} / {row.categoryName}
-    //       </div>
-    //     </>
-    //   ),
-    // },
-    // {
-    //   title: '创建时间',
-    //   align: 'center',
-    //   dataIndex: 'createTime',
-    //   render: (val, row) => `${val}\n${SUBMIT_TYPE[row?.creatorType]}--${row?.creatorName || ''}`,
-    // },
-    // {
-    //   title: '推广位置',
-    //   fixed: 'right',
-    //   dataIndex: 'recommendType',
-    //   render: (val, row) =>
-    //     val
-    //       ?.split(',')
-    //       .map((item) => SPECIAL_RECOMMEND_TYPE[item])
-    //       .join('\n'),
-    // },
     {
       type: 'handle',
       dataIndex: 'goodsId',
@@ -382,7 +312,7 @@ const SpecialGoods = (props) => {
           // },
           {
             type: 'info',
-            click: () => fetchSpecialGoodsDetail(index, 'info'),
+            click: () => fetchSpecialGoodsDetail(record, 'info'),
           },
           {
             title: '下架',
@@ -398,19 +328,19 @@ const SpecialGoods = (props) => {
           {
             type: 'edit',
             // visible: ['1'].includes(status), // 活动中 && 未删除
-            click: () => fetchSpecialGoodsDetail(index, 'edit'),
+            click: () => fetchSpecialGoodsDetail(record, 'edit'),
           },
           {
             type: 'again', //重新发布
             visible: ['0'].includes(status), // 已下架 && 未删除
-            click: () => fetchSpecialGoodsDetail(index, 'again'),
+            click: () => fetchSpecialGoodsDetail(record, 'again'),
           },
-          {
-            type: 'againUp', // 再次上架
-            title: '编辑',
-            visible: ['0'].includes(status), // 已下架 && 未删除
-            click: () => fetchSpecialGoodsDetail(index, 'againUp'),
-          },
+          // {
+          //   type: 'againUp', // 再次上架
+          //   title: '编辑',
+          //   visible: ['0'].includes(status), // 已下架 && 未删除
+          //   click: () => fetchSpecialGoodsDetail(record, 'againUp'),
+          // },
           // {
           //   type: 'diary',
           //   click: () => fetchGetLogData({ type: 'specialGoods', identificationId: val }),
@@ -462,23 +392,6 @@ const SpecialGoods = (props) => {
     });
   };
 
-  // 获取商品码
-  const fetchSpecialGoodsQrCode = (payload, title, data) => {
-    dispatch({
-      type: 'specialGoods/fetchSpecialGoodsQrCode',
-      payload,
-      callback: (url) => setQrcode({ url, title, data }),
-    });
-  };
-
-  // 获取日志信息
-  const fetchGetLogData = (payload) => {
-    dispatch({
-      type: 'baseData/fetchGetLogDetail',
-      payload,
-    });
-  };
-
   // 增加库存
   const fetAddRemain = (id, ownerId, remain) => {
     setVisibleRemain({
@@ -505,16 +418,6 @@ const SpecialGoods = (props) => {
       },
     });
   };
-
-  // 推荐
-  const fetchSpecialGoodsRecommend = (payload) => {
-    dispatch({
-      type: 'specialGoods/fetchSpecialGoodsRecommend',
-      payload,
-      callback: childRef.current.fetchGetData,
-    });
-  };
-
   //删除
   const fetchSpecialGoodsDelete = (goodsId, ownerId) => {
     dispatch({
@@ -530,8 +433,15 @@ const SpecialGoods = (props) => {
   };
 
   // 获取详情
-  const fetchSpecialGoodsDetail = (index, type) => {
-    const { goodsId, ownerId, relateName, ownerType } = list[index];
+  const fetchSpecialGoodsDetail = (record, type) => {
+    const {
+      goodsId,
+      ownerId,
+      relateName,
+      activityStartDate,
+      activityEndDate,
+      status: infoStatus,
+    } = record;
     // if (type === 'edit') {
     //   dispatch({
     //     type: 'specialGoods/fetchEditCurrentStatus',
@@ -547,6 +457,13 @@ const SpecialGoods = (props) => {
     //     },
     //   });
     // }
+    let startDisabled = false;
+    if (['1'].includes(infoStatus) && activityStartDate && activityEndDate) {
+      if ([0].includes(changeTime(activityStartDate, activityEndDate))) {
+        startDisabled = true;
+      }
+    }
+
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsDetail',
       payload: { goodsId, ownerId: ownerId, type },
@@ -554,12 +471,12 @@ const SpecialGoods = (props) => {
         const { status } = val;
         const newProps = {
           show: true,
-          detail: { ...val, merchantName: relateName, ownerType },
+          detail: { ...val, merchantName: relateName },
         };
         if (type == 'info') {
-          setVisibleInfo({ status, index, ...newProps, goodsId, ownerId });
+          setVisibleInfo({ status, ...newProps, goodsId, ownerId });
         } else {
-          setVisibleSet({ type, ...newProps, goodsId, ownerId });
+          setVisibleSet({ type, startDisabled, ...newProps, goodsId, ownerId, infoStatus });
         }
       },
     });
@@ -572,13 +489,6 @@ const SpecialGoods = (props) => {
     //   data: get(),
     //   exportProps: excelProps,
     // },
-    {
-      auth: 'save',
-      onClick: () => setVisibleSet({ type: 'add', show: true }),
-    },
-  ];
-
-  const btnList = [
     {
       auth: 'save',
       onClick: () => setVisibleSet({ type: 'add', show: true }),

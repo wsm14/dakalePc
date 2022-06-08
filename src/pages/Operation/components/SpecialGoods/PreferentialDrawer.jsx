@@ -12,8 +12,7 @@ const PreferentialDrawer = (props) => {
   const { visible, dispatch, childRef, loading, onClose } = props;
 
   // add 新增，edit 活动中修改，again 重新发布
-  const { type = 'add', show = false, detail = {} } = visible;
-
+  const { type = 'add', show = false, detail = {}, startDisabled, infoStatus } = visible;
   const [form] = Form.useForm(); // add
   const [formEdit] = Form.useForm(); // edit
   const [formAgain] = Form.useForm(); // again 数据表单
@@ -45,7 +44,7 @@ const PreferentialDrawer = (props) => {
   // 确认提交数据 - add 新增 /  edit 修改所有数据 / again 重新发布
   const handleUpData = () => {
     form.validateFields().then((values) => {
-      const { id } = detail;
+      const { goodsId } = detail;
       const {
         goodsBriefImg,
         goodsDescImg,
@@ -84,7 +83,7 @@ const PreferentialDrawer = (props) => {
             againUp: 'specialGoods/fetchSpecialGoodsEdit',
           }[type],
           payload: {
-            id,
+            goodsId,
             ...other,
             richText: content, // 富文本内容
             ownerType: 'admin',
@@ -131,8 +130,14 @@ const PreferentialDrawer = (props) => {
         setVisibleRule({ show: true, preData: values });
       }));
   };
-
-  const listProp = { commissionShow, setCommissionShow, editActive: type, setContent };
+  const listProp = {
+    commissionShow,
+    setCommissionShow,
+    editActive: type,
+    setContent,
+    startDisabled,
+    infoStatus,
+  };
 
   // 统一处理弹窗
   const drawerProps = {
@@ -201,41 +206,9 @@ const PreferentialDrawer = (props) => {
     ),
   };
 
-  // 下一步：规则弹窗属性
-  const ruleModalProps = {
-    title: '规则设置',
-    visible: visibleRule.show,
-    afterCallBack: () => fetchGetMre(),
-    onClose: () => {
-      setSaveData(formRuleAdd.getFieldsValue());
-      setVisibleRule(false);
-    },
-    maskShow: false,
-    footer: (
-      <Button type="primary" onClick={handleUpData} loading={loading}>
-        发布申请
-      </Button>
-    ),
-  };
-
   return (
     <>
-      <DrawerCondition {...modalProps}>
-        {drawerProps.children}
-        {/* <DrawerCondition {...ruleModalProps}> */}
-        {/* <PreferentialRuleSet
-          editActive={type}
-          form={formRuleAdd}
-          initialValues={{
-            needOrder: 0,
-            allowRefund: 1,
-            allowExpireRefund: 1,
-            ...(saveData || detail),
-          }}
-        ></PreferentialRuleSet> */}
-        {/* </DrawerCondition> */}
-      </DrawerCondition>
-      {/* <Html5Simulate type="goods" show={show} data={showHtmlData}></Html5Simulate> */}
+      <DrawerCondition {...modalProps}>{drawerProps.children}</DrawerCondition>
     </>
   );
 };

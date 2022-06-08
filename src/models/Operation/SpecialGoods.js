@@ -71,6 +71,10 @@ export default {
         activityTimeRule: activeTime,
         settleInfoResp = {}, //结算人
         skuInfoResp = {}, //价格
+        platformTagIds,
+        displayFilterTags,
+        relationOwnerInfoResps = [], //集团关联店铺
+        thirdInfoResp, //商品类别
         // relateIdString: relateId,
       } = offlineDetail;
       const { settlerId, settlerType, settlerName } = settleInfoResp;
@@ -110,8 +114,18 @@ export default {
 
       let cityList = [];
       if (availableAreas !== 'all') {
-        cityList = availableAreas.split('.').map((item) => {
+        cityList = availableAreas.split(',').map((item) => {
           return { city: [item.slice(0, 2), item.slice(0, 4)] };
+        });
+      }
+
+      //改变集团店铺数据的id和name
+      let relationOwnerInfoRespsList = [];
+      if (relationOwnerInfoResps.length) {
+        relationOwnerInfoRespsList = relationOwnerInfoResps.map((item) => {
+          item.merchantId = item.ownerId;
+          item.merchantName = item.name;
+          return item;
         });
       }
 
@@ -134,6 +148,10 @@ export default {
         // allowExpireRefund: Number(allowExpireRefund),
         needOrder: Number(needOrder),
         settleInfoReq,
+        platformTagIds: platformTagIds.split(','),
+        displayFilterTags: displayFilterTags.split(','),
+        relationOwnerInfoResps: relationOwnerInfoRespsList,
+        thirdInfoReq: thirdInfoResp,
       });
     },
     *fetchSpecialGoodsSave({ payload, callback }, { call }) {

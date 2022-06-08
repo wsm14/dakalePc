@@ -10,7 +10,7 @@ import CheckRecord from '@/components/CheckRecord';
 
 const SpecialGoodDetail = (props) => {
   const { visible, onClose, onEdit, total, getDetail, loading, dispatch } = props;
-  const { show = false, index, detail = {}, status, goodsId, ownerId } = visible;
+  const { show = false, detail = {}, status, goodsId, ownerId } = visible;
 
   const [form] = Form.useForm();
   const [merchantList, setMerchantList] = useState([]);
@@ -21,7 +21,10 @@ const SpecialGoodDetail = (props) => {
 
   useEffect(() => {
     if (show && detail.relateType === 'group') {
-      getMerchantList();
+      const { relationOwnerInfoResps = [] } = detail;
+      if (relationOwnerInfoResps.length) {
+        setMerchantList([...relationOwnerInfoResps]);
+      }
     }
   }, [show]);
 

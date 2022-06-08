@@ -136,11 +136,11 @@ const RegularDetail = (props) => {
     },
     {
       label: '平台商品标签',
-      name: 'platformGoodsTagList',
+      name: 'platformTagNames',
       // show: detail.goodsTagList,
       render: (val, row) => {
-        const { platformGoodsTagList = [] } = row;
-        const tags = platformGoodsTagList.filter((items) => items.tagType === 'platform');
+        const { platformTagNames } = row;
+        const tags = platformTagNames.split(',');
         return (
           <>
             {tags &&
@@ -152,9 +152,9 @@ const RegularDetail = (props) => {
                     margin: '5px',
                     border: '1px solid #ddd',
                   }}
-                  key={tag.configGoodsTagId}
+                  key={tag}
                 >
-                  {tag.tagName}
+                  {tag}
                 </span>
               ))}
           </>

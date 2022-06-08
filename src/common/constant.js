@@ -118,8 +118,8 @@ export const BUSINESS_TYPE = { merchant: '单店', group: '集团' };
 //售卖价格类型
 export const BUSINESS_SALE_TYPE = {
   defaultMode: '单店（可用卡豆抵扣）',
-  self: '现金（不可用卡豆抵扣）',
-  cashMode: '卡豆+现金',
+  cashMode: '现金（不可用卡豆抵扣）',
+  self: '卡豆+现金',
   free: '免费',
 };
 
