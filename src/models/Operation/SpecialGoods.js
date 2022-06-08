@@ -7,6 +7,7 @@ import {
   fetchSpecialGoodsShareEdit,
   fetchSpecialGoodsDetail,
   fetchSpecialGoodsStatus,
+  fetchSpecialGoodsDelete,
   fetchSpecialGoodsImport,
   fetchSpecialGoodsQrCode,
   fetchCheckMreRate, // 查询店铺主体费率
@@ -60,8 +61,6 @@ export default {
         //  divisionFlag
       } = content;
       const {
-        allowRefund,
-        allowExpireRefund,
         needOrder,
         availableAreas, //城市
         activityStartDate,
@@ -70,9 +69,11 @@ export default {
         settleInfoReq = {},
         buyDesc = '[]',
         activityTimeRule: activeTime,
+        settleInfoResp = {}, //结算人
+        skuInfoResp = {}, //价格
         // relateIdString: relateId,
       } = offlineDetail;
-      const { settlerId, settlerType } = settleInfoReq;
+      const { settlerId, settlerType, settlerName } = settleInfoResp;
       const {
         startDate,
         endDate,
@@ -121,8 +122,10 @@ export default {
         // relateId,
         settlerId,
         settlerType,
+        settlerName,
         ownerId,
         id: goodsId,
+        skuInfoReq: skuInfoResp,
         availableAreas: availableAreas === 'all' ? availableAreas : 'city',
         cityList,
         // divisionFlag,
@@ -130,6 +133,7 @@ export default {
         // allowRefund: Number(allowRefund),
         // allowExpireRefund: Number(allowExpireRefund),
         needOrder: Number(needOrder),
+        settleInfoReq,
       });
     },
     *fetchSpecialGoodsSave({ payload, callback }, { call }) {
@@ -192,6 +196,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '特惠活动下架成功',
+      });
+      callback();
+    },
+    *fetchSpecialGoodsDelete({ payload, callback }, { call, put }) {
+      const response = yield call(fetchSpecialGoodsDelete, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '特惠活动删除成功',
       });
       callback();
     },

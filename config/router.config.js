@@ -811,6 +811,7 @@ export default [
               'edit',
               'down',
               'info',
+              'del',
               'diary',
               'again',
               'recommendStatus',

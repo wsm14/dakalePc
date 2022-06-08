@@ -626,7 +626,10 @@ export const SPECIAL_RECOMMEND_TYPE = {
 export const SPECIAL_RECOMMEND_DELSTATUS = ['已删除', '未删除'];
 
 // 特惠活动 - 介绍类型
-export const SPECIAL_DESC_TYPE = ['图文介绍', '富文本'];
+export const SPECIAL_DESC_TYPE = {
+  imgText: '图文',
+  richText: '富文本',
+};
 
 // 特惠活动 - 前端展示类型
 export const SPECIAL_SHOW_TYPE = {

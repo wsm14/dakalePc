@@ -46,7 +46,7 @@ const PreferentialSet = ({
 
   const [goodsType, setGoodsType] = useState('1'); // 商品类型： 特惠 自我游
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
-  const [goodsDescType, setGoodsDescType] = useState('0'); // 商品介绍类型
+  const [goodsDescType, setGoodsDescType] = useState('imgText'); // 商品介绍类型
   const [goodsTaglist, setGoodsTaglist] = useState([]); // 商家商品标签
   const [showTags, setShowTags] = useState([]);
   const [areaType, setAreaType] = useState('all'); // 地域选择
@@ -106,6 +106,7 @@ const PreferentialSet = ({
         timeSplit,
         activeTime,
         userTime,
+        paymentModeType: initialValues.paymentModeType,
       });
       // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/商家商品标签
       fetchGetMre(initialValues.relateName, initialValues.relateType, (list = []) => {
@@ -136,7 +137,7 @@ const PreferentialSet = ({
       type: 'baseData/fetchSkuDetailMerchantList',
       payload: {
         ownerServiceId: initialValues.goodsId,
-        ownerId: initialValues.ownerIdString,
+        ownerId: initialValues.ownerId,
         serviceType: 'specialGoods',
       },
       callback: (list) => {
@@ -148,6 +149,7 @@ const PreferentialSet = ({
   };
   // 搜索店铺
   const fetchGetMre = debounce((name, type, callback) => {
+    console.log(name, type, 'name');
     if (!name) return;
     dispatch({
       type: 'baseData/fetchGetGroupMreList',
@@ -387,7 +389,7 @@ const PreferentialSet = ({
     },
     {
       label: `${goodsTypeName}轮播图`,
-      name: 'goodsImg',
+      name: 'goodsBriefImg',
       type: 'upload',
       maxFile: 5,
       maxSize: 500,
@@ -395,7 +397,7 @@ const PreferentialSet = ({
     {
       label: `${goodsTypeName}名称`,
       name: 'goodsName',
-      maxLength: 80,
+      maxLength: 30,
     },
     {
       type: 'noForm',
@@ -436,29 +438,30 @@ const PreferentialSet = ({
       min: 0,
       max: 999999.99,
       formatter: (value) => `￥ ${value}`,
-      // addRules: [
-      //   {
-      //     validator: (rule, value) => {
-      //       const merchantPrice = Number(value);
-      //       const buyPrice = Number(form.getFieldValue(['skuInfoReq', 'sellPrice']));
-      //       if (merchantPrice > buyPrice) {
-      //         return Promise.reject('商家结算价不可超过售卖价格');
-      //       }
-      //       // “商家结算价不可超过N（结算价≤特惠价格*（1-费率））”
-      //       const getPrice = buyPrice * (1 - mreList.ratio / 100);
-      //       if (merchantPrice > getPrice) {
-      //         return Promise.reject(`商家结算价不可超过${getPrice}`);
-      //       }
-      //       return Promise.resolve();
-      //     },
-      //   },
-      // ],
+      addRules: [
+        {
+          validator: (rule, value) => {
+            const merchantPrice = Number(value);
+            const buyPrice = Number(form.getFieldValue(['skuInfoReq', 'sellPrice']));
+            if (merchantPrice > buyPrice) {
+              return Promise.reject('商家结算价不可超过售卖价格');
+            }
+            // “商家结算价不可超过N（结算价≤特惠价格*（1-费率））”
+            // const getPrice = buyPrice * (1 - mreList.ratio / 100);
+            // if (merchantPrice > getPrice) {
+            //   return Promise.reject(`商家结算价不可超过${getPrice}`);
+            // }
+            return Promise.resolve();
+          },
+        },
+      ],
     },
     {
       label: '售卖价格类型',
       type: 'radio',
       name: 'paymentModeType',
       select: BUSINESS_SALE_TYPE,
+      disabled: editDisabled,
       onChange: (e) => {
         saveMreData({ paymentModeType: e.target.value });
       },
@@ -486,7 +489,7 @@ const PreferentialSet = ({
           validator: (rule, value) => {
             const realPrice = Number(value);
             const buyPrice = Number(form.getFieldValue(['skuInfoReq', 'oriPrice']));
-            if (realPrice > buyPrice) {
+            if (realPrice >= buyPrice) {
               return Promise.reject('零售价格需小于套餐价格');
             }
             return Promise.resolve();
@@ -502,6 +505,7 @@ const PreferentialSet = ({
       min: 0,
       max: 999999.99,
       required: false,
+      disabled: editDisabled,
       rules: [{ required: false }],
       formatter: (value) => `￥ ${value}`,
     },
@@ -510,6 +514,7 @@ const PreferentialSet = ({
       name: ['skuInfoReq', 'initStock'],
       type: 'number',
       precision: 0,
+      disabled: editDisabled,
       min: 0,
       max: 100000000,
     },
@@ -628,24 +633,23 @@ const PreferentialSet = ({
       order: false,
       visible: mreList.timeType === 'part',
     },
-    {
-      label: '投放总量',
-      name: ['useTimeRuleObject', 'total'],
-      addRules: [{ pattern: NUM_INT_MAXEIGHT, message: '投放总量必须为整数，且不可为0' }],
-      disabled: editDisabled,
-      suffix: '份',
-    },
+    // {
+    //   label: '投放总量',
+    //   name: ['useTimeRuleObject', 'total'],
+    //   addRules: [{ pattern: NUM_INT_MAXEIGHT, message: '投放总量必须为整数，且不可为0' }],
+    //   suffix: '份',
+    // },
     {
       title: '设置购买规则',
       label: '购买上限',
       type: 'radio',
-      name: [('skuInfoReq', 'buyLimitRuleObject', 'type')],
+      name: ['buyLimitRuleObject', 'type'],
       select: COUPON_BUY_RULE,
       onChange: (e) => saveMreData({ buyRule: e.target.value }),
     },
     {
       label: `单人${{ personLimit: '每人', dayLimit: '每天' }[mreList.buyRule]}购买份数`,
-      name: [('skuInfoReq', 'buyLimitRuleObject', 'limitNum')],
+      name: ['buyLimitRuleObject', 'limitNum'],
       suffix: '份',
       addRules: [{ pattern: NUM_INT_MAXEIGHT, message: '份数必须为整数，且不可为0' }],
       visible: ['personLimit', 'dayLimit'].includes(mreList.buyRule),
@@ -775,33 +779,51 @@ const PreferentialSet = ({
         fetchCheckMreRate(val);
       },
     },
+
     {
       title: `设置${goodsTypeName}介绍`,
+      type: 'noForm',
+      formItem: (
+        <EditorForm
+          content={initialValues.richText}
+          editCallback={(val) => setContent(val)}
+        ></EditorForm>
+      ),
+    },
+    {
       label: '选择介绍类型',
       type: 'radio',
       name: 'descType',
       select: SPECIAL_DESC_TYPE,
-      onChange: (e) => setGoodsDescType(e.target.value),
+      hidden: true,
     },
-    {
-      label: `${goodsTypeName}介绍`,
-      type: 'textArea',
-      name: 'goodsDesc',
-      hidden: goodsDescType !== '0',
-      rules: [{ required: false }],
-      maxLength: 200,
-    },
-    {
-      label: `${goodsTypeName}图片`,
-      name: 'goodsDescImg',
-      type: 'upload',
-      maxFile: 20,
-      hidden: goodsDescType !== '0',
-      rules: [{ required: false }],
-    },
+    // {
+    //   title: `设置${goodsTypeName}介绍`,
+    //   label: '选择介绍类型',
+    //   type: 'radio',
+    //   name: 'descType',
+    //   select: SPECIAL_DESC_TYPE,
+    //   onChange: (e) => setGoodsDescType(e.target.value),
+    // },
+    // {
+    //   label: `${goodsTypeName}介绍`,
+    //   type: 'textArea',
+    //   name: 'goodsDesc',
+    //   hidden: goodsDescType !== 'imgText',
+    //   rules: [{ required: false }],
+    //   maxLength: 200,
+    // },
+    // {
+    //   label: `${goodsTypeName}图片`,
+    //   name: 'goodsDescImg',
+    //   type: 'upload',
+    //   maxFile: 20,
+    //   hidden: goodsDescType !== 'imgText',
+    //   rules: [{ required: false }],
+    // },
     {
       type: 'noForm',
-      visible: goodsDescType === '1',
+      visible: goodsDescType === 'richText',
       formItem: (
         <EditorForm
           content={initialValues.richText}

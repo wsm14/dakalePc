@@ -10,11 +10,10 @@ import CheckRecord from '@/components/CheckRecord';
 
 const SpecialGoodDetail = (props) => {
   const { visible, onClose, onEdit, total, getDetail, loading, dispatch } = props;
-  const { show = false, index, detail = {}, status, specialGoodsId, ownerIdString } = visible;
+  const { show = false, index, detail = {}, status, goodsId, ownerId } = visible;
 
   const [form] = Form.useForm();
   const [merchantList, setMerchantList] = useState([]);
-  const [recordList, setRecordList] = useState({});
 
   const handleEdit = () => {
     onClose(), onEdit();
@@ -31,31 +30,13 @@ const SpecialGoodDetail = (props) => {
     dispatch({
       type: 'baseData/fetchSkuDetailMerchantList',
       payload: {
-        ownerServiceId: specialGoodsId,
-        ownerId: ownerIdString,
+        ownerServiceId: goodsId,
+        ownerId: ownerId,
         serviceType: 'specialGoods',
       },
       callback: (list) => setMerchantList(list),
     });
   };
-
-  const handleTabChange = (val) => {
-    if (val === '3') {
-      setRecordList([]);
-      dispatch({
-        type: 'baseData/fetchGetLogDetail',
-        payload: {
-          type: 'audit',
-          key: 'audit',
-          identificationId: specialGoodsId,
-        },
-        callback: (list) => {
-          setRecordList(list);
-        },
-      });
-    }
-  };
-
   const btnList = [
     {
       auth: 'edit',
@@ -70,42 +51,12 @@ const SpecialGoodDetail = (props) => {
     visible: show,
     loading,
     onClose,
-    dataPage: {
-      current: index,
-      total,
-      onChange: (size) => getDetail(size, 'info'),
-    },
     footer: <ExtraButton list={btnList}></ExtraButton>,
   };
-
-  // const formItems = [
-  //   {
-  //     label: `其他平台价格`,
-  //     name: 'otherPlatformPrice',
-  //     maxLength: 20,
-  //   },
-  // ];
-
   return (
     <DrawerCondition {...modalProps}>
-      {/* 驳回原因
-      {status == '4' && <Alert message={`驳回原因：${detail.failureReason}`} type="error" banner />} */}
-      {/* 信息展示 */}
-      {/* <Tabs defaultActiveKey="1" onChange={handleTabChange}> */}
-      {/* <Tabs.TabPane tab="商品信息" key="1"> */}
       <GoodsDetailForm detail={detail} form={form} merchantList={merchantList}></GoodsDetailForm>
-      {/* </Tabs.TabPane> */}
-      {/* <Tabs.TabPane tab="投放规则" key="2"> */}
       <RegularDetail detail={detail}></RegularDetail>
-      {/* </Tabs.TabPane> */}
-      {/* <Tabs.TabPane tab="审核记录" key="3">
-          <CheckRecord recordList={recordList}></CheckRecord>
-        </Tabs.TabPane> */}
-      {/* </Tabs> */}
-      {/* 审核时输入 其他平台价格
-      {status == '3' && (
-        <FormCondition formItems={formItems} form={form} style={{ marginTop: 10 }}></FormCondition>
-      )} */}
     </DrawerCondition>
   );
 };

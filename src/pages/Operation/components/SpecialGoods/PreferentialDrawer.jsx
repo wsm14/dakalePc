@@ -47,7 +47,7 @@ const PreferentialDrawer = (props) => {
     form.validateFields().then((values) => {
       const { id } = detail;
       const {
-        goodsImg,
+        goodsBriefImg,
         goodsDescImg,
         platformTagIds = [],
         displayFilterTags = [],
@@ -69,9 +69,10 @@ const PreferentialDrawer = (props) => {
         thirdId,
         thirdType,
         useTimeRuleObject = {},
+        useDay,
         ...other
       } = values;
-      const aimg = checkFileData(goodsImg);
+      const aimg = checkFileData(goodsBriefImg);
       const gimg = checkFileData(goodsDescImg);
       const cityIds = cityList.map((item) => {
         return item?.city[item?.city.length - 1];
@@ -92,8 +93,8 @@ const PreferentialDrawer = (props) => {
             ownerId: '-1',
             platformTagIds: platformTagIds.toString(),
             displayFilterTags: displayFilterTags.toString(),
-            relationOwnerIds: relationOwnerIds.toString(),
-            goodsImg: res.slice(0, aimg.length).toString(),
+            relationOwnerIds: relationOwnerIds,
+            goodsBriefImg: res.slice(0, aimg.length).toString(),
             goodsDescImg: res.slice(aimg.length).toString(),
             activityStartDate: activityStartDate && activityStartDate[0].format('YYYY-MM-DD'),
             activityEndDate: activityStartDate && activityStartDate[1].format('YYYY-MM-DD'),
@@ -109,12 +110,12 @@ const PreferentialDrawer = (props) => {
             useTimeRuleObject: {
               ...useTimeRuleObject,
               startDate: startDate && startDate[0].format('YYYY-MM-DD'),
-              useEndTime: startDate && startDate[1].format('YYYY-MM-DD'),
+              EndDate: startDate && startDate[1].format('YYYY-MM-DD'),
               useWeek: timeSplit !== 'part' ? timeSplit : useWeek.toString(),
               useDay:
                 timeType !== 'part'
                   ? timeType
-                  : `${useTime[0].format('HH:mm')}-${useTime[1].format('HH:mm')}`,
+                  : `${useDay[0].format('HH:mm')}-${useDay[1].format('HH:mm')}`,
             },
             buyDesc: buyDesc.filter((i) => i).length ? buyDesc.filter((i) => i) : undefined,
           },
@@ -153,7 +154,7 @@ const PreferentialDrawer = (props) => {
             settlerType: 'merchant',
             availableAreas: 'all',
             productType: 'single',
-            descType: '0',
+            descType: 'imgText',
             packageGoodsObjects: [{}],
             needOrder: 0,
             allowRefund: 1,

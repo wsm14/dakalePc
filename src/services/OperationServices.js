@@ -50,6 +50,14 @@ export function fetchSpecialGoodsStatus(data) {
   });
 }
 
+// post 周边特惠 - 删除
+export function fetchSpecialGoodsDelete(data) {
+  return request('/admin/offline/goods/admin/deleteOffline', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 周边特惠 - 分享图修改
 export function fetchSpecialGoodsShareEdit(data) {
   return request('/admin/offline/goods/admin/updateOnlineGoods', {

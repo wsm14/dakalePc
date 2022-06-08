@@ -5,7 +5,6 @@ import { Result, Button } from 'antd';
 import { history, Link, connect } from 'umi';
 
 const getRouteAuthority = (path, routeData) => {
-
   let authorities = false;
   routeData.forEach((route) => {
     // match prefix

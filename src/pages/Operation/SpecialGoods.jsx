@@ -277,19 +277,16 @@ const SpecialGoods = (props) => {
       title: '活动时间',
       align: 'center',
       dataIndex: 'activityStartDate',
-      render: (val, row) => `${val}~\n${row.activityEndDate}`,
-      // render: (val, row) => (
-      //   <>
-      //     {row.activityTimeRule === 'infinite'
-      //       ? `${row.activityStartDate} ~ 长期`
-      //       : `${val} ~ ${row.activityEndDate}`}
-      //     <div>
-      //       {row.deleteFlag === '0'
-      //         ? SPECIAL_RECOMMEND_DELSTATUS[row.deleteFlag]
-      //         : SPECIAL_STATUS[row.status]}
-      //     </div>
-      //   </>
-      // ),
+      render: (val, row) => (
+        <>
+          {row.activityTimeRule === 'infinite' ? ` 长期` : `${val} ~ ${row.activityEndDate}`}
+          {/* <div>
+            {row.deleteFlag === '0'
+              ? SPECIAL_RECOMMEND_DELSTATUS[row.deleteFlag]
+              : SPECIAL_STATUS[row.status]}
+          </div> */}
+        </>
+      ),
     },
     {
       title: '使用有效期',
@@ -372,7 +369,7 @@ const SpecialGoods = (props) => {
       dataIndex: 'goodsId',
       width: 150,
       render: (val, record, index) => {
-        const { goodsId, ownerId, status, stockId, deleteFlag } = record;
+        const { goodsId, ownerId, status, stockId, remain, deleteFlag } = record;
         return [
           // {
           //   type: 'goodsCode',
@@ -419,15 +416,20 @@ const SpecialGoods = (props) => {
           //   click: () => fetchGetLogData({ type: 'specialGoods', identificationId: val }),
           // },
           {
-            title: '增加库存',
+            title: '调整库存',
             type: 'addRemain',
             visible: ['1'].includes(status),
-            click: () => fetAddRemain(stockId, record.ownerId, record.remain),
+            click: () => fetAddRemain(stockId, ownerId, remain),
           },
           {
             title: '分享配置',
             type: 'shareImg',
             click: () => fetchShareImg(record),
+          },
+          {
+            type: 'del',
+            // visible: ['1'].includes(status), // 活动中 && 未删除
+            click: () => fetchSpecialGoodsDelete(goodsId, ownerId),
           },
         ];
       },
@@ -510,6 +512,20 @@ const SpecialGoods = (props) => {
       type: 'specialGoods/fetchSpecialGoodsRecommend',
       payload,
       callback: childRef.current.fetchGetData,
+    });
+  };
+
+  //删除
+  const fetchSpecialGoodsDelete = (goodsId, ownerId) => {
+    dispatch({
+      type: 'specialGoods/fetchSpecialGoodsDelete',
+      payload: {
+        goodsId,
+        ownerId,
+      },
+      callback: () => {
+        childRef.current.fetchGetData();
+      },
     });
   };
 
