@@ -102,7 +102,7 @@ const ResourceContent = (props) => {
     dispatch({
       type: 'walkingManage/fetchGetResourceTemplateContentById',
       payload: {
-        resourceTemplateContentId,
+        resourceTemplateContentId: '1503994335922708481',
       },
       callback: (detail) => {
         setVisible({ type: 'edit', show: true, detail });

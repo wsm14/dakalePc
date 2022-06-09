@@ -28,13 +28,13 @@ const FormList = (props) => {
       </div>
       {
         {
-          specialGoods: goodsDom({ ...goodsItem }, goodsItem?.activityGoodsId, '', () =>
+          specialGoods: goodsDom({ ...goodsItem }, goodsItem?.goodsId, '', () =>
             remove(field.name),
           ), // 特惠，自我游
-          commerceGoods: commerceDom({ ...goodsItem }, goodsItem?.activityGoodsId, '', () =>
+          commerceGoods: commerceDom({ ...goodsItem }, goodsItem?.goodsId, '', () =>
             remove(field.name),
           ), // 电商品
-        }[goodsItem.goodsType]
+        }[goodsItem.activityType]
       }
     </Space>
   );

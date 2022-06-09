@@ -106,9 +106,9 @@ const FormList = (props) => {
                             field2.name
                           ];
                           return {
-                            specialGoods: goodsDom({ ...item }, item?.activityGoodsId), // 特惠，自我游
-                            commerceGoods: commerceDom({ ...item }, item?.activityGoodsId), // 电商品
-                          }[item.goodsType];
+                            specialGoods: goodsDom({ ...item }, item?.goodsId), // 特惠，自我游
+                            commerceGoods: commerceDom({ ...item }, item?.goodsId), // 电商品
+                          }[item.activityType];
                         })()}
                         <DeleteOutlined onClick={() => remove(field2.name)} />
                       </Space>
@@ -120,8 +120,17 @@ const FormList = (props) => {
           }}
         </Form.List>
       </Card>
+      {/*       const RGObj = form.getFieldValue('brandModuleList') || {};
+              indexNum={field.name}
+      const list = RGObj[indexNum]?.activityGoodsList || []; */}
+      {console.log(form.getFieldValue(name))}
       <GoodsSelectModal
         showTag={['specialGoods', 'commerceGoods']}
+        goodsValues={
+          form.getFieldValue(name)
+            ? form.getFieldValue(name)[field.name]?.activityGoodsList || []
+            : []
+        }
         visible={visible}
         onSumbit={({ list }) => {
           // 获取数据数组

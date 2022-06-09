@@ -18,6 +18,7 @@ const { TabPane } = Tabs;
 const GoodsSelectModal = (props) => {
   const {
     visible = false,
+    goodsValues = [],
     selectType = 'checkbox', // checkbox | radio
     showTag = null,
     onSumbit,
@@ -30,8 +31,14 @@ const GoodsSelectModal = (props) => {
 
   useEffect(() => {
     if (visible) {
+      console.log('goodsValues', goodsValues);
       const showTab = tabPaneList.filter((i) => (showTag || allTag).includes(i.key));
       showTab.length && setTabKey(showTab[0].key);
+      const newData = goodsValues.filter((i) => i);
+      // 数据还原
+      if (newData && newData.length) {
+        setSelectItem({ keys: newData.map((i) => i.goodsId), list: newData });
+      }
     }
   }, [visible]);
 

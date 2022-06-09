@@ -208,17 +208,19 @@ const ResourceContentForm = (props) => {
       ),
     },
     {
-      label: `商品列表类型`,
-      name: 'mixedList',
-      type: 'formItem',
-      required: true,
+      type: 'noForm',
       visible: typeList.includes('mixedList'),
       formItem: (
-        <ShareCoupon
-          form={form}
-          showTag={['specialGoods', 'commerceGoods']}
-          dataType={'mixedList'}
-        ></ShareCoupon>
+        <div style={{ display: 'flex', paddingLeft: 55 }}>
+          <div style={{ paddingTop: 5 }}>商品列表选择：</div>
+          <div>
+            <ShareCoupon
+              form={form}
+              showTag={['specialGoods', 'commerceGoods']}
+              dataType={'mixedList'}
+            ></ShareCoupon>
+          </div>
+        </div>
       ),
     },
     {
@@ -231,18 +233,18 @@ const ResourceContentForm = (props) => {
             <TabPane tab="特惠商品" key="1" forceRender={true}>
               <div style={{ overflow: 'auto' }}>
                 <ShareCoupon
+                  form={form}
                   type="specialGoods"
                   showTag={['specialGoods']}
-                  form={form}
                 ></ShareCoupon>
               </div>
             </TabPane>
             <TabPane tab="电商品" key="2" forceRender={true}>
               <div style={{ overflow: 'auto' }}>
                 <ShareCoupon
+                  form={form}
                   type="commerceGoods"
                   showTag={['commerceGoods']}
-                  form={form}
                 ></ShareCoupon>
               </div>
             </TabPane>
@@ -260,19 +262,17 @@ const ResourceContentForm = (props) => {
       type: 'noForm',
       visible: typeList.includes('classifiedListSelfTravel'),
       formItem: (
-        <>
-          <Tabs tabPosition="left">
-            <TabPane tab="电商品" key="3" forceRender={true}>
-              <div style={{ overflow: 'auto' }}>
-                <ShareCoupon
-                  showTag={['commerceGoods']}
-                  dataType={'commerceGoods'}
-                  form={form}
-                ></ShareCoupon>
-              </div>
-            </TabPane>
-          </Tabs>
-        </>
+        <Tabs tabPosition="left">
+          <TabPane tab="电商品" key="3" forceRender={true}>
+            <div style={{ overflow: 'auto' }}>
+              <ShareCoupon
+                form={form}
+                showTag={['commerceGoods']}
+                dataType={'commerceGoods'}
+              ></ShareCoupon>
+            </div>
+          </TabPane>
+        </Tabs>
       ),
     },
     {
@@ -282,9 +282,9 @@ const ResourceContentForm = (props) => {
       required: true,
       formItem: (
         <BrandModuleList
-          initialValues={initialValues}
-          type="brandSelfTravel"
           form={form}
+          type="brandSelfTravel"
+          initialValues={initialValues}
         ></BrandModuleList>
       ),
     },

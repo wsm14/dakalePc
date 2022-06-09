@@ -164,7 +164,7 @@ const ConnectedGoodsModal = (props) => {
             'add',
             list.map((i) => ({
               goodsId: i.goodsId,
-              goodsType: i.goodsType,
+              goodsType: i.activityType,
               ownerId: i.ownerId,
             })),
             () => setVisibleDrawer(false),

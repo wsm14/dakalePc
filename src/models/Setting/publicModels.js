@@ -70,7 +70,7 @@ export default {
           onlineGoods: {
             list: content.onlineManagerResps.map((i) => ({
               ...i,
-              goodsType: 'commerceGoods',
+              activityType: 'commerceGoods',
             })),
             total: content.total,
           },
@@ -88,7 +88,7 @@ export default {
           offlineGoods: {
             list: content.offlineManagerResps.map((i) => ({
               ...i,
-              goodsType: 'specialGoods',
+              activityType: 'specialGoods',
             })),
             total: content.total,
           },
@@ -106,7 +106,7 @@ export default {
           buyCouponList: {
             list: content.ownerCouponList.map((i) => ({
               ...i,
-              goodsType: 'reduceCoupon',
+              activityType: 'reduceCoupon',
               goodsId: i.ownerCouponIdString,
             })),
             total: content.total,
@@ -128,7 +128,7 @@ export default {
           platformCoupon: {
             list: content.recordList.map((i) => ({
               ...i,
-              goodsType: 'platformCoupon',
+              activityType: 'platformCoupon',
               goodsId: i.platformCouponId,
             })),
             total: content.total,

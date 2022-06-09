@@ -17,7 +17,7 @@ const ShareCoupon = (props) => {
           {
             validator: async (types, names) => {
               // console.log(a, names);
-              if (types.field === 'specialGoods' && (!names || names.length < 1)) {
+              if (!names || names.length < 1) {
                 return Promise.reject(new Error('请至少选择1个商品'));
               }
             },
@@ -50,6 +50,7 @@ const ShareCoupon = (props) => {
       {/* 特惠商品，电商品，自我游 */}
       <GoodsSelectModal
         showTag={showTag}
+        goodsValues={form.getFieldValue(type || dataType) || []}
         visible={visible}
         onSumbit={({ list }) => {
           form.setFieldsValue({ [type || dataType]: list });

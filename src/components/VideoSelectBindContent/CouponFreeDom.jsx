@@ -19,10 +19,11 @@ export const couponsDom = (item = {}, id, setSelectItem, type = 'free', onDel) =
     endDate,
     delayDays = 0, // 使用有效期-领取后-延迟生效天数
     activeDays, // 使用有效期-领取后-有效天数
+    goodsId,
   } = item;
   const { couponPrice, thresholdPrice = '' } = reduceObject;
   return (
-    <div style={{ width: 350 }} key={ownerCouponId || ownerCouponIdString}>
+    <div style={{ width: 350 }} key={ownerCouponId || ownerCouponIdString || goodsId}>
       <Badge.Ribbon text={{ free: '免费券', valuable: '抵扣券' }[type]}>
         <div
           className={`share_Coupon share_item ${id === ownerCouponIdString && 'select'}`}
@@ -82,9 +83,10 @@ export const platformCouponsDom = (item = {}, id = '', setSelectItem, onDel) => 
     endDate,
     delayDays = 0, // 使用有效期-领取后-延迟生效天数
     activeDays, // 使用有效期-领取后-有效天数
+    goodsId,
   } = item;
   return (
-    <div style={{ width: 350 }} key={platformCouponId}>
+    <div style={{ width: 350 }} key={platformCouponId || goodsId}>
       <Badge.Ribbon text={'平台券'}>
         <div
           className={`share_Coupon share_item ${id === platformCouponId && 'select'}`}
@@ -150,10 +152,11 @@ export const goodsDom = (item = {}, id, setSelectItem, onDel) => {
     activityEndDate,
     buyFlag,
     inputDom = null,
+    goodsId,
   } = item;
 
   return (
-    <div style={{ width: 350 }} key={activityGoodsId || specialGoodsId}>
+    <div style={{ width: 350 }} key={activityGoodsId || specialGoodsId || goodsId}>
       <Badge.Ribbon text={{ single: '单品', package: '套餐' }[productType]}>
         <div
           className={`share_Coupon share_item ${id === specialGoodsId && 'select'}`}
@@ -220,10 +223,11 @@ export const commerceDom = (item = {}, id, setSelectItem, onDel) => {
     activityTimeRule = 'infinite',
     activityStartTime,
     activityEndTime,
+    goodsId,
   } = item;
 
   return (
-    <div style={{ width: 350 }} key={activityGoodsId || specialGoodsId}>
+    <div style={{ width: 350 }} key={activityGoodsId || specialGoodsId || goodsId}>
       <Badge.Ribbon text={'电商商品'}>
         <div
           className={`share_Coupon share_item ${id === activityGoodsId && 'select'}`}
@@ -280,7 +284,7 @@ export const groupGoods = (item = {}, id, setSelectItem, onDel) => {
   } = item;
 
   return (
-    <div style={{ width: 350 }} key={activityGoodsId || specialGoodsId}>
+    <div style={{ width: 350 }} key={activityGoodsId || specialGoodsId || goodsId}>
       <div
         className={`share_Coupon share_item ${id === specialGoodsId && 'select'}`}
         onClick={() => setSelectItem && setSelectItem(item)}
