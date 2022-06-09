@@ -464,7 +464,7 @@ const PreferentialSet = ({
             const merchantPrice = Number(value);
             const buyPrice = Number(form.getFieldValue(['skuInfoReq', 'sellPrice']));
             if (merchantPrice > buyPrice) {
-              return Promise.reject('商家结算价不可超过售卖价格');
+              return Promise.reject('商家结算价不可超过零售价格');
             }
             // “商家结算价不可超过N（结算价≤特惠价格*（1-费率））”
             const getPrice = buyPrice * (1 - mreList.ratio / 100);
@@ -510,7 +510,7 @@ const PreferentialSet = ({
             const realPrice = Number(value);
             const buyPrice = Number(form.getFieldValue(['skuInfoReq', 'oriPrice']));
             if (realPrice >= buyPrice) {
-              return Promise.reject('零售价格需小于套餐价格');
+              return Promise.reject('零售价格需小于原价');
             }
             return Promise.resolve();
           },
@@ -549,19 +549,18 @@ const PreferentialSet = ({
       min: 0,
       max: 100000000,
     },
-    {
-      label: '佣金总额', // 手动分佣需要展示
-      name: 'commission',
-      type: 'number',
-      precision: 2,
-      min: 0,
-      max: 999999.99,
-      // disabled: commonDisabled,
-      visible: commissionShow == '1',
-      formatter: (value) => `￥ ${value}`,
-      // rules: [{ required: false }],
-    },
-
+    // {
+    //   label: '佣金总额', // 手动分佣需要展示
+    //   name: 'commission',
+    //   type: 'number',
+    //   precision: 2,
+    //   min: 0,
+    //   max: 999999.99,
+    //   // disabled: commonDisabled,
+    //   visible: commissionShow == '1',
+    //   formatter: (value) => `￥ ${value}`,
+    //   // rules: [{ required: false }],
+    // },
     {
       title: '销售规则',
       label: '活动时间',
