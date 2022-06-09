@@ -60,7 +60,7 @@ export function fetchSpecialGoodsDelete(data) {
 
 // post 周边特惠 - 分享图修改
 export function fetchSpecialGoodsShareEdit(data) {
-  return request('/admin/offline/goods/admin/updateOnlineGoods', {
+  return request('/admin/offline/goods/admin/updateOfflineShareInfo', {
     method: 'POST',
     data,
   });

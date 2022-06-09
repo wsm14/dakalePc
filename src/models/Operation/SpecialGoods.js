@@ -253,7 +253,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '投放总量修改成功',
+        description: '库存修改成功',
       });
       callback();
     },

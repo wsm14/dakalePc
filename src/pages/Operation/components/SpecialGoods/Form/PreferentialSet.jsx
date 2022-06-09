@@ -210,7 +210,6 @@ const PreferentialSet = ({
             return item;
           }
         });
-        console.log(tagList, 'taglist');
         setGoodsTaglist([...tagList]);
       },
     });
@@ -223,7 +222,14 @@ const PreferentialSet = ({
       payload: {
         tagType: 'show',
       },
-      callback: (list) => setShowTags(list),
+      callback: (list) => {
+        const showList = list.map((item) => {
+          if (item.status === '1') {
+            return item;
+          }
+        });
+        setShowTags([...showList]);
+      },
     });
   };
 
