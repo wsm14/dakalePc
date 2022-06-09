@@ -12,8 +12,7 @@ const PreferentialDrawer = (props) => {
   const { visible, dispatch, childRef, loading, onClose } = props;
 
   // add 新增，edit 活动中修改，again 重新发布
-  const { type = 'add', show = false, detail = {} } = visible;
-
+  const { type = 'add', show = false, detail = {}, startDisabled, infoStatus = 0 } = visible;
   const [form] = Form.useForm(); // add
   const [formEdit] = Form.useForm(); // edit
   const [formAgain] = Form.useForm(); // again 数据表单
@@ -27,7 +26,7 @@ const PreferentialDrawer = (props) => {
 
   // 搜索店铺
   const fetchGetMre = () => {
-    const { merchantName, ownerType } = detail;
+    const { merchantName, relateType } = detail;
     if (!merchantName) return;
     dispatch({
       type: 'baseData/fetchGetGroupMreList',
@@ -37,36 +36,44 @@ const PreferentialDrawer = (props) => {
         bankStatus: 3,
         businessStatus: 1,
         merchantName,
-        groupFlag: ownerType === 'merchant' ? 0 : 1,
+        groupFlag: relateType === 'merchant' ? 0 : 1,
       },
     });
   };
 
   // 确认提交数据 - add 新增 /  edit 修改所有数据 / again 重新发布
   const handleUpData = () => {
-    formRuleAdd.validateFields().then((values) => {
-      const { id } = detail;
+    form.validateFields().then((values) => {
+      const { goodsId } = detail;
       const {
-        activityGoodsImg,
+        goodsBriefImg,
         goodsDescImg,
-        goodsTags = [],
-        merchantIds = [],
+        platformTagIds = [],
+        displayFilterTags = [],
+        relationOwnerIds = [],
         businessStatus,
         status,
-        ...preOther
-      } = visibleRule.preData;
-      const {
-        activityStartTime,
+        activityStartDate,
         useStartTime,
         timeSplit,
         timeType,
         useWeek,
         useTime,
         buyDesc = [],
+        settlerType,
+        settlerId,
+        startDate,
+        availableAreas,
+        cityList = [],
+        useTimeRuleObject = {},
+        useDay,
         ...other
       } = values;
-      const aimg = checkFileData(activityGoodsImg);
+      const aimg = checkFileData(goodsBriefImg);
       const gimg = checkFileData(goodsDescImg);
+      const cityIds = cityList.map((item) => {
+        return item?.city[item?.city.length - 1];
+      });
       aliOssUpload([...aimg, ...gimg]).then((res) => {
         dispatch({
           type: {
@@ -76,24 +83,34 @@ const PreferentialDrawer = (props) => {
             againUp: 'specialGoods/fetchSpecialGoodsEdit',
           }[type],
           payload: {
-            id,
-            ...preOther,
+            goodsId,
             ...other,
             richText: content, // 富文本内容
-            goodsTags: goodsTags.toString(),
-            merchantIds: merchantIds.toString(),
-            activityGoodsImg: res.slice(0, aimg.length).toString(),
+            ownerType: 'admin',
+            ownerId: '-1',
+            platformTagIds: platformTagIds.toString(),
+            displayFilterTags: displayFilterTags.toString(),
+            relationOwnerIds: relationOwnerIds,
+            goodsBriefImg: res.slice(0, aimg.length).toString(),
             goodsDescImg: res.slice(aimg.length).toString(),
-            activityStartTime: activityStartTime && activityStartTime[0].format('YYYY-MM-DD'),
-            activityEndTime: activityStartTime && activityStartTime[1].format('YYYY-MM-DD'),
-            useStartTime: useStartTime && useStartTime[0].format('YYYY-MM-DD'),
-            useEndTime: useStartTime && useStartTime[1].format('YYYY-MM-DD'),
-            useWeek: timeSplit !== 'part' ? timeSplit : useWeek.toString(),
+            activityStartDate: activityStartDate && activityStartDate[0].format('YYYY-MM-DD'),
+            activityEndDate: activityStartDate && activityStartDate[1].format('YYYY-MM-DD'),
+            settleInfoReq: {
+              settlerId,
+              settlerType: settlerType,
+            },
+            availableAreas: availableAreas === 'all' ? availableAreas : cityIds.toString(),
+            useTimeRuleObject: {
+              ...useTimeRuleObject,
+              startDate: startDate && startDate[0].format('YYYY-MM-DD'),
+              EndDate: startDate && startDate[1].format('YYYY-MM-DD'),
+              useWeek: timeSplit !== 'part' ? timeSplit : useWeek.toString(),
+              useDay:
+                timeType !== 'part'
+                  ? timeType
+                  : `${useDay[0].format('HH:mm')}-${useDay[1].format('HH:mm')}`,
+            },
             buyDesc: buyDesc.filter((i) => i).length ? buyDesc.filter((i) => i) : undefined,
-            useTime:
-              timeType !== 'part'
-                ? timeType
-                : `${useTime[0].format('HH:mm')}-${useTime[1].format('HH:mm')}`,
           },
           callback: () => {
             onClose();
@@ -113,8 +130,14 @@ const PreferentialDrawer = (props) => {
         setVisibleRule({ show: true, preData: values });
       }));
   };
-
-  const listProp = { commissionShow, setCommissionShow, editActive: type, setContent };
+  const listProp = {
+    commissionShow,
+    setCommissionShow,
+    editActive: type,
+    setContent,
+    startDisabled,
+    infoStatus: Boolean(Number(infoStatus)),
+  };
 
   // 统一处理弹窗
   const drawerProps = {
@@ -125,11 +148,19 @@ const PreferentialDrawer = (props) => {
           {...listProp}
           form={form}
           initialValues={{
-            thirdFlag: '1',
-            ownerType: 'merchant',
-            goodsType: 'single',
-            goodsDescType: '0',
+            thirdType: '1',
+            relateType: 'merchant',
+            settlerType: 'merchant',
+            availableAreas: 'all',
+            productType: 'single',
+            descType: 'imgText',
             packageGoodsObjects: [{}],
+            needOrder: 0,
+            allowRefund: 1,
+            allowExpireRefund: 1,
+            expireRefund: 1,
+            timeSplit: '1,2,3,4,5,6,7',
+            timeType: '00:00-23:59',
           }}
           onValuesChange={setShowHtmlData}
         ></PreferentialSet>
@@ -138,7 +169,7 @@ const PreferentialDrawer = (props) => {
     again: {
       title: '重新发布活动',
       children: (
-        <PreferentialSet {...listProp} form={formAgain} initialValues={detail}></PreferentialSet>
+        <PreferentialSet {...listProp} form={form} initialValues={detail}></PreferentialSet>
       ),
     },
     againUp: {
@@ -146,7 +177,7 @@ const PreferentialDrawer = (props) => {
       children: (
         <PreferentialSet
           {...listProp}
-          form={formAgainUp}
+          form={form}
           initialValues={detail}
           onValuesChange={setShowHtmlData}
         ></PreferentialSet>
@@ -155,7 +186,7 @@ const PreferentialDrawer = (props) => {
     edit: {
       title: '修改活动',
       children: (
-        <PreferentialSet {...listProp} form={formEdit} initialValues={detail}></PreferentialSet>
+        <PreferentialSet {...listProp} form={form} initialValues={detail}></PreferentialSet>
       ),
     },
   }[type];
@@ -165,28 +196,11 @@ const PreferentialDrawer = (props) => {
     title: drawerProps.title,
     visible: show,
     onClose,
-    afterCallBack: () => fetchGetMre(),
+    // afterCallBack: () => fetchGetMre(),
     closeCallBack: () => {
       dispatch({ type: 'baseData/clearGroupMre' }); // 关闭清空搜索的商家数据
       setSaveData(null);
     },
-    footer: (
-      <Button onClick={handleUpAudit} disabled={!commissionShow} type="primary">
-        下一步
-      </Button>
-    ),
-  };
-
-  // 下一步：规则弹窗属性
-  const ruleModalProps = {
-    title: '规则设置',
-    visible: visibleRule.show,
-    afterCallBack: () => fetchGetMre(),
-    onClose: () => {
-      setSaveData(formRuleAdd.getFieldsValue());
-      setVisibleRule(false);
-    },
-    maskShow: false,
     footer: (
       <Button type="primary" onClick={handleUpData} loading={loading}>
         发布申请
@@ -196,22 +210,7 @@ const PreferentialDrawer = (props) => {
 
   return (
     <>
-      <DrawerCondition {...modalProps}>
-        {drawerProps.children}
-        <DrawerCondition {...ruleModalProps}>
-          <PreferentialRuleSet
-            editActive={type}
-            form={formRuleAdd}
-            initialValues={{
-              needOrder: 0,
-              allowRefund: 1,
-              allowExpireRefund: 1,
-              ...(saveData || detail),
-            }}
-          ></PreferentialRuleSet>
-        </DrawerCondition>
-      </DrawerCondition>
-      {/* <Html5Simulate type="goods" show={show} data={showHtmlData}></Html5Simulate> */}
+      <DrawerCondition {...modalProps}>{drawerProps.children}</DrawerCondition>
     </>
   );
 };
