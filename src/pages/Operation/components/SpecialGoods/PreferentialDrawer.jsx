@@ -203,7 +203,7 @@ const PreferentialDrawer = (props) => {
     },
     footer: (
       <Button type="primary" onClick={handleUpData} loading={loading}>
-        发布申请
+        确定
       </Button>
     ),
   };

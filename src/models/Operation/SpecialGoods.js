@@ -74,6 +74,7 @@ export default {
         displayFilterTags,
         relationOwnerInfoResps = [], //集团关联店铺
         thirdInfoResp, //商品类别
+        divisionParamInfoResp = {}, //分佣设置
         // relateIdString: relateId,
       } = offlineDetail;
       const { settlerId, settlerType, settlerName } = settleInfoResp;
@@ -150,6 +151,7 @@ export default {
         displayFilterTags: displayFilterTags.split(','),
         relationOwnerInfoResps: relationOwnerInfoRespsList,
         thirdInfoReq: thirdInfoResp,
+        divisionParamInfoReq: divisionParamInfoResp,
       });
     },
     *fetchSpecialGoodsSave({ payload, callback }, { call }) {

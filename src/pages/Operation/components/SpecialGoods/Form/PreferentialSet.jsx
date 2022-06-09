@@ -18,6 +18,7 @@ import {
   SPECIAL_USERTIME_TYPE,
   SPECIAL_BALANCE_TYPE,
 } from '@/common/constant';
+import { NUM_ALL } from '@/common/regExp';
 import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import { NUM_INT_MAXEIGHT } from '@/common/regExp';
 import { DescSet } from '@/components/FormListCondition';
@@ -43,7 +44,7 @@ const PreferentialSet = ({
   infoStatus = false,
 }) => {
   //编辑的时候数据回显的标签
-  const { goodsTagList = [] } = initialValues;
+  // const { goodsTagList = [] } = initialValues;
 
   // 是否 editActive = 'againUp' || 'again' || 'edit'三种都隐藏的数据
   const commonDisabled = ['againUp', 'again', 'edit'].includes(editActive);
@@ -72,12 +73,13 @@ const PreferentialSet = ({
     timeType: 'all', // 时段内时间选择
     buyRule: 'all', // 购买规则
     disabledDate: [], // 限制时间
+    manualDivisionsList: [], //分佣列表
   }); // 店铺备选参数，选择店铺后回显的数据
 
-  const goodsTags = goodsTagList
-    .filter((item) => item.tagType === 'merchant')
-    .map((key) => key.configGoodsTagId);
-  initialValues.goodsTags = goodsTags;
+  // const goodsTags = goodsTagList
+  //   .filter((item) => item.tagType === 'merchant')
+  //   .map((key) => key.configGoodsTagId);
+  // initialValues.goodsTags = goodsTags;
 
   const goodsTypeName = GOODS_CLASS_TYPE[mreList.productType];
   useEffect(() => {
@@ -131,7 +133,7 @@ const PreferentialSet = ({
           // 是否分佣
           getCommissionFlag(topCategoryId);
           // 商品标签
-          getTagsPlat(topCategoryId);
+          // getTagsPlat(topCategoryId);
           // 商家状态
           form.setFieldsValue({ businessStatus, status });
         },
@@ -147,6 +149,7 @@ const PreferentialSet = ({
   useEffect(() => {
     //展示标签
     getShowTags();
+    getTagsPlat();
   }, []);
 
   // 搜索店铺
@@ -183,12 +186,23 @@ const PreferentialSet = ({
   const saveMreData = (data) => setMreList((old) => ({ ...old, ...data }));
 
   //获取商家商品标签
-  const getTagsPlat = (categoryId) => {
+  // const getTagsPlat = (categoryId) => {
+  //   dispatch({
+  //     type: 'baseData/fetchGoodsTagListByCategoryId',
+  //     payload: {
+  //       categoryId: categoryId,
+  //       tagType: 'merchant',
+  //     },
+  //     callback: (list) => setGoodsTaglist(list),
+  //   });
+  // };
+
+  //获取商家商品标签
+  const getTagsPlat = () => {
     dispatch({
-      type: 'baseData/fetchGoodsTagListByCategoryId',
+      type: 'goodsTag/fetchGoodsTagList',
       payload: {
-        categoryId: categoryId,
-        tagType: 'merchant',
+        tagType: 'platform',
       },
       callback: (list) => setGoodsTaglist(list),
     });
@@ -231,7 +245,11 @@ const PreferentialSet = ({
         serviceType: 'specialGoods',
         categoryId: categoryId,
       },
-      callback: ({ manuallyFlag, manualDivisions }) => setCommissionShow(manuallyFlag),
+      callback: ({ manuallyFlag, manualDivisions = [] }) => {
+        const fieldList = manualDivisions.map((item) => item.divisionParticipantType);
+        saveMreData({ manualDivisionsList: [...fieldList] });
+        setCommissionShow(manuallyFlag);
+      },
     });
   };
 
@@ -702,6 +720,41 @@ const PreferentialSet = ({
       name: 'buyDesc',
       type: 'formItem',
       formItem: <DescSet name={'buyDesc'}></DescSet>,
+    },
+    {
+      title: '分佣设置',
+      type: 'noForm',
+      visible: commissionShow == '1' && mreList.manualDivisionsList.length,
+    },
+    {
+      label: '省代分佣',
+      name: ['divisionParamInfoReq', 'provinceBean'],
+      visible: commissionShow == '1' && mreList.manualDivisionsList.includes('province'),
+      addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+    },
+    {
+      label: '市级分佣',
+      name: ['divisionParamInfoReq', 'cityBean'],
+      visible: commissionShow == '1' && mreList.manualDivisionsList.includes('city'),
+      addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+    },
+    {
+      label: '区县分佣',
+      name: ['divisionParamInfoReq', 'districtBean'],
+      visible: commissionShow == '1' && mreList.manualDivisionsList.includes('district'),
+      addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+    },
+    {
+      label: '用户家主分佣',
+      name: ['divisionParamInfoReq', 'userParentBean'],
+      visible: commissionShow == '1' && mreList.manualDivisionsList.includes('userParent'),
+      addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+    },
+    {
+      label: '哒人分佣',
+      name: ['divisionParamInfoReq', 'darenBean'],
+      visible: commissionShow == '1' && mreList.manualDivisionsList.includes('daren'),
+      addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
     },
     {
       title: `展示信息`,
