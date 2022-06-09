@@ -7,7 +7,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
 import OpenGroupDetail from './components/OpenGroupList/OpenGroupDetail';
 
-const OpenGroupList = (props) => {
+const MarketActivity = (props) => {
   const { loading, dispatch, openGroupList } = props;
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
@@ -211,4 +211,4 @@ const OpenGroupList = (props) => {
 export default connect(({ loading, openGroupList }) => ({
   openGroupList,
   loading: loading.models.openGroupList,
-}))(OpenGroupList);
+}))(MarketActivity);
