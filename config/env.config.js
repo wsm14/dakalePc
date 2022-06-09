@@ -1,5 +1,4 @@
 const target = 'https://devgateway.dakale.net';
-// const targetMoke = 'http://127.0.0.1:4523/mock';
 // const target = 'https://pregateway.dakale.net';
 // const target = 'https://gateway1.dakale.net';
 // const target = 'http://192.168.0.188:6020'

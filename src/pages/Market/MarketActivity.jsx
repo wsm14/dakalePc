@@ -7,34 +7,22 @@ import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
 import OpenGroupDetail from './components/OpenGroupList/OpenGroupDetail';
 
-const OpenGroupList = (props) => {
+const MarketActivity = (props) => {
   const { loading, dispatch, openGroupList } = props;
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
 
   const searchItems = [
     {
-      label: '商品名称',
+      label: '活动名称',
       name: 'goodsName',
     },
     {
-      label: '拼团ID',
+      label: '活动编号',
       name: 'groupId',
     },
     {
-      label: '发起人',
-      name: 'userId',
-      type: 'user',
-    },
-    {
-      label: '开团时间',
-      type: 'rangePicker',
-      name: 'startTime',
-      end: 'endTime',
-      allowClear: false,
-    },
-    {
-      label: '拼团状态',
+      label: '活动状态',
       type: 'select',
       name: 'status',
       select: OPEN_GROUP_STATUS,
@@ -43,94 +31,35 @@ const OpenGroupList = (props) => {
 
   const getColumns = [
     {
-      title: '商品名称',
+      title: '活动名称/编号',
       fixed: 'left',
       dataIndex: 'groupId',
-      width: 350,
-      render: (val, row) => {
-        const { togetherEarnGoodsObject = {} } = row;
-        const { goodsName = '', goodsImg = '' } = togetherEarnGoodsObject;
-        return (
-          <div style={{ display: 'flex' }}>
-            <PopImgShow url={goodsImg} />
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                flex: 1,
-                marginLeft: 5,
-              }}
-            >
-              <Ellipsis length={5} tooltip lines={2}>
-                {goodsName}
-              </Ellipsis>
-              <div style={{ color: '#999', marginTop: 10 }}>拼团ID:{val}</div>
-            </div>
-          </div>
-        );
-      },
+      width: 300,
+      render: (val, row) => `本地品本地品本地品本地品本地品\n32413215425234`,
     },
     {
-      title: '商品价格',
+      title: '活动时间',
       align: 'center',
       dataIndex: 'togetherEarnGoodsObject',
-      render: (val, row) => {
-        const { togetherEarnGoodsObject = {} } = row;
-        return `￥${togetherEarnGoodsObject.togetherPrice}`;
-      },
+      render: (val, row) => `2020.05.01 - 2020.05.30`,
     },
     {
-      title: '发起人',
+      title: '报名商品数',
       align: 'center',
       dataIndex: 'username',
-      render: (val, row) => {
-        const { togetherUserSnapshotObject = {} } = row;
-        return togetherUserSnapshotObject.username
-          ? `${togetherUserSnapshotObject.username}\n${togetherUserSnapshotObject.mobile}`
-          : '--';
-      },
+      render: (val, row) => `本地品 30\n电商品 20`,
     },
     {
-      title: '开团时间',
+      title: '状态',
       align: 'center',
       dataIndex: 'createTime',
+      render: (val, row) => `活动中 30\n${moment().isBefore("20220610")}`,
     },
     {
-      title: '参团人数',
+      title: '最后修改',
       align: 'center',
       dataIndex: 'joinUserNum',
-    },
-    {
-      title: '剩余时间',
-      align: 'center',
-      dataIndex: 'createTime',
-      render: (val, row) => {
-        const { status = '' } = row;
-        if (val) {
-          const endTime = moment(val).add(24, 'hours').format('YYYY-MM-DD HH:mm:ss'); // 剩余时间
-          if (moment(endTime).isBefore(moment()) || ['1', '2'].includes(status)) {
-            return '--';
-          } else {
-            const remainTime = moment(endTime).diff(moment(), 'seconds');
-            const h = parseInt(remainTime / 3600);
-            const m = parseInt((remainTime - h * 3600) / 60);
-            const s = remainTime - h * 3600 - m * 60;
-            const H = h > 9 ? h : `0${h}`;
-            const M = m > 9 ? m : `0${m}`;
-            const S = s > 9 ? s : `0${s}`;
-            return `${H}:${M}:${S}`;
-          }
-        } else {
-          return '--';
-        }
-      },
-    },
-    {
-      title: '拼团状态',
-      align: 'center',
-      dataIndex: 'status',
-      render: (val) => OPEN_GROUP_STATUS[val],
+      render: (val, row) => `2021-04-22 12:32:32\n电商品 20`,
     },
     {
       type: 'handle',
@@ -211,4 +140,4 @@ const OpenGroupList = (props) => {
 export default connect(({ loading, openGroupList }) => ({
   openGroupList,
   loading: loading.models.openGroupList,
-}))(OpenGroupList);
+}))(MarketActivity);

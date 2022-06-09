@@ -209,15 +209,25 @@ const ResourceContentForm = (props) => {
     },
     {
       type: 'noForm',
-      visible: typeList.includes('mixedList'),
+      visible: typeList.includes('mixedList') || typeList.includes('classifiedListSelfTravel'),
       formItem: (
         <div style={{ display: 'flex', paddingLeft: 55 }}>
           <div style={{ paddingTop: 5 }}>商品列表选择：</div>
           <div>
+            {/* templateType
+             品模板-热兑模板 hotBlending 品模板-秒杀模板 flashSale 为电商品
+             品模板-列表模板 listTemplate 为特惠 */}
             <ShareCoupon
               form={form}
-              showTag={['specialGoods', 'commerceGoods']}
-              dataType={'mixedList'}
+              showTag={[
+                ['hotBlending', 'flashSale'].includes(form.getFieldValue('templateType')) ||
+                typeList.includes('classifiedListSelfTravel')
+                  ? 'commerceGoods'
+                  : 'specialGoods',
+              ]}
+              dataType={
+                typeList.includes('classifiedListSelfTravel') ? 'commerceGoods' : 'mixedList'
+              }
             ></ShareCoupon>
           </div>
         </div>
@@ -255,24 +265,6 @@ const ResourceContentForm = (props) => {
           </TabPane> */}
           </Tabs>
         </>
-      ),
-    },
-    {
-      label: `商品列表类型`,
-      type: 'noForm',
-      visible: typeList.includes('classifiedListSelfTravel'),
-      formItem: (
-        <Tabs tabPosition="left">
-          <TabPane tab="电商品" key="3" forceRender={true}>
-            <div style={{ overflow: 'auto' }}>
-              <ShareCoupon
-                form={form}
-                showTag={['commerceGoods']}
-                dataType={'commerceGoods'}
-              ></ShareCoupon>
-            </div>
-          </TabPane>
-        </Tabs>
       ),
     },
     {

@@ -196,6 +196,12 @@ export default [
             component: './Market/OpenGroupList',
             buttons: ['info', 'immediateGroup'],
           },
+          {
+            path: '/market/marketActivity',
+            name: '营销活动',
+            component: './Market/MarketActivity',
+            buttons: ['info', 'enrollGoods', 'copyLink'],
+          },
         ],
       },
       {
