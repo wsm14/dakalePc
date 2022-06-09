@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'umi';
-import { Card } from 'antd';
 import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import ResourceContentDrawer from './ResourceContentDrawer';
@@ -103,7 +102,7 @@ const ResourceContent = (props) => {
     dispatch({
       type: 'walkingManage/fetchGetResourceTemplateContentById',
       payload: {
-        resourceTemplateContentId,
+        resourceTemplateContentId: '1503994335922708481',
       },
       callback: (detail) => {
         setVisible({ type: 'edit', show: true, detail });

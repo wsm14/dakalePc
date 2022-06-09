@@ -5,8 +5,8 @@ import reactCSS from 'reactcss';
 import { ChromePicker } from 'react-color';
 import FormCondition from '@/components/FormCondition';
 import ShareCoupon from './ShareCoupon/ShareCoupon';
-import BrandModuleList from './BrandModuleList/BrandModuleList';
-import PlatformCouponList from './PlatformCouponList/PlatformCouponList';
+import BrandModuleList from './BrandModuleList';
+import PlatformCouponList from './PlatformCouponList';
 import PreviewDrawer from './PreviewDrawer';
 
 const { TabPane } = Tabs;
@@ -208,64 +208,73 @@ const ResourceContentForm = (props) => {
       ),
     },
     {
-      label: `商品列表类型`,
-      name: 'mixedList',
-      type: 'formItem',
-      required: true,
+      type: 'noForm',
       visible: typeList.includes('mixedList'),
       formItem: (
-        <>
-          <ShareCoupon type="mixedList" form={form}></ShareCoupon>
-        </>
+        <div style={{ display: 'flex', paddingLeft: 55 }}>
+          <div style={{ paddingTop: 5 }}>商品列表选择：</div>
+          <div>
+            <ShareCoupon
+              form={form}
+              showTag={['specialGoods', 'commerceGoods']}
+              dataType={'mixedList'}
+            ></ShareCoupon>
+          </div>
+        </div>
       ),
     },
     {
-      label: `商品列表类型`,
-      name: 'activityGoodsTypeList',
-      type: 'formItem',
-      required: true,
+      type: 'noForm',
       visible: typeList.includes('classifiedList'),
       formItem: (
         <>
-          <Tabs tabPosition="left">
+          <div style={{ marginBottom: 15, paddingLeft: 24 }}>商品列表选择</div>
+          <Tabs tabPosition="left" style={{ paddingLeft: 24 }}>
             <TabPane tab="特惠商品" key="1" forceRender={true}>
               <div style={{ overflow: 'auto' }}>
-                <ShareCoupon type="specialGoods" form={form}></ShareCoupon>
+                <ShareCoupon
+                  form={form}
+                  type="specialGoods"
+                  showTag={['specialGoods']}
+                ></ShareCoupon>
               </div>
             </TabPane>
             <TabPane tab="电商品" key="2" forceRender={true}>
               <div style={{ overflow: 'auto' }}>
-                <ShareCoupon type="commerceGoods" form={form}></ShareCoupon>
+                <ShareCoupon
+                  form={form}
+                  type="commerceGoods"
+                  showTag={['commerceGoods']}
+                ></ShareCoupon>
               </div>
             </TabPane>
-            <TabPane tab="自我游" key="3" forceRender={true}>
-              <div style={{ overflow: 'auto' }}>
-                <ShareCoupon type="selfTourGoods" form={form}></ShareCoupon>
-              </div>
-            </TabPane>
+            {/* <TabPane tab="自我游" key="3" forceRender={true}>
+            <div style={{ overflow: 'auto' }}>
+              <ShareCoupon type="selfTourGoods" form={form}></ShareCoupon>
+            </div>
+          </TabPane> */}
           </Tabs>
         </>
       ),
     },
     {
       label: `商品列表类型`,
-      name: 'activityGoodsTypeSelfTravelList',
-      type: 'formItem',
-      required: true,
+      type: 'noForm',
       visible: typeList.includes('classifiedListSelfTravel'),
       formItem: (
-        <>
-          <Tabs tabPosition="left">
-            <TabPane tab="自我游" key="3" forceRender={true}>
-              <div style={{ overflow: 'auto' }}>
-                <ShareCoupon type="selfTourGoods" form={form}></ShareCoupon>
-              </div>
-            </TabPane>
-          </Tabs>
-        </>
+        <Tabs tabPosition="left">
+          <TabPane tab="电商品" key="3" forceRender={true}>
+            <div style={{ overflow: 'auto' }}>
+              <ShareCoupon
+                form={form}
+                showTag={['commerceGoods']}
+                dataType={'commerceGoods'}
+              ></ShareCoupon>
+            </div>
+          </TabPane>
+        </Tabs>
       ),
     },
-
     {
       label: `品牌列表`,
       type: 'formItem',
@@ -273,9 +282,9 @@ const ResourceContentForm = (props) => {
       required: true,
       formItem: (
         <BrandModuleList
-          initialValues={initialValues}
-          type="brandSelfTravel"
           form={form}
+          type="brandSelfTravel"
+          initialValues={initialValues}
         ></BrandModuleList>
       ),
     },

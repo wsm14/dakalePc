@@ -1,12 +1,27 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { connect } from 'umi';
+import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 
+// 电商品
 const CommerceGoods = (props) => {
-  const { id, specialGoodsList, selectType, handleSelectItem, loading } = props;
+  const {
+    visible,
+    searchValue,
+    onlineGoods,
+    selectType,
+    selectItem,
+    handleSelectItem,
+    loading,
+  } = props;
 
-  const childRef = useRef();
+  const tableRef = useRef(null);
+
+  useEffect(() => {
+    const { id, ...other } = searchValue;
+    visible && tableRef.current.fetchGetData(other);
+  }, [visible, searchValue]);
 
   const getColumns = [
     {
@@ -17,25 +32,27 @@ const CommerceGoods = (props) => {
       render: (val) => <PopImgShow width={60} url={val} />,
     },
     {
-      title: '商品名称',
+      title: '商品名称/ID',
       dataIndex: 'goodsName',
+      render: (val, row) => (
+        <>
+          <Ellipsis length={20} tooltip>
+            {val}
+          </Ellipsis>
+          <div>{row?.goodsId}</div>
+        </>
+      ),
     },
     {
       title: '价格',
       align: 'right',
-      dataIndex: 'realPrice',
-      render: (val, row) => {
-        const { paymentModeObject = {} } = row;
-        return paymentModeObject.type === 'self'
-          ? `¥${paymentModeObject.cash}+${paymentModeObject.bean}卡豆`
-          : `¥${realPrice}元`;
-      },
+      dataIndex: 'sellPriceRange',
     },
     {
       title: '库存',
       align: 'right',
       dataIndex: 'remain',
-      render: (val) => `剩余${val}张`,
+      render: (val) => `剩 ${val || 0}`,
     },
   ];
 
@@ -43,19 +60,18 @@ const CommerceGoods = (props) => {
     <TableDataBlock
       tableSize="small"
       noCard={false}
-      // firstFetch={false}
-      cRef={childRef}
+      firstFetch={false}
+      cRef={tableRef}
       loading={loading}
       columns={getColumns}
       params={{
-        relateId: '1425385024611303425',
-        merchantId: -1,
-        activityType: 'commerceGoods',
-        goodsStatus: 1,
+        status: 1,
+        sellType: 'single',
       }}
       scroll={{ y: 400 }}
       rowSelection={{
         type: selectType,
+        selectedRowKeys: selectItem.keys,
         preserveSelectedRowKeys: true,
         getCheckboxProps: (record) => ({
           disabled: record.name === '',
@@ -65,14 +81,14 @@ const CommerceGoods = (props) => {
           handleSelectItem(selectedRowKeys, selectedRows);
         },
       }}
-      rowKey={(row) => `${row.activityGoodsId}`}
-      dispatchType="baseData/fetchGetSpecialGoodsSelect"
-      {...specialGoodsList}
+      rowKey={(row) => `${row.goodsId}`}
+      dispatchType="publicModels/fetchListOnlineGoodsByPage"
+      {...onlineGoods}
     ></TableDataBlock>
   );
 };
 
-export default connect(({ baseData, loading }) => ({
-  specialGoodsList: baseData.specialGoods,
-  loading: loading.effects['baseData/fetchGetSpecialGoodsSelect'],
+export default connect(({ publicModels, loading }) => ({
+  onlineGoods: publicModels.onlineGoods,
+  loading: loading.effects['publicModels/fetchListOnlineGoodsByPage'],
 }))(CommerceGoods);

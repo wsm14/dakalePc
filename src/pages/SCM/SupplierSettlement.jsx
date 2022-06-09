@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
-import GoodsSelectModal from '@/components/GoodsSelectModal';
 import SettlementDrawer from './components/SupplierSettlement/SettlementDrawer';
 
 const SupplierSettlement = (props) => {
@@ -112,7 +111,6 @@ const SupplierSettlement = (props) => {
         getDetail={fetchGetSettlementDetail}
         onClose={() => setVisible(false)}
       ></SettlementDrawer>
-      <GoodsSelectModal></GoodsSelectModal>
     </>
   );
 };

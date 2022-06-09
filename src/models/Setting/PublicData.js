@@ -1,12 +1,11 @@
 import { notification } from 'antd';
-import oss from 'ali-oss';
 import lodash from 'lodash';
-import { uuid } from '@/utils/utils';
 import { fetchBackCategoryList } from '@/services/BaseServices';
-import { fetchGetSupplierManageList } from '@/services/SCMServices';
+import { fetchPlatformCouponSelect } from '@/services/ActiveServices';
+import { fetchGetSupplierManageList, fetchSupplierBrandList } from '@/services/SCMServices';
 import { fetchMerchantList, fetchMerchantGroup } from '@/services/BusinessServices';
+import { fetchGoodsTagList } from '@/services/OperationServices';
 import {
-  fetchGetOss,
   fetchGetMreTag,
   fetchImportExcel,
   fetchGetTasteTag,
@@ -38,7 +37,6 @@ import {
   fetchListUserByIds,
   fetchGetPlatformEquitySelect,
   fetchGetEquityCouponSelect,
-  fetchPlatformCouponSelect,
   fetchListHitting,
   fetchPagePreferentialActivity,
   fetchListConfigGoodsTag,
@@ -83,6 +81,8 @@ export default {
     resourceList: [],
     sipploerList: [],
     classifyParentList: [],
+    brandList: [],
+    tagsPlatform: [],
   },
 
   reducers: {
@@ -120,36 +120,6 @@ export default {
   },
 
   effects: {
-    /**
-     * @param {Object} payload
-     * file 文件
-     * folderName 文件夹名称 materials 营销物料
-     * fileType 文件类型 zip image html ...
-     * extension 文件后缀名称
-     * @param {Function} callback 回调函数 发挥文件url
-     * @returns url
-     */
-    *fetchGetOssUploadFile({ payload, callback }, { call }) {
-      const response = yield call(fetchGetOss, {
-        uploadType: 'resource',
-        fileType: payload.fileType,
-      });
-      if (!response) return;
-      const { folder, host, securityToken: stsToken } = response.content;
-      const client = new oss({ region: 'oss-cn-hangzhou', stsToken, ...response.content });
-      let _fileRath = `${folder}/${payload.folderName}/${uuid()}${payload.extension}`;
-      client.put(_fileRath, payload.file).then((res) => {
-        const { status, statusCode } = res.res;
-        if (status === 200 && statusCode === 200) {
-          callback(host + _fileRath);
-        } else {
-          notification.info({
-            message: '温馨提示',
-            description: '上传失败',
-          });
-        }
-      });
-    },
     *fetchGetSubsidyRoleBean({ payload }, { call, put }) {
       const response = yield call(fetchGetSubsidyRoleBean, payload);
       if (!response) return;
@@ -818,6 +788,45 @@ export default {
           classifyParentList: content.childList,
         },
       });
+    },
+    // get 供应商管理 - 品牌 - 列表
+    *fetchSupplierBrandList({ payload }, { call, put }) {
+      const response = yield call(fetchSupplierBrandList, {
+        ...payload,
+        status: 1,
+        limit: 100,
+        page: 1,
+      });
+      if (!response) return;
+      const { content } = response;
+      const newList = content.supplierBrandDetailList.map((item) => ({
+        name: item.brandName,
+        value: item.supplierBrandId,
+        option: item,
+      }));
+      yield put({
+        type: 'save',
+        payload: {
+          brandList: newList,
+        },
+      });
+    },
+    //获取平台商品标签
+    *fetchGoodsTagList({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGoodsTagList, {
+        ...payload,
+        status: '1',
+        tagType: 'platform',
+      });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          tagsPlatform: content.configGoodsTagDTOS,
+        },
+      });
+      // callback && callback(content.configGoodsTagDTOS);
     },
   },
 };

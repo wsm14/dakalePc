@@ -3,8 +3,6 @@ import { GridContent } from '@ant-design/pro-layout';
 import { Menu } from 'antd';
 import HotCityPage from './components/Walking/HotCityPage';
 import VaneManage from './components/Walking/Vane';
-import NavigationManage from './components/Walking/Navigation';
-import GratiaClassManage from './components/Walking/GratiaClass';
 import GatherPage from './components/Walking/GatherPage';
 import StrollAround from './components/Walking/StrollAround';
 import SelfTour from './components/Walking/SelfTour';

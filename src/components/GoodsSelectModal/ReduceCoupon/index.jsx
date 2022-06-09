@@ -1,12 +1,31 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 
+// 有价券
 const ReduceCoupon = (props) => {
-  const { id, couponList, selectType, handleSelectItem, loading } = props;
+  const {
+    visible,
+    searchValue,
+    selectItem,
+    buyCouponList,
+    selectType,
+    handleSelectItem,
+    loading,
+  } = props;
 
-  const childRef = useRef();
+  const tableRef = useRef(null);
+
+  useEffect(() => {
+    const { id } = searchValue;
+    visible &&
+      id &&
+      tableRef.current.fetchGetData({
+        merchantId: id,
+        couponName: searchValue.goodsName,
+      });
+  }, [visible, searchValue]);
 
   const getColumns = [
     {
@@ -21,6 +40,7 @@ const ReduceCoupon = (props) => {
     {
       title: '券名称',
       dataIndex: 'couponName',
+      ellipsis: true,
     },
     {
       title: '有效期',
@@ -50,7 +70,7 @@ const ReduceCoupon = (props) => {
       title: '库存',
       align: 'right',
       dataIndex: 'remain',
-      render: (val) => `剩余${val}张`,
+      render: (val) => `剩 ${val}`,
     },
   ];
 
@@ -58,18 +78,19 @@ const ReduceCoupon = (props) => {
     <TableDataBlock
       tableSize="small"
       noCard={false}
-      // firstFetch={false}
-      cRef={childRef}
+      firstFetch={false}
+      cRef={tableRef}
       loading={loading}
       columns={getColumns}
+      scroll={{ y: 400 }}
       params={{
-        merchantId: '1425385024611303425',
         goodsStatus: 1,
         couponType: 'reduce',
         buyFlag: 1, // 有价券
       }}
       rowSelection={{
         type: selectType,
+        selectedRowKeys: selectItem.keys,
         preserveSelectedRowKeys: true,
         getCheckboxProps: (record) => ({
           disabled: record.name === '',
@@ -79,14 +100,14 @@ const ReduceCoupon = (props) => {
           handleSelectItem(selectedRowKeys, selectedRows);
         },
       }}
-      rowKey={(row) => `${row.ownerCouponIdString}`}
-      dispatchType="baseData/fetchGetBuyCouponSelect"
-      {...couponList}
+      rowKey={(row) => `${row.goodsId}`}
+      dispatchType="publicModels/fetchGetBuyCouponList"
+      {...buyCouponList}
     ></TableDataBlock>
   );
 };
 
-export default connect(({ baseData, loading }) => ({
-  couponList: baseData.buyCoupon,
-  loading: loading.effects['baseData/fetchGetBuyCouponSelect'],
+export default connect(({ publicModels, loading }) => ({
+  buyCouponList: publicModels.buyCouponList,
+  loading: loading.effects['publicModels/fetchGetBuyCouponList'],
 }))(ReduceCoupon);

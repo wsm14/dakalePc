@@ -4,10 +4,8 @@ import { Form, Card, Button } from 'antd';
 import { UpSquareOutlined, DownSquareOutlined } from '@ant-design/icons';
 import aliOssUpload from '@/utils/aliOssUpload';
 import Upload from '@/components/FormCondition/Upload/Img';
-import FormCondition from '@/components/FormCondition';
-
-import BuyContactModal from './BuyContactModal';
-import { platformCouponsDom } from '../ShareCoupon/CouponFreeDom';
+import GoodsSelectModal from '@/components/GoodsSelectModal';
+import { platformCouponsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
 
 const FormList = (props) => {
   const { name, form, field, remove, move, initialValues } = props;
@@ -42,7 +40,8 @@ const FormList = (props) => {
   };
 
   const onOk = (obj) => {
-    setDataObj(obj);
+    const { list = [] } = obj;
+    setDataObj(list[0] || {});
     // 获取数据数组
     const dataList = form.getFieldValue(name);
     // 更新数据数组
@@ -53,7 +52,7 @@ const FormList = (props) => {
           1,
           {
             ...dataList[field.name],
-            platformCouponId: obj,
+            platformCouponId: list[0] || '',
           },
         ],
       ],
@@ -69,6 +68,7 @@ const FormList = (props) => {
         title={`券${field.name + 1}`}
         size="small"
         style={{ marginBottom: '10px' }}
+        bodyStyle={{ padding: '24px 12px 0' }}
         extra={
           <>
             <UpSquareOutlined
@@ -96,7 +96,7 @@ const FormList = (props) => {
           ) : (
             platformCouponsDom(
               dataObj,
-              dataObj.platformCouponId,
+              '',
               () => {},
               () => {
                 onOk({});
@@ -119,13 +119,13 @@ const FormList = (props) => {
           ></Upload>
         </Form.Item>
       </Card>
-      <BuyContactModal
-        typeGoods="subRewardList"
-        form={form}
+      <GoodsSelectModal
+        selectType="radio"
+        showTag={['platformCoupon']}
         visible={visible}
-        onOk={onOk}
+        onSumbit={onOk}
         onClose={() => setVisible(false)}
-      ></BuyContactModal>
+      ></GoodsSelectModal>
     </div>
   );
 };

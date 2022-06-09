@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const ShowTag = (props) => {
-  const { goodsTag, loading, dispatch, childRef, setVisible, tabkey } = props;
+  const { goodsTag, loading, dispatch, childRef, setVisible, setVisibleGoods, tabkey } = props;
 
   // 搜索参数
   const searchItems = [

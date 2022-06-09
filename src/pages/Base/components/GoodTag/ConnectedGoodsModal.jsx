@@ -6,16 +6,16 @@ import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
-import GoodsSelectModal from './GoodsSelectModal';
+import GoodsSelectModal from '@/components/GoodsSelectModal';
 
 const tabList = [
   {
-    key: 'commerceGoods',
-    tab: '电商品',
-  },
-  {
     key: 'specialGoods',
     tab: '特惠商品',
+  },
+  {
+    key: 'commerceGoods',
+    tab: '电商品',
   },
 ];
 
@@ -24,7 +24,7 @@ const ConnectedGoodsModal = (props) => {
   const { show = false, id, name } = visible;
 
   const childRef = useRef();
-  const [tabKey, setTabKey] = useState('commerceGoods');
+  const [tabKey, setTabKey] = useState('specialGoods');
   const [visibleDrawer, setVisibleDrawer] = useState(false);
 
   useEffect(() => {
@@ -69,9 +69,9 @@ const ConnectedGoodsModal = (props) => {
       dataIndex: 'ownerName',
       render: (val, row) => (
         <div>
-          <div style={{ marginTop: 5 }}>{row.categoryName}</div>
+          <div style={{ marginTop: 5 }}>{row.categoryName || '--'}</div>
           <Ellipsis length={8} tooltip>
-            {val}
+            {val || '--'}
           </Ellipsis>
         </div>
       ),
@@ -158,13 +158,14 @@ const ConnectedGoodsModal = (props) => {
       </Modal>
       <GoodsSelectModal
         visible={visibleDrawer}
-        onSumbit={(data) => {
+        showTag={['specialGoods', 'commerceGoods']}
+        onSumbit={({ list }) => {
           fetchConfigGoodsSet(
             'add',
-            data.map((i) => ({
-              goodsId: i.activityGoodsId,
+            list.map((i) => ({
+              goodsId: i.goodsId,
               goodsType: i.activityType,
-              ownerId: i.ownerIdString,
+              ownerId: i.ownerId,
             })),
             () => setVisibleDrawer(false),
           );

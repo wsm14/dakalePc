@@ -63,30 +63,30 @@ const CouponDrawer = (props) => {
           giftTypes: giftTypes.toString(),
           image: imageUrl.toString(),
           mixedList: mixedList?.map((item) => ({
-            activityGoodsId: item.activityGoodsId,
-            ownerId: item.ownerIdString,
+            activityGoodsId: item.goodsId,
+            ownerId: item.ownerId,
           })),
           couponList: couponList?.map((item) => ({
             ...item,
             platformCouponId: item.platformCouponId.platformCouponId,
           })),
           specialGoods: specialGoods?.map((item) => ({
-            activityGoodsId: item.activityGoodsId,
-            ownerId: item.ownerIdString,
+            activityGoodsId: item.goodsId,
+            ownerId: item.ownerId,
           })),
           commerceGoods: commerceGoods?.map((item) => ({
-            activityGoodsId: item.activityGoodsId,
-            ownerId: item.ownerIdString,
+            activityGoodsId: item.goodsId,
+            ownerId: item.ownerId,
           })),
           selfTourGoods: selfTourGoods?.map((item) => ({
-            activityGoodsId: item.activityGoodsId,
-            ownerId: item.ownerIdString,
+            activityGoodsId: item.goodsId,
+            ownerId: item.ownerId,
           })),
           brandSelfTravel: brandSelfTravel?.map((item) => ({
             ...item,
             activityGoodsList: item.activityGoodsList?.map((i) => ({
-              activityGoodsId: i.activityGoodsId,
-              ownerId: i.ownerIdString,
+              activityGoodsId: i.goodsId,
+              ownerId: i.ownerId,
             })),
           })),
         },

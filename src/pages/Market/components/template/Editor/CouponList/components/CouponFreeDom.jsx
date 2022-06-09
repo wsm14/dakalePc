@@ -21,7 +21,6 @@ export const goodsDom = (item = {}, idArr = [], handleSelect, type) => {
           className={`share_Coupon share_item ${
             idArr.findIndex((ci) => ci.ownerCouponIdString === ownerCouponIdString) > -1 && 'select'
           }`}
-          style={{ marginBottom: 6 }}
           onClick={() => handleSelect && handleSelect(item)}
         >
           <div className="share_left" style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
