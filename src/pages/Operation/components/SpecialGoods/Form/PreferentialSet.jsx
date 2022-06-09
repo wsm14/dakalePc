@@ -159,7 +159,7 @@ const PreferentialSet = ({
       type: 'baseData/fetchGetGroupMreList',
       payload: {
         name,
-        type: type || (mreList.storeStatus === 'top' ? mreList.type : mreList.settlerType),
+        type: type || mreList.type,
         groupFlag: 0, // 不允许选择子门店
         groupId: id,
       },
@@ -204,7 +204,15 @@ const PreferentialSet = ({
       payload: {
         tagType: 'platform',
       },
-      callback: (list) => setGoodsTaglist(list),
+      callback: (list) => {
+        const tagList = list.map((item) => {
+          if (item.status === '1') {
+            return item;
+          }
+        });
+        console.log(tagList, 'taglist');
+        setGoodsTaglist([...tagList]);
+      },
     });
   };
 
@@ -731,30 +739,35 @@ const PreferentialSet = ({
       name: ['divisionParamInfoReq', 'provinceBean'],
       visible: commissionShow == '1' && mreList.manualDivisionsList.includes('province'),
       addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+      addonAfter: '卡豆',
     },
     {
       label: '市级分佣',
       name: ['divisionParamInfoReq', 'cityBean'],
       visible: commissionShow == '1' && mreList.manualDivisionsList.includes('city'),
       addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+      addonAfter: '卡豆',
     },
     {
       label: '区县分佣',
       name: ['divisionParamInfoReq', 'districtBean'],
       visible: commissionShow == '1' && mreList.manualDivisionsList.includes('district'),
       addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+      addonAfter: '卡豆',
     },
     {
       label: '用户家主分佣',
       name: ['divisionParamInfoReq', 'userParentBean'],
       visible: commissionShow == '1' && mreList.manualDivisionsList.includes('userParent'),
       addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+      addonAfter: '卡豆',
     },
     {
       label: '哒人分佣',
       name: ['divisionParamInfoReq', 'darenBean'],
       visible: commissionShow == '1' && mreList.manualDivisionsList.includes('daren'),
       addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+      addonAfter: '卡豆',
     },
     {
       title: `展示信息`,

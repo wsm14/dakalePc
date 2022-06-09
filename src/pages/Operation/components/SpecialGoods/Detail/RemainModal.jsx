@@ -13,9 +13,11 @@ const RemainModal = (props) => {
       dispatch({
         type: 'specialGoods/fetchSpecialGoodsAddRemain',
         payload: {
-          stockId: id,
-          ownerId,
-          ...values,
+          stockUpdateReqs: {
+            stockId: id,
+            ownerId,
+            ...values,
+          },
         },
         callback: () => {
           onClose();
