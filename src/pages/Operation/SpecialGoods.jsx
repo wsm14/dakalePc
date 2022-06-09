@@ -327,7 +327,7 @@ const SpecialGoods = (props) => {
           },
           {
             type: 'edit',
-            // visible: ['1'].includes(status), // 活动中 && 未删除
+            visible: ['1'].includes(status), // 活动中 && 未删除
             click: () => fetchSpecialGoodsDetail(record, 'edit'),
           },
           {

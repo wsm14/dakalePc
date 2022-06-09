@@ -66,6 +66,7 @@ export default {
     ruleBean: 0,
     experLevel: {},
     groupMreList: [],
+    groupCopyMreList: [],
     skuMerchantList: { list: [], total: 0 },
     CouponListSearch: [],
     goodsList: [],
@@ -82,7 +83,6 @@ export default {
     classifyParentList: [],
     brandList: [],
     tagsPlatform: [],
-    tagsShow: [],
   },
 
   reducers: {
@@ -102,6 +102,7 @@ export default {
       return {
         ...state,
         groupMreList: [],
+        groupCopyMreList: [],
       };
     },
     clearPlatformEquity(state) {
@@ -520,6 +521,39 @@ export default {
       });
       callback && callback(listData);
     },
+    //请求店铺列表复制
+    *fetchGetGroupCopyMreList({ payload, callback }, { put, call }) {
+      const { type = 'merchant', name, ...other } = payload;
+      const newPayload = {
+        merchant: { merchantName: name }, // 单店
+        group: { groupName: name }, // 集团
+      }[type];
+      const response = yield call(
+        { merchant: fetchMerchantList, group: fetchMerchantGroup }[type],
+        { limit: 50, page: 1, bankStatus: 3, ...newPayload, ...other },
+      );
+      if (!response) return;
+      const { content } = response;
+      const { recordList = [] } = content;
+      const listData = recordList.map((item) => ({
+        name: `${item.merchantName || item.groupName} ${item.account || ''}`,
+        otherData: item.address,
+        value: item.userMerchantIdString || item.merchantGroupIdString,
+        commissionRatio: item.commissionRatio,
+        topCategoryName: [item.topCategoryName, item.categoryName],
+        topCategoryId: [item.topCategoryIdString, item.categoryIdString],
+        districtCode: item.districtCode,
+        businessStatus: item.businessStatus || '1',
+        status: item.status || '1',
+      }));
+      yield put({
+        type: 'save',
+        payload: {
+          groupCopyMreList: listData,
+        },
+      });
+      callback && callback(listData);
+    },
     // sku通用- sku挂靠商家列表
     *fetchSkuAvailableMerchant({ payload }, { call, put }) {
       const response = yield call(fetchSkuAvailableMerchant, payload);
@@ -777,30 +811,22 @@ export default {
         },
       });
     },
+    //获取平台商品标签
     *fetchGoodsTagList({ payload, callback }, { call, put }) {
-      //获取平台商品标签
-      const response1 = yield call(fetchGoodsTagList, {
+      const response = yield call(fetchGoodsTagList, {
         ...payload,
         status: '1',
         tagType: 'platform',
       });
-      //获取展示标签
-      const response2 = yield call(fetchGoodsTagList, {
-        ...payload,
-        status: '1',
-        tagType: 'show',
-      });
-      if (!response1 && !response2) return;
-      const { content: content1 } = response1;
-      const { content: content2 } = response2;
+      if (!response) return;
+      const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          tagsPlatform: content1.configGoodsTagDTOS,
-          tagsShow: content2.configGoodsTagDTOS,
+          tagsPlatform: content.configGoodsTagDTOS,
         },
       });
-      // callback && callback(content1.configGoodsTagDTOS);
+      // callback && callback(content.configGoodsTagDTOS);
     },
   },
 };

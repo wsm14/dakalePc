@@ -6,7 +6,6 @@ import DrawerCondition from '@/components/DrawerCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 import { getCityName } from '@/utils/utils';
 import PreferentialSet from './Form/PreferentialSet';
-import PreferentialRuleSet from './Form/PreferentialRuleSet';
 
 const PreferentialDrawer = (props) => {
   const { visible, dispatch, childRef, loading, onClose } = props;
@@ -23,7 +22,7 @@ const PreferentialDrawer = (props) => {
     form.validateFields().then(async (values) => {
       const {
         categoryNode,
-        goodsDescImg,
+        goodsBriefImg,
         customSize = [], // 规格设置的数组
         oriPrice,
         costPrice,
@@ -34,16 +33,11 @@ const PreferentialDrawer = (props) => {
         minPurchaseNum,
         batchLadderObjects,
         platformTagIds,
-        displayFilterTags,
         shippingRuleObject = {},
         skuInfoReqs,
         ...other
       } = values;
-      const gImg = await aliOssUpload(goodsDescImg);
-
-      // console.log('values', { ...values, customSize, content });
-
-      // return;
+      const gImg = await aliOssUpload(goodsBriefImg);
 
       const singleSku = [
         {
@@ -57,27 +51,7 @@ const PreferentialDrawer = (props) => {
           batchLadderObjects,
         },
       ];
-      const payload = {
-        ...other,
-        ownerId: -1,
-        ownerType: 'admin',
-        relateType: 'supplier',
-        categoryId: categoryNode[categoryNode.length - 1],
-        categoryNode: categoryNode.join('.'),
-        goodsDescImg: gImg.toString(),
-        platformTagIds: platformTagIds.toString(),
-        displayFilterTags: displayFilterTags.toString(),
-        shippingRuleObject: {
-          ...shippingRuleObject,
-          shippingAddress: getCityName(shippingRuleObject.shippingAddress[1]),
-        },
-        descType: 'richText',
-        richText: content, // 富文本内容
-        skuInfoReqs: customSize.length > 0 ? skuInfoReqs : singleSku,
-      };
 
-      // console.log('payload: ', customSize, payload);
-      // return;
       dispatch({
         type: {
           add: 'electricGoods/fetchSaveOnlineGoods',
@@ -85,23 +59,30 @@ const PreferentialDrawer = (props) => {
           again: 'electricGoods/fetchSaveOnlineGoods',
           againUp: 'electricGoods/fetchUpdateOnlineGoods',
         }[type],
-        type: 'electricGoods/fetchSaveOnlineGoods',
         payload: {
+          goodsId: detail.goodsId,
           ...other,
           ownerId: -1,
           ownerType: 'admin',
           relateType: 'supplier',
           categoryId: categoryNode[categoryNode.length - 1],
           categoryNode: categoryNode.join('.'),
-          goodsDescImg: gImg.toString(),
+          goodsBriefImg: gImg.toString(),
           platformTagIds: platformTagIds.toString(),
-          displayFilterTags: displayFilterTags.toString(),
           shippingRuleObject: {
             ...shippingRuleObject,
-            shippingAddress: getCityName(shippingRuleObject.shippingAddress[1]),
+            shippingAddress:
+              typeof shippingRuleObject.shippingAddress == 'string'
+                ? shippingRuleObject.shippingAddress
+                : shippingRuleObject.shippingAddress[shippingRuleObject.shippingAddress.length - 1],
           },
+          descType: 'richText',
           richText: content, // 富文本内容
           skuInfoReqs: customSize.length > 0 ? skuInfoReqs : singleSku,
+        },
+        callback: () => {
+          childRef.current.fetchGetData();
+          onClose();
         },
       });
     });
@@ -122,11 +103,18 @@ const PreferentialDrawer = (props) => {
             returnRuleObject: {
               returnFlag: 1,
             },
-            settleObject: {
-              settlerType: 'settle',
+            settleInfoReq: {
+              settlerType: 'pingtai',
+              settlerId: -1,
             },
             shippingRuleObject: {
               shippingTime: '24小时内发货',
+            },
+            buyLimitRuleObject: {
+              type: 'unlimited',
+            },
+            postageRuleObject: {
+              type: 'free',
             },
           }}
         ></PreferentialSet>
@@ -176,5 +164,7 @@ const PreferentialDrawer = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['specialGoods/fetchSpecialGoodsSave'],
+  loading:
+    loading.effects['electricGoods/fetchSaveOnlineGoods'] ||
+    loading.effects['electricGoods/fetchUpdateOnlineGoods'],
 }))(PreferentialDrawer);

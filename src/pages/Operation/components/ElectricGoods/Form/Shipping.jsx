@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Radio, InputNumber } from 'antd';
 
+// 发货规则
 const Shipping = ({ value = '', onChange }) => {
   const [a, setRadio] = useState('24小时内发货');
   const [b, setNum] = useState('');

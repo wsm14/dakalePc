@@ -4,9 +4,6 @@ import { connect } from 'umi';
 import { Button, InputNumber } from 'antd';
 import CITYJSON from '@/common/city';
 import {
-  GOODS_CLASS_TYPE,
-  SPECIAL_DESC_TYPE,
-  BUSINESS_TYPE,
   COMMISSION_TYPE,
   ELECTRICGOODS_SELL_STATUS,
   ELECTRICGOODS_SKU,
@@ -15,8 +12,8 @@ import {
   FRONT_SHOW_TYPE_FREE,
   FREIGHT_TYPE,
   SETTLE_TYPE,
+  ASTRICT_BUY,
 } from '@/common/constant';
-import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import EditorForm from '@/components/EditorForm';
 import FormCondition from '@/components/FormCondition';
 import Shipping from './Shipping';
@@ -29,43 +26,65 @@ import styles from './style.less';
 const PreferentialSet = ({
   form,
   editActive,
-  loading,
   loadings,
-  selectList,
   dispatch,
   commissionShow,
   setCommissionShow,
   initialValues = {},
-  skuMerchantList,
   setContent,
   classifyParentList, // 电商品后台类目列表
   brandList, // 供应商品牌列表
   tagsPlatform, // 获取平台商品标签
-  tagsShow, // 获取展示标签
 }) => {
   // 是否 editActive = 'againUp' || 'again' || 'edit'三种都隐藏的数据
   const commonDisabled = ['againUp', 'again', 'edit'].includes(editActive);
   //活动中隐藏的编辑项//edit 独有不展示
   const editDisabled = ['edit'].includes(editActive);
+  const againUpDisabled = ['edit', 'againUp'].includes(editActive);
 
+  const [first, setFirst] = useState(false); // 第一次不重置数据 否则会有数据回显问题
   const [manualList, setManualList] = useState([]); // 分佣模版字段
   const [supplierSelect, setSupplierSelect] = useState([]); // 供应商列表
-  const [settlerSelect, setSettlerSelect] = useState([]); // 结算供应商列表
+  // const [settlerSelect, setSettlerSelect] = useState([]); // 结算供应商列表
+  // const [settleType, setSettleType] = useState('pingtai'); // 结算人类型
   const [sellType, setSellType] = useState('single'); // 售卖类型
   const [priceType, setPriceType] = useState('defaultMode'); // 售卖价格类型
   const [freightType, setFreightType] = useState('free'); // 运费类型
-  const [settleType, setSettleType] = useState('settle'); // 结算人类型
-  const [visibleRefund, setVisibleRefund] = useState(false); // 退货地址modal
-  const [refundList, setRefundList] = useState([]); // 退货地址数据暂存
+  // const [visibleRefund, setVisibleRefund] = useState(false); // 退货地址modal
+  // const [refundList, setRefundList] = useState([]); // 退货地址数据暂存
   const [specificationTypeData, setSpecificationTypeData] = useState([]); // 规格类型数据暂存
   const [tieredModal, setTieredModal] = useState(false); // 设置阶梯价model
   const [batchOnOff, setBatchOnOff] = useState(false); // 批采价设置状态
+  const [AstrictType, setAstrictType] = useState('unlimited'); // 限购状态
 
   // 是否是多规格
   const specificationDisabled = specificationTypeData.length > 0;
 
+  const {
+    customSize = [],
+    relateId,
+    sellType: sellTypes,
+    paymentModeType,
+    postageRuleObject,
+    buyLimitRuleObject,
+  } = initialValues;
+
   useEffect(() => {
     getTags();
+    if (editActive != 'add') {
+      setSpecificationTypeData(customSize); // 回显规格类型
+      fetchGetSearchSupplier({ supplierId: relateId }); // 回显供应商
+      fetchBrandIdList(relateId); // 回显品牌
+      setSellType(sellTypes); // 回显售卖类型
+      setPriceType(paymentModeType); // 回显售卖价格类型
+      setFreightType(postageRuleObject.type); // 回显运费类型
+      setAstrictType(buyLimitRuleObject.type); // 回显限购状态
+      setBatchOnOff(true);
+    }
+    // 延迟赋值: skuInfoReqs 详细规格组件使用
+    setTimeout(() => {
+      setFirst(true);
+    }, 200);
   }, []);
 
   // 处理规格组数据
@@ -75,7 +94,9 @@ const PreferentialSet = ({
         [item.name]: i,
       })),
     );
-    form.setFieldsValue({ skuInfoReqs: doExchange(newArr), customSize: specificationTypeData });
+    if (first) {
+      form.setFieldsValue({ skuInfoReqs: doExchange(newArr), customSize: specificationTypeData });
+    }
   }, [specificationTypeData]);
 
   // 处理规格组数据
@@ -117,17 +138,17 @@ const PreferentialSet = ({
 
   // 搜索供应商
   const fetchGetSearchSupplier = debounce((content, type) => {
-    if (!content.replace(/'/g, '')) return;
+    // if (!content.replace(/'/g, '')) return;
     dispatch({
       type: 'baseData/fetchSearchSupplierManage',
       payload: {
-        name: content.replace(/'/g, ''),
+        ...content,
       },
       callback: (val) => {
-        if (type === 'all') {
-          setSupplierSelect(val);
-        }
-        setSettlerSelect(val);
+        // if (type === 'all') {
+        setSupplierSelect(val);
+        // }
+        // setSettlerSelect(val);
       },
     });
   }, 500);
@@ -135,11 +156,11 @@ const PreferentialSet = ({
   // 搜索品牌列表
   const fetchBrandIdList = (supplierId = '') => {
     if (typeof supplierId != 'string') return;
-    form.setFieldsValue({
-      settleObject: {
-        settlerId: supplierId,
-      },
-    });
+    // form.setFieldsValue({
+    //   settleInfoReq: {
+    //     settlerId: supplierId,
+    //   },
+    // });
     dispatch({
       type: 'baseData/fetchSupplierBrandList',
       payload: { supplierId },
@@ -161,15 +182,9 @@ const PreferentialSet = ({
     });
   };
 
-  //获取平台商品标签  && 获取展示标签
+  //获取平台商品标签
   const getTags = () => {
-    dispatch({
-      type: 'baseData/fetchGoodsTagList',
-      // payload: {
-      //   categoryId: categoryId,
-      // },
-      // callback: (list) => setGoodsTaglist(list),
-    });
+    dispatch({ type: 'baseData/fetchGoodsTagList' });
   };
 
   // 信息
@@ -181,9 +196,10 @@ const PreferentialSet = ({
       type: 'select',
       select: supplierSelect,
       loading: loadings.models.baseData,
-      onSearch: (val) => fetchGetSearchSupplier(val, 'all'),
+      onSearch: (val) => fetchGetSearchSupplier({ name: val.replace(/'/g, '') }, 'all'),
       onSelect: (val) => fetchBrandIdList(val),
       rules: [{ required: false }],
+      disabled: againUpDisabled,
     },
     {
       title: '商品信息',
@@ -195,6 +211,7 @@ const PreferentialSet = ({
       onChange: (val, option) => {
         getCommissionFlag(val[0]);
       },
+      disabled: editDisabled,
     },
     {
       label: '商品编码',
@@ -218,7 +235,7 @@ const PreferentialSet = ({
     },
     {
       label: '商品轮播图',
-      name: 'goodsDescImg',
+      name: 'goodsBriefImg',
       type: 'upload',
       maxFile: 5,
       extra: '限5张，第一张为主图，建议上传5:4比例的图片/视频；可以拖拽图片调整前后顺序。',
@@ -237,6 +254,7 @@ const PreferentialSet = ({
           });
         }
       },
+      disabled: againUpDisabled,
     },
     {
       label: '库存单位',
@@ -266,6 +284,7 @@ const PreferentialSet = ({
       precision: 2,
       visible: !specificationDisabled,
       extra: '用于指导售价调整和为消费者提供的一个参考价，如服装的吊牌价',
+      disabled: editDisabled,
     },
     {
       label: '成本价',
@@ -274,7 +293,7 @@ const PreferentialSet = ({
       addonBefore: '￥',
       min: 0,
       precision: 2,
-      visible: sellType == 'single',
+      visible: !specificationDisabled && sellType == 'single',
       extra: '用于平台采买商品时记录成本',
       rules: [{ required: false }],
     },
@@ -287,6 +306,7 @@ const PreferentialSet = ({
       precision: 2,
       visible: !specificationDisabled && sellType != 'batch',
       extra: '指供应商/店铺和哒卡乐平台的结算价',
+      disabled: editDisabled,
     },
     {
       label: '最小起订量',
@@ -317,6 +337,7 @@ const PreferentialSet = ({
         setPriceType(e.target.value);
         form.setFieldsValue({ displayType: undefined });
       },
+      disabled: editDisabled,
     },
     {
       // name:'skuInfoReqs'
@@ -329,6 +350,7 @@ const PreferentialSet = ({
           initialValues={initialValues}
           sellType={sellType}
           priceType={priceType}
+          editDisabled={editDisabled}
         ></SpecificationList>
       ),
     },
@@ -341,6 +363,7 @@ const PreferentialSet = ({
       precision: 2,
       visible: !specificationDisabled && sellType != 'batch' && priceType != 'free',
       extra: '指用户购买的价格',
+      disabled: editDisabled,
     },
     {
       label: '卡豆',
@@ -351,6 +374,7 @@ const PreferentialSet = ({
       precision: 0,
       visible: !specificationDisabled && priceType == 'self' && sellType != 'batch',
       extra: '指用户购买的价格',
+      disabled: editDisabled,
     },
     {
       label: '商品库存',
@@ -362,6 +386,21 @@ const PreferentialSet = ({
       visible: !specificationDisabled,
       // rules: [{ required: true, message: '请输入不小于0, 不大于100000000的数值' }],
     },
+    {
+      title: '销售规则',
+      label: '限购类型',
+      name: ['buyLimitRuleObject', 'type'],
+      type: 'radio',
+      select: ASTRICT_BUY,
+      onChange: (e) => {
+        setAstrictType(e.target.value);
+      },
+    },
+    {
+      label: '单人最高限制份数',
+      name: ['buyLimitRuleObject', 'limitNum'],
+      visible: AstrictType !== 'unlimited',
+    },
     ...manualList.map((i, index) => ({
       title: index == 0 ? '分佣设置' : null,
       label: `${COMMISSION_TYPE['commerceGoods'][i.divisionParticipantType]}`,
@@ -371,7 +410,6 @@ const PreferentialSet = ({
       min: 0,
       max: 999999,
       visible: commissionShow === '1',
-      disabled: commonDisabled,
       suffix: '卡豆',
       onChange: () => {
         const keyArr = manualList.map((i) => [
@@ -413,29 +451,11 @@ const PreferentialSet = ({
       ],
     },
     {
-      label: '展示标签',
-      name: 'displayFilterTags',
-      type: 'select',
-      mode: 'multiple',
-      select: tagsShow,
-      fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
-      rules: [{ required: false }],
-      addRules: [
-        {
-          validator: (rule, value) => {
-            if (value?.length > 5) {
-              return Promise.reject('最多选择5个标签');
-            }
-            return Promise.resolve();
-          },
-        },
-      ],
-    },
-    {
       title: '发货设置',
       label: '发货地',
       name: ['shippingRuleObject', 'shippingAddress'],
       type: 'cascader',
+      fieldNames: { value: 'label' },
       select: CITYJSON.map((item) => ({
         ...item,
         children: item.children.map((citem) => ({ ...citem, children: undefined })),
@@ -516,22 +536,25 @@ const PreferentialSet = ({
     {
       title: '结算设置',
       label: '结算人类型',
-      name: ['settleObject', 'settlerType'],
+      name: ['settleInfoReq', 'settlerType'],
       type: 'radio',
       select: SETTLE_TYPE,
-      onChange: (e) => {
-        setSettleType(e.target.value);
-      },
+      disabled: againUpDisabled,
+      // onChange: (e) => {
+      //   setSettleType(e.target.value);
+      // },
     },
     {
       label: '供应商',
-      name: ['settleObject', 'settlerId'],
-      type: 'select',
-      select: settlerSelect,
-      visible: settleType == 'settle',
-      loading: loadings.models.baseData,
-      onSearch: (val) => fetchGetSearchSupplier(val, 'settle'),
-      rules: [{ required: false }],
+      name: ['settleInfoReq', 'settlerId'],
+      // type: 'select',
+      // select: settlerSelect,
+      // visible: settleType == 'settle',
+      disabled: editDisabled,
+      hidden: true,
+      // loading: loadings.models.baseData,
+      // onSearch: (val) => fetchGetSearchSupplier(val, 'settle'),
+      // rules: [{ required: false }],
     },
     {
       title: '商品介绍',
@@ -552,13 +575,15 @@ const PreferentialSet = ({
         formItems={formItems}
         initialValues={initialValues}
       ></FormCondition>
-      <RefundLocation
+      {/* 退货地址modal */}
+      {/* <RefundLocation
         form={form}
         visible={visibleRefund}
         onClose={() => setVisibleRefund(false)}
         refundList={refundList}
         setRefundList={setRefundList}
-      ></RefundLocation>
+      ></RefundLocation> */}
+      {/* 批采价 */}
       <TieredPricing
         form={form}
         visible={tieredModal}
@@ -574,7 +599,6 @@ export default connect(({ baseData, loading, specialGoods }) => ({
   classifyParentList: baseData.classifyParentList,
   brandList: baseData.brandList,
   tagsPlatform: baseData.tagsPlatform,
-  tagsShow: baseData.tagsShow,
   specialGoods,
   skuMerchantList: baseData.skuMerchantList,
   selectList: baseData.groupMreList,

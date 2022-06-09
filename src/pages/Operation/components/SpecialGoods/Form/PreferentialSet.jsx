@@ -31,6 +31,7 @@ const PreferentialSet = ({
   editActive,
   loading,
   selectList,
+  slectCopyList,
   dispatch,
   commissionShow,
   setCommissionShow,
@@ -87,7 +88,9 @@ const PreferentialSet = ({
         timeSplit,
         activityTimeRule: activeTime, //活动时间
         relationOwnerInfoResps = [], //关联集团子门店
+        settleInfoResp = {}, //结算人对象
       } = initialValues;
+      console.log(settleInfoResp);
       const { type } = buyLimitRuleObject; //购买上限
       // 商品类型： 特惠 自我游
       setGoodsType(initialValues.thirdInfoReq?.thirdType || '1');
@@ -133,6 +136,12 @@ const PreferentialSet = ({
           form.setFieldsValue({ businessStatus, status });
         },
       );
+      const { settlerType, settlerId, settlerName } = settleInfoResp;
+      fetchCopyGetMre(
+        ['merchant'].includes(settlerType) ? settlerName : undefined,
+        settlerType,
+        ['merchant'].includes(settlerType) ? undefined : settlerId,
+      );
     }
   }, [initialValues.relateName]);
   useEffect(() => {
@@ -143,12 +152,27 @@ const PreferentialSet = ({
   // 搜索店铺
   const fetchGetMre = debounce((name, type, id, callback) => {
     if (!name && !id) return;
-    console.log(type, mreList);
     dispatch({
       type: 'baseData/fetchGetGroupMreList',
       payload: {
         name,
         type: type || (mreList.storeStatus === 'top' ? mreList.type : mreList.settlerType),
+        groupFlag: 0, // 不允许选择子门店
+        groupId: id,
+      },
+      callback,
+    });
+  }, 100);
+
+  // 结算人搜索店铺
+  const fetchCopyGetMre = debounce((name, type, id, callback) => {
+    console.log(name, type, id);
+    if (!name && !id) return;
+    dispatch({
+      type: 'baseData/fetchGetGroupCopyMreList',
+      payload: {
+        name,
+        type: type || mreList.settlerType,
         groupFlag: 0, // 不允许选择子门店
         groupId: id,
       },
@@ -257,11 +281,9 @@ const PreferentialSet = ({
       loading,
       select: selectList,
       disabled: editDisabled,
-      onSearch: fetchGetMre,
-      onFocus: () => {
-        saveMreData({
-          storeStatus: 'top',
-        });
+      onSearch: (val) => {
+        fetchGetMre(val);
+        fetchCopyGetMre(val);
       },
       onChange: (val, data) => {
         console.log(val);
@@ -442,7 +464,7 @@ const PreferentialSet = ({
             const merchantPrice = Number(value);
             const buyPrice = Number(form.getFieldValue(['skuInfoReq', 'sellPrice']));
             if (merchantPrice > buyPrice) {
-              return Promise.reject('商家结算价不可超过售卖价格');
+              return Promise.reject('商家结算价不可超过零售价格');
             }
             // “商家结算价不可超过N（结算价≤特惠价格*（1-费率））”
             const getPrice = buyPrice * (1 - mreList.ratio / 100);
@@ -488,7 +510,7 @@ const PreferentialSet = ({
             const realPrice = Number(value);
             const buyPrice = Number(form.getFieldValue(['skuInfoReq', 'oriPrice']));
             if (realPrice >= buyPrice) {
-              return Promise.reject('零售价格需小于套餐价格');
+              return Promise.reject('零售价格需小于原价');
             }
             return Promise.resolve();
           },
@@ -527,19 +549,18 @@ const PreferentialSet = ({
       min: 0,
       max: 100000000,
     },
-    {
-      label: '佣金总额', // 手动分佣需要展示
-      name: 'commission',
-      type: 'number',
-      precision: 2,
-      min: 0,
-      max: 999999.99,
-      // disabled: commonDisabled,
-      visible: commissionShow == '1',
-      formatter: (value) => `￥ ${value}`,
-      // rules: [{ required: false }],
-    },
-
+    // {
+    //   label: '佣金总额', // 手动分佣需要展示
+    //   name: 'commission',
+    //   type: 'number',
+    //   precision: 2,
+    //   min: 0,
+    //   max: 999999.99,
+    //   // disabled: commonDisabled,
+    //   visible: commissionShow == '1',
+    //   formatter: (value) => `￥ ${value}`,
+    //   // rules: [{ required: false }],
+    // },
     {
       title: '销售规则',
       label: '活动时间',
@@ -774,15 +795,10 @@ const PreferentialSet = ({
       name: 'settlerId',
       placeholder: '请输入搜索',
       loading,
-      select: selectList,
+      select: slectCopyList,
       disabled: editDisabled,
-      onSearch: fetchGetMre,
+      onSearch: fetchCopyGetMre,
       visible: !['platform'].includes(mreList.settlerType),
-      onFocus: () => {
-        saveMreData({
-          storeStatus: 'bottom',
-        });
-      },
       onChange: (val, data) => {
         fetchCheckMreRate(val);
       },
@@ -872,5 +888,6 @@ export default connect(({ baseData, loading, specialGoods }) => ({
   specialGoods,
   skuMerchantList: baseData.skuMerchantList,
   selectList: baseData.groupMreList,
+  slectCopyList: baseData.groupCopyMreList,
   loading: loading.effects['baseData/fetchGetGroupMreList'],
 }))(PreferentialSet);

@@ -59,7 +59,7 @@ const TemplateDetail = (props) => {
       render: (val, row) => {
         const { manualDivisionObjects = [] } = row;
         return manualDivisionObjects.map((item) => (
-          <div key={item}>{COMMISSION_TYPE_COPY[item]}</div>
+          <div key={item}>{COMMISSION_TYPE_COPY[tabKey][item]}</div>
         ));
       },
     },
