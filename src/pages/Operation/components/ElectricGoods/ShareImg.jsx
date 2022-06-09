@@ -8,14 +8,7 @@ import aliOssUpload from '@/utils/aliOssUpload';
 
 const ShareImg = (props) => {
   const { visible, onClose, dispatch, loading } = props;
-  const {
-    show = false,
-    goodsName,
-    ownerName,
-    specialGoodsId = '',
-    ownerIdString = '',
-    initialValues = {},
-  } = visible;
+  const { show = false, goodsId, goodsName, relateName, detail = {} } = visible;
 
   const [form] = Form.useForm();
   const formItems = [
@@ -59,9 +52,9 @@ const ShareImg = (props) => {
       const sImg = await aliOssUpload(shareImg);
       const fImg = await aliOssUpload(friendShareImg);
       dispatch({
-        type: 'electricGoods/fetchUpdateOnlineGoods',
+        type: 'electricGoods/fetchUpdateOnlineShareInfo',
         payload: {
-          id: specialGoodsId,
+          goodsId,
           ownerId: -1,
           shareImg: sImg.toString(),
           friendShareImg: fImg.toString(),
@@ -75,7 +68,7 @@ const ShareImg = (props) => {
 
   const modalProps = {
     visible: show,
-    title: `${ownerName}--${goodsName}`,
+    title: `${relateName}--${goodsName}`,
     onClose,
     footer: (
       <Button type="primary" onClick={handleSave} loading={loading}>
@@ -85,15 +78,11 @@ const ShareImg = (props) => {
   };
   return (
     <DrawerCondition {...modalProps}>
-      <FormCondition
-        form={form}
-        formItems={formItems}
-        initialValues={initialValues}
-      ></FormCondition>
+      <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>
     </DrawerCondition>
   );
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['specialGoods/fetchSpecialGoodsShareEdit'],
+  loading: loading.effects['electricGoods/fetchUpdateOnlineShareInfo'],
 }))(ShareImg);

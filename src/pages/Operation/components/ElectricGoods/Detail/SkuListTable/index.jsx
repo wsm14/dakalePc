@@ -46,7 +46,7 @@ const SkuListTable = (props) => {
     },
     {
       title: `${customSize.map((item) => item.name).join('/')}`,
-      dataIndex: 'attributes',
+      dataIndex: type == 'info' ? 'attributes' : 'skuAttributeResps',
       render: (val) => val.map((item) => item.value).join('/'),
       show: customSize.length != 0,
     },
@@ -102,13 +102,13 @@ const SkuListTable = (props) => {
     },
     {
       title: '佣金',
-      dataIndex: 'settlePrice',
+      dataIndex: 'commission',
       show: type == 'listSee' && sellType == 'single',
-      render: (val, row) => `￥${(Number(row.sellPrice) - Number(val)).toFixed(2)}`,
+      render: (val, row) => `￥${val}`,
     },
     {
       title: '商品库存',
-      dataIndex: 'initStock',
+      dataIndex: type == 'info' ? 'initStock' : 'remain',
     },
   ];
 

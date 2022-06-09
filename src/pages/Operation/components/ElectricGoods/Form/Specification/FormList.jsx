@@ -193,7 +193,7 @@ function FormList(props) {
           rules={[{ required: true, message: '请输入商品库存' }]}
           noStyle
         >
-          <InputNumber precision={0} min={0} style={styleObj}></InputNumber>
+          <InputNumber disabled={editDisabled} precision={0} min={0} style={styleObj}></InputNumber>
         </Form.Item>
       </div>
       <TieredPricing
