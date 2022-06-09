@@ -8,13 +8,14 @@ import {
   SPECIAL_BALANCE_TYPE,
   SPECIAL_DESC_TYPE,
   GOODS_CLASS_TYPE,
+  SPECIAL_COMMISSOM_TYPE,
 } from '@/common/constant';
 import { checkCityName } from '@/utils/utils';
 
 const RegularDetail = (props) => {
   const { detail } = props;
-  const { productType } = detail;
-  console.log(detail);
+  const { productType, divisionParamInfoReq = {} } = detail;
+  const commissonList = Object.keys(divisionParamInfoReq);
   const RegularItems = [
     {
       name: 'activityTimeRule',
@@ -112,6 +113,19 @@ const RegularDetail = (props) => {
       ),
     },
   ];
+
+  const CommissionItem = [
+    {
+      name: 'divisionParamInfoReq',
+      label: '分佣设置',
+      render: (val, row) => {
+        return commissonList.map((item) => (
+          <div>{`${SPECIAL_COMMISSOM_TYPE[item]}:${val[item]}`}</div>
+        ));
+      },
+    },
+  ];
+
   const ExhibitionItem = [
     {
       name: 'displayType',
@@ -194,6 +208,13 @@ const RegularDetail = (props) => {
         formItems={BuyRegularItem}
         initialValues={detail}
       ></DescriptionsCondition>
+      {commissonList.length ? (
+        <DescriptionsCondition
+          title="分佣设置"
+          formItems={CommissionItem}
+          initialValues={detail}
+        ></DescriptionsCondition>
+      ) : null}
       <DescriptionsCondition
         title="展示信息"
         formItems={ExhibitionItem}

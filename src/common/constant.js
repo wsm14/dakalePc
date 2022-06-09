@@ -689,6 +689,15 @@ export const SPECIAL_BALANCE_TYPE = {
   platform: '平台',
 };
 
+//特惠活动 - 分佣比例
+export const SPECIAL_COMMISSOM_TYPE = {
+  provinceBean: '省代分佣',
+  cityBean: '市级分佣',
+  districtBean: '区县分佣',
+  userParentBean: '用户家主分佣',
+  darenBean: '商家家主分佣',
+};
+
 // 新手视频 - 状态 1-上架 3-下架
 export const VIDEO_NOVICE_STATUS = [false, '上架中', false, '已下架'];
 

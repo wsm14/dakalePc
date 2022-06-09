@@ -73,7 +73,7 @@ const GoodsDetail = (props) => {
     },
     {
       name: ['skuInfoReq', 'sellPrice'],
-      label: '特惠价格',
+      label: '零售价',
     },
     {
       name: ['skuInfoReq', 'settlePrice'],

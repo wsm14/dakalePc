@@ -317,7 +317,7 @@ const SpecialGoods = (props) => {
           {
             title: '下架',
             auth: 'down',
-            visible: status == '1', // 活动中 && 未删除
+            visible: ['1'].includes(status), // 活动中 && 未删除
             click: () =>
               setVisibleRefuse({
                 show: true,
@@ -358,7 +358,7 @@ const SpecialGoods = (props) => {
           },
           {
             type: 'del',
-            // visible: ['1'].includes(status), // 活动中 && 未删除
+            visible: ['0'].includes(status), // 活动中 && 未删除
             click: () => fetchSpecialGoodsDelete(goodsId, ownerId),
           },
         ];
