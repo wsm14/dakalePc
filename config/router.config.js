@@ -769,7 +769,7 @@ export default [
             path: '/operation/electricGoods',
             name: '电商品',
             component: './Operation/ElectricGoods',
-            // buttons: ['info', 'exportList', 'goodsView', 'goodsDeliver', 'routing', 'batchRouting'],
+            buttons: ['save', 'info', 'down', 'edit', 'again', 'changeRemain', 'shareImg'],
           },
           {
             path: '/operation/orders',
