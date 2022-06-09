@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Tabs, Form } from 'antd';
+import { Form } from 'antd';
+import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import {
   ELECTRICGOODS_SELL_STATUS,
-  ELECTRICGOODS_SKU,
   ELECTRICGOODS_SELL_PRICE_TYPE,
   COMMISSION_TYPE,
   FRONT_SHOW_TYPE,
   SETTLE_TYPE,
+  ASTRICT_BUY,
 } from '@/common/constant';
-import GoodsDetailForm from './Detail/GoodsDetail';
-import RegularDetail from './Detail/RegularDetail';
 import ExtraButton from '@/components/ExtraButton';
-import FormCondition from '@/components/FormCondition';
-import CheckRecord from '@/components/CheckRecord';
+import SkuListTable from './Detail/SkuListTable';
 
 const ElectricGoodDetail = (props) => {
   const { visible, onClose, onEdit, total, getDetail, loading, dispatch } = props;
-  const { show = false, index, detail = {}, status, initialValues = {} } = visible;
+  const { show = false, index, detail = {}, status } = visible;
+  const { categoryNode, customSize = [] } = detail;
 
   const [form] = Form.useForm();
   const [merchantList, setMerchantList] = useState([]);
@@ -31,9 +30,8 @@ const ElectricGoodDetail = (props) => {
   };
 
   useEffect(() => {
-    const { categoryNode } = detail;
     if (show) {
-      getCommissionFlag(categoryNode.split('.')[0] || '');
+      getCommissionFlag(categoryNode[0] || '');
     }
     // if (show && detail.ownerType === 'group') {
     //   getMerchantList();
@@ -60,12 +58,11 @@ const ElectricGoodDetail = (props) => {
   const BasicsformItems = [
     {
       label: `供应商`,
-      name: 'relateId',
-      maxLength: 20,
+      name: 'relateName',
     },
     {
       label: `商品类目`,
-      name: 'categoryNode',
+      name: 'brandName',
     },
     {
       label: `商品编码`,
@@ -81,11 +78,11 @@ const ElectricGoodDetail = (props) => {
     },
     {
       label: `品牌`,
-      name: 'brandIdName',
+      name: 'brandName',
     },
     {
       label: `商品轮播图`,
-      name: 'goodsDescImg',
+      name: 'goodsBriefImg',
       type: 'upload',
     },
   ];
@@ -99,12 +96,42 @@ const ElectricGoodDetail = (props) => {
     {
       label: `库存单位`,
       name: 'stockUnit',
-      render: (val) => ELECTRICGOODS_SKU[val],
     },
     {
       label: `规格`,
       name: 'customSize',
-      render: (val) => '',
+      render: (val) =>
+        val.map((item, index) => {
+          return (
+            <div key={index}>
+              <div
+                style={{
+                  display: 'inline-block',
+                  margin: '0 0 5px',
+                  width: 50,
+                  textAlign: 'center',
+                }}
+              >
+                {item.name}
+              </div>
+              {item.value.map((it, i) => {
+                return (
+                  <div
+                    key={i}
+                    style={{
+                      display: 'inline-block',
+                      marginLeft: 5,
+                      padding: '0px 15px',
+                      border: '1px solid #ccc',
+                    }}
+                  >
+                    {it}
+                  </div>
+                );
+              })}
+            </div>
+          );
+        }),
     },
     {
       label: `售卖价格类型`,
@@ -112,21 +139,30 @@ const ElectricGoodDetail = (props) => {
       render: (val) => ELECTRICGOODS_SELL_PRICE_TYPE[val],
     },
     {
-      label: `规格信息`,
-      // name: 'customSize',
-      render: (val) => '123',
+      label: `商品库存`,
+      name: 'initStock',
     },
-    // {
-    //   label: `商品库存`,
-    //   name: 'initStock',
-    // },
+    {
+      label: `规格信息`,
+      show: customSize.length != 0,
+      render: () => <SkuListTable detail={detail} type="info"></SkuListTable>,
+    },
+  ];
+
+  const SaleRuleformItems = [
+    {
+      label: `购买上限`,
+      name: 'buyLimitRuleObject',
+      render: (val) => (
+        <>
+          <div>{ASTRICT_BUY[val?.type]}</div>
+          {val && val?.type != 'unlimited' && <div>{`单人最高购买份数：${val?.limitNum}份`}</div>}
+        </>
+      ),
+    },
   ];
 
   const DivideformItems = [
-    {
-      label: `平台商品标签`,
-      name: 'platformTagNames',
-    },
     ...manualList?.map((i) => ({
       label: `${COMMISSION_TYPE['commerceGoods'][i.divisionParticipantType]}`,
       name: ['divisionParamInfoReq', `${i.divisionParticipantType}Bean`],
@@ -141,10 +177,6 @@ const ElectricGoodDetail = (props) => {
     {
       label: `平台商品标签`,
       name: 'platformTagNames',
-    },
-    {
-      label: `展示标签`,
-      name: 'displayFilterTags',
     },
   ];
   const DeliverformItems = [
@@ -182,14 +214,14 @@ const ElectricGoodDetail = (props) => {
   const SettleformItems = [
     {
       label: `结算人类型`,
-      name: ['settleObject', 'settlerType'],
-      render: (val) => SETTLE_TYPE[val],
+      name: ['settleInfoReq', 'settlerType'],
+      // render: (val) => SETTLE_TYPE[val],
+      render: () => '平台',
     },
-    {
-      label: `结算供应商`,
-      name: ['settleObject', 'settlerId'],
-      // render:(val)=>SETTLE_TYPE[val]
-    },
+    // {
+    //   label: `结算供应商`,
+    //   name: ['settleInfoReq', 'settlerName'],
+    // },
   ];
 
   const GoodsformItems = [
@@ -210,7 +242,7 @@ const ElectricGoodDetail = (props) => {
   ];
   // 弹出窗属性
   const modalProps = {
-    title: '活动详情',
+    title: '商品详情',
     visible: show,
     loading,
     onClose,
@@ -235,6 +267,11 @@ const ElectricGoodDetail = (props) => {
       <DescriptionsCondition
         title="销售信息"
         formItems={SaleformItems}
+        initialValues={detail}
+      ></DescriptionsCondition>
+      <DescriptionsCondition
+        title="销售规则"
+        formItems={SaleRuleformItems}
         initialValues={detail}
       ></DescriptionsCondition>
       {commissionShow === '1' && (

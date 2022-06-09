@@ -14,9 +14,17 @@ function FormList(props) {
     initialValues,
     sellType, //售卖类型
     priceType, // 售卖价格类型
+    editDisabled,
   } = props;
   const [batchOnOff, setBatchOnOff] = useState(false); // 批采价设置状态
   const [tieredModal, setTieredModal] = useState(false); // 设置阶梯价model
+
+  useEffect(() => {
+    const list = form.getFieldValue('skuInfoReqs')[field.name]['batchLadderObjects'];
+    if (list.length > 0) {
+      setBatchOnOff(true);
+    }
+  }, []);
 
   // 获取规格对象
   const specificationType = form
@@ -54,7 +62,11 @@ function FormList(props) {
   return (
     <div key={field.key} style={{ display: 'flex' }}>
       <div className={styles.table_row_cell}>
-        <Form.Item name={[field.name, 'skuCode']} noStyle>
+        <Form.Item
+          name={[field.name, 'skuCode']}
+          rules={[{ required: false, message: '' }]}
+          noStyle
+        >
           <Input style={styleObj}></Input>
         </Form.Item>
       </div>
@@ -62,7 +74,7 @@ function FormList(props) {
       <div className={`${styles.table_row_cell} ${styles.upload_box}`}>
         <Form.Item
           name={[field.name, 'image']}
-          rules={[{ required: true, message: '请上传图片' }]}
+          rules={[{ required: false, message: '请上传图片' }]}
           noStyle
         >
           <Upload
@@ -78,10 +90,23 @@ function FormList(props) {
         </Form.Item>
       </div>
       <div className={styles.table_row_cell}>
-        <Form.Item name={[field.name, 'oriPrice']} noStyle>
-          <InputNumber addonBefore="￥" precision={2} min={0} style={styleObj}></InputNumber>
+        <Form.Item name={[field.name, 'oriPrice']} rules={[{ required: false }]} noStyle>
+          <InputNumber
+            disabled={editDisabled}
+            addonBefore="￥"
+            precision={2}
+            min={0}
+            style={styleObj}
+          ></InputNumber>
         </Form.Item>
       </div>
+      {sellType === 'single' && (
+        <div className={styles.table_row_cell}>
+          <Form.Item name={[field.name, 'costPrice']} rules={[{ required: false }]} noStyle>
+            <InputNumber addonBefore="￥" precision={2} min={0} style={styleObj}></InputNumber>
+          </Form.Item>
+        </div>
+      )}
       {/* // 零售时存在，批采时不存在 */}
       {sellType === 'single' && (
         <div className={styles.table_row_cell}>
@@ -90,7 +115,13 @@ function FormList(props) {
             rules={[{ required: true, message: '请输入结算价' }]}
             noStyle
           >
-            <InputNumber addonBefore="￥" precision={2} min={0} style={styleObj}></InputNumber>
+            <InputNumber
+              disabled={editDisabled}
+              addonBefore="￥"
+              precision={2}
+              min={0}
+              style={styleObj}
+            ></InputNumber>
           </Form.Item>
         </div>
       )}
@@ -102,7 +133,13 @@ function FormList(props) {
             rules={[{ required: true, message: '请输入零售价' }]}
             noStyle
           >
-            <InputNumber addonBefore="￥" precision={2} min={0} style={styleObj}></InputNumber>
+            <InputNumber
+              disabled={editDisabled}
+              addonBefore="￥"
+              precision={2}
+              min={0}
+              style={styleObj}
+            ></InputNumber>
           </Form.Item>
         </div>
       )}
@@ -114,7 +151,13 @@ function FormList(props) {
             rules={[{ required: true, message: '请输入卡豆' }]}
             noStyle
           >
-            <InputNumber addonAfter="卡豆" precision={0} min={0} style={styleObj}></InputNumber>
+            <InputNumber
+              disabled={editDisabled}
+              addonAfter="卡豆"
+              precision={0}
+              min={0}
+              style={styleObj}
+            ></InputNumber>
           </Form.Item>
         </div>
       )}
@@ -123,7 +166,7 @@ function FormList(props) {
         <div className={styles.table_row_cell}>
           <Form.Item
             name={[field.name, 'minPurchaseNum']}
-            rules={[{ required: true, message: '请输入最小起订量' }]}
+            rules={[{ required: false, message: '请输入最小起订量' }]}
             noStyle
           >
             <Input style={styleObj}></Input>

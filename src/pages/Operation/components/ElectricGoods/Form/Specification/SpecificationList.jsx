@@ -10,6 +10,7 @@ function SpecificationList(props) {
     initialValues,
     sellType, // 售卖类型
     priceType, // 售卖价格类型
+    editDisabled,
   } = props;
   return (
     <Form.List label="规格信息" name="skuInfoReqs">
@@ -23,16 +24,33 @@ function SpecificationList(props) {
               ) : null}
               <div>图片</div>
               <div>原价</div>
-              {sellType === 'single' && <div>结算价</div>}
-              {sellType === 'single' && priceType !== 'free' && <div>零售价</div>}
-              {sellType === 'single' && priceType === 'self' && <div>卡豆</div>}
+              {sellType === 'single' && <div>成本价</div>}
+              {sellType === 'single' && (
+                <div>
+                  <span style={{ color: 'red' }}>*</span>结算价
+                </div>
+              )}
+              {sellType === 'single' && priceType !== 'free' && (
+                <div>
+                  <span style={{ color: 'red' }}>*</span>零售价
+                </div>
+              )}
+              {sellType === 'single' && priceType === 'self' && (
+                <div>
+                  <span style={{ color: 'red' }}>*</span>卡豆
+                </div>
+              )}
               {sellType === 'batch' && (
                 <>
                   <div>最小起订量</div>
-                  <div>批采价</div>
+                  <div>
+                    <span style={{ color: 'red' }}>*</span>批采价
+                  </div>
                 </>
               )}
-              <div>商品库存</div>
+              <div>
+                <span style={{ color: 'red' }}>*</span>商品库存
+              </div>
             </div>
             {fields.map((field) => (
               <FormList
@@ -43,6 +61,7 @@ function SpecificationList(props) {
                 field={field}
                 sellType={sellType}
                 priceType={priceType}
+                editDisabled={editDisabled}
               ></FormList>
             ))}
             <Form.ErrorList errors={errors} />

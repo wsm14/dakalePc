@@ -1385,11 +1385,19 @@ export const FREIGHT_TYPE = {
 
 // 电商品 - 结算人类型
 export const SETTLE_TYPE = {
-  settle: '供应商',
+  // settle: '供应商',
   pingtai: '平台',
 };
 //行业管理 - 前台类目
 export const TRADESET_SELECT = {
   behind: '按后台类目',
   h5: 'H5地址',
+};
+
+export const ASTRICT_BUY = {
+  unlimited: '不限',
+  personLimit: '每人限制',
+  // dayLimit: '每天限制',
+  // weekLimit: '每周限制',
+  // monthLimit: '每月限制',
 };

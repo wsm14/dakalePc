@@ -1121,4 +1121,12 @@ export function fetchUpdateOnlineGoods(data) {
   });
 }
 
+// post 电商品 - 下架
+export function fetchOffShelfOffline(data) {
+  return request('/admin/online/goods/admin/offShelfOffline', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 电商品 end

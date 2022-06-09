@@ -16,6 +16,7 @@ import PreferentialDrawer from './components/ElectricGoods/PreferentialDrawer';
 import ElectricGoodDetail from './components/ElectricGoods/ElectricGoodDetail';
 import RemainModal from './components/ElectricGoods/Detail/RemainModal';
 import ShareImg from './components/ElectricGoods/ShareImg';
+import TableModal from './components/ElectricGoods/Detail/TableModal';
 
 // tab栏列表
 const tabList = [
@@ -40,6 +41,7 @@ const ElectricGoods = (props) => {
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 审核拒绝 下架原因
   const [visibleRemain, setVisibleRemain] = useState(false);
   const [visibleShare, setVisibleShare] = useState(false); // 分享配置
+  const [visibleCommission, setVisibleCommission] = useState(false); // 查看佣金、库存
 
   useEffect(() => {
     childRef.current && childRef.current.fetchGetData({ sellType: tabKey });
@@ -152,12 +154,11 @@ const ElectricGoods = (props) => {
       title: '佣金/库存',
       align: 'right',
       dataIndex: 'goodsId',
-      render: (val, row) => <Button type="link">查看</Button>,
-    },
-    {
-      title: '剩余库存',
-      align: 'right',
-      dataIndex: 'remain',
+      render: (val, row) => (
+        <Button type="link" onClick={() => fetchSpecialGoodsDetail(val, 'listSee')}>
+          查看
+        </Button>
+      ),
     },
     {
       title: '权重',
@@ -188,7 +189,7 @@ const ElectricGoods = (props) => {
       dataIndex: 'goodsId',
       width: 150,
       render: (val, record, index) => {
-        const { specialGoodsId, ownerIdString: merchantId, status, deleteFlag } = record;
+        const { specialGoodsId, status } = record;
         return [
           {
             type: 'info',
@@ -197,7 +198,7 @@ const ElectricGoods = (props) => {
           {
             title: '下架',
             auth: 'down',
-            // visible: status == '1' && deleteFlag == '1', // 活动中 && 未删除
+            visible: status == '1', // 活动中
             click: () =>
               setVisibleRefuse({
                 show: true,
@@ -207,18 +208,18 @@ const ElectricGoods = (props) => {
           },
           {
             type: 'edit',
-            // visible: ['1'].includes(status) && deleteFlag == '1', // 活动中 && 未删除
+            visible: ['1'].includes(status), // 活动中
             click: () => fetchSpecialGoodsDetail(val, 'edit'),
           },
           {
             type: 'again', //重新发布
-            // visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
+            visible: ['0'].includes(status), // 已下架
             click: () => fetchSpecialGoodsDetail(val, 'again'),
           },
           {
             type: 'againUp', // 再次上架
             title: '编辑',
-            visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
+            visible: ['0'].includes(status), // 已下架
             click: () => fetchSpecialGoodsDetail(val, 'againUp'),
           },
           // {
@@ -268,13 +269,13 @@ const ElectricGoods = (props) => {
 
   // 下架
   const fetchSpecialGoodsStatus = (values) => {
-    const { specialGoodsId, ownerIdString } = visibleRefuse.detail;
+    const { goodsId } = visibleRefuse.detail;
     dispatch({
-      type: 'specialGoods/fetchSpecialGoodsStatus',
+      type: 'electricGoods/fetchOffShelfOffline',
       payload: {
         ...values,
-        id: specialGoodsId,
-        ownerId: ownerIdString,
+        goodsId,
+        ownerId: -1,
       },
       callback: () => {
         setVisibleRefuse({ show: false, detail: {} });
@@ -297,7 +298,16 @@ const ElectricGoods = (props) => {
               show: true,
               detail,
             })
-          : '',
+          : type == 'listSee'
+          ? setVisibleCommission({
+              show: true,
+              detail,
+            })
+          : setVisibleSet({
+              show: true,
+              type,
+              detail,
+            }),
     });
   };
 
@@ -320,7 +330,7 @@ const ElectricGoods = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ sellType: 'single' }}
+        params={{ sellType: tabKey }}
         rowKey={(record) => `${record.goodsId}`}
         dispatchType="electricGoods/fetchGetList"
         {...list}
@@ -359,6 +369,11 @@ const ElectricGoods = (props) => {
       ></RemainModal>
       {/* 分享配置 */}
       <ShareImg visible={visibleShare} onClose={() => setVisibleShare(false)}></ShareImg>
+      {/* 查看佣金、库存 */}
+      <TableModal
+        visible={visibleCommission}
+        onClose={() => setVisibleCommission(false)}
+      ></TableModal>
     </>
   );
 };
