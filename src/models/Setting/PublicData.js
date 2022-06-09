@@ -68,6 +68,7 @@ export default {
     ruleBean: 0,
     experLevel: {},
     groupMreList: [],
+    groupCopyMreList: [],
     skuMerchantList: { list: [], total: 0 },
     CouponListSearch: [],
     goodsList: [],
@@ -101,6 +102,7 @@ export default {
       return {
         ...state,
         groupMreList: [],
+        groupCopyMreList: [],
       };
     },
     clearPlatformEquity(state) {
@@ -545,6 +547,39 @@ export default {
         type: 'save',
         payload: {
           groupMreList: listData,
+        },
+      });
+      callback && callback(listData);
+    },
+    //请求店铺列表复制
+    *fetchGetGroupCopyMreList({ payload, callback }, { put, call }) {
+      const { type = 'merchant', name, ...other } = payload;
+      const newPayload = {
+        merchant: { merchantName: name }, // 单店
+        group: { groupName: name }, // 集团
+      }[type];
+      const response = yield call(
+        { merchant: fetchMerchantList, group: fetchMerchantGroup }[type],
+        { limit: 50, page: 1, bankStatus: 3, ...newPayload, ...other },
+      );
+      if (!response) return;
+      const { content } = response;
+      const { recordList = [] } = content;
+      const listData = recordList.map((item) => ({
+        name: `${item.merchantName || item.groupName} ${item.account || ''}`,
+        otherData: item.address,
+        value: item.userMerchantIdString || item.merchantGroupIdString,
+        commissionRatio: item.commissionRatio,
+        topCategoryName: [item.topCategoryName, item.categoryName],
+        topCategoryId: [item.topCategoryIdString, item.categoryIdString],
+        districtCode: item.districtCode,
+        businessStatus: item.businessStatus || '1',
+        status: item.status || '1',
+      }));
+      yield put({
+        type: 'save',
+        payload: {
+          groupCopyMreList: listData,
         },
       });
       callback && callback(listData);

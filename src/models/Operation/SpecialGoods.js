@@ -66,7 +66,6 @@ export default {
         activityStartDate,
         activityEndDate,
         useTimeRuleObject = {}, //销售时间
-        settleInfoReq = {},
         buyDesc = '[]',
         activityTimeRule: activeTime,
         settleInfoResp = {}, //结算人
@@ -147,7 +146,6 @@ export default {
         // allowRefund: Number(allowRefund),
         // allowExpireRefund: Number(allowExpireRefund),
         needOrder: Number(needOrder),
-        settleInfoReq,
         platformTagIds: platformTagIds.split(','),
         displayFilterTags: displayFilterTags.split(','),
         relationOwnerInfoResps: relationOwnerInfoRespsList,
