@@ -14,27 +14,15 @@ const MarketActivity = (props) => {
 
   const searchItems = [
     {
-      label: '商品名称',
+      label: '活动名称',
       name: 'goodsName',
     },
     {
-      label: '拼团ID',
+      label: '活动编号',
       name: 'groupId',
     },
     {
-      label: '发起人',
-      name: 'userId',
-      type: 'user',
-    },
-    {
-      label: '开团时间',
-      type: 'rangePicker',
-      name: 'startTime',
-      end: 'endTime',
-      allowClear: false,
-    },
-    {
-      label: '拼团状态',
+      label: '活动状态',
       type: 'select',
       name: 'status',
       select: OPEN_GROUP_STATUS,
@@ -43,7 +31,7 @@ const MarketActivity = (props) => {
 
   const getColumns = [
     {
-      title: '商品名称',
+      title: '活动名称/编号',
       fixed: 'left',
       dataIndex: 'groupId',
       width: 350,
@@ -72,7 +60,7 @@ const MarketActivity = (props) => {
       },
     },
     {
-      title: '商品价格',
+      title: '活动时间',
       align: 'center',
       dataIndex: 'togetherEarnGoodsObject',
       render: (val, row) => {
@@ -81,7 +69,7 @@ const MarketActivity = (props) => {
       },
     },
     {
-      title: '发起人',
+      title: '报名商品数',
       align: 'center',
       dataIndex: 'username',
       render: (val, row) => {
@@ -92,45 +80,14 @@ const MarketActivity = (props) => {
       },
     },
     {
-      title: '开团时间',
+      title: '状态',
       align: 'center',
       dataIndex: 'createTime',
     },
     {
-      title: '参团人数',
+      title: '最后修改',
       align: 'center',
       dataIndex: 'joinUserNum',
-    },
-    {
-      title: '剩余时间',
-      align: 'center',
-      dataIndex: 'createTime',
-      render: (val, row) => {
-        const { status = '' } = row;
-        if (val) {
-          const endTime = moment(val).add(24, 'hours').format('YYYY-MM-DD HH:mm:ss'); // 剩余时间
-          if (moment(endTime).isBefore(moment()) || ['1', '2'].includes(status)) {
-            return '--';
-          } else {
-            const remainTime = moment(endTime).diff(moment(), 'seconds');
-            const h = parseInt(remainTime / 3600);
-            const m = parseInt((remainTime - h * 3600) / 60);
-            const s = remainTime - h * 3600 - m * 60;
-            const H = h > 9 ? h : `0${h}`;
-            const M = m > 9 ? m : `0${m}`;
-            const S = s > 9 ? s : `0${s}`;
-            return `${H}:${M}:${S}`;
-          }
-        } else {
-          return '--';
-        }
-      },
-    },
-    {
-      title: '拼团状态',
-      align: 'center',
-      dataIndex: 'status',
-      render: (val) => OPEN_GROUP_STATUS[val],
     },
     {
       type: 'handle',
