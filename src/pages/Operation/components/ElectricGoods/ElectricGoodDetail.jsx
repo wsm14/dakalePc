@@ -47,8 +47,6 @@ const ElectricGoodDetail = (props) => {
         categoryId: categoryId,
       },
       callback: ({ manuallyFlag, manualDivisions }) => {
-        console.log('manuallyFlag: ', manuallyFlag);
-        console.log('manualDivisions: ', manualDivisions);
         setCommissionShow(manuallyFlag);
         setManualList(manualDivisions || []);
       },

@@ -6,6 +6,10 @@ import {
   fetchGetGoodsForUpdate,
   fetchUpdateOnlineGoods,
   fetchOffShelfOffline,
+  fetchAddStock,
+  fetchListSkuStockByServiceId,
+  fetchGetOnlineShareInfo,
+  fetchUpdateOnlineShareInfo,
 } from '@/services/OperationServices';
 
 export default {
@@ -25,7 +29,7 @@ export default {
   },
 
   effects: {
-    // post 电商品 - 列表
+    // get 电商品 - 列表
     *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchListOnlineGoodsByPage, payload);
       if (!response) return;
@@ -62,6 +66,7 @@ export default {
         settleInfoResp: settleInfoReq = {},
         platformTagIds,
         categoryNode,
+        divisionParamInfoResp,
         ...other
       } = onlineAllResp;
 
@@ -92,11 +97,11 @@ export default {
         ...oneSku,
         skuInfoReqs,
         settleInfoReq,
+        divisionParamInfoReq: divisionParamInfoResp,
         platformTagIds: platformTagIds.split(','),
         categoryNode: categoryNode.split('.'),
         customSize: skuInfoReqs.length > 0 ? newAttributes : [],
       };
-      console.log(data);
 
       callback && callback(data);
     },
@@ -117,6 +122,66 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '商品下架成功',
+      });
+      callback && callback();
+    },
+    // post 电商品 - 修改库存
+    *fetchAddStock({ payload, callback }, { call }) {
+      const response = yield call(fetchAddStock, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '库存修改成功',
+      });
+      callback && callback();
+    },
+    // get 电商品 - sku列表
+    *fetchListSkuStockByServiceId({ payload, callback }, { call, put }) {
+      const response = yield call(fetchListSkuStockByServiceId, payload);
+      if (!response) return;
+      const { content } = response;
+      const { skuManagerResps = [] } = content;
+
+      // 处理规格数据
+      let attributesList = [];
+      const attributesType = skuManagerResps[0]?.skuAttributeResps?.map((item) => item.name);
+      skuManagerResps.map((item) => {
+        item.skuAttributeResps.map((it) => {
+          attributesList.push(it);
+        });
+      });
+      const newAttributes = attributesType?.map((item) => {
+        const arr = attributesList.filter((it) => it.name == item).map((it) => it.value);
+        const set = new Set(arr);
+        return {
+          name: item,
+          value: [...set],
+        };
+      });
+
+      const data = {
+        skuInfoReqs: skuManagerResps,
+        customSize: newAttributes,
+      };
+
+      callback && callback(data);
+    },
+    // get 电商品 - 获取分享配置详情
+    *fetchGetOnlineShareInfo({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetOnlineShareInfo, payload);
+      if (!response) return;
+      const { content } = response;
+      const { shareInfo = {} } = content;
+
+      callback && callback(shareInfo);
+    },
+    // post 电商品 - 分享配置修改
+    *fetchUpdateOnlineShareInfo({ payload, callback }, { call }) {
+      const response = yield call(fetchUpdateOnlineShareInfo, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '分享配置修改成功',
       });
       callback && callback();
     },

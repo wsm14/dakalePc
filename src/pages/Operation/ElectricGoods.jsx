@@ -149,24 +149,24 @@ const ElectricGoods = (props) => {
       align: 'right',
       dataIndex: 'goodsId',
       render: (val, row) => (
-        <Button type="link" onClick={() => fetchSpecialGoodsDetail(val, 'listSee')}>
+        <Button type="link" onClick={() => fetchSeeRepertory(val, 'listSee')}>
           查看
         </Button>
       ),
     },
-    {
-      title: '权重',
-      dataIndex: 'rightWeights',
-      align: 'center',
-      // render: (val, row) => (
-      //   <TradeSortSet
-      //     detail={row}
-      //     onSubmit={fetchTradeSet}
-      //     getList={getList}
-      //     idName="goodsId"
-      //   ></TradeSortSet>
-      // ),
-    },
+    // {
+    //   title: '权重',
+    //   dataIndex: 'rightWeights',
+    //   align: 'center',
+    //   // render: (val, row) => (
+    //   //   <TradeSortSet
+    //   //     detail={row}
+    //   //     onSubmit={fetchTradeSet}
+    //   //     getList={getList}
+    //   //     idName="goodsId"
+    //   //   ></TradeSortSet>
+    //   // ),
+    // },
     {
       title: '商品状态',
       dataIndex: 'status',
@@ -183,7 +183,7 @@ const ElectricGoods = (props) => {
       dataIndex: 'goodsId',
       width: 150,
       render: (val, record, index) => {
-        const { specialGoodsId, status } = record;
+        const { status } = record;
         return [
           {
             type: 'info',
@@ -210,12 +210,12 @@ const ElectricGoods = (props) => {
             visible: ['0'].includes(status), // 已下架
             click: () => fetchSpecialGoodsDetail(val, 'again'),
           },
-          {
-            type: 'againUp', // 再次上架
-            title: '编辑',
-            visible: ['0'].includes(status), // 已下架
-            click: () => fetchSpecialGoodsDetail(val, 'againUp'),
-          },
+          // {
+          //   type: 'againUp', // 再次上架
+          //   title: '编辑',
+          //   visible: ['0'].includes(status), // 已下架
+          //   click: () => fetchSpecialGoodsDetail(val, 'againUp'),
+          // },
           // {
           //   type: 'diary', // 日志
           //   click: () => fetchGetLogData({ type: 'specialGoods', identificationId: val }),
@@ -224,7 +224,7 @@ const ElectricGoods = (props) => {
             title: '调整库存',
             type: 'changeRemain',
             // visible: ['1'].includes(status) && deleteFlag == '1',
-            click: () => fetAddRemain(specialGoodsId, record.ownerIdString, record.remain),
+            click: () => fetchSeeRepertory(val, 'changeRemain'),
           },
           {
             title: '设置', // 分享配置
@@ -244,20 +244,48 @@ const ElectricGoods = (props) => {
   //   });
   // };
 
-  // 分享配置
-  const fetchShareImg = (record) => {
-    setVisibleShare({
-      show: true,
+  // 查看佣金/库存    &&   调整库存
+  const fetchSeeRepertory = (serviceId, type) => {
+    dispatch({
+      type: 'electricGoods/fetchListSkuStockByServiceId',
+      payload: {
+        serviceId,
+        ownerId: -1,
+      },
+      callback: (detail) =>
+        type == 'listSee'
+          ? setVisibleCommission({
+              show: true,
+              detail: {
+                ...detail,
+                sellType: tabKey,
+              },
+            })
+          : setVisibleRemain({
+              show: true,
+              detail,
+            }),
     });
   };
 
-  // 调整库存
-  const fetAddRemain = (id, ownerId, remain) => {
-    setVisibleRemain({
-      show: true,
-      id,
-      ownerId,
-      remain,
+  // 分享配置
+  const fetchShareImg = (record) => {
+    const { relateName, goodsName, goodsId } = record;
+    dispatch({
+      type: 'electricGoods/fetchGetOnlineShareInfo',
+      payload: {
+        goodsId,
+        ownerId: -1,
+      },
+      callback: (detail) => {
+        setVisibleShare({
+          show: true,
+          goodsId,
+          relateName,
+          goodsName,
+          detail,
+        });
+      },
     });
   };
 
@@ -289,11 +317,6 @@ const ElectricGoods = (props) => {
       callback: (detail) =>
         type == 'info'
           ? setVisibleInfo({
-              show: true,
-              detail,
-            })
-          : type == 'listSee'
-          ? setVisibleCommission({
               show: true,
               detail,
             })

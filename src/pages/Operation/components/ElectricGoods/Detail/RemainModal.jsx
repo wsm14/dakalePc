@@ -6,22 +6,38 @@ import RemainFormList from './RemainFormList';
 
 const RemainModal = (props) => {
   const { visible = {}, onClose, dispatch, loading, childRef } = props;
-  const { show = false, id, ownerId, remain } = visible;
+  const { show = false, detail = {} } = visible;
+  const { skuInfoReqs = [], customSize = [] } = detail;
+
   const [form] = Form.useForm();
 
   const handleOk = () => {
     form.validateFields().then((values) => {
+      const { skuInfoReqs: stockUpdateReqs = [], remainIncrement } = values;
+
+      const payload = {
+        stockUpdateReqs:
+          stockUpdateReqs.length > 0
+            ? stockUpdateReqs.map((item) => ({
+                ownerId: -1,
+                goodsCount: item.remain,
+                stockId: item.stockId,
+              }))
+            : [
+                {
+                  ownerId: -1,
+                  goodsCount: remainIncrement,
+                  stockId: skuInfoReqs[0]?.stockId,
+                },
+              ],
+      };
       dispatch({
-        // type: 'specialGoods/fetchSpecialGoodsAddRemain',
-        // payload: {
-        //   id,
-        //   ownerId,
-        //   ...values,
-        // },
-        // callback: () => {
-        //   onClose();
-        //   childRef.current.fetchGetData();
-        // },
+        type: 'electricGoods/fetchAddStock',
+        payload,
+        callback: () => {
+          onClose();
+          childRef.current.fetchGetData();
+        },
       });
     });
   };
@@ -31,12 +47,13 @@ const RemainModal = (props) => {
       label: `调整库存`,
       name: 'remainIncrement',
       placeholder: `请输入调整后的库存`,
-      extra: `剩余${remain}`,
+      extra: `剩余${skuInfoReqs[0]?.remain}`,
       maxLength: 6,
+      visible: customSize.length == 0,
       addRules: [
         {
           validator: (rule, value) => {
-            if (value && Number(remain) + Number(value) > 999999) {
+            if (value && Number(value) > 999999) {
               return Promise.reject('库存量不能超过999999');
             }
             if (value && value == 0) {
@@ -49,7 +66,8 @@ const RemainModal = (props) => {
     },
     {
       type: 'noForm',
-      formItem: <RemainFormList form={form}></RemainFormList>,
+      visible: customSize.length > 0,
+      formItem: <RemainFormList detail={detail} form={form}></RemainFormList>,
     },
   ];
 
@@ -61,7 +79,7 @@ const RemainModal = (props) => {
   };
   return (
     <Modal destroyOnClose {...modalProps} loading={loading}>
-      <FormCondition form={form} formItems={formItems}></FormCondition>
+      <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>
     </Modal>
   );
 };
