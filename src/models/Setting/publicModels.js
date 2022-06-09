@@ -2,12 +2,8 @@ import { notification } from 'antd';
 import oss from 'ali-oss';
 import { uuid } from '@/utils/utils';
 import { fetchPlatformCouponSelect } from '@/services/ActiveServices';
-import { fetchListOnlineGoodsByPage } from '@/services/OperationServices';
-import {
-  fetchGetOss,
-  fetchGetBuyCouponSelect,
-  fetchListOfflineGoodsByPage,
-} from '@/services/PublicServices';
+import { fetchListOnlineGoodsByPage, fetchSpecialGoodsList } from '@/services/OperationServices';
+import { fetchGetOss, fetchGetBuyCouponSelect } from '@/services/PublicServices';
 
 export default {
   namespace: 'publicModels',
@@ -79,7 +75,7 @@ export default {
     },
     // get 获取特惠商品列表
     *fetchListOfflineGoodsByPage({ payload }, { call, put }) {
-      const response = yield call(fetchListOfflineGoodsByPage, payload);
+      const response = yield call(fetchSpecialGoodsList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
