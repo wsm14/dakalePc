@@ -48,7 +48,7 @@ const PreferentialSet = ({
   const commonDisabled = ['againUp', 'again', 'edit'].includes(editActive);
   //活动中隐藏的编辑项//edit 独有不展示
   const editDisabled = ['edit'].includes(editActive) && !startDisabled;
-  console.log(editDisabled, infoStatus, editDisabled && infoStatus, 'infoStatus');
+  // console.log(editDisabled, infoStatus, editDisabled && infoStatus, 'infoStatus');
 
   const [goodsType, setGoodsType] = useState('1'); // 商品类型： 特惠 自我游
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
@@ -82,14 +82,12 @@ const PreferentialSet = ({
   useEffect(() => {
     if (initialValues.relateName) {
       const {
-        skuInfoReq = {},
+        buyLimitRuleObject = {}, //购买上线
         timeType,
         timeSplit,
-        activityTimeRule: activeTime,
-        useTimeRule: userTime,
+        activityTimeRule: activeTime, //活动时间
         relationOwnerInfoResps = [], //关联集团子门店
       } = initialValues;
-      const { buyLimitRuleObject = {} } = skuInfoReq;
       const { type } = buyLimitRuleObject; //购买上限
       // 商品类型： 特惠 自我游
       setGoodsType(initialValues.thirdInfoReq?.thirdType || '1');
@@ -145,6 +143,7 @@ const PreferentialSet = ({
   // 搜索店铺
   const fetchGetMre = debounce((name, type, id, callback) => {
     if (!name && !id) return;
+    console.log(type, mreList);
     dispatch({
       type: 'baseData/fetchGetGroupMreList',
       payload: {
@@ -259,7 +258,13 @@ const PreferentialSet = ({
       select: selectList,
       disabled: editDisabled,
       onSearch: fetchGetMre,
+      onFocus: () => {
+        saveMreData({
+          storeStatus: 'top',
+        });
+      },
       onChange: (val, data) => {
+        console.log(val);
         const { option } = data;
         const { businessStatus, status, districtCode } = option;
         form.setFieldsValue({
@@ -270,9 +275,7 @@ const PreferentialSet = ({
           availableAreas: 'city',
           cityList: [{ city: [districtCode.slice(0, 2), districtCode.slice(0, 4)] }],
         });
-        saveMreData({
-          storeStatus: 'top',
-        });
+
         setAreaType('city');
         setCommissionShow(false);
         getCommissionFlag(option.topCategoryId[0]);
@@ -775,10 +778,12 @@ const PreferentialSet = ({
       disabled: editDisabled,
       onSearch: fetchGetMre,
       visible: !['platform'].includes(mreList.settlerType),
-      onChange: (val, data) => {
+      onFocus: () => {
         saveMreData({
           storeStatus: 'bottom',
         });
+      },
+      onChange: (val, data) => {
         fetchCheckMreRate(val);
       },
     },
