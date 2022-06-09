@@ -31,7 +31,6 @@ const GoodsSelectModal = (props) => {
 
   useEffect(() => {
     if (visible) {
-      console.log('goodsValues', goodsValues);
       const showTab = tabPaneList.filter((i) => (showTag || allTag).includes(i.key));
       showTab.length && setTabKey(showTab[0].key);
       const newData = goodsValues.filter((i) => i);
