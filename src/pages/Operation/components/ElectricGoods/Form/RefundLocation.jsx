@@ -4,6 +4,7 @@ import { Modal } from 'antd';
 import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 
+// 退货配置
 const RefundLocation = (props) => {
   const { visible = {}, onClose, dispatch, loading, form, refundList, setRefundList } = props;
   const { show = false } = visible;
