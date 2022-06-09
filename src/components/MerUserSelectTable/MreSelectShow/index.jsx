@@ -38,7 +38,6 @@ const MreSelectShow = ({
     },
     ...otherColumns,
   ];
-  console.log(list, 'list');
   return (
     <div style={{ marginBottom: 20 }} key="table">
       <TableDataBlock

@@ -370,7 +370,7 @@ const SpecialGoods = (props) => {
   const fetchShareImg = (record) => {
     const { goodsId, ownerId, goodsName, relateName } = record;
     dispatch({
-      type: 'specialGoods/fetchSpecialGoodsDetail',
+      type: 'specialGoods/fetchSpecialGoodsShareDetail',
       payload: { goodsId, ownerId },
       callback: (val) => {
         const { shareImg, friendShareImg, recommendReason, customTitle } = val;

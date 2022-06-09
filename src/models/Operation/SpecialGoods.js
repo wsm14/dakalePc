@@ -6,6 +6,7 @@ import {
   fetchSpecialGoodsEdit,
   fetchSpecialGoodsShareEdit,
   fetchSpecialGoodsDetail,
+  fetchSpecialGoodsShareDetail,
   fetchSpecialGoodsStatus,
   fetchSpecialGoodsDelete,
   fetchSpecialGoodsImport,
@@ -71,7 +72,7 @@ export default {
         settleInfoResp = {}, //结算人
         skuInfoResp = {}, //价格
         platformTagIds,
-        displayFilterTags,
+        // displayFilterTags,
         relationOwnerInfoResps = [], //集团关联店铺
         thirdInfoResp, //商品类别
         divisionParamInfoResp = {}, //分佣设置
@@ -148,19 +149,23 @@ export default {
         // allowExpireRefund: Number(allowExpireRefund),
         needOrder: Number(needOrder),
         platformTagIds: platformTagIds.split(','),
-        displayFilterTags: displayFilterTags.split(','),
+        // displayFilterTags: displayFilterTags.split(','),
         relationOwnerInfoResps: relationOwnerInfoRespsList,
         thirdInfoReq: thirdInfoResp,
         divisionParamInfoReq: divisionParamInfoResp,
       });
     },
+    *fetchSpecialGoodsShareDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialGoodsShareDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      const { shareInfo = {} } = content;
+      callback(shareInfo);
+    },
     *fetchSpecialGoodsSave({ payload, callback }, { call }) {
       const response = yield call(fetchSpecialGoodsSave, payload);
       if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '特惠活动新增成功',
-      });
+
       callback();
     },
     *fetchPlatformEquityGoodsSave({ payload, callback }, { call }) {

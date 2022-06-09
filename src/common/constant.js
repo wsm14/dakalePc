@@ -686,7 +686,7 @@ export const SPECIAL_AREA_TYPE = {
 export const SPECIAL_BALANCE_TYPE = {
   merchant: '店铺',
   group: '集团',
-  platform: '平台',
+  admin: '平台',
 };
 
 //特惠活动 - 分佣比例

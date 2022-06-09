@@ -31,7 +31,7 @@ const GoodsDetail = (props) => {
     {
       name: ['thirdInfoResp', 'thirdType'],
       label: `商品类别`,
-      render: (val) => (val ? '自我游商品' : '特惠商品'),
+      render: (val) => ({ 1: '特惠商品', 2: '自我游商品' }[val]),
     },
     {
       name: ['thirdInfoResp', 'thirdId'],

@@ -27,6 +27,12 @@ export function fetchSpecialGoodsDetail(params) {
     params,
   });
 }
+// get 周边特惠 - 分享图详情
+export function fetchSpecialGoodsShareDetail(params) {
+  return request('/admin/offline/goods/admin/getOfflineShareInfo', {
+    params,
+  });
+}
 
 // get 周边特惠 - 查询店铺主体当前的费率
 export function fetchCheckMreRate(params) {

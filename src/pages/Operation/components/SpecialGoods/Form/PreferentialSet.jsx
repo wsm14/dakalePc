@@ -92,7 +92,6 @@ const PreferentialSet = ({
         relationOwnerInfoResps = [], //关联集团子门店
         settleInfoResp = {}, //结算人对象
       } = initialValues;
-      console.log(settleInfoResp);
       const { type } = buyLimitRuleObject; //购买上限
       // 商品类型： 特惠 自我游
       setGoodsType(initialValues.thirdInfoReq?.thirdType || '1');
@@ -139,16 +138,18 @@ const PreferentialSet = ({
         },
       );
       const { settlerType, settlerId, settlerName } = settleInfoResp;
-      fetchCopyGetMre(
-        ['merchant'].includes(settlerType) ? settlerName : undefined,
-        settlerType,
-        ['merchant'].includes(settlerType) ? undefined : settlerId,
-      );
+      if (settlerType !== 'admin') {
+        fetchCopyGetMre(
+          ['merchant'].includes(settlerType) ? settlerName : undefined,
+          settlerType,
+          ['merchant'].includes(settlerType) ? undefined : settlerId,
+        );
+      }
     }
   }, [initialValues.relateName]);
   useEffect(() => {
     //展示标签
-    getShowTags();
+    // getShowTags();
     getTagsPlat();
   }, []);
 
@@ -169,7 +170,6 @@ const PreferentialSet = ({
 
   // 结算人搜索店铺
   const fetchCopyGetMre = debounce((name, type, id, callback) => {
-    console.log(name, type, id);
     if (!name && !id) return;
     dispatch({
       type: 'baseData/fetchGetGroupCopyMreList',
@@ -318,7 +318,6 @@ const PreferentialSet = ({
         fetchCopyGetMre(val);
       },
       onChange: (val, data) => {
-        console.log(val);
         const { option } = data;
         const { businessStatus, status, districtCode } = option;
         form.setFieldsValue({
@@ -382,9 +381,6 @@ const PreferentialSet = ({
           ghost
           onClick={() => {
             setVisible(true);
-            saveMreData({
-              storeStatus: 'top',
-            });
           }}
           // disabled={commonDisabled}
         >
@@ -826,25 +822,25 @@ const PreferentialSet = ({
         },
       ],
     },
-    {
-      label: '展示标签',
-      name: 'displayFilterTags',
-      type: 'select',
-      mode: 'multiple',
-      placeholder: '请选择展示标签',
-      select: showTags,
-      fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
-      addRules: [
-        {
-          validator: (rule, value) => {
-            if (value.length > 3) {
-              return Promise.reject('最多选择3个标签');
-            }
-            return Promise.resolve();
-          },
-        },
-      ],
-    },
+    // {
+    //   label: '展示标签',
+    //   name: 'displayFilterTags',
+    //   type: 'select',
+    //   mode: 'multiple',
+    //   placeholder: '请选择展示标签',
+    //   select: showTags,
+    //   fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
+    //   addRules: [
+    //     {
+    //       validator: (rule, value) => {
+    //         if (value.length > 3) {
+    //           return Promise.reject('最多选择3个标签');
+    //         }
+    //         return Promise.resolve();
+    //       },
+    //     },
+    //   ],
+    // },
     {
       title: '结算设置',
       label: '结算人类型',
@@ -854,7 +850,6 @@ const PreferentialSet = ({
       select: SPECIAL_BALANCE_TYPE,
       onChange: (e) => {
         saveMreData({
-          storeStatus: 'bottom',
           settlerType: e.target.value,
         }); // 重置已选店铺数据
         form.setFieldsValue({ settlerId: undefined }); // 重置数据
@@ -870,7 +865,7 @@ const PreferentialSet = ({
       select: slectCopyList,
       disabled: editDisabled,
       onSearch: fetchCopyGetMre,
-      visible: !['platform'].includes(mreList.settlerType),
+      visible: !['admin'].includes(mreList.settlerType),
       onChange: (val, data) => {
         fetchCheckMreRate(val);
       },
@@ -939,9 +934,9 @@ const PreferentialSet = ({
       <MreSelect
         dispatchType={'baseData/fetchSkuAvailableMerchant'}
         rowKey="merchantId"
-        keys={['top'].includes(mreList.storeStatus) ? mreList.keys : mreList.settlerKeys}
+        keys={mreList.keys}
         visible={visible}
-        mreList={['top'].includes(mreList.storeStatus) ? mreList.keys : mreList.settlerList}
+        mreList={mreList.list}
         pagination={false}
         params={{ groupId: mreList.groupId }}
         onOk={(val) => {
