@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
 import debounce from 'lodash/debounce';
@@ -9,8 +9,17 @@ const SettlementEdit = (props) => {
 
   const [selectList, setSelectList] = useState([]);
 
+  useEffect(() => {
+    // 修改回显选择的商家
+    if (initialValues.supplierName) {
+      fetchGetSupplierList(initialValues.supplierName);
+    }
+  }, [initialValues.supplierName]);
+
   // 搜索
-  const fetchGetSearch = debounce((content) => {
+  const fetchGetSearch = debounce((content) => fetchGetSupplierList(content), 500);
+
+  const fetchGetSupplierList = (content) => {
     if (!content.replace(/'/g, '')) return;
     dispatch({
       type: 'baseData/fetchSearchSupplierManage',
@@ -19,7 +28,7 @@ const SettlementEdit = (props) => {
       },
       callback: setSelectList,
     });
-  }, 500);
+  };
 
   // 获取供应商详情 获取收款信息
   const fetchGetSupplierDetail = (supplierId) => {
@@ -29,9 +38,9 @@ const SettlementEdit = (props) => {
       callback: (detail) =>
         form.setFieldsValue({
           supplierName: detail.name,
-          legalPerson: detail.legalPerson,
-          cardNo: detail.cardNo,
-          bankBranchName: detail.bankBranchName,
+          legalPerson: detail?.ownerBankBindingInfo?.bankBindingInfoObject?.legalPerson,
+          cardNo: detail?.ownerBankBindingInfo?.bankNumber,
+          bankBranchName: detail?.ownerBankBindingInfo?.bankName,
         }),
     });
   };

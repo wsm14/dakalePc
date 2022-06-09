@@ -14,6 +14,14 @@ export const AMAP_KEY = 'b71a4bfb0ccc175459fdadf06cb0b1b7';
 // 高德地图js key
 export const AMAP_JS_KEY = 'ebb2511fda31f6cbf5c5c9a5d7e84e39';
 
+// 全局tag 颜色
+export const TAG_COLOR_TYPE = {
+  single: 'orange', // 单品
+  package: 'magenta', // 套餐
+  commerceGoods: 'cyan', // 电商商品
+  specialGoods: 'gold', // 特惠商品
+};
+
 // 排序纬度
 export const EXPERT_SORT_TYPE = {
   beanReward: '卡豆打赏额',
@@ -770,6 +778,14 @@ export const TEMPLATE_CREATE_TYPE = {
 
 // 分佣配置
 export const COMMISSION_TYPE = {
+  province: '省代分佣',
+  city: '地级市分佣',
+  district: '区县分佣',
+  userParent: '用户家主分佣',
+  merchantParent: '商家家主分佣',
+  daren: '哒人分佣',
+};
+export const COMMISSION_TYPE_COPY = {
   specialGoods: {
     province: '省代分佣',
     city: '地级市分佣',

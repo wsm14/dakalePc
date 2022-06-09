@@ -35,8 +35,8 @@ const SupplierBrandDrawer = (props) => {
             supplierId,
             supplierBrandId: detail.supplierBrandId,
             authorizeImg: res.toString(),
-            startDate: timeData[0].format('YYYY-MM-DD HH:mm'),
-            endDate: timeData[1].format('YYYY-MM-DD HH:mm'),
+            startDate: timeData[0].format('YYYY-MM-DD'),
+            endDate: timeData[1].format('YYYY-MM-DD'),
           },
           callback: () => {
             childRef.current.fetchGetData();
