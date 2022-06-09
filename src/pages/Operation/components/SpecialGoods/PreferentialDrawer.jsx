@@ -12,7 +12,7 @@ const PreferentialDrawer = (props) => {
   const { visible, dispatch, childRef, loading, onClose } = props;
 
   // add 新增，edit 活动中修改，again 重新发布
-  const { type = 'add', show = false, detail = {}, startDisabled, infoStatus } = visible;
+  const { type = 'add', show = false, detail = {}, startDisabled, infoStatus = 0 } = visible;
   const [form] = Form.useForm(); // add
   const [formEdit] = Form.useForm(); // edit
   const [formAgain] = Form.useForm(); // again 数据表单
@@ -136,7 +136,7 @@ const PreferentialDrawer = (props) => {
     editActive: type,
     setContent,
     startDisabled,
-    infoStatus,
+    infoStatus: Boolean(Number(infoStatus)),
   };
 
   // 统一处理弹窗
@@ -159,6 +159,8 @@ const PreferentialDrawer = (props) => {
             allowRefund: 1,
             allowExpireRefund: 1,
             expireRefund: 1,
+            timeSplit: '1,2,3,4,5,6,7',
+            timeType: '00:00-23:59',
           }}
           onValuesChange={setShowHtmlData}
         ></PreferentialSet>

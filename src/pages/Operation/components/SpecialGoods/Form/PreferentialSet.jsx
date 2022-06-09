@@ -67,7 +67,7 @@ const PreferentialSet = ({
     productType: 'single',
     activeTime: '', // 活动时间
     userTime: '', // 使用有效期
-    timeSplit: '', // 适用时段
+    timeSplit: '1,2,3,4,5,6,7', // 适用时段
     timeType: 'all', // 时段内时间选择
     buyRule: 'all', // 购买规则
     disabledDate: [], // 限制时间
@@ -406,7 +406,7 @@ const PreferentialSet = ({
       name: ['skuInfoReq', 'oriPrice'],
       type: 'number',
       precision: 2,
-      disabled: editDisabled,
+      disabled: editDisabled && infoStatus,
       min: 0,
       max: 999999.99,
       onChange: (e) => saveMreData({ oriPrice: e }),
@@ -429,7 +429,7 @@ const PreferentialSet = ({
       name: ['skuInfoReq', 'settlePrice'],
       type: 'number',
       precision: 2,
-      disabled: editDisabled,
+      disabled: editDisabled && infoStatus,
       min: 0,
       max: 999999.99,
       formatter: (value) => `￥ ${value}`,
@@ -442,10 +442,10 @@ const PreferentialSet = ({
               return Promise.reject('商家结算价不可超过售卖价格');
             }
             // “商家结算价不可超过N（结算价≤特惠价格*（1-费率））”
-            // const getPrice = buyPrice * (1 - mreList.ratio / 100);
-            // if (merchantPrice > getPrice) {
-            //   return Promise.reject(`商家结算价不可超过${getPrice}`);
-            // }
+            const getPrice = buyPrice * (1 - mreList.ratio / 100);
+            if (merchantPrice > getPrice) {
+              return Promise.reject(`商家结算价不可超过${getPrice}`);
+            }
             return Promise.resolve();
           },
         },
@@ -456,7 +456,7 @@ const PreferentialSet = ({
       type: 'radio',
       name: 'paymentModeType',
       select: BUSINESS_SALE_TYPE,
-      disabled: editDisabled,
+      disabled: editDisabled && infoStatus,
       onChange: (e) => {
         saveMreData({ paymentModeType: e.target.value });
       },
@@ -467,7 +467,7 @@ const PreferentialSet = ({
       name: ['skuInfoReq', 'sellPrice'],
       type: 'number',
       precision: 2,
-      disabled: editDisabled,
+      disabled: editDisabled && infoStatus,
       min: 0,
       max: 999999.99,
       formatter: (value) => `￥ ${value}`,
@@ -497,7 +497,7 @@ const PreferentialSet = ({
       name: ['skuInfoReq', 'sellBean'],
       type: 'number',
       precision: 0,
-      disabled: editDisabled,
+      disabled: editDisabled && infoStatus,
       min: 0,
       required: false,
       visible: mreList.paymentModeType == 'self',
@@ -542,7 +542,7 @@ const PreferentialSet = ({
       label: '活动时间',
       type: 'radio',
       select: COUPON_ACTIVE_TYPE,
-      disabled: editDisabled,
+      disabled: editDisabled && infoStatus,
       name: 'activityTimeRule',
       onChange: (e) => saveMreData({ activeTime: e.target.value }),
     },
@@ -551,7 +551,7 @@ const PreferentialSet = ({
       // name: 'activityStartTime',
       name: 'activityStartDate',
       type: 'rangePicker',
-      // disabled: editDisabled,
+      disabled: editDisabled && infoStatus,
       visible: mreList.activeTime === 'fixed',
       disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
       onChange: (val) => form.setFieldsValue({ activeDate: undefined }),
@@ -561,14 +561,14 @@ const PreferentialSet = ({
       type: 'radio',
       select: SPECIAL_USERTIME_TYPE,
       name: ['useTimeRuleObject', 'type'],
-      disabled: editDisabled,
+      disabled: editDisabled && infoStatus,
       onChange: (e) => saveMreData({ userTime: e.target.value }),
     },
     {
       label: '固定时间',
       name: 'startDate',
       type: 'rangePicker',
-      disabled: editDisabled,
+      disabled: editDisabled && infoStatus,
       visible: mreList.userTime === 'fixed',
       disabledDate: (time) => {
         const dates = form.getFieldValue('activityStartDate');
@@ -597,14 +597,14 @@ const PreferentialSet = ({
       max: 999,
       min: 0,
       precision: 0,
-      disabled: editDisabled,
+      disabled: editDisabled && infoStatus,
       visible: mreList.userTime === 'gain',
     },
     {
       label: '有效期天数',
       name: ['useTimeRuleObject', 'activeDays'],
       type: 'number',
-      disabled: editDisabled,
+      disabled: editDisabled && infoStatus,
       max: 999,
       min: 0,
       precision: 0,
@@ -614,6 +614,7 @@ const PreferentialSet = ({
       label: '适用时段',
       type: 'radio',
       select: COUPON_USER_TIME,
+      disabled: editDisabled && infoStatus,
       name: 'timeSplit',
       onChange: (e) => saveMreData({ timeSplit: e.target.value }),
     },
@@ -621,6 +622,7 @@ const PreferentialSet = ({
       label: '每周',
       type: 'checkbox',
       select: COUPON_WEEK_TIME,
+      disabled: editDisabled && infoStatus,
       name: 'useWeek',
       visible: mreList.timeSplit === 'part',
     },
@@ -628,6 +630,7 @@ const PreferentialSet = ({
       label: '时间选择',
       type: 'radio',
       select: COUPON_TIME_TYPE,
+      disabled: editDisabled && infoStatus,
       name: 'timeType',
       visible: mreList.timeSplit !== '',
       onChange: (e) => saveMreData({ timeType: e.target.value }),
@@ -636,15 +639,10 @@ const PreferentialSet = ({
       label: '设置时间段',
       name: 'useDay',
       type: 'timePicker',
+      disabled: editDisabled && infoStatus,
       order: false,
       visible: mreList.timeType === 'part',
     },
-    // {
-    //   label: '投放总量',
-    //   name: ['useTimeRuleObject', 'total'],
-    //   addRules: [{ pattern: NUM_INT_MAXEIGHT, message: '投放总量必须为整数，且不可为0' }],
-    //   suffix: '份',
-    // },
     {
       title: '设置购买规则',
       label: '购买上限',
