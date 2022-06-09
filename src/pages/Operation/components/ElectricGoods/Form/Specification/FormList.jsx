@@ -20,7 +20,7 @@ function FormList(props) {
   const [tieredModal, setTieredModal] = useState(false); // 设置阶梯价model
 
   useEffect(() => {
-    const list = form.getFieldValue('skuInfoReqs')[field.name]['batchLadderObjects'];
+    const list = form.getFieldValue('skuInfoReqs')[field.name]['batchLadderObjects'] || [];
     if (list.length > 0) {
       setBatchOnOff(true);
     }

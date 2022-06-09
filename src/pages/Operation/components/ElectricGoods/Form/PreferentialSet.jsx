@@ -68,7 +68,6 @@ const PreferentialSet = ({
     paymentModeType,
     postageRuleObject,
     buyLimitRuleObject,
-    divisionParamInfoResp,
   } = initialValues;
 
   useEffect(() => {
