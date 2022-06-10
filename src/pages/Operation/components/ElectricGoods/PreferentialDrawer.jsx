@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import { checkFileData } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
-import { getCityName } from '@/utils/utils';
 import PreferentialSet from './Form/PreferentialSet';
 
 const PreferentialDrawer = (props) => {
