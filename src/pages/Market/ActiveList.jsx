@@ -5,10 +5,10 @@ import QRCode from 'qrcode.react';
 import { ACTIVE_TEMPLATE_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import ExtraButton from '@/components/ExtraButton';
-import ActiveTemplateEdit from './components/template/ActiveTemplateEdit';
-import ActiveTemplateNameSet from './components/template/ActiveTemplateNameSet';
-import ShareImg from './components/ShareImg';
-import ModalTemplate from './components/Active/ModalTemplate';
+import ActiveTemplateEdit from './components/ActiveList/template/ActiveTemplateEdit';
+import ActiveTemplateNameSet from './components/ActiveList/template/ActiveTemplateNameSet';
+import ShareImg from './components/ActiveList/ShareImg';
+import ModalTemplate from './components/ActiveList/ModalTemplate';
 
 const ActiveListComponent = (props) => {
   const { activeList, loading, dispatch } = props;

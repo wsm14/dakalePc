@@ -1,10 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
-import Ellipsis from '@/components/Ellipsis';
 import { OPEN_GROUP_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
-import PopImgShow from '@/components/PopImgShow';
 import OpenGroupDetail from './components/OpenGroupList/OpenGroupDetail';
 
 const MarketActivity = (props) => {

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Card, Row, Col } from 'antd';
-import template1 from '../Img/template1.png';
-import template2 from '../Img/template2.png';
-import template3 from '../Img/template3.png';
+import template1 from './Img/template1.png';
+import template2 from './Img/template2.png';
+import template3 from './Img/template3.png';
 import ActiveTemplateEdit from './ActiveTemplateEdit';
 import ActiveTemplateNameSet from './ActiveTemplateNameSet';
 

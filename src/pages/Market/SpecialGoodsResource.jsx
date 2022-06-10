@@ -14,8 +14,8 @@ import QuestionTooltip from '@/components/QuestionTooltip';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import ExtraButton from '@/components/ExtraButton';
-import GoodResourceSet from './components/GoodResourceSet';
-import WeightSet from './components/WeightSet';
+import GoodResourceSet from './components/SpecialGoodsResource/GoodResourceSet';
+import WeightSet from './components/SpecialGoodsResource/WeightSet';
 import { checkCityName } from '@/utils/utils';
 
 const SpecialGoodsResource = (props) => {
