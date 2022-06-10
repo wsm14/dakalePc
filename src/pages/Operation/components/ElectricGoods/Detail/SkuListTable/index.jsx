@@ -138,7 +138,7 @@ const SkuListTable = (props) => {
       scroll={{ x: 'max-content', y: 400 }}
       noCard={false}
       columns={getColumns}
-      rowKey={(record, index) => `${record.skuCode}${index}`}
+      rowKey={(record, index) => `${record.stockId}${index}`}
       list={skuInfoReqs}
       total={skuInfoReqs.length || 0}
     ></TableDataBlock>

@@ -28,7 +28,7 @@ const ConnectedGoodsModal = (props) => {
   const [visibleDrawer, setVisibleDrawer] = useState(false);
 
   useEffect(() => {
-    childRef.current && childRef.current.fetchGetData({ goodsType: tabKey });
+    childRef.current && childRef.current.fetchGetData({ goodsType: tabKey, page: 1 });
   }, [tabKey]);
 
   // 搜索参数
@@ -56,7 +56,7 @@ const ConnectedGoodsModal = (props) => {
       dataIndex: 'goodsName',
       render: (val, row) => (
         <div>
-          <Ellipsis length={8} tooltip>
+          <Ellipsis length={13} tooltip>
             {val}
           </Ellipsis>
           <div style={{ marginTop: 5 }}>{row.goodsId}</div>
@@ -114,7 +114,7 @@ const ConnectedGoodsModal = (props) => {
         configGoodsTagRelatedGoodsList: list,
       },
       callback: () => {
-        childRef.current.fetchGetData();
+        childRef.current.fetchGetData({ checkOnly: configGoodsList.list.length === 1 });
         callback && callback();
       },
     });
@@ -139,15 +139,17 @@ const ConnectedGoodsModal = (props) => {
         onCancel={onClose}
       >
         <TableDataBlock
+          tableSize="small"
           cardProps={{
             tabList: tabList,
             activeTabKey: tabKey,
             onTabChange: setTabKey,
             tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
           }}
-          size="middle"
+          scroll={{ y: 400 }}
           cRef={childRef}
           loading={loading}
+          searchCol={{ xxl: 12 }}
           searchItems={searchItems}
           columns={getColumns}
           params={{ goodsTagId: id, goodsType: tabKey }}
