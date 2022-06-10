@@ -154,7 +154,7 @@ const RegularDetail = (props) => {
       // show: detail.goodsTagList,
       render: (val, row) => {
         const { platformTagNames } = row;
-        const tags = platformTagNames.split(',');
+        const tags = platformTagNames?.split(',') || [];
         return (
           <>
             {tags &&
