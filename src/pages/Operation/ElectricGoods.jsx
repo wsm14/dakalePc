@@ -15,7 +15,7 @@ import PreferentialDrawer from './components/ElectricGoods/PreferentialDrawer';
 import ElectricGoodDetail from './components/ElectricGoods/ElectricGoodDetail';
 import RemainModal from './components/ElectricGoods/Detail/RemainModal';
 import ShareImg from './components/ElectricGoods/ShareImg';
-import TableModal from './components/ElectricGoods/Detail/TableModal';
+import SkuTableModal from './components/ElectricGoods/Detail/SkuTableModal';
 
 // tab栏列表
 const tabList = [
@@ -387,10 +387,10 @@ const ElectricGoods = (props) => {
       {/* 分享配置 */}
       <ShareImg visible={visibleShare} onClose={() => setVisibleShare(false)}></ShareImg>
       {/* 查看佣金、库存 */}
-      <TableModal
+      <SkuTableModal
         visible={visibleCommission}
         onClose={() => setVisibleCommission(false)}
-      ></TableModal>
+      ></SkuTableModal>
     </>
   );
 };
