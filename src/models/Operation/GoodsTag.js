@@ -8,6 +8,7 @@ import {
   fetchConfigGoodsList,
   fetchConfigGoodsDel,
   fetchConfigGoodsAdd,
+  fetchTagSortSet,
 } from '@/services/OperationServices';
 
 export default {
@@ -98,6 +99,15 @@ export default {
     },
     *fetchGoodsTagSwitchStatus({ payload, callback }, { call }) {
       const response = yield call(fetchGoodsTagSwitchStatus, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '修改成功',
+      });
+      callback();
+    },
+    *fetchTagSortSet({ payload, callback }, { call }) {
+      const response = yield call(fetchTagSortSet, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',

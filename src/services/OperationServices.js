@@ -757,6 +757,14 @@ export function fetchConfigGoodsDel(data) {
   });
 }
 
+// 商品标签 - 权重设置
+export function fetchTagSortSet(data) {
+  return request('/admin/goodsTag/batchRemoveConfigGoodsTagRelatedGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 分类列表 end
 
 // 优惠券管理

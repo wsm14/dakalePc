@@ -7,6 +7,7 @@ import PopImgShow from '@/components/PopImgShow';
 import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import GoodsSelectModal from '@/components/GoodsSelectModal';
+import SortValueSet from '@/components/FormListCondition/SortValueSet';
 
 const tabList = [
   {
@@ -20,7 +21,7 @@ const tabList = [
 ];
 
 const ConnectedGoodsModal = (props) => {
-  const { visible, onClose, dispatch, configGoodsList, loading } = props;
+  const { visible, onClose, dispatch, configGoodsList, loading, loadingSort } = props;
   const { show = false, id, name } = visible;
 
   const childRef = useRef();
@@ -52,7 +53,6 @@ const ConnectedGoodsModal = (props) => {
     },
     {
       title: '商品名称/ID',
-      align: 'center',
       dataIndex: 'goodsName',
       render: (val, row) => (
         <div>
@@ -80,6 +80,19 @@ const ConnectedGoodsModal = (props) => {
       title: '零售价',
       align: 'center',
       dataIndex: 'price',
+    },
+    {
+      title: '权重',
+      align: 'center',
+      dataIndex: 'sortValue',
+      render: (val, row) => (
+        <SortValueSet
+          value={val}
+          valueKey="sortValue"
+          loading={loadingSort}
+          onSubmit={(val) => fetchSortSet({ goodsId: row.goodsId, ...val })}
+        ></SortValueSet>
+      ),
     },
     {
       title: '商品状态',
@@ -116,6 +129,17 @@ const ConnectedGoodsModal = (props) => {
       callback: () => {
         childRef.current.fetchGetData({ checkOnly: configGoodsList.list.length === 1 });
         callback && callback();
+      },
+    });
+  };
+
+  // 修改权重
+  const fetchSortSet = (values) => {
+    dispatch({
+      type: 'goodsTag/fetchTagSortSet',
+      payload: values,
+      callback: () => {
+        childRef.current.fetchGetData();
       },
     });
   };
@@ -183,4 +207,5 @@ export default connect(({ goodsTag, loading }) => ({
   loading:
     loading.effects['goodsTag/fetchConfigGoodsList'] ||
     loading.effects['goodsTag/fetchConfigGoodsSet'],
+  loadingSort: loading.effects['goodsTag/fetchTagSortSet'],
 }))(ConnectedGoodsModal);
