@@ -48,12 +48,14 @@ const EditionModal = (props) => {
     onCancel: onClose,
     onOk: handleOk,
   };
+
   return (
     <Modal destroyOnClose {...modalProps} loading={loading}>
       <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>
     </Modal>
   );
 };
+
 export default connect(({ loading }) => ({
   loading:
     loading.effects['walkingManage/fetchGetSelfTourGoodsAdd'] ||

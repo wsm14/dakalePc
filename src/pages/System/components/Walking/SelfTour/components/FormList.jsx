@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Space, InputNumber } from 'antd';
 import { MinusCircleOutlined, UpSquareOutlined, DownSquareOutlined } from '@ant-design/icons';
 import Ellipsis from '@/components/Ellipsis';
-
 import styles from './index.less';
 
 const FormList = (props) => {
@@ -14,7 +13,6 @@ const FormList = (props) => {
   }, [field]);
 
   const goodsItem = form.getFieldValue(type)[field.name];
-  console.log('goodsItem', goodsItem);
 
   return (
     <div className={styles.productContent}>
@@ -44,7 +42,7 @@ const FormList = (props) => {
               </div>
               <div className={styles.listItem_info}>
                 <div>商品名称：{goodsItem.goodsName}</div>
-                <div>售价：{goodsItem.buyFlag === '0' ? '免费' : `￥${goodsItem.realPrice}`}</div>
+                <div>售价：{goodsItem.buyFlag === '0' ? '免费' : `￥${goodsItem.sellPrice}`}</div>
                 <div>
                   <span className={styles.tip}>原价：￥{goodsItem.oriPrice}</span>
                 </div>

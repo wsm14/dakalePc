@@ -23,7 +23,6 @@ const TabConfigure = (props) => {
     },
     {
       type: 'handle',
-      // align: 'center',
       dataIndex: 'configSelfTourGoodsId',
       render: (val, row) => [
         {

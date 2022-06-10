@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -21,8 +21,8 @@ const SelfDrawer = (props) => {
         payload: {
           configSelfTourGoodsId,
           activityGoodsObjectList: specialGoods.map((item) => ({
-            activityGoodsId: item.specialGoodsId,
-            ownerId: item.ownerIdString,
+            activityGoodsId: item.goodsId,
+            ownerId: item.ownerId,
           })),
           flag: 'updateConfig',
         },
@@ -39,12 +39,7 @@ const SelfDrawer = (props) => {
       label: '选择特惠商品',
       name: 'specialGoodsIds',
       type: 'formItem',
-      // required: true,
-      formItem: (
-        <>
-          <ShareCoupon type="specialGoods" form={form}></ShareCoupon>
-        </>
-      ),
+      formItem: <ShareCoupon type="specialGoods" form={form}></ShareCoupon>,
     },
   ];
 
@@ -66,6 +61,6 @@ const SelfDrawer = (props) => {
   );
 };
 
-export default connect(({ walkingManage, loading, sysTradeList }) => ({
+export default connect(({ loading }) => ({
   loading: loading.models.walkingManage,
 }))(SelfDrawer);

@@ -1,13 +1,11 @@
 import React from 'react';
-import { connect } from 'umi';
-import { Form, Modal } from 'antd';
+import { Modal } from 'antd';
 import TabTable from './CityTable';
 
 const TabModal = (props) => {
-  const { visible = {}, onClose, dispatch, loading, childRef, tabKey } = props;
-  const { show = false, type, detail = {} } = visible;
+  const { visible = {}, onClose, tabKey } = props;
+  const { show = false, detail = {} } = visible;
   const { version } = detail;
-  const [form] = Form.useForm();
 
   const modalProps = {
     title: `${{ iOS: 'iOS', android: 'Android' }[tabKey]}-${detail?.version}-编辑`,
@@ -18,12 +16,12 @@ const TabModal = (props) => {
     footer: false,
     bodyStyle: { overflowY: 'auto', maxHeight: 600 },
   };
+
   return (
-    <Modal destroyOnClose {...modalProps} loading={loading}>
+    <Modal destroyOnClose {...modalProps}>
       <TabTable version={version} tabKey={tabKey}></TabTable>
     </Modal>
   );
 };
-export default connect(({ loading }) => ({
-  loading: loading.effects['walkingManage/fetchGetSelfTourCityList'],
-}))(TabModal);
+
+export default TabModal;
