@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal } from 'antd';
-import ActiveTemplate from '../template/ActiveTemplate';
+import ActiveTemplate from './template/ActiveTemplate';
 
 const ModalTemplate = (props) => {
   const { visible, onClose } = props;
