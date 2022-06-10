@@ -47,7 +47,6 @@ const SkuListTable = (props) => {
     {
       title: 'SKU码',
       dataIndex: 'skuCode',
-      fixed: true,
       width: 110,
       ellipsis: true,
       show: customSize.length != 0,
@@ -55,7 +54,6 @@ const SkuListTable = (props) => {
     {
       title: `${customSize.map((item) => item.name).join('/')}`,
       dataIndex: type == 'info' ? 'attributes' : 'skuAttributeResps',
-      fixed: true,
       render: (val) => val.map((item) => item.value).join('/'),
       show: customSize.length != 0,
     },
