@@ -81,6 +81,7 @@ const SkuListTable = (props) => {
     {
       title: '批采价',
       dataIndex: 'batchLadderObjects',
+      align: 'center',
       show: sellType == 'batch',
       render: (val, row) => (
         <Popover
