@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
@@ -20,7 +19,6 @@ const ElectricGoodDetail = (props) => {
   const { show = false, index, detail = {}, status } = visible;
   const { categoryNode, customSize = [] } = detail;
 
-  const [form] = Form.useForm();
   const [commissionShow, setCommissionShow] = useState(false); // 佣金设置显示隐藏
   const [manualList, setManualList] = useState([]); // 分佣模版字段
 
@@ -281,9 +279,6 @@ const ElectricGoodDetail = (props) => {
 
   return (
     <DrawerCondition {...modalProps}>
-      {/* 驳回原因
-      {status == '4' && <Alert message={`驳回原因：${detail.failureReason}`} type="error" banner />} */}
-      {/* 信息展示 */}
       <DescriptionsCondition
         title="基础信息"
         formItems={BasicsformItems}
@@ -326,10 +321,6 @@ const ElectricGoodDetail = (props) => {
         formItems={GoodsformItems}
         initialValues={detail}
       ></DescriptionsCondition>
-      {/* 审核时输入 其他平台价格
-      {status == '3' && (
-        <FormCondition formItems={formItems} form={form} style={{ marginTop: 10 }}></FormCondition>
-      )} */}
     </DrawerCondition>
   );
 };
