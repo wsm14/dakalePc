@@ -67,6 +67,8 @@ const PreferentialDrawer = (props) => {
         cityList = [],
         useTimeRuleObject = {},
         useDay,
+        skuInfoReq, //价格对象
+        paymentModeType,
         ...other
       } = values;
       const aimg = checkFileData(goodsBriefImg);
@@ -99,6 +101,11 @@ const PreferentialDrawer = (props) => {
               settlerId: settlerType === 'admin' ? '-1' : settlerId,
               settlerType: settlerType,
             },
+            skuInfoReq: {
+              ...skuInfoReq,
+              sellPrice: paymentModeType === 'free' ? 0 : skuInfoReq?.sellPrice,
+            },
+            paymentModeType,
             availableAreas: availableAreas === 'all' ? availableAreas : cityIds.toString(),
             useTimeRuleObject: {
               ...useTimeRuleObject,

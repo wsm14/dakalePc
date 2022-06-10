@@ -206,11 +206,7 @@ const PreferentialSet = ({
         tagType: 'platform',
       },
       callback: (list) => {
-        const tagList = list.map((item) => {
-          if (item.status === '1') {
-            return item;
-          }
-        });
+        const tagList = list.filter((item) => item.status === '1');
         setGoodsTaglist([...tagList]);
       },
     });
