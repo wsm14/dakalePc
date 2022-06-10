@@ -46,6 +46,8 @@ const SkuListTable = (props) => {
       title: 'SKU码',
       dataIndex: 'skuCode',
       fixed: true,
+      width: 110,
+      ellipsis: true,
       show: customSize.length != 0,
     },
     {
