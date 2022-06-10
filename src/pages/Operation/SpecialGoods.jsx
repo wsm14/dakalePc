@@ -1,13 +1,8 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
 import { Tag } from 'antd';
-import {
-  BUSINESS_TYPE,
-  SPECIAL_STATUS,
-  GOODS_CLASS_TYPE,
-  SPECIAL_RECOMMEND_TYPE,
-} from '@/common/constant';
+import { BUSINESS_TYPE, SPECIAL_STATUS, GOODS_CLASS_TYPE, TAG_COLOR_TYPE } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
@@ -20,27 +15,16 @@ import ShareImg from './components/SpecialGoods/ShareImg';
 import { checkCityName, changeTime } from '@/utils/utils';
 
 const SpecialGoods = (props) => {
-  const { specialGoods, loading, loadings, hubData, dispatch } = props;
+  const { specialGoods, loading, loadings, dispatch } = props;
   const { list } = specialGoods;
 
   const childRef = useRef();
-  const [tabKey, setTabKey] = useState('0'); // tab
   const [visibleSet, setVisibleSet] = useState(false); // 新增特惠活动
-  const [searchType, setSearchType] = useState(null); // 搜索类型
-  // const [goodsList, setGoodsList] = useState([]); // 选择推荐的商品
   const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 审核拒绝 下架原因
   const [qrcode, setQrcode] = useState({ url: null, title: '' }); // 商品码
   const [visibleRemain, setVisibleRemain] = useState(false);
   const [visibleShare, setVisibleShare] = useState(false);
-
-  const search_recommend = { notPromoted: '未推广', ...SPECIAL_RECOMMEND_TYPE };
-
-  // useEffect(() => {
-  //   if (childRef.current) {
-  //     childRef.current.fetchGetData();
-  //   }
-  // }, []);
 
   // 搜索参数
   const searchItems = [
@@ -51,7 +35,6 @@ const SpecialGoods = (props) => {
     {
       label: '集团/店铺名',
       name: 'relateName',
-      // type: 'merchant',
     },
     {
       label: '活动状态',
@@ -59,86 +42,6 @@ const SpecialGoods = (props) => {
       type: 'select',
       select: SPECIAL_STATUS,
     },
-    // {
-    //   label: '商品状态',
-    //   name: 'deleteFlag',
-    //   type: 'select',
-    //   allItem: false,
-    //   select: ['已删除', '未删除'],
-    // },
-    // {
-    //   label: '活动有效期',
-    //   type: 'rangePicker',
-    //   name: 'activityStartDate',
-    //   end: 'activityEndDate',
-    //   disabledDate: () => false,
-    // },
-    // {
-    //   label: '使用有效期',
-    //   type: 'select',
-    //   name: 'useTimeRule',
-    //   allItem: false,
-    //   select: SPECIAL_USERTIME_TYPE,
-    //   handle: (form) => ({
-    //     onChange: (val) => {
-    //       setSearchType(val);
-    //       form.setFieldsValue({ gain: undefined });
-    //     },
-    //   }),
-    // },
-    // {
-    //   label: '有效期',
-    //   name: { gain: 'activeDays', fixed: 'startDate' }[searchType],
-    //   disabled: !searchType,
-    //   disabledDate: () => false,
-    //   type: { gain: 'number', fixed: 'rangePicker' }[searchType],
-    //   end: 'endDate',
-    // },
-    // {
-    //   label: '佣金',
-    //   name: 'commission',
-    //   type: 'numberGroup',
-    // },
-    // {
-    //   label: '推广位置',
-    //   type: 'select',
-    //   show: tabKey === '0',
-    //   name: 'promotionLocation',
-    //   select: search_recommend,
-    // },
-    // {
-    //   label: '区域',
-    //   name: 'city',
-    //   type: 'cascader',
-    //   changeOnSelect: true,
-    //   valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-    //   onChange: (val) => val.length === 3 && fetchGetHubSelect(val[2]),
-    // },
-    // {
-    //   label: '商圈',
-    //   name: 'businessHubId',
-    //   type: 'select',
-    //   loading: loadings.models.baseData,
-    //   allItem: false,
-    //   select: hubData,
-    //   fieldNames: { label: 'businessHubName', value: 'businessHubIdString' },
-    // },
-    // {
-    //   label: '店铺类型',
-    //   name: 'ownerType',
-    //   type: 'select',
-    //   select: BUSINESS_TYPE,
-    // },
-    // {
-    //   label: '创建时间',
-    //   type: 'rangePicker',
-    //   name: 'createStartTime',
-    //   end: 'createEndTime',
-    // },
-    // {
-    //   label: '创建人',
-    //   name: 'creatorName',
-    // },
   ];
 
   // table 表头
@@ -164,18 +67,12 @@ const SpecialGoods = (props) => {
             }}
           >
             <div style={{ display: 'flex' }}>
-              <Tag color={row.productType === 'single' ? 'orange' : 'magenta'}>
-                {GOODS_CLASS_TYPE[row.productType]}
-              </Tag>
+              <Tag color={TAG_COLOR_TYPE[row.productType]}>{GOODS_CLASS_TYPE[row.productType]}</Tag>
               <Ellipsis length={10} tooltip>
                 {val}
               </Ellipsis>
             </div>
-            <div style={{ display: 'flex', marginTop: 5 }}>
-              <Ellipsis length={10} tooltip>
-                {row.goodsId}
-              </Ellipsis>
-            </div>
+            <div style={{ display: 'flex' }}>{row.goodsId}</div>
           </div>
         </div>
       ),
@@ -200,11 +97,7 @@ const SpecialGoods = (props) => {
                 {row.relateName}
               </Ellipsis>
             </div>
-            <div style={{ display: 'flex', marginTop: 5 }}>
-              <Ellipsis length={10} tooltip>
-                {checkCityName(row.districtCode)}
-              </Ellipsis>
-            </div>
+            <div style={{ display: 'flex' }}>{checkCityName(row.districtCode)}</div>
           </div>
         </div>
       ),
@@ -269,7 +162,7 @@ const SpecialGoods = (props) => {
 
     {
       title: '剩余库存',
-      align: 'center',
+      align: 'right',
       dataIndex: 'remain',
       sorter: (a, b) => a.remain - b.remain,
     },
@@ -281,7 +174,7 @@ const SpecialGoods = (props) => {
     },
     {
       title: '商品状态',
-      align: 'right',
+      align: 'center',
       dataIndex: 'status',
       render: (val, row) => {
         const { activityStartDate, activityEndDate, status } = row;
@@ -548,10 +441,8 @@ const SpecialGoods = (props) => {
   );
 };
 
-export default connect(({ specialGoods, baseData, loading }) => ({
+export default connect(({ specialGoods, loading }) => ({
   specialGoods,
-  // hubData: baseData.hubData,
-  // loading: loading.models.specialGoods,
   loading: loading.effects['specialGoods/fetchGetList'],
   loadings: loading,
 }))(SpecialGoods);
