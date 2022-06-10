@@ -14,6 +14,29 @@ export const AMAP_KEY = 'b71a4bfb0ccc175459fdadf06cb0b1b7';
 // 高德地图js key
 export const AMAP_JS_KEY = 'ebb2511fda31f6cbf5c5c9a5d7e84e39';
 
+// 全局tag 颜色
+export const TAG_COLOR_TYPE = {
+  single: 'orange', // 单品
+  package: 'magenta', // 套餐
+  commerceGoods: 'cyan', // 电商商品
+  specialGoods: 'gold', // 特惠商品
+  goodsBuy: {
+    universal: '#87d068', // 商品通用券
+    category: '#2db7f5', // 行业商品券
+    merchant: '#108ee9', // 店铺商品券
+    goods: '#f50', // 指定商品券
+  },
+  // scan: '扫码',
+  virtual: {
+    universal: '#a85bad', // 虚拟通用券
+    goods: '#bfa4c1', // 指定虚拟券
+  },
+  commerce: {
+    universal: '#6897ff', // 电商通用券
+    goods: '#1b851e', // 指定电商券,
+  },
+};
+
 // 排序纬度
 export const EXPERT_SORT_TYPE = {
   beanReward: '卡豆打赏额',
@@ -114,6 +137,14 @@ export const BUSINESS_STATUS = ['禁用', '启用'];
 
 // 店铺 类型
 export const BUSINESS_TYPE = { merchant: '单店', group: '集团' };
+
+//售卖价格类型
+export const BUSINESS_SALE_TYPE = {
+  defaultMode: '现金（可用卡豆抵扣）',
+  cashMode: '现金（不可用卡豆抵扣）',
+  self: '卡豆+现金',
+  free: '免费',
+};
 
 // 店铺 审核状态 '待审核', '审核中', '审核驳回', '审核通过'
 export const BUSINESS_STATUS_AUDIT = ['待审核', '审核中', '审核驳回', '审核通过'];
@@ -246,7 +277,7 @@ export const NEWUSER_STATUS_TYPE = ['即将开始', '上架中', '已结束'];
 
 // 周边特惠 - 上架状态 0-已下架 1-活动中 2-即将开始 3-审核中 4-未通过
 // export const SPECIAL_STATUS = ['已下架', '活动中', '即将开始', '审核中', '未通过'];
-export const SPECIAL_STATUS = ['已下架', '活动中'];
+export const SPECIAL_STATUS = ['已下架', '上架中'];
 
 // 店铺标签状态
 export const MRE_TAG_STATUS = ['停用', '启用'];
@@ -618,7 +649,54 @@ export const SPECIAL_RECOMMEND_TYPE = {
 export const SPECIAL_RECOMMEND_DELSTATUS = ['已删除', '未删除'];
 
 // 特惠活动 - 介绍类型
-export const SPECIAL_DESC_TYPE = ['图文介绍', '富文本'];
+export const SPECIAL_DESC_TYPE = {
+  imgText: '图文',
+  richText: '富文本',
+};
+
+// 特惠活动 - 前端展示类型
+export const SPECIAL_SHOW_TYPE = {
+  defaultMode: {
+    manualOrList: '手动/列表展示',
+    manual: '仅手动展示',
+    notDisplay: '不展示',
+  },
+  self: {
+    manualOrList: '手动/列表展示',
+    manual: '仅手动展示',
+    notDisplay: '不展示',
+  },
+  cashMode: {
+    manualOrList: '手动/列表展示',
+    manual: '仅手动展示',
+    notDisplay: '不展示',
+  },
+  free: {
+    manual: '仅手动展示',
+    notDisplay: '不展示',
+  },
+};
+
+//特惠活动 - 展示范围
+export const SPECIAL_AREA_TYPE = {
+  all: '全国',
+  city: '按市选择',
+};
+//特惠活动 - 结算人类型
+export const SPECIAL_BALANCE_TYPE = {
+  merchant: '店铺',
+  group: '集团',
+  admin: '平台',
+};
+
+//特惠活动 - 分佣比例
+export const SPECIAL_COMMISSOM_TYPE = {
+  provinceBean: '省代分佣',
+  cityBean: '市级分佣',
+  districtBean: '区县分佣',
+  userParentBean: '用户家主分佣',
+  darenBean: '商家家主分佣',
+};
 
 // 新手视频 - 状态 1-上架 3-下架
 export const VIDEO_NOVICE_STATUS = [false, '上架中', false, '已下架'];
@@ -724,6 +802,14 @@ export const TEMPLATE_CREATE_TYPE = {
 
 // 分佣配置
 export const COMMISSION_TYPE = {
+  province: '省代分佣',
+  city: '地级市分佣',
+  district: '区县分佣',
+  userParent: '用户家主分佣',
+  merchantParent: '商家家主分佣',
+  daren: '哒人分佣',
+};
+export const COMMISSION_TYPE_COPY = {
   specialGoods: {
     province: '省代分佣',
     city: '地级市分佣',

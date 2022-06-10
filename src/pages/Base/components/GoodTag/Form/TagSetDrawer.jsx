@@ -31,7 +31,6 @@ const ClassifySet = (props) => {
         payload: {
           ...values,
           configGoodsTagId,
-          configGoodsTagCategoryList: noRepetCateArr,
         },
         callback: () => {
           onClose();
@@ -60,7 +59,7 @@ const ClassifySet = (props) => {
       name: 'identification',
       placeholder: '请输入英文',
       addRules: [{ pattern: ONLY_ENGLISH_PATTERN, message: '请输入英文' }],
-      extra: '唯一标识只能输入英文',
+      extra: '唯一标识只能输入英文，且不可修改',
       visible: detail.tagType === 'show',
       disabled: mode === 'edit',
     },

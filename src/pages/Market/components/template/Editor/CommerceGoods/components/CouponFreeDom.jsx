@@ -15,7 +15,6 @@ export const goodsDom = (item = {}, idArr = [], handleSelect) => {
         className={`share_Coupon share_item ${
           idArr.findIndex((ci) => ci.specialGoodsId === specialGoodsId) > -1 && 'select'
         }`}
-        style={{ marginBottom: 6 }}
         onClick={() => handleSelect && handleSelect(item)}
       >
         <div

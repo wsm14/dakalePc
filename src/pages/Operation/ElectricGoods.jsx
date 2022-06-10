@@ -7,7 +7,6 @@ import {
   ELECTRICGOODS_SELL_PRICE_TYPE,
 } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
-import debounce from 'lodash/debounce';
 import ExtraButton from '@/components/ExtraButton';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
@@ -16,7 +15,7 @@ import PreferentialDrawer from './components/ElectricGoods/PreferentialDrawer';
 import ElectricGoodDetail from './components/ElectricGoods/ElectricGoodDetail';
 import RemainModal from './components/ElectricGoods/Detail/RemainModal';
 import ShareImg from './components/ElectricGoods/ShareImg';
-import TableModal from './components/ElectricGoods/Detail/TableModal';
+import SkuTableModal from './components/ElectricGoods/Detail/SkuTableModal';
 
 // tab栏列表
 const tabList = [
@@ -113,17 +112,12 @@ const ElectricGoods = (props) => {
               {val}
             </Ellipsis>
           </div>
-          <div style={{ display: 'flex', marginTop: 5 }}>
-            <Ellipsis length={10} tooltip>
-              {row?.goodsId}
-            </Ellipsis>
-          </div>
+          <div style={{ display: 'flex', marginTop: 5 }}>{row?.goodsId}</div>
         </div>
       ),
     },
     {
       title: '所属类目/供应商',
-      align: 'right',
       dataIndex: 'categoryName',
       render: (val, row) => (
         <div>
@@ -393,10 +387,10 @@ const ElectricGoods = (props) => {
       {/* 分享配置 */}
       <ShareImg visible={visibleShare} onClose={() => setVisibleShare(false)}></ShareImg>
       {/* 查看佣金、库存 */}
-      <TableModal
+      <SkuTableModal
         visible={visibleCommission}
         onClose={() => setVisibleCommission(false)}
-      ></TableModal>
+      ></SkuTableModal>
     </>
   );
 };

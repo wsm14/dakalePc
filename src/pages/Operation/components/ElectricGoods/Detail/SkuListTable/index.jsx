@@ -17,17 +17,20 @@ const SkuListTable = (props) => {
       {
         title: '批采价',
         dataIndex: 'unitPrice',
+        align: 'right',
         render: (val) => `￥${val}`,
       },
       {
         title: '结算价',
         dataIndex: 'settlePrice',
+        align: 'right',
         render: (val) => `￥${val}`,
       },
     ];
 
     return (
       <TableDataBlock
+        tableSize="small"
         noCard={false}
         rowKey={(record, index) => `${record.miniNum}${index}`}
         pagination={false}
@@ -58,11 +61,13 @@ const SkuListTable = (props) => {
     },
     {
       title: '最小起订量',
+      align: 'right',
       dataIndex: 'minPurchaseNum',
       show: type == 'info' && sellType == 'batch',
     },
     {
       title: '原价',
+      align: 'right',
       dataIndex: 'oriPrice',
       show: type == 'info' || sellType == 'batch',
       render: (val) => `￥${val}`,
@@ -70,6 +75,7 @@ const SkuListTable = (props) => {
     {
       title: '批采价',
       dataIndex: 'batchLadderObjects',
+      align: 'right',
       show: sellType == 'batch',
       render: (val, row) => (
         <Popover
@@ -85,12 +91,14 @@ const SkuListTable = (props) => {
     {
       title: '成本价',
       dataIndex: 'costPrice',
+      align: 'right',
       render: (val) => `￥${val}`,
       show: type == 'info' && sellType == 'single',
     },
     {
       title: '零售价',
       dataIndex: 'sellPrice',
+      align: 'right',
       render: (val) => `￥${val}`,
       show: sellType == 'single',
     },
@@ -103,17 +111,20 @@ const SkuListTable = (props) => {
     {
       title: '佣金',
       dataIndex: 'commission',
+      align: 'right',
       show: type == 'listSee' && sellType == 'single',
       render: (val, row) => `￥${val}`,
     },
     {
       title: '商品库存',
+      align: 'right',
       dataIndex: type == 'info' ? 'initStock' : 'remain',
     },
   ];
 
   return (
     <TableDataBlock
+      tableSize="small"
       scroll={{ x: 'max-content', y: 400 }}
       noCard={false}
       columns={getColumns}

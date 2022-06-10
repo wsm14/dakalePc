@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const ShowTag = (props) => {
-  const { goodsTag, loading, dispatch, childRef, setVisible, tabkey } = props;
+  const { goodsTag, loading, dispatch, childRef, setVisible, setVisibleGoods, tabkey } = props;
 
   // 搜索参数
   const searchItems = [
@@ -40,27 +40,24 @@ const ShowTag = (props) => {
       align: 'right',
       type: 'switch',
       dataIndex: 'status',
-      render: (val, row) => {
-        const { configGoodsTagId } = row;
-        return {
-          auth: 'edit',
-          noAuth: val === '1' ? '启用' : '停用',
-          checked: val === '1',
-          onClick: () => fetchSet({ configGoodsTagId, status: 1 ^ Number(val) }),
-        };
-      },
+      render: (val, { configGoodsTagId }) => ({
+        auth: 'edit',
+        noAuth: val === '1' ? '启用' : '停用',
+        checked: val === '1',
+        onClick: () => fetchSet({ configGoodsTagId, status: 1 ^ Number(val) }),
+      }),
     },
     {
       type: 'handle',
       dataIndex: 'configGoodsTagId',
       render: (val, record) => [
         {
+          type: 'connectedGoods',
+          click: () => setVisibleGoods({ show: true, id: val, name: record.tagName }),
+        },
+        {
           type: 'edit',
-          click: () =>
-            setVisible({
-              mode: 'edit',
-              detail: { ...record, tagType: tabkey },
-            }),
+          click: () => setVisible({ mode: 'edit', detail: { ...record, tagType: tabkey } }),
         },
       ],
     },
@@ -85,5 +82,5 @@ const ShowTag = (props) => {
 
 export default connect(({ goodsTag, loading }) => ({
   goodsTag,
-  loading: loading.models.goodsTag,
+  loading: loading.effects['goodsTag/fetchGoodsTagList'],
 }))(ShowTag);

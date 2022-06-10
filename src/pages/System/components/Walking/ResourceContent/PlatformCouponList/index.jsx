@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Form, Button } from 'antd';
-import { commerceDom, goodsDom } from './CouponFreeDom';
 import FormList from './FormList';
-import './coupon.less';
 
 const ShareCoupon = (props) => {
-  const { type = '', form, initialValues } = props;
+  const { type = '', form } = props;
 
   return (
     <>
@@ -34,11 +32,11 @@ const ShareCoupon = (props) => {
                   field={field}
                   remove={remove}
                   move={move}
-                  initialValues={initialValues}
+                  initialValues={form.getFieldsValue(true)}
                 ></FormList>
               ))}
               <Form.Item>
-                <Button onClick={() => add()}>{'+ 增加品牌'}</Button>
+                <Button onClick={() => add()}>{'+ 增加券'}</Button>
               </Form.Item>
               <Form.ErrorList errors={errors} />
             </>

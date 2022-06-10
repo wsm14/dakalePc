@@ -16,14 +16,20 @@ export function fetchGiveGoods(data) {
 
 // get 周边特惠 - 列表
 export function fetchSpecialGoodsList(params) {
-  return request('/admin/specialGoodsManagement/listSpecialGoodsManagement', {
+  return request('/admin/offline/goods/admin/listOfflineGoodsByPage', {
     params,
   });
 }
 
 // get 周边特惠 - 详情
 export function fetchSpecialGoodsDetail(params) {
-  return request('/admin/specialGoodsManagement/getSpecialGoods', {
+  return request('/admin/offline/goods/admin/getGoodsForUpdate', {
+    params,
+  });
+}
+// get 周边特惠 - 分享图详情
+export function fetchSpecialGoodsShareDetail(params) {
+  return request('/admin/offline/goods/admin/getOfflineShareInfo', {
     params,
   });
 }
@@ -44,7 +50,15 @@ export function fetchSpecialGoodsQrCode(params) {
 
 // post 周边特惠 - 下架
 export function fetchSpecialGoodsStatus(data) {
-  return request('/admin/specialGoodsManagement/offShelfSpecialGoods', {
+  return request('/admin/offline/goods/admin/offShelfOffline', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 周边特惠 - 删除
+export function fetchSpecialGoodsDelete(data) {
+  return request('/admin/offline/goods/admin/deleteOffline', {
     method: 'POST',
     data,
   });
@@ -52,7 +66,7 @@ export function fetchSpecialGoodsStatus(data) {
 
 // post 周边特惠 - 分享图修改
 export function fetchSpecialGoodsShareEdit(data) {
-  return request('/admin/specialGoodsManagement/updateActivityGoodsNotAudit', {
+  return request('/admin/offline/goods/admin/updateOfflineShareInfo', {
     method: 'POST',
     data,
   });
@@ -60,7 +74,7 @@ export function fetchSpecialGoodsShareEdit(data) {
 
 // post 周边特惠 - 编辑
 export function fetchSpecialGoodsEdit(data) {
-  return request('/admin/specialGoodsManagement/updateSpecialGoods', {
+  return request('/admin/offline/goods/admin/updateOnlineGoods', {
     method: 'POST',
     data,
   });
@@ -68,7 +82,7 @@ export function fetchSpecialGoodsEdit(data) {
 
 // post 周边特惠 - 新增
 export function fetchSpecialGoodsSave(data) {
-  return request('/admin/specialGoodsManagement/saveSpecialGoods', {
+  return request('/admin/offline/goods/admin/saveOfflineGoods', {
     method: 'POST',
     data,
   });
@@ -106,7 +120,7 @@ export function fetchSpecialToTop(data) {
 
 // 特惠增加库存
 export function fetchSpecialGoodsAddRemain(data) {
-  return request('/admin/specialGoodsManagement/addGoodsRemain', {
+  return request('/admin/stock/admin/addStock', {
     method: 'POST',
     data,
   });
@@ -715,6 +729,29 @@ export function fetchGoodsTagSort(data) {
 // 运营后台-启用/禁用商品标签
 export function fetchGoodsTagSwitchStatus(data) {
   return request('/admin/goodsTag/enableConfigGoodsTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 商品标签 - 关联商品列表
+export function fetchConfigGoodsList(params) {
+  return request('/admin/goodsTag/pageListConfigGoodsTagRelatedGoods', {
+    params,
+  });
+}
+
+// 商品标签 - 关联商品列表 - 新增
+export function fetchConfigGoodsAdd(data) {
+  return request('/admin/goodsTag/batchSaveConfigGoodsTagRelatedGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 商品标签 - 关联商品列表 - 移除
+export function fetchConfigGoodsDel(data) {
+  return request('/admin/goodsTag/batchRemoveConfigGoodsTagRelatedGoods', {
     method: 'POST',
     data,
   });

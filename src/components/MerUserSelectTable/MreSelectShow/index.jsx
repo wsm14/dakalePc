@@ -38,7 +38,6 @@ const MreSelectShow = ({
     },
     ...otherColumns,
   ];
-
   return (
     <div style={{ marginBottom: 20 }} key="table">
       <TableDataBlock

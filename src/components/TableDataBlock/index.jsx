@@ -149,7 +149,7 @@ const TableBlockComponent = (props) => {
     total,
     current: tableParems.page,
     pageSize: tableParems.limit,
-    showTotal: () => `共${total}项`,
+    showTotal: () => `共${total || list.length}项`,
     showQuickJumper: true,
     showSizeChanger: true,
   };

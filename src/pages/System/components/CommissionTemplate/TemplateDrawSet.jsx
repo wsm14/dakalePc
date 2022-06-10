@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import { SERVICE_TYPE, DIVISION_TEMPLATE_TYPE, COMMISSION_TYPE } from '@/common/constant';
+import { SERVICE_TYPE, DIVISION_TEMPLATE_TYPE, COMMISSION_TYPE_COPY } from '@/common/constant';
 import { NUM_ALL } from '@/common/regExp';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
@@ -166,7 +166,7 @@ const TemplateDrawSet = (props) => {
     {
       type: 'checkbox',
       name: 'manualDivisionObjects',
-      select: COMMISSION_TYPE[tabKey],
+      select: COMMISSION_TYPE_COPY[tabKey],
       visible: commissType === 'manual',
       wrapperCol: { offset: 6 },
     },

@@ -196,6 +196,12 @@ export default [
             component: './Market/OpenGroupList',
             buttons: ['info', 'immediateGroup'],
           },
+          {
+            path: '/market/marketActivity',
+            name: '营销活动',
+            component: './Market/MarketActivity',
+            buttons: ['info', 'enrollGoods', 'copyLink'],
+          },
         ],
       },
       {
@@ -565,7 +571,7 @@ export default [
             path: '/base/goodsTag',
             name: '商品标签',
             component: './Base/GoodsTag',
-            buttons: ['save', 'edit'],
+            buttons: ['save', 'edit', 'connectedGoods'],
           },
           {
             path: '/base/bankSet',
@@ -817,6 +823,7 @@ export default [
               'edit',
               'down',
               'info',
+              'del',
               'diary',
               'again',
               'recommendStatus',

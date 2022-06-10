@@ -2,21 +2,23 @@ import React, { useRef, useState } from 'react';
 import { Card } from 'antd';
 import { TAG_TYPE } from '@/common/constant';
 import ExtraButton from '@/components/ExtraButton';
-import TagSet from './components/GoodTag/Form/TagSet';
-import PlatTag from './components/GoodTag/List/PlatTag';
-import ShowTag from './components/GoodTag/List/ShowTag';
+import PlatTagList from './components/GoodTag/PlatTagList';
+import ShowTagList from './components/GoodTag/ShowTagList';
+import TagSetDrawer from './components/GoodTag/Form/TagSetDrawer';
+import ConnectedGoodsModal from './components/GoodTag/ConnectedGoodsModal';
 
 const GoodsTag = () => {
   const [tabkey, setTabKey] = useState('platform');
   const [visible, setVisible] = useState(false); // 修改新增框
+  const [visibleGoods, setVisibleGoods] = useState(false); // 关联商品弹窗
 
   const childRef = useRef();
 
-  const listProps = { tabkey, childRef, setVisible };
+  const listProps = { tabkey, childRef, setVisible, setVisibleGoods };
 
   const contentList = {
-    platform: <PlatTag {...listProps}></PlatTag>,
-    show: <ShowTag {...listProps}></ShowTag>,
+    platform: <PlatTagList {...listProps} />,
+    show: <ShowTagList {...listProps} />,
   };
 
   const extraBtn = [
@@ -37,7 +39,17 @@ const GoodsTag = () => {
       >
         {contentList[tabkey]}
       </Card>
-      <TagSet cRef={childRef} visible={visible} onClose={() => setVisible(false)}></TagSet>
+      {/* 编辑新增 */}
+      <TagSetDrawer
+        cRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></TagSetDrawer>
+      {/* 关联商品 */}
+      <ConnectedGoodsModal
+        visible={visibleGoods}
+        onClose={() => setVisibleGoods(false)}
+      ></ConnectedGoodsModal>
     </>
   );
 };

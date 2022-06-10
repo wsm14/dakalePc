@@ -1,6 +1,5 @@
 import React from 'react';
 import { checkCityName } from '@/utils/utils';
-import { SUPPLIER_AUTH_TYPE } from '@/common/constant';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const AccountInfo = (props) => {
@@ -9,49 +8,55 @@ const AccountInfo = (props) => {
   const itemArr = [
     {
       label: '银行卡',
-      name: ['ownerBankBindingInfo', 'type'],
-      render: (val) => SUPPLIER_AUTH_TYPE[val],
+      name: ['ownerBankBindingInfo', 'bankType'],
     },
     {
       label: '银行卡号',
-      name: ['ownerBankBindingInfo', 'type'],
+      name: ['ownerBankBindingInfo', 'bankNumber'],
     },
     {
       label: '开户支行',
-      name: ['ownerBankBindingInfo', 'type'],
+      name: ['ownerBankBindingInfo', 'bankName'],
     },
     {
       label: '开户城市',
-      name: ['ownerBankBindingInfo', 'classifyNames'],
-    },
-    {
-      label: '银行预留手机号',
-      name: ['ownerBankBindingInfo', 'districtCode'],
+      name: ['ownerBankBindingInfo', 'bankBindingInfoObject', 'areaCode'],
       render: (val) => checkCityName(val),
     },
     {
+      label: '银行预留手机号',
+      name: ['ownerBankBindingInfo', 'bankBindingInfoObject', 'legalMp'],
+    },
+    {
       label: '结算人身份证正面照',
-      name: ['ownerBankBindingInfo', 'type'],
+      type: 'upload',
+      name: ['ownerBankBindingInfo', 'bankBindingInfoObject', 'certFrontPhoto'],
     },
     {
       label: '结算人身份证反面照',
-      name: ['ownerBankBindingInfo', 'type'],
+      type: 'upload',
+      name: ['ownerBankBindingInfo', 'bankBindingInfoObject', 'certReversePhoto'],
     },
     {
       label: '姓名',
-      name: ['ownerBankBindingInfo', 'type'],
+      name: ['ownerBankBindingInfo', 'bankBindingInfoObject', 'legalPerson'],
     },
     {
       label: '身份证号码',
-      name: ['ownerBankBindingInfo', 'type'],
+      name: ['ownerBankBindingInfo', 'bankBindingInfoObject', 'legalCertId'],
     },
     {
       label: '有效期',
-      name: ['ownerBankBindingInfo', 'type'],
+      name: ['ownerBankBindingInfo', 'bankBindingInfoObject', 'legalCertIdExpires'],
     },
     {
-      label: '补充描述和凭证',
-      name: ['ownerBankBindingInfo', 'type'],
+      label: '补充描述',
+      name: ['ownerBankBindingInfo', 'bankBindingInfoObject', 'additionalDesc'],
+    },
+    {
+      label: '凭证',
+      type: 'upload',
+      name: ['ownerBankBindingInfo', 'bankBindingInfoObject', 'additionalVoucher'],
     },
   ];
 

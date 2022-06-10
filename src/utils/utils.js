@@ -305,6 +305,23 @@ export const TreeSelectFn = (arr, title, value, key, childName) => {
   return list;
 };
 
+//判断时间
+export const changeTime = (startTime, EndTime) => {
+  if (startTime && EndTime) {
+    const nowTime = new Date().getTime();
+    startTime = new Date(startTime).getTime();
+    EndTime = new Date(EndTime).getTime();
+    if (nowTime >= startTime && nowTime <= EndTime) {
+      return 1;
+    } else if (nowTime < startTime) {
+      return 0;
+    } else if (nowTime > EndTime) {
+      return 2;
+    }
+  }
+  return '';
+};
+
 // 获取城市名
 export const getCityName = (code) => {
   const cityIndex = cityJson.findIndex((item) => item.id === code);

@@ -3,7 +3,7 @@ import moment from 'moment';
 import { connect } from 'umi';
 import { Spin, Tag } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
-import { WITHDRAW_STATUS, ACCOUNT_TYPE, WITHDRAW_BUSINESS_TYPE } from '@/common/constant';
+import { WITHDRAW_STATUS, WITHDRAW_BUSINESS_TYPE } from '@/common/constant';
 import TableDataBlock, { HandleSetTable } from '@/components/TableDataBlock';
 import Ellipsis from '@/components/Ellipsis';
 import WithdrawRemark from './WithdrawRemark';

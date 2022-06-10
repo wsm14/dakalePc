@@ -22,7 +22,6 @@ export const couponsDom = (item = {}, id, setSelectItem, type = 'free', onDel) =
       <Badge.Ribbon text={{ free: '免费券', valuable: '抵扣券' }[type]}>
         <div
           className={`share_Coupon share_item ${id === ownerCouponIdString && 'select'}`}
-          style={{ marginBottom: 6 }}
           onClick={() => setSelectItem && setSelectItem(item)}
         >
           <div className="share_left">

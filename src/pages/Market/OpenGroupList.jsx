@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
 import Ellipsis from '@/components/Ellipsis';
@@ -6,7 +6,6 @@ import { OPEN_GROUP_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
 import OpenGroupDetail from './components/OpenGroupList/OpenGroupDetail';
-import { fetchGetGroupForSearch } from '@/services/PublicServices';
 
 const OpenGroupList = (props) => {
   const { loading, dispatch, openGroupList } = props;
