@@ -149,7 +149,7 @@ const ElectricGoods = (props) => {
       align: 'right',
       dataIndex: 'goodsId',
       render: (val, row) => (
-        <Button type="link" onClick={() => fetchSeeRepertory(val, 'listSee')}>
+        <Button type="link" onClick={() => fetchSeeRepertory(row, 'listSee')}>
           查看
         </Button>
       ),
@@ -245,7 +245,8 @@ const ElectricGoods = (props) => {
   // };
 
   // 查看佣金/库存    &&   调整库存
-  const fetchSeeRepertory = (serviceId, type) => {
+  const fetchSeeRepertory = (row, type) => {
+    const { goodsId: serviceId } = row;
     dispatch({
       type: 'electricGoods/fetchListSkuStockByServiceId',
       payload: {
@@ -257,8 +258,8 @@ const ElectricGoods = (props) => {
           ? setVisibleCommission({
               show: true,
               detail: {
+                ...row,
                 ...detail,
-                sellType: tabKey,
               },
             })
           : setVisibleRemain({

@@ -4,7 +4,9 @@ import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
 
 const SkuListTable = (props) => {
+  // type   详情打开 info   列表佣金和库存打开  listSee
   const { detail = {}, type = 'info' } = props;
+  // sellType 零售 single 批采 batch
   const { customSize = [], skuInfoReqs = [], sellType, paymentModeType } = detail;
 
   const ladderTable = (row = []) => {
