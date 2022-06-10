@@ -89,7 +89,7 @@ const AddSpecification = (props) => {
     <>
       {specificationTypeData.map((val, index) => {
         return (
-          <div key={val.name}>
+          <div key={`${val.name}${index}`}>
             <Input
               defaultValue={val.name}
               onBlur={(e) => updateSpecificationType(e, index)}
@@ -100,7 +100,7 @@ const AddSpecification = (props) => {
               {val?.value?.map((item, idx) => {
                 return (
                   <Input
-                    key={`${val.name}${item}`}
+                    key={`${val.name}${item}${idx}`}
                     style={{ width: 80, marginRight: 10, marginBottom: 10 }}
                     defaultValue={item}
                     onBlur={(e) => updateSpecificationValue(e, index, idx)}

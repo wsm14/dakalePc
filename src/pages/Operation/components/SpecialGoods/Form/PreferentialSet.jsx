@@ -17,6 +17,7 @@ import {
   COUPON_ACTIVE_TYPE,
   SPECIAL_USERTIME_TYPE,
   SPECIAL_BALANCE_TYPE,
+  SPECIAL_GOODS_TYPE,
 } from '@/common/constant';
 import { NUM_ALL } from '@/common/regExp';
 import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
@@ -412,7 +413,7 @@ const PreferentialSet = ({
       name: ['thirdInfoReq', 'thirdType'],
       type: 'radio',
       // disabled: commonDisabled,
-      select: { 1: '特惠商品', 2: '自我游商品' },
+      select: SPECIAL_GOODS_TYPE,
       onChange: (e) => {
         setGoodsType(e.target.value);
       },
@@ -491,7 +492,9 @@ const PreferentialSet = ({
           validator: (rule, value) => {
             const merchantPrice = Number(value);
             const buyPrice = Number(form.getFieldValue(['skuInfoReq', 'sellPrice']));
-            if (merchantPrice > buyPrice) {
+            const sellBean = Number(form.getFieldValue(['skuInfoReq', 'sellBean'])) / 100 || 0;
+            console.log(sellBean, 'sellBean');
+            if (merchantPrice > buyPrice + sellBean) {
               return Promise.reject('商家结算价不可超过零售价格');
             }
             // “商家结算价不可超过N（结算价≤特惠价格*（1-费率））”
@@ -521,6 +524,7 @@ const PreferentialSet = ({
       type: 'number',
       precision: 2,
       disabled: editDisabled && infoStatus,
+      visible: !['free'].includes(mreList.paymentModeType),
       min: 0,
       max: 999999.99,
       formatter: (value) => `￥ ${value}`,
