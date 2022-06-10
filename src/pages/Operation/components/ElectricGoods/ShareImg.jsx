@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'umi';
-import { WXFRIEND_SHARE_IMG } from '@/common/imgRatio';
 import { Form, Button } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
@@ -8,7 +7,7 @@ import aliOssUpload from '@/utils/aliOssUpload';
 
 const ShareImg = (props) => {
   const { visible, onClose, dispatch, loading } = props;
-  const { show = false, goodsId, goodsName, relateName, detail = {} } = visible;
+  const { show = false, goodsId, goodsName, detail = {} } = visible;
 
   const [form] = Form.useForm();
   const formItems = [
@@ -68,7 +67,7 @@ const ShareImg = (props) => {
 
   const modalProps = {
     visible: show,
-    title: `${relateName}--${goodsName}`,
+    title: goodsName,
     onClose,
     footer: (
       <Button type="primary" onClick={handleSave} loading={loading}>

@@ -14,6 +14,7 @@ const TableModal = (props) => {
     width: 800,
     footer: false,
     onCancel: onClose,
+    bodyStyle: { paddingBottom: 0 },
   };
 
   return (
