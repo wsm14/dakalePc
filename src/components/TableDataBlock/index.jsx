@@ -61,6 +61,7 @@ const TableBlockComponent = (props) => {
     scrollX = 'max-content',
     searchItems,
     searchForm,
+    searchCol,
     searchCallback,
     searchShowData,
     total,
@@ -194,6 +195,7 @@ const TableBlockComponent = (props) => {
           resetSearch={resetSearch}
           componentSize={size}
           searchItems={searchItems}
+          colForm={searchCol}
           handleSearch={handleSearch}
           initialValues={{ ...show, ...params, ...searchShowData }}
           btnExtra={btnExtra}
