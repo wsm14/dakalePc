@@ -1497,3 +1497,6 @@ export const ASTRICT_BUY = {
   // weekLimit: '每周限制',
   // monthLimit: '每月限制',
 };
+
+// 营销活动 - 活动状态
+export const MARKETACTIVITY_STATUS = ['已结束', '进行中'];
