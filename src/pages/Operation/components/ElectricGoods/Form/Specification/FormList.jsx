@@ -61,6 +61,7 @@ function FormList(props) {
 
   return (
     <div key={field.key} style={{ display: 'flex' }}>
+      {/* sku码 */}
       <div className={styles.table_row_cell}>
         <Form.Item
           name={[field.name, 'skuCode']}
@@ -70,7 +71,9 @@ function FormList(props) {
           <Input style={styleObj}></Input>
         </Form.Item>
       </div>
+      {/* 规格 */}
       <div className={styles.table_row_cell}>{specificationType}</div>
+      {/* 图片 */}
       <div className={`${styles.table_row_cell} ${styles.upload_box}`}>
         <Form.Item
           name={[field.name, 'image']}
@@ -89,8 +92,9 @@ function FormList(props) {
           </Upload>
         </Form.Item>
       </div>
+      {/* 原价 */}
       <div className={styles.table_row_cell}>
-        <Form.Item name={[field.name, 'oriPrice']} rules={[{ required: false }]} noStyle>
+        <Form.Item name={[field.name, 'oriPrice']} rules={[{ required: true }]} noStyle>
           <InputNumber
             disabled={editDisabled}
             addonBefore="￥"
@@ -100,6 +104,7 @@ function FormList(props) {
           ></InputNumber>
         </Form.Item>
       </div>
+      {/* 成本价 */}
       {sellType === 'single' && (
         <div className={styles.table_row_cell}>
           <Form.Item name={[field.name, 'costPrice']} rules={[{ required: false }]} noStyle>
@@ -107,6 +112,7 @@ function FormList(props) {
           </Form.Item>
         </div>
       )}
+      {/* 结算价 */}
       {/* // 零售时存在，批采时不存在 */}
       {sellType === 'single' && (
         <div className={styles.table_row_cell}>
@@ -125,6 +131,7 @@ function FormList(props) {
           </Form.Item>
         </div>
       )}
+      {/* 零售价 */}
       {/* // 零售时存在，批采时不存在 */}
       {sellType === 'single' && priceType !== 'free' && (
         <div className={styles.table_row_cell}>
@@ -143,6 +150,7 @@ function FormList(props) {
           </Form.Item>
         </div>
       )}
+      {/* 卡豆 */}
       {/* // 零售 且 支付方式为 卡豆+现金 时存在，批采时不存在 */}
       {sellType === 'single' && priceType === 'self' && (
         <div className={styles.table_row_cell}>
@@ -161,18 +169,20 @@ function FormList(props) {
           </Form.Item>
         </div>
       )}
+      {/* 最小起订量 */}
       {/* // 批采时存在，零售时不存在 */}
       {sellType === 'batch' && (
         <div className={styles.table_row_cell}>
           <Form.Item
             name={[field.name, 'minPurchaseNum']}
-            rules={[{ required: false, message: '请输入最小起订量' }]}
+            rules={[{ required: true, message: '请输入最小起订量' }]}
             noStyle
           >
             <Input style={styleObj}></Input>
           </Form.Item>
         </div>
       )}
+      {/* 批采价 */}
       {/* // 批采时存在，零售时不存在 */}
       {sellType === 'batch' && (
         <div className={styles.table_row_cell}>
@@ -187,6 +197,7 @@ function FormList(props) {
           </Form.Item>
         </div>
       )}
+      {/* 初始库存 */}
       <div className={styles.table_row_cell}>
         <Form.Item
           name={[field.name, 'initStock']}
