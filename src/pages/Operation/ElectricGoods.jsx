@@ -137,11 +137,13 @@ const ElectricGoods = (props) => {
     {
       title: '售卖价格类型',
       dataIndex: 'paymentModeType',
+      show: tabKey == 'single',
       render: (val) => ELECTRICGOODS_SELL_PRICE_TYPE[val],
     },
     {
       title: '零售价',
       align: 'right',
+      show: tabKey == 'single',
       dataIndex: 'sellPriceRange',
     },
     {
