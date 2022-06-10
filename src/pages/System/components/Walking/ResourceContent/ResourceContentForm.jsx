@@ -226,7 +226,7 @@ const ResourceContentForm = (props) => {
                   : 'specialGoods',
               ]}
               dataType={
-                typeList.includes('classifiedListSelfTravel') ? 'commerceGoods' : 'mixedList'
+                typeList.includes('classifiedListSelfTravel') ? 'selfTourGoods' : 'mixedList'
               }
             ></ShareCoupon>
           </div>
