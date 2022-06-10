@@ -9,7 +9,7 @@ const TableModal = (props) => {
   const { goodsName } = detail;
 
   const modalProps = {
-    title: goodsName || `详情`, // 显示商品名称
+    title: `详情 - ${goodsName}`, // 显示商品名称
     visible: show,
     width: 800,
     footer: false,

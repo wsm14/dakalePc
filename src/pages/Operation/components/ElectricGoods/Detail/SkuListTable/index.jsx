@@ -4,7 +4,9 @@ import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
 
 const SkuListTable = (props) => {
+  // type   详情打开 info   列表佣金和库存打开  listSee
   const { detail = {}, type = 'info' } = props;
+  // sellType 零售 single 批采 batch
   const { customSize = [], skuInfoReqs = [], sellType, paymentModeType } = detail;
 
   const ladderTable = (row = []) => {
@@ -45,7 +47,6 @@ const SkuListTable = (props) => {
     {
       title: 'SKU码',
       dataIndex: 'skuCode',
-      fixed: true,
       width: 110,
       ellipsis: true,
       show: customSize.length != 0,
@@ -53,7 +54,6 @@ const SkuListTable = (props) => {
     {
       title: `${customSize.map((item) => item.name).join('/')}`,
       dataIndex: type == 'info' ? 'attributes' : 'skuAttributeResps',
-      fixed: true,
       render: (val) => val.map((item) => item.value).join('/'),
       show: customSize.length != 0,
     },
