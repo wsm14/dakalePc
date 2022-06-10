@@ -4,7 +4,7 @@ import { connect } from 'umi';
 import { Button, InputNumber } from 'antd';
 import CITYJSON from '@/common/city';
 import {
-  COMMISSION_TYPE,
+  ELECTRIC_GOODS_COMMISSION,
   ELECTRICGOODS_SELL_STATUS,
   ELECTRICGOODS_SKU,
   ELECTRICGOODS_SELL_PRICE_TYPE,
@@ -406,7 +406,8 @@ const PreferentialSet = ({
     },
     ...manualList.map((i, index) => ({
       title: index == 0 ? '分佣设置' : null,
-      label: `${COMMISSION_TYPE['commerceGoods'][i.divisionParticipantType]}`,
+      // divisionParticipantType
+      label: `${ELECTRIC_GOODS_COMMISSION[i.divisionParticipantType]}`,
       name: ['divisionParamInfoReq', `${i.divisionParticipantType}Bean`],
       type: 'number',
       precision: 0,
