@@ -224,7 +224,7 @@ const ElectricGoods = (props) => {
             title: '调整库存',
             type: 'changeRemain',
             // visible: ['1'].includes(status) && deleteFlag == '1',
-            click: () => fetchSeeRepertory(val, 'changeRemain'),
+            click: () => fetchSeeRepertory(record, 'changeRemain'),
           },
           {
             title: '设置', // 分享配置
