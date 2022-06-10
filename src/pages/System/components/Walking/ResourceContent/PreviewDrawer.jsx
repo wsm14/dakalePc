@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'umi';
-import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const PreviewDrawer = (props) => {
