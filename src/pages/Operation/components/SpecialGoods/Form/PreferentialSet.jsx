@@ -277,6 +277,7 @@ const PreferentialSet = ({
       ellipsis: true,
     },
   ];
+
   // 信息
   const formItems = [
     {
@@ -489,7 +490,7 @@ const PreferentialSet = ({
             const merchantPrice = Number(value);
             const buyPrice = Number(form.getFieldValue(['skuInfoReq', 'sellPrice']));
             const sellBean = Number(form.getFieldValue(['skuInfoReq', 'sellBean'])) / 100 || 0;
-            if (merchantPrice > buyPrice + sellBean) {
+            if (merchantPrice > buyPrice + sellBean && mreList.paymentModeType !== 'free') {
               return Promise.reject('商家结算价不可超过零售价格');
             }
             // “商家结算价不可超过N（结算价≤特惠价格*（1-费率））”
