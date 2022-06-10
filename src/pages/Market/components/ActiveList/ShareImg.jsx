@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'umi';
-import { WXFRIEND_SHARE_IMG } from '@/common/imgRatio';
 import { Form, Button } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
