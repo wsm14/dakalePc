@@ -58,7 +58,7 @@ const SpecialGoods = (props) => {
       dataIndex: 'activityTimeRule', // 使用有效期-固定时间-开始时间
       render: (val, row) => {
         const { activityStartDate, activityEndDate } = row;
-        return { fixed: `${activityStartDate}\n-${activityEndDate}`, infinite: '长期' }[val];
+        return { fixed: `${activityStartDate}\n~${activityEndDate}`, infinite: '长期' }[val];
       },
     },
     {
