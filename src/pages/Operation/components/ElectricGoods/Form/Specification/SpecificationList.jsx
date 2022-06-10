@@ -23,7 +23,9 @@ function SpecificationList(props) {
                 <div>{specificationTypeData.map((item) => item.name).join('/')}</div>
               ) : null}
               <div>图片</div>
-              <div>原价</div>
+              <div>
+                <span style={{ color: 'red' }}>*</span>原价
+              </div>
               {sellType === 'single' && <div>成本价</div>}
               {sellType === 'single' && (
                 <div>
@@ -42,7 +44,9 @@ function SpecificationList(props) {
               )}
               {sellType === 'batch' && (
                 <>
-                  <div>最小起订量</div>
+                  <div>
+                    <span style={{ color: 'red' }}>*</span>最小起订量
+                  </div>
                   <div>
                     <span style={{ color: 'red' }}>*</span>批采价
                   </div>
