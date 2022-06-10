@@ -270,6 +270,7 @@ const ElectricGoodDetail = (props) => {
     visible: show,
     loading,
     onClose,
+    width: 800,
     dataPage: {
       current: index,
       total,

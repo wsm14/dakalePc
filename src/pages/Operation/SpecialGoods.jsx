@@ -2,7 +2,14 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
 import { Tag } from 'antd';
-import { BUSINESS_TYPE, SPECIAL_STATUS, GOODS_CLASS_TYPE, TAG_COLOR_TYPE } from '@/common/constant';
+import {
+  BUSINESS_TYPE,
+  SPECIAL_STATUS,
+  GOODS_CLASS_TYPE,
+  TAG_COLOR_TYPE,
+  SPECIAL_RECOMMEND_TYPE,
+  SPECIAL_GOODS_TYPE,
+} from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
@@ -41,6 +48,13 @@ const SpecialGoods = (props) => {
       name: 'status',
       type: 'select',
       select: SPECIAL_STATUS,
+    },
+    {
+      label: '商品类别',
+      name: 'goodsClass',
+      type: 'select',
+      allItem: false,
+      select: SPECIAL_GOODS_TYPE,
     },
   ];
 
@@ -101,6 +115,12 @@ const SpecialGoods = (props) => {
           </div>
         </div>
       ),
+    },
+    {
+      title: '商品类别',
+      align: 'center',
+      dataIndex: 'goodsClass',
+      render: (val) => SPECIAL_GOODS_TYPE[val],
     },
     {
       title: '原价/售价',

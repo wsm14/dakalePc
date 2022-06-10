@@ -45,11 +45,13 @@ const SkuListTable = (props) => {
     {
       title: 'SKU码',
       dataIndex: 'skuCode',
+      fixed: true,
       show: customSize.length != 0,
     },
     {
       title: `${customSize.map((item) => item.name).join('/')}`,
       dataIndex: type == 'info' ? 'attributes' : 'skuAttributeResps',
+      fixed: true,
       render: (val) => val.map((item) => item.value).join('/'),
       show: customSize.length != 0,
     },
@@ -57,17 +59,19 @@ const SkuListTable = (props) => {
       title: '图片',
       dataIndex: 'image',
       show: type == 'info',
-      render: (val) => <PopImgShow url={val} />,
+      render: (val) => <PopImgShow width={60} url={val} />,
     },
     {
       title: '最小起订量',
       align: 'right',
+      width: 120,
       dataIndex: 'minPurchaseNum',
       show: type == 'info' && sellType == 'batch',
     },
     {
       title: '原价',
       align: 'right',
+      width: 120,
       dataIndex: 'oriPrice',
       show: type == 'info' || sellType == 'batch',
       render: (val) => `￥${val}`,
@@ -75,7 +79,6 @@ const SkuListTable = (props) => {
     {
       title: '批采价',
       dataIndex: 'batchLadderObjects',
-      align: 'right',
       show: sellType == 'batch',
       render: (val, row) => (
         <Popover
@@ -92,6 +95,7 @@ const SkuListTable = (props) => {
       title: '成本价',
       dataIndex: 'costPrice',
       align: 'right',
+      width: 120,
       render: (val) => `￥${val}`,
       show: type == 'info' && sellType == 'single',
     },
@@ -99,6 +103,7 @@ const SkuListTable = (props) => {
       title: '零售价',
       dataIndex: 'sellPrice',
       align: 'right',
+      width: 120,
       show: sellType == 'single',
       render: (val, row) =>
         paymentModeType == 'self'
@@ -110,6 +115,8 @@ const SkuListTable = (props) => {
     {
       title: '结算价',
       dataIndex: 'settlePrice',
+      align: 'right',
+      width: 120,
       render: (val) => `￥${val}`,
       show: type == 'info' && sellType == 'single',
     },
@@ -117,18 +124,21 @@ const SkuListTable = (props) => {
       title: '佣金',
       dataIndex: 'commission',
       align: 'right',
+      width: 120,
       show: type == 'listSee' && sellType == 'single',
       render: (val, row) => `￥${val}`,
     },
     {
       title: '商品库存',
       align: 'right',
+      width: 120,
       dataIndex: type == 'info' ? 'initStock' : 'remain',
     },
   ];
 
   return (
     <TableDataBlock
+      tableLayout={'fixed'}
       tableSize="small"
       scroll={{ x: 'max-content', y: 400 }}
       noCard={false}
