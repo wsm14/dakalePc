@@ -64,7 +64,7 @@ export default {
       const {
         skuInfoResps: skuInfoReqs = [],
         settleInfoResp: settleInfoReq = {},
-        platformTagIds,
+        platformTagIds = '',
         categoryNode,
         divisionParamInfoResp,
         ...other
