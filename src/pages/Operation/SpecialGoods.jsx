@@ -7,6 +7,7 @@ import {
   SPECIAL_STATUS,
   GOODS_CLASS_TYPE,
   SPECIAL_RECOMMEND_TYPE,
+  SPECIAL_GOODS_TYPE,
 } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
@@ -59,13 +60,13 @@ const SpecialGoods = (props) => {
       type: 'select',
       select: SPECIAL_STATUS,
     },
-    // {
-    //   label: '商品状态',
-    //   name: 'deleteFlag',
-    //   type: 'select',
-    //   allItem: false,
-    //   select: ['已删除', '未删除'],
-    // },
+    {
+      label: '商品类别',
+      name: 'goodsClass',
+      type: 'select',
+      allItem: false,
+      select: SPECIAL_GOODS_TYPE,
+    },
     // {
     //   label: '活动有效期',
     //   type: 'rangePicker',
@@ -208,6 +209,12 @@ const SpecialGoods = (props) => {
           </div>
         </div>
       ),
+    },
+    {
+      title: '商品类别',
+      align: 'center',
+      dataIndex: 'goodsClass',
+      render: (val) => SPECIAL_GOODS_TYPE[val],
     },
     {
       title: '原价/售价',
