@@ -494,9 +494,9 @@ const PreferentialSet = ({
               return Promise.reject('商家结算价不可超过零售价格');
             }
             // “商家结算价不可超过N（结算价≤特惠价格*（1-费率））”
-            const getPrice = buyPrice * (1 - mreList.ratio / 100);
-            if (merchantPrice > getPrice) {
-              return Promise.reject(`商家结算价不可超过${getPrice}`);
+            const getPrice = (buyPrice + sellBean) * (1 - mreList.ratio / 100);
+            if (merchantPrice > getPrice && mreList.paymentModeType !== 'free') {
+              return Promise.reject(`商家结算价不可超过${getPrice.toFixed(2)}`);
             }
             return Promise.resolve();
           },
