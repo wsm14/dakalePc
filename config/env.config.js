@@ -1,14 +1,15 @@
-const target = 'https://devgateway.dakale.net';
-// const target = 'https://pregateway.dakale.net';
-// const target = 'https://gateway1.dakale.net';
-// const target = 'http://192.168.0.188:6020'
-// const target = 'http://192.168.0.103:6020';
-// const target = 'http://47.114.164.224:6020';
-// const target = 'http://192.168.0.62:6020';
-// const target = 'http://192.168.0.170:6020';
-// const target = 'http://192.168.0.86:6020';
-// const target = 'http://192.168.0.121:6020';
-// const target = 'http://192.168.0.86:6020';
+let target = 'https://devgateway.dakale.net';
+// target = 'https://devgateway.dakale.net';
+// target = 'https://pregateway.dakale.net';
+// target = 'https://gateway1.dakale.net';
+// target = 'http://192.168.0.188:6020'
+// target = 'http://192.168.0.103:6020';
+// target = 'http://47.114.164.224:6020';
+// target = 'http://192.168.0.62:6020';
+target = 'http://192.168.0.170:6020';
+// target = 'http://192.168.0.86:6020';
+// target = 'http://192.168.0.121:6020';
+// target = 'http://192.168.0.86:6020';
 
 export default {
   dev: {
