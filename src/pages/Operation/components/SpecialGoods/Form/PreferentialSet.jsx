@@ -489,7 +489,6 @@ const PreferentialSet = ({
             const merchantPrice = Number(value);
             const buyPrice = Number(form.getFieldValue(['skuInfoReq', 'sellPrice']));
             const sellBean = Number(form.getFieldValue(['skuInfoReq', 'sellBean'])) / 100 || 0;
-            console.log(sellBean, 'sellBean');
             if (merchantPrice > buyPrice + sellBean) {
               return Promise.reject('商家结算价不可超过零售价格');
             }
@@ -811,6 +810,8 @@ const PreferentialSet = ({
       placeholder: '请选择商家商品标签',
       select: goodsTaglist,
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
+      required: false,
+      rules: [{ required: false }],
       addRules: [
         {
           validator: (rule, value) => {
