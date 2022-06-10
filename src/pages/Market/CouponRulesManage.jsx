@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
+import { CONPON_RULES_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
-import { CONPON_RULES_TYPE } from '@/common/constant';
 import CouponRulesManageDrawer from './components/CouponRulesManage/CouponRulesManageDrawer';
 
 const PlatformManage = (props) => {

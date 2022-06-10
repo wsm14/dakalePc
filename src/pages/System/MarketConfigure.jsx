@@ -11,8 +11,7 @@ import NoobJackPot from './components/PrizeConfig/NoobJackPot';
 import AppSetTabList from './components/App/AppSetTabList';
 import MaterialConfig from './components/MaterialConfig/MaterialConfig';
 import GroupGoodsConfig from './components/GroupGoodsConfig'
-
-import styles from './styles.less';
+import styles from './index.less';
 
 const MarkConfigure = () => {
   let main = undefined;
