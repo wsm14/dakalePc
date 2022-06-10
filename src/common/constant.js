@@ -839,6 +839,16 @@ export const COMMISSION_TYPE_COPY = {
   },
 };
 
+// 电商品分佣模板
+export const ELECTRIC_GOODS_COMMISSION = {
+  province: '省代分佣',
+  city: '地级市分佣',
+  district: '区县分佣',
+  userParent: '用户家主分佣',
+  // merchantParent: '商家家主分佣',
+  daren: '哒人分佣',
+};
+
 // 活动模版类型
 export const ACTIVE_TEMPLATE_TYPE = {
   active: '活动',

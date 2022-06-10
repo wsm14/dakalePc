@@ -7,7 +7,7 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 import {
   ELECTRICGOODS_SELL_STATUS,
   ELECTRICGOODS_SELL_PRICE_TYPE,
-  COMMISSION_TYPE,
+  ELECTRIC_GOODS_COMMISSION,
   FRONT_SHOW_TYPE,
   SETTLE_TYPE,
   ASTRICT_BUY,
@@ -47,8 +47,6 @@ const ElectricGoodDetail = (props) => {
         categoryId: categoryId,
       },
       callback: ({ manuallyFlag, manualDivisions }) => {
-        console.log('manuallyFlag: ', manuallyFlag);
-        console.log('manualDivisions: ', manualDivisions);
         setCommissionShow(manuallyFlag);
         setManualList(manualDivisions || []);
       },
@@ -134,13 +132,39 @@ const ElectricGoodDetail = (props) => {
         }),
     },
     {
+      label: `原价`,
+      name: 'oriPrice',
+      show: customSize.length == 0,
+      render: (val) => `￥${val}`,
+    },
+    {
+      label: `成本价`,
+      name: 'costPrice',
+      show: customSize.length == 0,
+      render: (val) => `￥${val}`,
+    },
+    {
+      label: `结算价`,
+      name: 'settlePrice',
+      show: customSize.length == 0,
+      render: (val) => `￥${val}`,
+    },
+    {
       label: `售卖价格类型`,
       name: 'paymentModeType',
       render: (val) => ELECTRICGOODS_SELL_PRICE_TYPE[val],
     },
     {
+      label: `零售价`,
+      name: 'sellPrice',
+      show: customSize.length == 0,
+      render: (val, row) =>
+        row == 'self' ? `￥${val}+${row.sellBean}卡豆` : row == 'free' ? '免费' : `￥${val}`,
+    },
+    {
       label: `商品库存`,
       name: 'initStock',
+      show: customSize.length == 0,
     },
     {
       label: `规格信息`,
@@ -164,7 +188,7 @@ const ElectricGoodDetail = (props) => {
 
   const DivideformItems = [
     ...manualList?.map((i) => ({
-      label: `${COMMISSION_TYPE['commerceGoods'][i.divisionParticipantType]}`,
+      label: `${ELECTRIC_GOODS_COMMISSION[i.divisionParticipantType]}`,
       name: ['divisionParamInfoReq', `${i.divisionParticipantType}Bean`],
     })),
   ];

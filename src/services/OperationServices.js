@@ -1166,4 +1166,34 @@ export function fetchOffShelfOffline(data) {
   });
 }
 
+// post 电商品 - 修改库存
+export function fetchAddStock(data) {
+  return request('/admin/stock/admin/addStock', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 电商品 - sku列表
+export function fetchListSkuStockByServiceId(params) {
+  return request('/admin/sku/admin/listSkuStockByServiceId', {
+    params,
+  });
+}
+
+// get 电商品 - 获取分享配置详情
+export function fetchGetOnlineShareInfo(params) {
+  return request('/admin/online/goods/admin/getOnlineShareInfo', {
+    params,
+  });
+}
+
+// post 电商品 - 分享配置修改
+export function fetchUpdateOnlineShareInfo(data) {
+  return request('/admin/online/goods/admin/updateOnlineShareInfo', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 电商品 end

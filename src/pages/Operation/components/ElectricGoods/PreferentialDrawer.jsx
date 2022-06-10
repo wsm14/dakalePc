@@ -60,7 +60,7 @@ const PreferentialDrawer = (props) => {
           againUp: 'electricGoods/fetchUpdateOnlineGoods',
         }[type],
         payload: {
-          goodsId: detail.goodsId,
+          goodsId: type == 'again' ? undefined : detail.goodsId,
           ...other,
           ownerId: -1,
           ownerType: 'admin',

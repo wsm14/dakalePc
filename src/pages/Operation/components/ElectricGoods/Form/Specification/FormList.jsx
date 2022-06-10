@@ -20,7 +20,7 @@ function FormList(props) {
   const [tieredModal, setTieredModal] = useState(false); // 设置阶梯价model
 
   useEffect(() => {
-    const list = form.getFieldValue('skuInfoReqs')[field.name]['batchLadderObjects'];
+    const list = form.getFieldValue('skuInfoReqs')[field.name]['batchLadderObjects'] || [];
     if (list.length > 0) {
       setBatchOnOff(true);
     }
@@ -193,7 +193,7 @@ function FormList(props) {
           rules={[{ required: true, message: '请输入商品库存' }]}
           noStyle
         >
-          <InputNumber precision={0} min={0} style={styleObj}></InputNumber>
+          <InputNumber disabled={editDisabled} precision={0} min={0} style={styleObj}></InputNumber>
         </Form.Item>
       </div>
       <TieredPricing

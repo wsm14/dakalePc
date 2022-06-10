@@ -4,7 +4,7 @@ import { connect } from 'umi';
 import { Button, InputNumber } from 'antd';
 import CITYJSON from '@/common/city';
 import {
-  COMMISSION_TYPE,
+  ELECTRIC_GOODS_COMMISSION,
   ELECTRICGOODS_SELL_STATUS,
   ELECTRICGOODS_SKU,
   ELECTRICGOODS_SELL_PRICE_TYPE,
@@ -63,6 +63,7 @@ const PreferentialSet = ({
   const {
     customSize = [],
     relateId,
+    categoryNode,
     sellType: sellTypes,
     paymentModeType,
     postageRuleObject,
@@ -75,6 +76,7 @@ const PreferentialSet = ({
       setSpecificationTypeData(customSize); // 回显规格类型
       fetchGetSearchSupplier({ supplierId: relateId }); // 回显供应商
       fetchBrandIdList(relateId); // 回显品牌
+      getCommissionFlag(categoryNode[0]); // 获取分佣模板
       setSellType(sellTypes); // 回显售卖类型
       setPriceType(paymentModeType); // 回显售卖价格类型
       setFreightType(postageRuleObject.type); // 回显运费类型
@@ -384,6 +386,7 @@ const PreferentialSet = ({
       min: 0,
       max: 100000000,
       visible: !specificationDisabled,
+      disabled: editDisabled,
       // rules: [{ required: true, message: '请输入不小于0, 不大于100000000的数值' }],
     },
     {
@@ -403,12 +406,14 @@ const PreferentialSet = ({
     },
     ...manualList.map((i, index) => ({
       title: index == 0 ? '分佣设置' : null,
-      label: `${COMMISSION_TYPE['commerceGoods'][i.divisionParticipantType]}`,
+      // divisionParticipantType
+      label: `${ELECTRIC_GOODS_COMMISSION[i.divisionParticipantType]}`,
       name: ['divisionParamInfoReq', `${i.divisionParticipantType}Bean`],
       type: 'number',
       precision: 0,
       min: 0,
       max: 999999,
+      disabled: editDisabled,
       visible: commissionShow === '1',
       suffix: '卡豆',
       onChange: () => {
