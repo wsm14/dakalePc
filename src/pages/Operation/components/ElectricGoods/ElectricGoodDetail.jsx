@@ -21,7 +21,6 @@ const ElectricGoodDetail = (props) => {
   const { categoryNode, customSize = [] } = detail;
 
   const [form] = Form.useForm();
-  const [merchantList, setMerchantList] = useState([]);
   const [commissionShow, setCommissionShow] = useState(false); // 佣金设置显示隐藏
   const [manualList, setManualList] = useState([]); // 分佣模版字段
 
@@ -33,9 +32,6 @@ const ElectricGoodDetail = (props) => {
     if (show) {
       getCommissionFlag(categoryNode[0] || '');
     }
-    // if (show && detail.ownerType === 'group') {
-    //   getMerchantList();
-    // }
   }, [show]);
 
   //sku通用-是否需要设置佣金
@@ -159,7 +155,11 @@ const ElectricGoodDetail = (props) => {
       name: 'sellPrice',
       show: customSize.length == 0,
       render: (val, row) =>
-        row == 'self' ? `￥${val}+${row.sellBean}卡豆` : row == 'free' ? '免费' : `￥${val}`,
+        row.paymentModeType == 'self'
+          ? `￥${val}+${row.sellBean}卡豆`
+          : row.paymentModeType == 'free'
+          ? '免费'
+          : `￥${val}`,
     },
     {
       label: `商品库存`,

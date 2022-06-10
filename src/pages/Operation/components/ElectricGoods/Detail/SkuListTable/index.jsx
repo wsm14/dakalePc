@@ -5,7 +5,7 @@ import PopImgShow from '@/components/PopImgShow';
 
 const SkuListTable = (props) => {
   const { detail = {}, type = 'info' } = props;
-  const { customSize = [], skuInfoReqs = [], sellType } = detail;
+  const { customSize = [], skuInfoReqs = [], sellType, paymentModeType } = detail;
 
   const ladderTable = (row = []) => {
     const ladderColumns = [
@@ -99,8 +99,13 @@ const SkuListTable = (props) => {
       title: '零售价',
       dataIndex: 'sellPrice',
       align: 'right',
-      render: (val) => `￥${val}`,
       show: sellType == 'single',
+      render: (val, row) =>
+        paymentModeType == 'self'
+          ? `￥${val}+${row.sellBean}卡豆`
+          : paymentModeType == 'free'
+          ? '免费'
+          : `￥${val}`,
     },
     {
       title: '结算价',
