@@ -810,7 +810,6 @@ const PreferentialSet = ({
       placeholder: '请选择商家商品标签',
       select: goodsTaglist,
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
-      required: false,
       rules: [{ required: false }],
       addRules: [
         {
