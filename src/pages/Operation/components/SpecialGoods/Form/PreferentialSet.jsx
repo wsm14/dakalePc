@@ -815,7 +815,7 @@ const PreferentialSet = ({
       addRules: [
         {
           validator: (rule, value) => {
-            if (value.length > 3) {
+            if (value?.length > 3) {
               return Promise.reject('最多选择3个标签');
             }
             return Promise.resolve();
