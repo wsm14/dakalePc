@@ -15,32 +15,51 @@ const MarketActivityBaseForm = (props) => {
       maxLength: 15,
     },
     {
-      label: '消息内容',
+      label: '活动时间',
       name: 'content',
       type: 'textArea',
     },
 
     {
-      label: '消息类型',
+      label: '活动规则',
       name: 'messageType',
       type: 'select',
       select: MSG_PSUH_TYPE,
     },
     {
-      label: '推送时间',
+      label: '活动备注',
       name: 'pushTime',
       type: 'dataPicker',
       format: 'YYYY-MM-DD HH:mm',
       showTime: true,
     },
     {
-      label: '推送对象',
+      label: '使用规则',
       name: 'pushObjectType',
       type: 'radio',
       select: userType == 'user' ? MSG_PSUH_OBJECT : { all: '全部用户' },
       onChange: (e) => {
         setPushObj(e.target.value);
       },
+    },
+    {
+      label: '使用备注',
+      name: 'pushObjectType',
+      type: 'radio',
+      select: userType == 'user' ? MSG_PSUH_OBJECT : { all: '全部用户' },
+      onChange: (e) => {
+        setPushObj(e.target.value);
+      },
+    },
+    {
+      label: '活动链接',
+      name: 'pushObjectType',
+      addRules: [
+        {
+          type: 'url',
+          message: '请输入正确链接格式',
+        },
+      ],
     },
   ];
 
