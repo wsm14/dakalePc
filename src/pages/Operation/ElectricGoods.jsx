@@ -270,7 +270,7 @@ const ElectricGoods = (props) => {
 
   // 分享配置
   const fetchShareImg = (record) => {
-    const { relateName, goodsName, goodsId } = record;
+    const { goodsName, goodsId } = record;
     dispatch({
       type: 'electricGoods/fetchGetOnlineShareInfo',
       payload: {
@@ -281,7 +281,6 @@ const ElectricGoods = (props) => {
         setVisibleShare({
           show: true,
           goodsId,
-          relateName,
           goodsName,
           detail,
         });
