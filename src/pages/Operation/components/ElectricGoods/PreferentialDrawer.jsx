@@ -30,7 +30,7 @@ const PreferentialDrawer = (props) => {
         initStock,
         minPurchaseNum,
         batchLadderObjects,
-        platformTagIds,
+        platformTagIds = [],
         shippingRuleObject = {},
         skuInfoReqs,
         ...other
@@ -66,7 +66,7 @@ const PreferentialDrawer = (props) => {
           categoryId: categoryNode[categoryNode.length - 1],
           categoryNode: categoryNode.join('.'),
           goodsBriefImg: gImg.toString(),
-          platformTagIds: platformTagIds.toString(),
+          platformTagIds: platformTagIds.toString() || undefined,
           shippingRuleObject: {
             ...shippingRuleObject,
             shippingAddress:
