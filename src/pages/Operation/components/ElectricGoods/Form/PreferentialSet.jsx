@@ -54,7 +54,6 @@ const PreferentialSet = ({
   // const [refundList, setRefundList] = useState([]); // 退货地址数据暂存
   const [specificationTypeData, setSpecificationTypeData] = useState([]); // 规格类型数据暂存
   const [tieredModal, setTieredModal] = useState(false); // 设置阶梯价model
-  const [batchOnOff, setBatchOnOff] = useState(false); // 批采价设置状态
   const [AstrictType, setAstrictType] = useState('unlimited'); // 限购状态
 
   // 是否是多规格
@@ -81,13 +80,15 @@ const PreferentialSet = ({
       setPriceType(paymentModeType); // 回显售卖价格类型
       setFreightType(postageRuleObject.type); // 回显运费类型
       setAstrictType(buyLimitRuleObject.type); // 回显限购状态
-      setBatchOnOff(true);
     }
     // 延迟赋值: skuInfoReqs 详细规格组件使用
     setTimeout(() => {
       setFirst(true);
     }, 200);
   }, []);
+
+  // 批采价数组   为判断设置状态
+  const batchList = form.getFieldValue('batchLadderObjects') || [];
 
   // 处理规格组数据
   useEffect(() => {
@@ -326,7 +327,7 @@ const PreferentialSet = ({
       visible: !specificationDisabled && sellType != 'single',
       formItem: (
         <Button type="link" onClick={() => setTieredModal(true)}>
-          {batchOnOff ? '已设置' : '设置'}
+          {batchList.length > 0 ? '已设置' : '设置'}
         </Button>
       ),
     },
@@ -594,7 +595,6 @@ const PreferentialSet = ({
         form={form}
         visible={tieredModal}
         onClose={() => setTieredModal(false)}
-        setBatchOnOff={setBatchOnOff}
         specificationDisabled={specificationDisabled}
       ></TieredPricing>
     </>
