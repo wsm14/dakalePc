@@ -143,9 +143,9 @@ const PreferentialDrawer = (props) => {
     title: drawerProps.title,
     visible: show,
     onClose,
-    afterCallBack: () => {},
+    destroyOnClose: true,
     closeCallBack: () => {
-      dispatch({ type: 'baseData/clearGroupMre' }); // 关闭清空搜索的商家数据
+      setCommissionShow(false);
     },
     footer: (
       <Button type="primary" onClick={handleUpData} loading={loading}>
