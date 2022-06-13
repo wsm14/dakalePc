@@ -36,11 +36,11 @@ const ConnectedGoodsModal = (props) => {
   const searchItems = [
     {
       label: '商品名称',
-      name: 'brandName',
+      name: 'goodsName',
     },
     {
       label: '商品ID',
-      name: 'brandNsame',
+      name: 'goodsId',
     },
   ];
 
@@ -66,7 +66,7 @@ const ConnectedGoodsModal = (props) => {
     {
       title: tabKey === 'commerceGoods' ? '所属类目/供应商' : '所属行业/店铺',
       align: 'center',
-      dataIndex: 'ownerName',
+      dataIndex: 'relateName',
       render: (val, row) => (
         <div>
           <div style={{ marginTop: 5 }}>{row.categoryName || '--'}</div>
