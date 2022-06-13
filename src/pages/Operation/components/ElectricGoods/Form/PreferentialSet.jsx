@@ -271,6 +271,7 @@ const PreferentialSet = ({
       formItem: (
         <AddSpecification
           form={form}
+          commissionShow={commissionShow}
           specificationTypeData={specificationTypeData}
           setSpecificationTypeData={setSpecificationTypeData}
         ></AddSpecification>
