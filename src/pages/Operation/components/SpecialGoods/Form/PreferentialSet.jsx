@@ -17,6 +17,7 @@ import {
   COUPON_ACTIVE_TYPE,
   SPECIAL_USERTIME_TYPE,
   SPECIAL_BALANCE_TYPE,
+  SPECIAL_GOODS_TYPE,
 } from '@/common/constant';
 import { NUM_ALL } from '@/common/regExp';
 import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
@@ -205,11 +206,7 @@ const PreferentialSet = ({
         tagType: 'platform',
       },
       callback: (list) => {
-        const tagList = list.map((item) => {
-          if (item.status === '1') {
-            return item;
-          }
-        });
+        const tagList = list.filter((item) => item.status === '1');
         setGoodsTaglist([...tagList]);
       },
     });
@@ -280,6 +277,7 @@ const PreferentialSet = ({
       ellipsis: true,
     },
   ];
+
   // 信息
   const formItems = [
     {
@@ -412,7 +410,7 @@ const PreferentialSet = ({
       name: ['thirdInfoReq', 'thirdType'],
       type: 'radio',
       // disabled: commonDisabled,
-      select: { 1: '特惠商品', 2: '自我游商品' },
+      select: SPECIAL_GOODS_TYPE,
       onChange: (e) => {
         setGoodsType(e.target.value);
       },
@@ -462,8 +460,9 @@ const PreferentialSet = ({
       disabled: editDisabled && infoStatus,
       min: 0,
       max: 999999.99,
+      step: '0.01',
+      addonBefore: '￥',
       onChange: (e) => saveMreData({ oriPrice: e }),
-      formatter: (value) => `￥ ${value}`,
     },
     {
       label: '成本价',
@@ -473,9 +472,10 @@ const PreferentialSet = ({
       // disabled: editDisabled,
       min: 0,
       max: 999999.99,
+      step: '0.01',
+      addonBefore: '￥',
       required: false,
       rules: [{ required: false }],
-      formatter: (value) => `￥ ${value}`,
     },
     {
       label: '结算价',
@@ -485,19 +485,21 @@ const PreferentialSet = ({
       disabled: editDisabled && infoStatus,
       min: 0,
       max: 999999.99,
-      formatter: (value) => `￥ ${value}`,
+      step: '0.01',
+      addonBefore: '￥',
       addRules: [
         {
           validator: (rule, value) => {
             const merchantPrice = Number(value);
             const buyPrice = Number(form.getFieldValue(['skuInfoReq', 'sellPrice']));
-            if (merchantPrice > buyPrice) {
+            const sellBean = Number(form.getFieldValue(['skuInfoReq', 'sellBean'])) / 100 || 0;
+            if (merchantPrice > buyPrice + sellBean && mreList.paymentModeType !== 'free') {
               return Promise.reject('商家结算价不可超过零售价格');
             }
             // “商家结算价不可超过N（结算价≤特惠价格*（1-费率））”
-            const getPrice = buyPrice * (1 - mreList.ratio / 100);
-            if (merchantPrice > getPrice) {
-              return Promise.reject(`商家结算价不可超过${getPrice}`);
+            const getPrice = (buyPrice + sellBean) * (1 - mreList.ratio / 100);
+            if (merchantPrice > getPrice && mreList.paymentModeType !== 'free') {
+              return Promise.reject(`商家结算价不可超过${getPrice.toFixed(2)}`);
             }
             return Promise.resolve();
           },
@@ -512,6 +514,9 @@ const PreferentialSet = ({
       disabled: editDisabled && infoStatus,
       onChange: (e) => {
         saveMreData({ paymentModeType: e.target.value });
+        form.setFieldsValue({
+          skuInfoReq: { sellBean: undefined },
+        });
       },
     },
     {
@@ -521,9 +526,11 @@ const PreferentialSet = ({
       type: 'number',
       precision: 2,
       disabled: editDisabled && infoStatus,
+      visible: !['free'].includes(mreList.paymentModeType),
       min: 0,
       max: 999999.99,
-      formatter: (value) => `￥ ${value}`,
+      step: '0.01',
+      addonBefore: '￥',
       onChange: (e) => {
         saveMreData({ sellPrice: e });
       },
@@ -551,10 +558,9 @@ const PreferentialSet = ({
       type: 'number',
       precision: 0,
       disabled: editDisabled && infoStatus,
-      min: 0,
-      required: false,
+      min: 1,
       visible: mreList.paymentModeType == 'self',
-      rules: [{ required: false }],
+      // rules: [{ required: false }],
     },
     {
       label: '其他平台价格',
@@ -563,10 +569,11 @@ const PreferentialSet = ({
       precision: 2,
       min: 0,
       max: 999999.99,
+      step: '0.01',
+      addonBefore: '￥',
       required: false,
       // disabled: editDisabled,
       rules: [{ required: false }],
-      formatter: (value) => `￥ ${value}`,
     },
     {
       label: '商品库存',
@@ -574,7 +581,7 @@ const PreferentialSet = ({
       type: 'number',
       precision: 0,
       // disabled: editDisabled,
-      min: 0,
+      min: 1,
       max: 100000000,
     },
     // {
@@ -811,10 +818,11 @@ const PreferentialSet = ({
       placeholder: '请选择商家商品标签',
       select: goodsTaglist,
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
+      rules: [{ required: false }],
       addRules: [
         {
           validator: (rule, value) => {
-            if (value.length > 3) {
+            if (value?.length > 3) {
               return Promise.reject('最多选择3个标签');
             }
             return Promise.resolve();
@@ -857,7 +865,7 @@ const PreferentialSet = ({
       },
     },
     {
-      label: `选择${BUSINESS_TYPE[mreList.type]}`,
+      label: `选择${BUSINESS_TYPE[mreList.settlerType]}`,
       type: 'select',
       name: 'settlerId',
       placeholder: '请输入搜索',

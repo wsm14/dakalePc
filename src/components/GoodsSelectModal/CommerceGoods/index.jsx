@@ -59,7 +59,7 @@ const CommerceGoods = (props) => {
       align: 'right',
       dataIndex: 'goodsId',
       render: (val, row) => (
-        <Button type="link" onClick={() => fetchSeeRepertory(val, row.goodsName)}>
+        <Button type="link" onClick={() => fetchSeeRepertory(val, row)}>
           查看
         </Button>
       ),
@@ -67,7 +67,7 @@ const CommerceGoods = (props) => {
   ];
 
   // 查看佣金/库存    &&   调整库存
-  const fetchSeeRepertory = (serviceId, goodsName) => {
+  const fetchSeeRepertory = (serviceId, row) => {
     dispatch({
       type: 'electricGoods/fetchListSkuStockByServiceId',
       payload: {
@@ -78,9 +78,8 @@ const CommerceGoods = (props) => {
         setVisibleRemain({
           show: true,
           detail: {
+            ...row,
             ...detail,
-            goodsName,
-            sellType: 'single', // 零售 batch 批采
           },
         }),
     });
@@ -98,6 +97,7 @@ const CommerceGoods = (props) => {
         params={{
           status: 1,
           sellType: 'single',
+          displayType: 'manualOrList',
         }}
         scroll={{ y: 400 }}
         rowSelection={{

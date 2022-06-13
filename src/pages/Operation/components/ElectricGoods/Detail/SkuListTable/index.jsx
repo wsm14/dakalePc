@@ -4,8 +4,10 @@ import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
 
 const SkuListTable = (props) => {
+  // type   详情打开 info   列表佣金和库存打开  listSee
   const { detail = {}, type = 'info' } = props;
-  const { customSize = [], skuInfoReqs = [], sellType } = detail;
+  // sellType 零售 single 批采 batch
+  const { customSize = [], skuInfoReqs = [], sellType, paymentModeType } = detail;
 
   const ladderTable = (row = []) => {
     const ladderColumns = [
@@ -45,13 +47,13 @@ const SkuListTable = (props) => {
     {
       title: 'SKU码',
       dataIndex: 'skuCode',
-      fixed: true,
+      width: 110,
+      ellipsis: true,
       show: customSize.length != 0,
     },
     {
       title: `${customSize.map((item) => item.name).join('/')}`,
       dataIndex: type == 'info' ? 'attributes' : 'skuAttributeResps',
-      fixed: true,
       render: (val) => val.map((item) => item.value).join('/'),
       show: customSize.length != 0,
     },
@@ -79,6 +81,7 @@ const SkuListTable = (props) => {
     {
       title: '批采价',
       dataIndex: 'batchLadderObjects',
+      align: 'center',
       show: sellType == 'batch',
       render: (val, row) => (
         <Popover
@@ -104,8 +107,13 @@ const SkuListTable = (props) => {
       dataIndex: 'sellPrice',
       align: 'right',
       width: 120,
-      render: (val) => `￥${val}`,
       show: sellType == 'single',
+      render: (val, row) =>
+        paymentModeType == 'self'
+          ? `￥${val}+${row.sellBean}卡豆`
+          : paymentModeType == 'free'
+          ? '免费'
+          : `￥${val}`,
     },
     {
       title: '结算价',

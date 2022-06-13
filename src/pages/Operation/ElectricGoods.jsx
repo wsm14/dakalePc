@@ -88,11 +88,6 @@ const ElectricGoods = (props) => {
       type: 'rangePicker',
       end: 'updateEndDate',
     },
-    {
-      label: '最后操作人',
-      name: 'people',
-      placeholder: '请输入姓名',
-    },
   ];
 
   // table 表头
@@ -137,11 +132,13 @@ const ElectricGoods = (props) => {
     {
       title: '售卖价格类型',
       dataIndex: 'paymentModeType',
+      show: tabKey == 'single',
       render: (val) => ELECTRICGOODS_SELL_PRICE_TYPE[val],
     },
     {
       title: '零售价',
       align: 'right',
+      show: tabKey == 'single',
       dataIndex: 'sellPriceRange',
     },
     {
@@ -149,7 +146,7 @@ const ElectricGoods = (props) => {
       align: 'right',
       dataIndex: 'goodsId',
       render: (val, row) => (
-        <Button type="link" onClick={() => fetchSeeRepertory(val, 'listSee')}>
+        <Button type="link" onClick={() => fetchSeeRepertory(row, 'listSee')}>
           查看
         </Button>
       ),
@@ -224,7 +221,7 @@ const ElectricGoods = (props) => {
             title: '调整库存',
             type: 'changeRemain',
             // visible: ['1'].includes(status) && deleteFlag == '1',
-            click: () => fetchSeeRepertory(val, 'changeRemain'),
+            click: () => fetchSeeRepertory(record, 'changeRemain'),
           },
           {
             title: '设置', // 分享配置
@@ -245,7 +242,8 @@ const ElectricGoods = (props) => {
   // };
 
   // 查看佣金/库存    &&   调整库存
-  const fetchSeeRepertory = (serviceId, type) => {
+  const fetchSeeRepertory = (row, type) => {
+    const { goodsId: serviceId } = row;
     dispatch({
       type: 'electricGoods/fetchListSkuStockByServiceId',
       payload: {
@@ -257,8 +255,8 @@ const ElectricGoods = (props) => {
           ? setVisibleCommission({
               show: true,
               detail: {
+                ...row,
                 ...detail,
-                sellType: tabKey,
               },
             })
           : setVisibleRemain({

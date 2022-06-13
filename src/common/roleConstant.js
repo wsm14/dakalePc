@@ -159,7 +159,7 @@ export const ROLE_BUTTON_TYPE = {
   reportCenter: '举报中心',
   recommendList: '团队',
   rechargeDetail: '充值记录',
-  recommendStatus: '推荐状态',
+  // recommendStatus: '推荐状态',
   rewardPeo: '打赏设置',
   recover: '恢复',
   rewardInfo: '打赏明细',

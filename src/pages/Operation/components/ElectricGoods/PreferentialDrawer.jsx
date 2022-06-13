@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import { checkFileData } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
-import { getCityName } from '@/utils/utils';
 import PreferentialSet from './Form/PreferentialSet';
 
 const PreferentialDrawer = (props) => {
@@ -32,7 +30,7 @@ const PreferentialDrawer = (props) => {
         initStock,
         minPurchaseNum,
         batchLadderObjects,
-        platformTagIds,
+        platformTagIds = [],
         shippingRuleObject = {},
         skuInfoReqs,
         ...other
@@ -68,7 +66,7 @@ const PreferentialDrawer = (props) => {
           categoryId: categoryNode[categoryNode.length - 1],
           categoryNode: categoryNode.join('.'),
           goodsBriefImg: gImg.toString(),
-          platformTagIds: platformTagIds.toString(),
+          platformTagIds: platformTagIds.toString() || undefined,
           shippingRuleObject: {
             ...shippingRuleObject,
             shippingAddress:
@@ -145,9 +143,9 @@ const PreferentialDrawer = (props) => {
     title: drawerProps.title,
     visible: show,
     onClose,
-    afterCallBack: () => {},
+    destroyOnClose: true,
     closeCallBack: () => {
-      dispatch({ type: 'baseData/clearGroupMre' }); // 关闭清空搜索的商家数据
+      setCommissionShow(false);
     },
     footer: (
       <Button type="primary" onClick={handleUpData} loading={loading}>

@@ -148,7 +148,7 @@ export default {
         // allowRefund: Number(allowRefund),
         // allowExpireRefund: Number(allowExpireRefund),
         needOrder: Number(needOrder),
-        platformTagIds: platformTagIds.split(','),
+        platformTagIds: platformTagIds ? platformTagIds.split(',') : [],
         // displayFilterTags: displayFilterTags.split(','),
         relationOwnerInfoResps: relationOwnerInfoRespsList,
         thirdInfoReq: thirdInfoResp,

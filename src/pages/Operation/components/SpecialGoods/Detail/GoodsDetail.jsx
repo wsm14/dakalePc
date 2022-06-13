@@ -11,7 +11,7 @@ import {
 
 const GoodsDetail = (props) => {
   const { detail, merchantList } = props;
-  const { relateType, thirdInfoResp = {}, productType } = detail;
+  const { relateType, thirdInfoResp = {}, productType, paymentModeType } = detail;
   const { thirdType } = thirdInfoResp;
 
   const ActiveformItems = [
@@ -74,6 +74,11 @@ const GoodsDetail = (props) => {
     {
       name: ['skuInfoReq', 'sellPrice'],
       label: '零售价',
+    },
+    {
+      name: ['skuInfoReq', 'sellBean'],
+      label: '卡豆',
+      show: paymentModeType === 'self',
     },
     {
       name: ['skuInfoReq', 'settlePrice'],
