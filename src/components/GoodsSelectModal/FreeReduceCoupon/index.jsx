@@ -1,18 +1,18 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
-import { PLATFORM_TICKET_TYPE, TAG_COLOR_TYPE } from '@/common/constant';
+import { TAG_COLOR_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 
-// 平台券 platformCoupon
-const PlatformCoupon = (props) => {
+// 免费券 freeReduceCoupon
+const FreeCoupon = (props) => {
   const {
     visible,
     selectItem,
     selectType,
     searchValue,
-    platformCoupon,
+    freeCouponList,
     handleSelectItem,
     loading,
   } = props;
@@ -20,9 +20,10 @@ const PlatformCoupon = (props) => {
   const tableRef = useRef(null);
 
   useEffect(() => {
-    const { platformCouponId } = searchValue;
-    visible &&
-      tableRef.current.fetchGetData({ platformCouponId, couponName: searchValue.goodsName });
+    // merchantId,
+    // ownerId: merchantId,
+    // ownerType, // merchant: '单店', group: '集团'
+    visible && searchValue.merchantId && tableRef.current.fetchGetData(searchValue);
   }, [visible, searchValue]);
 
   const getColumns = [
@@ -30,12 +31,8 @@ const PlatformCoupon = (props) => {
       title: '类型',
       align: 'center',
       width: 100,
-      dataIndex: 'classType',
-      render: (val, row) => (
-        <Tag color={TAG_COLOR_TYPE[row.useScenesType][val]}>
-          {PLATFORM_TICKET_TYPE[row.useScenesType][val]}
-        </Tag>
-      ),
+      dataIndex: 'activityType',
+      render: (val, row) => <Tag color={TAG_COLOR_TYPE[val]}>免费券</Tag>,
     },
     {
       title: '券名称/ID',
@@ -52,11 +49,11 @@ const PlatformCoupon = (props) => {
     {
       title: '券价值',
       align: 'center',
-      dataIndex: 'couponValue',
+      dataIndex: 'reduceObject',
       render: (val, row) => (
         <div>
-          <div style={{ fontWeight: 'bold', fontSize: 20 }}>￥{val}</div>
-          <div>满{row.thresholdPrice}元可用</div>
+          <div style={{ fontWeight: 'bold', fontSize: 20 }}>￥{val.couponPrice}</div>
+          <div>{row.thresholdPrice ? `满${row.thresholdPrice}元可用` : '无门槛'}</div>
         </div>
       ),
     },
@@ -96,10 +93,7 @@ const PlatformCoupon = (props) => {
       loading={loading}
       columns={getColumns}
       scroll={{ y: 400 }}
-      params={{
-        couponStatus: 1,
-        giveType: 'manual', // 手动领取
-      }}
+      params={{ couponType: 'reduce' }}
       rowSelection={{
         type: selectType,
         selectedRowKeys: selectItem.keys,
@@ -112,14 +106,15 @@ const PlatformCoupon = (props) => {
           handleSelectItem(selectedRowKeys, selectedRows);
         },
       }}
+      pagination={false}
       rowKey={(row) => `${row.goodsId}`}
-      dispatchType="publicModels/fetchGetPlatformCouponList"
-      {...platformCoupon}
+      dispatchType="publicModels/fetchGetFreeCouponSelect"
+      {...freeCouponList}
     ></TableDataBlock>
   );
 };
 
 export default connect(({ publicModels, loading }) => ({
-  platformCoupon: publicModels.platformCoupon,
-  loading: loading.effects['publicModels/fetchGetPlatformCouponList'],
-}))(PlatformCoupon);
+  freeCouponList: publicModels.freeCouponList,
+  loading: loading.effects['publicModels/fetchGetFreeCouponSelect'],
+}))(FreeCoupon);

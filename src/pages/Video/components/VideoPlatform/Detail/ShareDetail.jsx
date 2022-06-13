@@ -322,24 +322,22 @@ const ShareDetail = (props) => {
           flag: 'configCommerce',
           ownerId,
           momentId,
-          freeOwnerCouponList: free.couponName
-            ? [{ ownerCouponId: free.ownerCouponIdString, ownerId }]
-            : [],
+          freeOwnerCouponList: free.couponName ? [{ ownerCouponId: free.goodsId, ownerId }] : [],
           activityGoodsList: contact
             .filter((i) => i.goodsName)
             .map((i) => ({
-              activityGoodsId: i.specialGoodsId || i.activityGoodsId,
-              ownerId,
+              activityGoodsId: i.goodsId,
+              ownerId: i.ownerId,
               activityType: i.activityType,
             })),
           ownerCouponList: contact
             .filter((i) => i.couponName)
-            .map((i) => ({ ownerCouponId: i.ownerCouponIdString, ownerId })),
+            .map((i) => ({ ownerCouponId: i.goodsId, ownerId })),
         },
         // onClose,
         () => {
           onClose();
-          childRef.current.fetchGetData();
+          childRef.current.fetchGetData({ pickUpOrUgcFlag: 'pickUp', isCommerceFlag: tabKey });
         },
       );
     });
@@ -396,7 +394,7 @@ const ShareDetail = (props) => {
           commerce: (
             <GoodsSet
               form={form}
-              detail={{ ownerId }}
+              detail={{ ownerId, ownerName }}
               couponData={couponData}
               setCouponData={setCouponData}
             ></GoodsSet>

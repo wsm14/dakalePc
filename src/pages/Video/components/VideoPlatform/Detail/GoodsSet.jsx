@@ -42,30 +42,33 @@ const ShareContentSet = (props) => {
         <>
           <ShareCoupon
             show="active"
+            ownerName={detail.ownerName}
             merchantIdKey="ownerId"
             type={contact[0]?.couponName ? 'coupon' : 'goods'}
             data={contact[0]}
             form={form}
             onDel={() => saveCouponStorage({ contact: contact.filter((c, i) => i != 0) })}
-            onOk={(data) => saveCouponStorage({ contact: [data] })}
+            onOk={(data) => saveCouponStorage({ contact: data })}
           ></ShareCoupon>
           <ShareCoupon
             show="active"
             merchantIdKey="ownerId"
+            ownerName={detail.ownerName}
             type={contact[1]?.couponName ? 'coupon' : 'goods'}
             data={contact[1]}
             form={form}
             onDel={() => saveCouponStorage({ contact: contact.filter((c, i) => i != 1) })}
-            onOk={(data) => saveCouponStorage({ contact: [...contact, data] })}
+            onOk={(data) => saveCouponStorage({ contact: [...contact, ...data] })}
           ></ShareCoupon>
           <ShareCoupon
             show="active"
             merchantIdKey="ownerId"
+            ownerName={detail.ownerName}
             type={contact[2]?.couponName ? 'coupon' : 'goods'}
             data={contact[2]}
             form={form}
             onDel={() => saveCouponStorage({ contact: contact.filter((c, i) => i != 2) })}
-            onOk={(data) => saveCouponStorage({ contact: [...contact, data] })}
+            onOk={(data) => saveCouponStorage({ contact: [...contact, ...data] })}
           ></ShareCoupon>
         </>
       ),

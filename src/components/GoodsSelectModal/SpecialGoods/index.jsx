@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
+import { ELECTRICGOODS_SELL_PRICE_TYPE } from '@/common/constant';
 import { GOODS_CLASS_TYPE, TAG_COLOR_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
@@ -21,7 +22,7 @@ const SpecialGoods = (props) => {
   const tableRef = useRef(null);
 
   useEffect(() => {
-    const { ...other } = searchValue;
+    const { id, ...other } = searchValue;
     visible && tableRef.current.fetchGetData(other);
   }, [visible, searchValue]);
 
@@ -76,6 +77,7 @@ const SpecialGoods = (props) => {
           >
             ¥{row.oriPrice}
           </div>
+          {ELECTRICGOODS_SELL_PRICE_TYPE[row.paymentModeType]}
         </div>
       ),
     },

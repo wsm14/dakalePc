@@ -18,12 +18,13 @@ const ReduceCoupon = (props) => {
   const tableRef = useRef(null);
 
   useEffect(() => {
-    const { id } = searchValue;
+    const { id, goodsName, ...other } = searchValue;
     visible &&
       id &&
       tableRef.current.fetchGetData({
         merchantId: id,
-        couponName: searchValue.goodsName,
+        couponName: goodsName,
+        ...other,
       });
   }, [visible, searchValue]);
 
@@ -54,9 +55,9 @@ const ReduceCoupon = (props) => {
           activeDays, // 使用有效期-领取后-有效天数
         } = row;
         return (val && endDateStr) || (activeDate && endDate)
-          ? `${val || activeDate} - ${endDateStr || endDate}`
+          ? `${val || activeDate}\n~${endDateStr || endDate}`
           : delayDays != 0
-          ? `领取后${delayDays}天生效｜有效期${activeDays}天`
+          ? `领取后${delayDays}天生效\n有效期${activeDays}天`
           : `领取后${activeDays}天内`;
       },
     },

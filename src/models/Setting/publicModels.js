@@ -3,7 +3,11 @@ import oss from 'ali-oss';
 import { uuid } from '@/utils/utils';
 import { fetchPlatformCouponSelect } from '@/services/ActiveServices';
 import { fetchListOnlineGoodsByPage, fetchSpecialGoodsList } from '@/services/OperationServices';
-import { fetchGetOss, fetchGetBuyCouponSelect } from '@/services/PublicServices';
+import {
+  fetchGetOss,
+  fetchGetBuyCouponSelect,
+  fetchGetFreeCouponSelect,
+} from '@/services/PublicServices';
 
 export default {
   namespace: 'publicModels',
@@ -13,6 +17,7 @@ export default {
     offlineGoods: { list: [], total: 0 },
     buyCouponList: { list: [], total: 0 },
     platformCoupon: { list: [], total: 0 },
+    freeCouponList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -128,6 +133,25 @@ export default {
               goodsId: i.platformCouponId,
             })),
             total: content.total,
+          },
+        },
+      });
+    },
+    // get 获取免费券列表
+    *fetchGetFreeCouponSelect({ payload }, { call, put }) {
+      const response = yield call(fetchGetFreeCouponSelect, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          freeCouponList: {
+            list: content.ownerCouponList.map((i) => ({
+              ...i,
+              activityType: 'freeReduceCoupon',
+              goodsId: i.ownerCouponIdString,
+            })),
+            total: content.ownerCouponList.length,
           },
         },
       });
