@@ -574,7 +574,7 @@ const PreferentialSet = ({
       type: 'number',
       precision: 0,
       // disabled: editDisabled,
-      min: 0,
+      min: 1,
       max: 100000000,
     },
     // {
