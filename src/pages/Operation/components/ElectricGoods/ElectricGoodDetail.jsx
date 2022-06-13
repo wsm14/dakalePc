@@ -54,7 +54,7 @@ const ElectricGoodDetail = (props) => {
     },
     {
       label: `商品类目`,
-      name: 'brandName',
+      name: 'categoryName',
     },
     {
       label: `商品编码`,
