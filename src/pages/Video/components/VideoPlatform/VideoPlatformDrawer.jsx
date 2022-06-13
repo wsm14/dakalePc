@@ -74,7 +74,7 @@ const VideoPlatformDrawer = (props) => {
                   momentRelateList: newCoupon.map((item) => ({
                     relateId: item.goodsId,
                     relateType: item.activityType,
-                    relateShardingKey: item.ownerId,
+                    relateShardingKey: item.ownerId || ownerId,
                   })),
                   age: age === 'age' ? ageData.toString() : age,
                   publishTime: publishTime && publishTime.format('YYYY-MM-DD HH:mm:00'),

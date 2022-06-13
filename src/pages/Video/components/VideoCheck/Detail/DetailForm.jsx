@@ -1,6 +1,10 @@
 import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
-import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
+import {
+  couponsDom,
+  goodsDom,
+  commerceDom,
+} from '@/components/VideoSelectBindContent/CouponFreeDom';
 import { SHARE_SEX_TYPE, NEW_SHARE_STATUS, SHARE_AREA_TYPE, VIDEO_TYPE } from '@/common/constant';
 
 const DetailForm = (props) => {
@@ -52,8 +56,14 @@ const DetailForm = (props) => {
       label: '推荐带货',
       name: 'promotionList',
       render: (val, row) =>
-        val.map((item) =>
-          item.type === 'special' ? goodsDom(item) : couponsDom(item, '', '', item.type),
+        val.map(
+          (item) =>
+            ({
+              free: couponsDom(item, '', '', item.type),
+              special: goodsDom(item, '', '', item.type),
+              valuable: couponsDom(item, '', '', item.type),
+              commerce: commerceDom(item),
+            }[item.type]),
         ),
     },
     {

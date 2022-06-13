@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { notification } from 'antd';
 import GoodsSelectModal from '@/components/GoodsSelectModal';
-import { couponsDom, oldGoodsDom, commerceDom } from './CouponFreeDom';
+import { couponsDom, goodsDom, commerceDom } from './CouponFreeDom';
 import './coupon.less';
 
 /**
@@ -45,7 +45,7 @@ const ShareCoupon = (props) => {
         data.activityType === 'commerceGoods' ? (
           commerceDom(data, '', '', onDel)
         ) : (
-          oldGoodsDom(data, '', '', onDel)
+          goodsDom(data, '', '', onDel)
         )
       ) : (
         <div
