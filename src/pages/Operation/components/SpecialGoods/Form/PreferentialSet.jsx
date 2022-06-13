@@ -460,8 +460,10 @@ const PreferentialSet = ({
       disabled: editDisabled && infoStatus,
       min: 0,
       max: 999999.99,
+      stringMode: true,
+      step: '0.01',
+      addonBefore: '￥',
       onChange: (e) => saveMreData({ oriPrice: e }),
-      formatter: (value) => `￥ ${value}`,
     },
     {
       label: '成本价',
@@ -471,9 +473,11 @@ const PreferentialSet = ({
       // disabled: editDisabled,
       min: 0,
       max: 999999.99,
+      stringMode: true,
+      step: '0.01',
+      addonBefore: '￥',
       required: false,
       rules: [{ required: false }],
-      formatter: (value) => `￥ ${value}`,
     },
     {
       label: '结算价',
@@ -483,7 +487,9 @@ const PreferentialSet = ({
       disabled: editDisabled && infoStatus,
       min: 0,
       max: 999999.99,
-      formatter: (value) => `￥ ${value}`,
+      stringMode: true,
+      step: '0.01',
+      addonBefore: '￥',
       addRules: [
         {
           validator: (rule, value) => {
@@ -523,7 +529,9 @@ const PreferentialSet = ({
       visible: !['free'].includes(mreList.paymentModeType),
       min: 0,
       max: 999999.99,
-      formatter: (value) => `￥ ${value}`,
+      stringMode: true,
+      step: '0.01',
+      addonBefore: '￥',
       onChange: (e) => {
         saveMreData({ sellPrice: e });
       },
@@ -563,10 +571,12 @@ const PreferentialSet = ({
       precision: 2,
       min: 0,
       max: 999999.99,
+      stringMode: true,
+      step: '0.01',
+      addonBefore: '￥',
       required: false,
       // disabled: editDisabled,
       rules: [{ required: false }],
-      formatter: (value) => `￥ ${value}`,
     },
     {
       label: '商品库存',
