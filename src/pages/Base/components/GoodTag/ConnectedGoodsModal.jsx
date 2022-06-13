@@ -64,7 +64,7 @@ const ConnectedGoodsModal = (props) => {
       ),
     },
     {
-      title: '所属类目/供应商',
+      title: tabKey === 'commerceGoods' ? '所属类目/供应商' : '所属行业/店铺',
       align: 'center',
       dataIndex: 'ownerName',
       render: (val, row) => (
