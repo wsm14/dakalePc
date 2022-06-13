@@ -858,7 +858,7 @@ const PreferentialSet = ({
       },
     },
     {
-      label: `选择${BUSINESS_TYPE[mreList.type]}`,
+      label: `选择${BUSINESS_TYPE[mreList.settlerType]}`,
       type: 'select',
       name: 'settlerId',
       placeholder: '请输入搜索',
