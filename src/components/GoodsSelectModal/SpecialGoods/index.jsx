@@ -6,7 +6,7 @@ import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 
-// 本地生活品（特惠商品）
+// 本地生活品（特惠商品） specialGoods
 const SpecialGoods = (props) => {
   const {
     visible,
@@ -22,7 +22,7 @@ const SpecialGoods = (props) => {
 
   useEffect(() => {
     const { ...other } = searchValue;
-    visible && tableRef.current.fetchGetData({ ...other });
+    visible && tableRef.current.fetchGetData(other);
   }, [visible, searchValue]);
 
   const getColumns = [

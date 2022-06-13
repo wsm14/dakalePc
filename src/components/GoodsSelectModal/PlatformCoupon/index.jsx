@@ -5,7 +5,7 @@ import { PLATFORM_TICKET_TYPE, TAG_COLOR_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 
-// 平台券
+// 平台券 platformCoupon
 const PlatformCoupon = (props) => {
   const {
     visible,
@@ -20,7 +20,9 @@ const PlatformCoupon = (props) => {
   const tableRef = useRef(null);
 
   useEffect(() => {
-    visible && tableRef.current.fetchGetData({ couponName: searchValue.goodsName });
+    const { platformCouponId } = searchValue;
+    visible &&
+      tableRef.current.fetchGetData({ platformCouponId, couponName: searchValue.goodsName });
   }, [visible, searchValue]);
 
   const getColumns = [

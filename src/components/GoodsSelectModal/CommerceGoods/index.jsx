@@ -7,7 +7,7 @@ import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import SkuTableModal from '@/pages/Operation/components/ElectricGoods/Detail/SkuTableModal';
 
-// 电商品
+// 电商品 commerceGoods
 const CommerceGoods = (props) => {
   const {
     visible,

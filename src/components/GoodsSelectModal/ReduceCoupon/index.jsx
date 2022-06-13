@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Tag } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 
-// 有价券
+// 有价券 reduceCoupon
 const ReduceCoupon = (props) => {
   const {
     visible,
