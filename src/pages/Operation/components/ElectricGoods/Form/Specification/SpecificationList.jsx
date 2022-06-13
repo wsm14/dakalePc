@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form } from 'antd';
 import FormList from './FormList';
+import BulkEditing from './BulkEditing';
 import styles from './style.less';
 
 function SpecificationList(props) {
@@ -25,35 +26,48 @@ function SpecificationList(props) {
               <div>图片</div>
               <div>
                 <span style={{ color: 'red' }}>*</span>原价
+                <BulkEditing form={form} editKey="oriPrice"></BulkEditing>
               </div>
-              {sellType === 'single' && <div>成本价</div>}
+              {sellType === 'single' && (
+                <div>
+                  <span>成本价</span>
+                  <BulkEditing form={form} editKey="costPrice"></BulkEditing>
+                </div>
+              )}
+
               {sellType === 'single' && (
                 <div>
                   <span style={{ color: 'red' }}>*</span>结算价
+                  <BulkEditing form={form} editKey="settlePrice"></BulkEditing>
                 </div>
               )}
               {sellType === 'single' && priceType !== 'free' && (
                 <div>
                   <span style={{ color: 'red' }}>*</span>零售价
+                  <BulkEditing form={form} editKey="sellPrice"></BulkEditing>
                 </div>
               )}
               {sellType === 'single' && priceType === 'self' && (
                 <div>
                   <span style={{ color: 'red' }}>*</span>卡豆
+                  <BulkEditing form={form} editKey="sellBean"></BulkEditing>
                 </div>
               )}
               {sellType === 'batch' && (
                 <>
                   <div>
                     <span style={{ color: 'red' }}>*</span>最小起订量
+                    <BulkEditing form={form} editKey="minPurchaseNum"></BulkEditing>
                   </div>
                   <div>
                     <span style={{ color: 'red' }}>*</span>批采价
+                    <BulkEditing form={form} editKey="batchLadderObjects"></BulkEditing>
                   </div>
                 </>
               )}
               <div>
                 <span style={{ color: 'red' }}>*</span>商品库存
+                <BulkEditing form={form} editKey="initStock"></BulkEditing>
               </div>
             </div>
             {fields.map((field) => (
