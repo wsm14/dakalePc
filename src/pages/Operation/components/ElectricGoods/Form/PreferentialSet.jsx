@@ -383,7 +383,7 @@ const PreferentialSet = ({
       name: 'initStock',
       type: 'number',
       precision: 0,
-      min: 0,
+      min: 1,
       max: 100000000,
       visible: !specificationDisabled,
       disabled: editDisabled,

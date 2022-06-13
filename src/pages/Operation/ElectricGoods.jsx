@@ -88,11 +88,6 @@ const ElectricGoods = (props) => {
       type: 'rangePicker',
       end: 'updateEndDate',
     },
-    {
-      label: '最后操作人',
-      name: 'people',
-      placeholder: '请输入姓名',
-    },
   ];
 
   // table 表头

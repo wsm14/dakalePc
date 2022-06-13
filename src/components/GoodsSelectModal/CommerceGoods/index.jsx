@@ -97,6 +97,7 @@ const CommerceGoods = (props) => {
         params={{
           status: 1,
           sellType: 'single',
+          displayType: 'manualOrList',
         }}
         scroll={{ y: 400 }}
         rowSelection={{
