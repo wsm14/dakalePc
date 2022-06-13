@@ -3,7 +3,11 @@ import { Button, Input } from 'antd';
 import update from 'immutability-helper';
 
 const AddSpecification = (props) => {
-  const { specificationTypeData = [], setSpecificationTypeData } = props;
+  const {
+    specificationTypeData = [],
+    setSpecificationTypeData,
+    commissionShow = '0', // 分佣模板类型
+  } = props;
 
   // 添加规格项
   const addSpecificationType = () => {
@@ -108,16 +112,30 @@ const AddSpecification = (props) => {
                   ></Input>
                 );
               })}
-              <Button type="link" onClick={() => addSpecificationValue(index)}>
+              <Button
+                disabled={commissionShow === '1'}
+                type="link"
+                onClick={() => addSpecificationValue(index)}
+              >
                 添加规格值
               </Button>
             </div>
           </div>
         );
       })}
-      <Button type="primary" ghost onClick={() => addSpecificationType()}>
+      <Button
+        disabled={commissionShow === '1'}
+        type="primary"
+        ghost
+        onClick={() => addSpecificationType()}
+      >
         添加规格项
       </Button>
+      {commissionShow === '1' && (
+        <div style={{ display: 'inline-block', marginLeft: 5, color: '#ccc' }}>
+          手动分佣不允许多规格
+        </div>
+      )}
     </>
   );
 };
