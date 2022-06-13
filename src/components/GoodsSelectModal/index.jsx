@@ -153,7 +153,6 @@ const GoodsSelectModal = (props) => {
     >
       {searchItems.filter((i) => i.show).length > 0 && !hiddenSearch && (
         <SearchCondition
-          colForm={{ xxl: 12 }}
           searchItems={searchItems}
           handleSearch={(val) => setSearchValue({ ...searchParams, ...val })}
         ></SearchCondition>

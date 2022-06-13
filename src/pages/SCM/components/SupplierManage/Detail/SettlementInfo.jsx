@@ -73,7 +73,6 @@ const SettlementInfo = (props) => {
   return (
     <>
       <SearchCondition
-        colForm={{ xxl: 24 }}
         searchItems={searchItems}
         handleSearch={fetchGetSettlement}
       ></SearchCondition>

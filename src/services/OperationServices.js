@@ -759,7 +759,7 @@ export function fetchConfigGoodsDel(data) {
 
 // 商品标签 - 权重设置
 export function fetchTagSortSet(data) {
-  return request('/admin/goodsTag/batchRemoveConfigGoodsTagRelatedGoods', {
+  return request('/admin/goodsTag/batchUpdateConfigGoodsTagWeightRelatedGoods', {
     method: 'POST',
     data,
   });

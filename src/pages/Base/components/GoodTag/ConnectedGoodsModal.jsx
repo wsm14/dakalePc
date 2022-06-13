@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Modal, Badge } from 'antd';
-import { GOODS_TYPE } from '@/common/constant';
+import { ELECTRICGOODS_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import ExtraButton from '@/components/ExtraButton';
@@ -21,7 +21,7 @@ const tabList = [
 ];
 
 const ConnectedGoodsModal = (props) => {
-  const { visible, onClose, dispatch, configGoodsList, loading, loadingSort } = props;
+  const { listKey, visible, onClose, dispatch, configGoodsList, loading, loadingSort } = props;
   const { show = false, id, name } = visible;
 
   const childRef = useRef();
@@ -41,6 +41,24 @@ const ConnectedGoodsModal = (props) => {
     {
       label: '商品ID',
       name: 'goodsId',
+    },
+    {
+      label: '所属供应商',
+      name: 'supplierId',
+      type: 'supplier',
+      show: tabKey === 'commerceGoods',
+    },
+    {
+      label: '所属店铺',
+      name: 'ownerId',
+      type: 'merchant',
+      show: tabKey === 'specialGoods',
+    },
+    {
+      label: '商品状态',
+      name: 'status',
+      type: 'select',
+      select: ELECTRICGOODS_STATUS,
     },
   ];
 
@@ -84,13 +102,26 @@ const ConnectedGoodsModal = (props) => {
     {
       title: '权重',
       align: 'center',
-      dataIndex: 'sortValue',
+      dataIndex: 'tagPriority',
+      show: listKey === 'show',
       render: (val, row) => (
         <SortValueSet
           value={val}
-          valueKey="sortValue"
+          valueKey="tagPriority"
           loading={loadingSort}
-          onSubmit={(val) => fetchSortSet({ goodsId: row.goodsId, ...val })}
+          onSubmit={(val) =>
+            fetchSortSet({
+              configGoodsTagId: id,
+              configGoodsTagRelatedGoodsList: [
+                {
+                  goodsId: row.goodsId,
+                  ownerId: row.ownerId,
+                  goodsType: tabKey,
+                  ...val,
+                },
+              ],
+            })
+          }
         ></SortValueSet>
       ),
     },
@@ -98,7 +129,9 @@ const ConnectedGoodsModal = (props) => {
       title: '商品状态',
       align: 'center',
       dataIndex: 'status',
-      render: (val) => <Badge status={val === '1' ? 'success' : 'error'} text={GOODS_TYPE[val]} />,
+      render: (val) => (
+        <Badge status={val === '1' ? 'success' : 'error'} text={ELECTRICGOODS_STATUS[val]} />
+      ),
     },
     {
       type: 'handle',
@@ -171,9 +204,9 @@ const ConnectedGoodsModal = (props) => {
             tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
           }}
           scroll={{ y: 400 }}
+          rowCount={2}
           cRef={childRef}
           loading={loading}
-          searchCol={{ xxl: 12 }}
           searchItems={searchItems}
           columns={getColumns}
           params={{ goodsTagId: id, goodsType: tabKey }}
