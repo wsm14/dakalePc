@@ -460,7 +460,6 @@ const PreferentialSet = ({
       disabled: editDisabled && infoStatus,
       min: 0,
       max: 999999.99,
-      stringMode: true,
       step: '0.01',
       addonBefore: '￥',
       onChange: (e) => saveMreData({ oriPrice: e }),
@@ -473,7 +472,6 @@ const PreferentialSet = ({
       // disabled: editDisabled,
       min: 0,
       max: 999999.99,
-      stringMode: true,
       step: '0.01',
       addonBefore: '￥',
       required: false,
@@ -487,7 +485,6 @@ const PreferentialSet = ({
       disabled: editDisabled && infoStatus,
       min: 0,
       max: 999999.99,
-      stringMode: true,
       step: '0.01',
       addonBefore: '￥',
       addRules: [
@@ -517,6 +514,9 @@ const PreferentialSet = ({
       disabled: editDisabled && infoStatus,
       onChange: (e) => {
         saveMreData({ paymentModeType: e.target.value });
+        form.setFieldsValue({
+          skuInfoReq: { sellBean: undefined },
+        });
       },
     },
     {
@@ -529,7 +529,6 @@ const PreferentialSet = ({
       visible: !['free'].includes(mreList.paymentModeType),
       min: 0,
       max: 999999.99,
-      stringMode: true,
       step: '0.01',
       addonBefore: '￥',
       onChange: (e) => {
@@ -559,10 +558,9 @@ const PreferentialSet = ({
       type: 'number',
       precision: 0,
       disabled: editDisabled && infoStatus,
-      min: 0,
-      required: false,
+      min: 1,
       visible: mreList.paymentModeType == 'self',
-      rules: [{ required: false }],
+      // rules: [{ required: false }],
     },
     {
       label: '其他平台价格',
@@ -571,7 +569,6 @@ const PreferentialSet = ({
       precision: 2,
       min: 0,
       max: 999999.99,
-      stringMode: true,
       step: '0.01',
       addonBefore: '￥',
       required: false,
