@@ -23,7 +23,11 @@ export const couponsDom = (item = {}, id, setSelectItem, type = 'free', onDel) =
   } = item;
   const { couponPrice, thresholdPrice = '' } = reduceObject;
   return (
-    <div style={{ width: 350 }} key={ownerCouponId || ownerCouponIdString || goodsId}>
+    <div
+      style={{ width: 350 }}
+      className={'share_Coupon_box'}
+      key={ownerCouponId || ownerCouponIdString || goodsId}
+    >
       <Badge.Ribbon text={{ free: '免费券', valuable: '抵扣券' }[type]}>
         <div
           className={`share_Coupon share_item ${id === ownerCouponIdString && 'select'}`}
@@ -86,7 +90,7 @@ export const platformCouponsDom = (item = {}, id = '', setSelectItem, onDel) => 
     goodsId,
   } = item;
   return (
-    <div style={{ width: 350 }} key={platformCouponId || goodsId}>
+    <div style={{ width: 350 }} className={'share_Coupon_box'} key={platformCouponId || goodsId}>
       <Badge.Ribbon text={'平台券'}>
         <div
           className={`share_Coupon share_item ${id === platformCouponId && 'select'}`}
@@ -156,7 +160,11 @@ export const goodsDom = (item = {}, id, setSelectItem, onDel) => {
   } = item;
 
   return (
-    <div style={{ width: 350 }} key={activityGoodsId || specialGoodsId || goodsId}>
+    <div
+      style={{ width: 350 }}
+      className={'share_Coupon_box'}
+      key={activityGoodsId || specialGoodsId || goodsId}
+    >
       <Badge.Ribbon text={{ single: '单品', package: '套餐' }[productType]}>
         <div
           className={`share_Coupon share_item ${id === specialGoodsId && 'select'}`}
@@ -227,7 +235,11 @@ export const commerceDom = (item = {}, id, setSelectItem, onDel) => {
   } = item;
 
   return (
-    <div style={{ width: 350 }} key={activityGoodsId || specialGoodsId || goodsId}>
+    <div
+      style={{ width: 350 }}
+      className={'share_Coupon_box'}
+      key={activityGoodsId || specialGoodsId || goodsId}
+    >
       <Badge.Ribbon text={'电商商品'}>
         <div
           className={`share_Coupon share_item ${id === activityGoodsId && 'select'}`}
@@ -252,7 +264,7 @@ export const commerceDom = (item = {}, id, setSelectItem, onDel) => {
               }
             </div> */}
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <div className="share_tip">{sellPriceRange}元</div>
+              <div className="share_tip">￥{sellPriceRange}元</div>
             </div>
           </div>
           {!onDel ? (
@@ -284,7 +296,11 @@ export const groupGoods = (item = {}, id, setSelectItem, onDel) => {
   } = item;
 
   return (
-    <div style={{ width: 350 }} key={activityGoodsId || specialGoodsId || goodsId}>
+    <div
+      style={{ width: 350 }}
+      className={'share_Coupon_box'}
+      key={activityGoodsId || specialGoodsId || goodsId}
+    >
       <div
         className={`share_Coupon share_item ${id === specialGoodsId && 'select'}`}
         onClick={() => setSelectItem && setSelectItem(item)}

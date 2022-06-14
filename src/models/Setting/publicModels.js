@@ -2,17 +2,24 @@ import { notification } from 'antd';
 import oss from 'ali-oss';
 import { uuid } from '@/utils/utils';
 import { fetchPlatformCouponSelect } from '@/services/ActiveServices';
+import { fetchGetSupplierManageList } from '@/services/SCMServices';
 import { fetchListOnlineGoodsByPage, fetchSpecialGoodsList } from '@/services/OperationServices';
-import { fetchGetOss, fetchGetBuyCouponSelect } from '@/services/PublicServices';
+import {
+  fetchGetOss,
+  fetchGetBuyCouponSelect,
+  fetchGetFreeCouponSelect,
+} from '@/services/PublicServices';
 
 export default {
   namespace: 'publicModels',
 
   state: {
+    supplierList: [],
     onlineGoods: { list: [], total: 0 },
     offlineGoods: { list: [], total: 0 },
     buyCouponList: { list: [], total: 0 },
     platformCoupon: { list: [], total: 0 },
+    freeCouponList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -53,6 +60,22 @@ export default {
             description: '上传失败',
           });
         }
+      });
+    },
+    // get 供应商列表
+    *fetchGetSupplierManage({ payload }, { call, put }) {
+      const response = yield call(fetchGetSupplierManageList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          supplierList: content.supplierDetailList.map((item) => ({
+            name: `${item.name} ${item.id}`,
+            value: item.id,
+            option: item,
+          })),
+        },
       });
     },
     // get 获取线上电商品列表
@@ -128,6 +151,25 @@ export default {
               goodsId: i.platformCouponId,
             })),
             total: content.total,
+          },
+        },
+      });
+    },
+    // get 获取免费券列表
+    *fetchGetFreeCouponSelect({ payload }, { call, put }) {
+      const response = yield call(fetchGetFreeCouponSelect, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          freeCouponList: {
+            list: content.ownerCouponList.map((i) => ({
+              ...i,
+              activityType: 'freeReduceCoupon',
+              goodsId: i.ownerCouponIdString,
+            })),
+            total: content.ownerCouponList.length,
           },
         },
       });

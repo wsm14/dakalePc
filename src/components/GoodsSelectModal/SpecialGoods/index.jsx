@@ -1,12 +1,13 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
+import { ELECTRICGOODS_SELL_PRICE_TYPE } from '@/common/constant';
 import { GOODS_CLASS_TYPE, TAG_COLOR_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 
-// 本地生活品（特惠商品）
+// 本地生活品（特惠商品） specialGoods
 const SpecialGoods = (props) => {
   const {
     visible,
@@ -21,8 +22,8 @@ const SpecialGoods = (props) => {
   const tableRef = useRef(null);
 
   useEffect(() => {
-    const { ...other } = searchValue;
-    visible && tableRef.current.fetchGetData({ ...other });
+    const { id, ...other } = searchValue;
+    visible && tableRef.current.fetchGetData(other);
   }, [visible, searchValue]);
 
   const getColumns = [
@@ -76,6 +77,7 @@ const SpecialGoods = (props) => {
           >
             ¥{row.oriPrice}
           </div>
+          {ELECTRICGOODS_SELL_PRICE_TYPE[row.paymentModeType]}
         </div>
       ),
     },

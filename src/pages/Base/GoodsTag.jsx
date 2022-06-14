@@ -47,6 +47,7 @@ const GoodsTag = () => {
       ></TagSetDrawer>
       {/* 关联商品 */}
       <ConnectedGoodsModal
+        listKey={tabkey}
         visible={visibleGoods}
         onClose={() => setVisibleGoods(false)}
       ></ConnectedGoodsModal>

@@ -16,15 +16,9 @@ function FormList(props) {
     priceType, // 售卖价格类型
     editDisabled,
   } = props;
-  const [batchOnOff, setBatchOnOff] = useState(false); // 批采价设置状态
   const [tieredModal, setTieredModal] = useState(false); // 设置阶梯价model
 
-  useEffect(() => {
-    const list = form.getFieldValue('skuInfoReqs')[field.name]['batchLadderObjects'] || [];
-    if (list.length > 0) {
-      setBatchOnOff(true);
-    }
-  }, []);
+  const list = form.getFieldValue('skuInfoReqs')[field.name]['batchLadderObjects'] || [];
 
   // 获取规格对象
   const specificationType = form
@@ -192,7 +186,7 @@ function FormList(props) {
             noStyle
           >
             <Button type="link" onClick={() => setTieredModal(true)}>
-              {batchOnOff ? '已设置' : '设置'}
+              {list.length > 0 ? '已设置' : '设置'}
             </Button>
           </Form.Item>
         </div>
@@ -217,7 +211,6 @@ function FormList(props) {
         form={form}
         visible={tieredModal}
         onClose={() => setTieredModal(false)}
-        setBatchOnOff={setBatchOnOff}
         specificationDisabled={true}
         name={field.name}
       ></TieredPricing>

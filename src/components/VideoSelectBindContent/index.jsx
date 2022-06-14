@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { notification } from 'antd';
+import GoodsSelectModal from '@/components/GoodsSelectModal';
 import { couponsDom, goodsDom, commerceDom } from './CouponFreeDom';
-import BuyContactModal from './BuyContactModal';
-import FreeCouponModal from './FreeCouponModal';
 import './coupon.less';
 
 /**
@@ -13,14 +12,13 @@ const ShareCoupon = (props) => {
     data = {},
     merchantIdKey = 'merchantIdStr',
     show = 'free',
+    ownerName,
     ownerType = 'merchant',
     type,
     onDel,
     onOk,
     form,
   } = props;
-
-  // console.log('data', data);
 
   const [visibleSelect, setVisibleSelect] = useState(false); // 免费券选择
   const [visibleContact, setVisibleContact] = useState(false); // 优惠选择
@@ -51,7 +49,7 @@ const ShareCoupon = (props) => {
         )
       ) : (
         <div
-          className="share_Coupon share_add"
+          className="share_Coupon_box share_Coupon share_add"
           onClick={() => {
             if (!form.getFieldValue(merchantIdKey)) {
               notification.info({
@@ -69,19 +67,23 @@ const ShareCoupon = (props) => {
         </div>
       )}
       {/* 免费券选择 */}
-      <FreeCouponModal
-        {...selectProps}
+      <GoodsSelectModal
+        selectType={'radio'}
+        showTag={['freeReduceCoupon']}
+        searchParams={{ ownerId: selectProps.merchantId, ...selectProps }}
         visible={visibleSelect}
-        onOk={onOk}
+        onSumbit={({ list }) => onOk(list[0])}
         onClose={() => setVisibleSelect(false)}
-      ></FreeCouponModal>
+      ></GoodsSelectModal>
       {/* 优惠选择 */}
-      <BuyContactModal
-        {...selectProps}
+      <GoodsSelectModal
+        selectType={'radio'}
+        showTag={['reduceCoupon', 'specialGoods', 'commerceGoods']}
+        searchParams={{ id: selectProps.merchantId, relateName: ownerName }} // id 有价券搜索 ownerName 特惠商品搜索
         visible={visibleContact}
-        onOk={onOk}
+        onSumbit={({ list }) => onOk(list)}
         onClose={() => setVisibleContact(false)}
-      ></BuyContactModal>
+      ></GoodsSelectModal>
     </>
   );
 };

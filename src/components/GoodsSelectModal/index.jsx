@@ -5,21 +5,27 @@ import ReduceCoupon from './ReduceCoupon';
 import SpecialGoods from './SpecialGoods';
 import CommerceGoods from './CommerceGoods';
 import PlatformCoupon from './PlatformCoupon';
+import FreeCoupon from './FreeReduceCoupon';
 import './index.less';
 
 const { TabPane } = Tabs;
 /**
  * 商品选择弹窗
  * @param {String} selectType 选择的类型 单选多选 默认多选 checkbox | radio
+ * @param {Array} goodsValues 已选值 商品源数据
  * @param {Array} showTag 显示的类型 可选
- * ["platformCoupon", "reduceCoupon","specialGoods","commerceGoods"]
+ * ["freeReduceCoupon","platformCoupon", "reduceCoupon","specialGoods","commerceGoods"]
+ * @param {Object} searchParams 默认搜索值
+ * @param {Boolean} hiddenSearch 隐藏搜索项目
  * @returns
  */
 const GoodsSelectModal = (props) => {
   const {
     visible = false,
     goodsValues = [],
+    searchParams = {},
     selectType = 'checkbox', // checkbox | radio
+    hiddenSearch = false,
     showTag = null,
     onSumbit,
     onClose,
@@ -36,12 +42,14 @@ const GoodsSelectModal = (props) => {
       const newData = goodsValues.filter((i) => i);
       // 数据还原
       if (newData && newData.length) {
-        setSelectItem({ keys: newData.map((i) => i.goodsId), list: newData });
+        setSelectItem({ keys: newData.map((i) => i.goodsId || i), list: newData });
       }
+      // 默认搜索值
+      if (Object.keys(searchParams).length) setSearchValue(searchParams);
     }
   }, [visible]);
 
-  const allTag = ['platformCoupon', 'reduceCoupon', 'specialGoods', 'commerceGoods'];
+  const allTag = ['freeReduceCoupon', 'platformCoupon', 'reduceCoupon', 'specialGoods', 'commerceGoods'];
 
   // 点击选择
   const handleSelectItem = (newKeys = [], newlist = []) => {
@@ -68,6 +76,11 @@ const GoodsSelectModal = (props) => {
   };
 
   const tabPaneList = [
+    {
+      tab: '免费券',
+      key: 'freeReduceCoupon',
+      content: <FreeCoupon {...propsComponents}></FreeCoupon>,
+    },
     {
       tab: '有价券',
       key: 'reduceCoupon',
@@ -97,11 +110,12 @@ const GoodsSelectModal = (props) => {
       name: 'id',
       type: 'merchant',
       required: true, // 有价券
-      show: ['reduceCoupon'].includes(tabKey),
+      show: ['reduceCoupon'].includes(tabKey) && !searchParams.id,
     },
     {
       label: '商品名称',
       name: 'goodsName', // 有价券 特惠商品 电商品 平台券
+      show: ['platformCoupon', 'reduceCoupon', 'specialGoods', 'commerceGoods'].includes(tabKey),
     },
     {
       label: '商品ID',
@@ -137,11 +151,12 @@ const GoodsSelectModal = (props) => {
       }}
       onCancel={onClose}
     >
-      <SearchCondition
-        colForm={{ xxl: 12 }}
-        searchItems={searchItems}
-        handleSearch={setSearchValue}
-      ></SearchCondition>
+      {searchItems.filter((i) => i.show).length > 0 && !hiddenSearch && (
+        <SearchCondition
+          searchItems={searchItems}
+          handleSearch={(val) => setSearchValue({ ...searchParams, ...val })}
+        ></SearchCondition>
+      )}
       <Tabs destroyInactiveTabPane onChange={setTabKey} type="card" style={{ overflow: 'initial' }}>
         {tabPaneList.map(
           (pane) =>

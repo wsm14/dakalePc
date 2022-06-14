@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react';
-import { connect } from 'umi';
 import moment from 'moment';
-import { OPEN_GROUP_STATUS } from '@/common/constant';
+import { connect } from 'umi';
+import { MARKETACTIVITY_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
-import OpenGroupDetail from './components/OpenGroupList/OpenGroupDetail';
+import MarketActivityDrawer from './components/MarketActivity/MarketActivityDrawer';
 
 const MarketActivity = (props) => {
   const { loading, dispatch, openGroupList } = props;
@@ -23,7 +23,7 @@ const MarketActivity = (props) => {
       label: '活动状态',
       type: 'select',
       name: 'status',
-      select: OPEN_GROUP_STATUS,
+      select: MARKETACTIVITY_STATUS,
     },
   ];
 
@@ -51,7 +51,7 @@ const MarketActivity = (props) => {
       title: '状态',
       align: 'center',
       dataIndex: 'createTime',
-      render: (val, row) => `活动中 30\n${moment().isBefore("20220610")}`,
+      render: (val, row) => `活动中 30\n${moment().isBefore('20220610')}`,
     },
     {
       title: '最后修改',
@@ -76,23 +76,11 @@ const MarketActivity = (props) => {
             pop: true,
             popText: '确定要立即成团吗？立即成团后将在已参与的用户中随机抽取3位用户拼中商品。',
             visible: record.joinUserNum >= 8 && record.status == '0', //拼团中并且参团人数大于等于8人
-            click: () => fetchGetGroup(val),
           },
         ];
       },
     },
   ];
-
-  //立即成团
-  const fetchGetGroup = (groupId) => {
-    dispatch({
-      type: 'openGroupList/fetchSimulationStartGroup',
-      payload: {
-        groupId,
-      },
-      callback: childRef.current.fetchGetData,
-    });
-  };
 
   //参团详情
   const fetchDetail = (groupId) => {
@@ -110,27 +98,31 @@ const MarketActivity = (props) => {
     });
   };
 
+  const btnList = [
+    {
+      auth: 'save',
+      text: '新增',
+      onClick: () => setVisible({ type: 'add', shwo: true }),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
+        btnExtra={btnList}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.groupId}`}
-        timeParams={{
-          time: {
-            startTime: moment().subtract(1, 'month').format('YYYY-MM-DD'),
-            endTime: moment().format('YYYY-MM-DD'),
-          },
-          show: {
-            startTime: [moment().subtract(1, 'month'), moment()],
-          },
-        }}
         dispatchType="openGroupList/fetchGetList"
         {...openGroupList}
       ></TableDataBlock>
-      <OpenGroupDetail visible={visible} onClose={() => setVisible(false)}></OpenGroupDetail>
+      {/* 新增修改详情 */}
+      <MarketActivityDrawer
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></MarketActivityDrawer>
     </>
   );
 };

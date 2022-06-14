@@ -1,12 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Modal, Badge } from 'antd';
-import { GOODS_TYPE } from '@/common/constant';
+import { ELECTRICGOODS_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import GoodsSelectModal from '@/components/GoodsSelectModal';
+import SortValueSet from '@/components/FormListCondition/SortValueSet';
 
 const tabList = [
   {
@@ -20,7 +21,7 @@ const tabList = [
 ];
 
 const ConnectedGoodsModal = (props) => {
-  const { visible, onClose, dispatch, configGoodsList, loading } = props;
+  const { listKey, visible, onClose, dispatch, configGoodsList, loading, loadingSort } = props;
   const { show = false, id, name } = visible;
 
   const childRef = useRef();
@@ -35,11 +36,29 @@ const ConnectedGoodsModal = (props) => {
   const searchItems = [
     {
       label: '商品名称',
-      name: 'brandName',
+      name: 'goodsName',
     },
     {
       label: '商品ID',
-      name: 'brandNsame',
+      name: 'goodsId',
+    },
+    {
+      label: '所属供应商',
+      name: 'supplierId',
+      type: 'supplier',
+      show: tabKey === 'commerceGoods',
+    },
+    {
+      label: '所属店铺',
+      name: 'ownerId',
+      type: 'merchant',
+      show: tabKey === 'specialGoods',
+    },
+    {
+      label: '商品状态',
+      name: 'status',
+      type: 'select',
+      select: ELECTRICGOODS_STATUS,
     },
   ];
 
@@ -52,7 +71,6 @@ const ConnectedGoodsModal = (props) => {
     },
     {
       title: '商品名称/ID',
-      align: 'center',
       dataIndex: 'goodsName',
       render: (val, row) => (
         <div>
@@ -64,9 +82,9 @@ const ConnectedGoodsModal = (props) => {
       ),
     },
     {
-      title: '所属类目/供应商',
+      title: tabKey === 'commerceGoods' ? '所属类目/供应商' : '所属行业/店铺',
       align: 'center',
-      dataIndex: 'ownerName',
+      dataIndex: 'relateName',
       render: (val, row) => (
         <div>
           <div style={{ marginTop: 5 }}>{row.categoryName || '--'}</div>
@@ -82,10 +100,38 @@ const ConnectedGoodsModal = (props) => {
       dataIndex: 'price',
     },
     {
+      title: '权重',
+      align: 'center',
+      dataIndex: 'tagPriority',
+      show: listKey === 'show',
+      render: (val, row) => (
+        <SortValueSet
+          value={val}
+          valueKey="tagPriority"
+          loading={loadingSort}
+          onSubmit={(val) =>
+            fetchSortSet({
+              configGoodsTagId: id,
+              configGoodsTagRelatedGoodsList: [
+                {
+                  goodsId: row.goodsId,
+                  ownerId: row.ownerId,
+                  goodsType: tabKey,
+                  ...val,
+                },
+              ],
+            })
+          }
+        ></SortValueSet>
+      ),
+    },
+    {
       title: '商品状态',
       align: 'center',
       dataIndex: 'status',
-      render: (val) => <Badge status={val === '1' ? 'success' : 'error'} text={GOODS_TYPE[val]} />,
+      render: (val) => (
+        <Badge status={val === '1' ? 'success' : 'error'} text={ELECTRICGOODS_STATUS[val]} />
+      ),
     },
     {
       type: 'handle',
@@ -120,6 +166,17 @@ const ConnectedGoodsModal = (props) => {
     });
   };
 
+  // 修改权重
+  const fetchSortSet = (values) => {
+    dispatch({
+      type: 'goodsTag/fetchTagSortSet',
+      payload: values,
+      callback: () => {
+        childRef.current.fetchGetData();
+      },
+    });
+  };
+
   const btnList = [
     {
       text: '新增',
@@ -147,9 +204,9 @@ const ConnectedGoodsModal = (props) => {
             tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
           }}
           scroll={{ y: 400 }}
+          rowCount={2}
           cRef={childRef}
           loading={loading}
-          searchCol={{ xxl: 12 }}
           searchItems={searchItems}
           columns={getColumns}
           params={{ goodsTagId: id, goodsType: tabKey }}
@@ -183,4 +240,5 @@ export default connect(({ goodsTag, loading }) => ({
   loading:
     loading.effects['goodsTag/fetchConfigGoodsList'] ||
     loading.effects['goodsTag/fetchConfigGoodsSet'],
+  loadingSort: loading.effects['goodsTag/fetchTagSortSet'],
 }))(ConnectedGoodsModal);

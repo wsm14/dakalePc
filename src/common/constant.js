@@ -20,6 +20,7 @@ export const TAG_COLOR_TYPE = {
   package: 'magenta', // 套餐
   commerceGoods: 'cyan', // 电商商品
   specialGoods: 'gold', // 特惠商品
+  freeReduceCoupon: 'green', // 免费券
   goodsBuy: {
     universal: '#87d068', // 商品通用券
     category: '#2db7f5', // 行业商品券
@@ -1500,3 +1501,6 @@ export const ASTRICT_BUY = {
   // weekLimit: '每周限制',
   // monthLimit: '每月限制',
 };
+
+// 营销活动 - 活动状态
+export const MARKETACTIVITY_STATUS = ['已结束', '进行中'];

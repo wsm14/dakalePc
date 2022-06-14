@@ -310,8 +310,21 @@ export default {
               videoUrl: JSON.parse(videoContent || '{}').url,
               videoId: JSON.parse(videoContent || '{}').videoId,
               categoryNode: [other.topCategoryIdString, other.categoryIdString],
-              free: freeOwnerCouponList[0] || {},
-              contact: [...activityGoodsList, ...ownerCouponList],
+              free: freeOwnerCouponList[0]
+                ? { ...freeOwnerCouponList[0], goodsId: freeOwnerCouponList[0].ownerCouponIdString }
+                : {},
+              contact: [
+                ...activityGoodsList.map((i) => ({
+                  ...i,
+                  goodsId: i.activityGoodsId,
+                  ownerId: i.ownerIdString,
+                })),
+                ...ownerCouponList.map((i) => ({
+                  ...i,
+                  goodsId: i.ownerCouponIdString,
+                  ownerId: i.ownerIdString,
+                })),
+              ],
               age: age !== '0-100' ? 'age' : age,
               ageData: age !== '0-100' ? age.split(',') : [],
               taste: tagsId ? 'tag' : 'all',
