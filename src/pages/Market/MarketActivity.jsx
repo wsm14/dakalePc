@@ -71,27 +71,32 @@ const MarketActivity = (props) => {
       dataIndex: 'markingActivityId',
       width: 150,
       render: (val, row) => {
-        const { url } = row;
+        const { url, offLineGoodsNum, onLineGoodsNum, startDate } = row;
         return [
           {
             type: 'info',
             click: () => fetchDetail(val),
           },
           {
-            type: 'edit',
+            type: 'edit', // 即将开始 无报名商品
+            visible: offLineGoodsNum === 0 && onLineGoodsNum === 0 && moment().isBefore(startDate),
             click: () => fetchDetail(val),
+          },
+          {
+            type: 'down', // 即将开始 无报名商品
+            pop: true,
+            popText: '下架后无法重新上架，若需上架需要重新发布',
+            visible: offLineGoodsNum === 0 && onLineGoodsNum === 0 && moment().isBefore(startDate),
+            click: () => fetchDetail(val),
+          },
+          {
+            type: 'enrollGoods',
+            click: () => handleCopyInfo(url),
           },
           {
             type: 'copyLink',
             visible: !!url,
             click: () => handleCopyInfo(url),
-          },
-          {
-            type: 'immediateGroup',
-            title: '立即成团',
-            pop: true,
-            popText: '确定要立即成团吗？立即成团后将在已参与的用户中随机抽取3位用户拼中商品。',
-            visible: row.joinUserNum >= 8 && row.status == '0', //拼团中并且参团人数大于等于8人
           },
         ];
       },
