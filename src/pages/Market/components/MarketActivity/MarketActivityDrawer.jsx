@@ -9,7 +9,7 @@ import MarketActivityBaseForm from './Form/BaseForm';
 const MarketActivityDrawer = (props) => {
   const { dispatch, visible, childRef, onClose, loading, userType } = props;
 
-  const { type = 'info', shwo = false, detail = {} } = visible;
+  const { mode = 'info', shwo = false, detail = {} } = visible;
   const [form] = Form.useForm();
 
   const handleUpData = () => {
@@ -19,7 +19,7 @@ const MarketActivityDrawer = (props) => {
         type: {
           add: 'messagePush/fetchMsgPushAdd', // 新增
           edit: 'messagePush/fetchMsgPushEdit', // 修改
-        }[type],
+        }[mode],
         payload: {
           ...value,
           pushObjectIds: pushObjectIds.toString(),
@@ -43,7 +43,7 @@ const MarketActivityDrawer = (props) => {
       <MarketActivityBaseForm form={form} initialValues={detail} userType={userType}></MarketActivityBaseForm>
     ),
     footer: (
-      <AuthConsumer auth="save" show={type === 'add'}>
+      <AuthConsumer auth="save" show={mode === 'add'}>
         <Button onClick={handleUpData} type="primary" loading={loading}>
           确定
         </Button>
@@ -65,7 +65,7 @@ const MarketActivityDrawer = (props) => {
       title: '查看活动',
       children: <MessageDetail initialValues={detail}></MessageDetail>,
     },
-  }[type];
+  }[mode];
 
   // 弹出窗属性
   const modalProps = {

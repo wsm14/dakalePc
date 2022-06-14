@@ -477,4 +477,19 @@ export function fetchMarketActivityList(params) {
   });
 }
 
+// get 营销活动 - 详情
+export function fetchMarketActivityDetail(params) {
+  return request('/admin/marketing/activity/admin/getMarketingActivity', {
+    params,
+  });
+}
+
+// post 营销活动 - 下架
+export function fetchMarketActivityDown(data) {
+  return request('/admin/marketing/activity/admin/offShelfMarketingActivity', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 营销活动 end

@@ -1,5 +1,5 @@
 import { notification } from 'antd';
-import { fetchMarketActivityList } from '@/services/MarketServices';
+import { fetchMarketActivityList, fetchMarketActivityDown } from '@/services/MarketServices';
 
 export default {
   namespace: 'marketActivity',
@@ -37,12 +37,12 @@ export default {
       const { content } = response;
       callback(content.agentPriceList);
     },
-    *fetchAreaQueryInfoSet({ payload, callback }, { call, put }) {
-      const response = yield call(fetchAreaQueryInfoSet, payload);
+    *fetchMarketActivityDown({ payload, callback }, { call }) {
+      const response = yield call(fetchMarketActivityDown, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '信息设置成功',
+        description: '活动下架成功',
       });
       callback();
     },

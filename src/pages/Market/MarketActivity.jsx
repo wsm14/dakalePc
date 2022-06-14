@@ -75,23 +75,23 @@ const MarketActivity = (props) => {
         return [
           {
             type: 'info',
-            click: () => fetchDetail(val),
+            click: () => fetchGetDetail(val),
           },
           {
             type: 'edit', // 即将开始 无报名商品
             visible: offLineGoodsNum === 0 && onLineGoodsNum === 0 && moment().isBefore(startDate),
-            click: () => fetchDetail(val),
+            click: () => fetchGetDetail(val),
           },
           {
             type: 'down', // 即将开始 无报名商品
             pop: true,
             popText: '下架后无法重新上架，若需上架需要重新发布',
             visible: offLineGoodsNum === 0 && onLineGoodsNum === 0 && moment().isBefore(startDate),
-            click: () => fetchDetail(val),
+            click: () => fetchMarketActivityDown(val),
           },
           {
             type: 'enrollGoods',
-            click: () => handleCopyInfo(url),
+            click: () => fetchGetDetail(url),
           },
           {
             type: 'copyLink',
@@ -103,18 +103,22 @@ const MarketActivity = (props) => {
     },
   ];
 
-  //参团详情
-  const fetchDetail = (groupId) => {
+  // 下架活动
+  const fetchMarketActivityDown = (markingActivityId) => {
     dispatch({
-      type: 'openGroupList/fetchAdminListJoinGroupByGroupId',
-      payload: {
-        groupId,
-      },
+      type: 'marketActivity/fetchMarketActivityDown',
+      payload: { markingActivityId },
+      callback: childRef.current.fetchGetData,
+    });
+  };
+
+  // 详情
+  const fetchGetDetail = (markingActivityId) => {
+    dispatch({
+      type: 'marketActivity/fetchMarketActivityDetail',
+      payload: { markingActivityId },
       callback: (list) => {
-        setVisible({
-          show: true,
-          list,
-        });
+        setVisible({ show: true, list });
       },
     });
   };
@@ -123,7 +127,7 @@ const MarketActivity = (props) => {
     {
       auth: 'save',
       text: '新增',
-      onClick: () => setVisible({ type: 'add', shwo: true }),
+      onClick: () => setVisible({ mode: 'add', shwo: true }),
     },
   ];
 
