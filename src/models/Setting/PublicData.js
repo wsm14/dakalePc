@@ -4,7 +4,7 @@ import { fetchBackCategoryList } from '@/services/BaseServices';
 import { fetchPlatformCouponSelect } from '@/services/ActiveServices';
 import { fetchGetSupplierManageList, fetchSupplierBrandList } from '@/services/SCMServices';
 import { fetchMerchantList, fetchMerchantGroup } from '@/services/BusinessServices';
-import { fetchGoodsTagList } from '@/services/OperationServices';
+import { fetchGoodsTagList } from '@/services/BaseServices';
 import {
   fetchGetMreTag,
   fetchImportExcel,

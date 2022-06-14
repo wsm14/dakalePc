@@ -9,7 +9,7 @@ import {
   fetchConfigGoodsDel,
   fetchConfigGoodsAdd,
   fetchTagSortSet,
-} from '@/services/OperationServices';
+} from '@/services/BaseServices';
 
 export default {
   namespace: 'goodsTag',
