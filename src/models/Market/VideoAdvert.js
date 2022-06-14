@@ -12,8 +12,8 @@ import {
   fetchVideoSetShareEarnBeanRule,
   fetchVideoSetUpdatePlatfromMomentDirect,
 } from '@/services/MarketServices';
-
 import { fetchNewShareStatisticsList } from '@/services/OperationServices';
+
 export default {
   namespace: 'videoAdvert',
 

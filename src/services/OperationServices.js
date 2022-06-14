@@ -437,54 +437,6 @@ export function fetchUGCVideoRewardInfo(params) {
 
 // 平台视频 end
 
-// 种草管理
-
-// get 种草管理 - 列表
-export function fetchExpertRemdList(params) {
-  return request('/admin/kolMoments/listKolMomentsManagement', {
-    params,
-  });
-}
-
-// get 种草管理 - 统计举报数量
-export function fetchExpertCountReport(params) {
-  return request('/admin/userReport/countPendingUserReport', {
-    params,
-  });
-}
-
-// get 种草管理 - 详情
-export function fetchExpertRemdDetail(params) {
-  return request('/admin/kolMoments/kolMomentsDetail', {
-    params,
-  });
-}
-
-// post 种草管理 - 上下架
-export function fetchExpertRemdStatus(data) {
-  return request('/admin/kolMoments/kolMomentsDropOff', {
-    method: 'POST',
-    data,
-  });
-}
-
-// get 种草管理 - 举报列表
-export function fetchExpertReportList(params) {
-  return request('/admin/userReport/listUserReport', {
-    params,
-  });
-}
-
-// post 种草管理 - 举报列表 - 处理举报
-export function fetchExpertProcessReport(data) {
-  return request('/admin/userReport/processUserReport', {
-    method: 'POST',
-    data,
-  });
-}
-
-// 种草管理 end
-
 // 订单列表
 
 // get 订单列表 - 列表
