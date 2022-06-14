@@ -467,3 +467,14 @@ export function fetchSimulationStartGroup(data) {
     data,
   });
 }
+
+// 营销活动 start
+
+// get 营销活动 - 列表
+export function fetchMarketActivityList(params) {
+  return request('/admin/marketing/activity/admin/pageListMarketingActivity', {
+    params,
+  });
+}
+
+// 营销活动 end

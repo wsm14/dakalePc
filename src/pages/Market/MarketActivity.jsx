@@ -2,22 +2,23 @@ import React, { useRef, useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { MARKETACTIVITY_STATUS } from '@/common/constant';
+import { handleCopyInfo } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import MarketActivityDrawer from './components/MarketActivity/MarketActivityDrawer';
 
 const MarketActivity = (props) => {
-  const { loading, dispatch, openGroupList } = props;
+  const { loading, dispatch, marketActivity } = props;
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
 
   const searchItems = [
     {
       label: '活动名称',
-      name: 'goodsName',
+      name: 'activityName',
     },
     {
       label: '活动编号',
-      name: 'groupId',
+      name: 'marketingActivityId',
     },
     {
       label: '活动状态',
@@ -31,51 +32,66 @@ const MarketActivity = (props) => {
     {
       title: '活动名称/编号',
       fixed: 'left',
-      dataIndex: 'groupId',
+      dataIndex: 'activityName',
       width: 300,
-      render: (val, row) => `本地品本地品本地品本地品本地品\n32413215425234`,
+      render: (val, row) => `${val}\n${row.id}`,
     },
     {
       title: '活动时间',
-      align: 'center',
-      dataIndex: 'togetherEarnGoodsObject',
-      render: (val, row) => `2020.05.01 - 2020.05.30`,
+      align: 'right',
+      dataIndex: 'startDate',
+      render: (val, row) => `${val}\n~${row.endDate}`,
     },
     {
       title: '报名商品数',
-      align: 'center',
-      dataIndex: 'username',
-      render: (val, row) => `本地品 30\n电商品 20`,
+      align: 'right',
+      dataIndex: 'offLineGoodsNum',
+      render: (val, row) =>
+        val == 0 && row.onLineGoodsNum == 0 ? '--' : `本地品 ${val}\n电商品 ${row.onLineGoodsNum}`,
     },
     {
       title: '状态',
       align: 'center',
-      dataIndex: 'createTime',
-      render: (val, row) => `活动中 30\n${moment().isBefore('20220610')}`,
+      dataIndex: 'status',
+      render: (val, row) =>
+        `${MARKETACTIVITY_STATUS[val]}\n${
+          val === '0'
+            ? { true: '（即将开会）', false: '（已开始）' }[moment().isBefore(row.startDate)]
+            : ''
+        }`,
     },
     {
       title: '最后修改',
       align: 'center',
-      dataIndex: 'joinUserNum',
-      render: (val, row) => `2021-04-22 12:32:32\n电商品 20`,
+      dataIndex: 'updateTime',
+      render: (val, row) => `${val}\n${row.updater}`,
     },
     {
       type: 'handle',
-      dataIndex: 'groupId',
+      dataIndex: 'markingActivityId',
       width: 150,
-      render: (val, record) => {
+      render: (val, row) => {
+        const { url } = row;
         return [
           {
             type: 'info',
-            title: '拼团详情',
             click: () => fetchDetail(val),
+          },
+          {
+            type: 'edit',
+            click: () => fetchDetail(val),
+          },
+          {
+            type: 'copyLink',
+            visible: !!url,
+            click: () => handleCopyInfo(url),
           },
           {
             type: 'immediateGroup',
             title: '立即成团',
             pop: true,
             popText: '确定要立即成团吗？立即成团后将在已参与的用户中随机抽取3位用户拼中商品。',
-            visible: record.joinUserNum >= 8 && record.status == '0', //拼团中并且参团人数大于等于8人
+            visible: row.joinUserNum >= 8 && row.status == '0', //拼团中并且参团人数大于等于8人
           },
         ];
       },
@@ -114,9 +130,9 @@ const MarketActivity = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.groupId}`}
-        dispatchType="openGroupList/fetchGetList"
-        {...openGroupList}
+        rowKey={(record) => `${record.markingActivityId}`}
+        dispatchType="marketActivity/fetchGetList"
+        {...marketActivity}
       ></TableDataBlock>
       {/* 新增修改详情 */}
       <MarketActivityDrawer
@@ -127,7 +143,7 @@ const MarketActivity = (props) => {
   );
 };
 
-export default connect(({ loading, openGroupList }) => ({
-  openGroupList,
-  loading: loading.models.openGroupList,
+export default connect(({ loading, marketActivity }) => ({
+  marketActivity,
+  loading: loading.models.marketActivity,
 }))(MarketActivity);

@@ -1503,4 +1503,4 @@ export const ASTRICT_BUY = {
 };
 
 // 营销活动 - 活动状态
-export const MARKETACTIVITY_STATUS = ['已结束', '进行中'];
+export const MARKETACTIVITY_STATUS = ['进行中', '已下架'];
