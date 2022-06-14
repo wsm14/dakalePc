@@ -88,7 +88,11 @@ function FormList(props) {
       </div>
       {/* 原价 */}
       <div className={styles.table_row_cell}>
-        <Form.Item name={[field.name, 'oriPrice']} rules={[{ required: true }]} noStyle>
+        <Form.Item
+          name={[field.name, 'oriPrice']}
+          rules={[{ required: true, message: '请输入原价' }]}
+          style={{ marginBottom: 0 }}
+        >
           <InputNumber
             disabled={editDisabled}
             addonBefore="￥"
@@ -113,7 +117,7 @@ function FormList(props) {
           <Form.Item
             name={[field.name, 'settlePrice']}
             rules={[{ required: true, message: '请输入结算价' }]}
-            noStyle
+            style={{ marginBottom: 0 }}
           >
             <InputNumber
               disabled={editDisabled}
@@ -132,7 +136,7 @@ function FormList(props) {
           <Form.Item
             name={[field.name, 'sellPrice']}
             rules={[{ required: true, message: '请输入零售价' }]}
-            noStyle
+            style={{ marginBottom: 0 }}
           >
             <InputNumber
               disabled={editDisabled}
@@ -151,7 +155,7 @@ function FormList(props) {
           <Form.Item
             name={[field.name, 'sellBean']}
             rules={[{ required: true, message: '请输入卡豆' }]}
-            noStyle
+            style={{ marginBottom: 0 }}
           >
             <InputNumber
               disabled={editDisabled}
@@ -170,7 +174,7 @@ function FormList(props) {
           <Form.Item
             name={[field.name, 'minPurchaseNum']}
             rules={[{ required: true, message: '请输入最小起订量' }]}
-            noStyle
+            style={{ marginBottom: 0 }}
           >
             <Input style={styleObj}></Input>
           </Form.Item>
@@ -183,7 +187,7 @@ function FormList(props) {
           <Form.Item
             name={[field.name, 'batchLadderObjects']}
             rules={[{ required: true, message: '请输入批采价' }]}
-            noStyle
+            style={{ marginBottom: 0 }}
           >
             <Button type="link" onClick={() => setTieredModal(true)}>
               {list.length > 0 ? '已设置' : '设置'}
@@ -196,12 +200,12 @@ function FormList(props) {
         <Form.Item
           name={[field.name, 'initStock']}
           rules={[{ required: true, message: '请输入商品库存' }]}
-          noStyle
+          style={{ marginBottom: 0 }}
         >
           <InputNumber
             disabled={editDisabled}
             precision={0}
-            min={1}
+            min={0}
             max={100000000}
             style={styleObj}
           ></InputNumber>
