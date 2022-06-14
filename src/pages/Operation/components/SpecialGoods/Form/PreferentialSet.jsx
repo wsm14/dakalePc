@@ -581,7 +581,7 @@ const PreferentialSet = ({
       type: 'number',
       precision: 0,
       disabled: ['edit'].includes(editActive),
-      min: 1,
+      min: 0,
       max: 100000000,
     },
     // {
