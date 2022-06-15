@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
-import { Form, Button, InputNumber, Cascader } from 'antd';
+import { Form, InputNumber, Cascader } from 'antd';
 import {
   MARKETACTIVITY_RULE,
   MARKETACTIVITY_BUY_RULE,
@@ -14,7 +14,7 @@ import SubsidyCouponsTable from './SubsidyCouponsTable';
 const { SHOW_CHILD } = Cascader;
 
 const MarketActivityBaseForm = (props) => {
-  const { initialValues = {}, form, dispatch, tradeList, classifyList, userType = '' } = props;
+  const { initialValues = {}, form, dispatch, tradeList, classifyList } = props;
 
   // 活动规则
   const activityRule = Form.useWatch(['activityRuleObject', 'activityRuleType'], form) || [];
@@ -49,10 +49,11 @@ const MarketActivityBaseForm = (props) => {
       label: '活动名称',
       name: 'activityName',
       maxLength: 15,
+      tips: '活动名称不可重复',
     },
     {
       label: '活动时间',
-      name: 'startDate',
+      name: 'activeDate',
       type: 'rangePicker',
     },
     {
@@ -202,7 +203,7 @@ const MarketActivityBaseForm = (props) => {
       label: '补贴规则',
       type: 'formItem',
       required: true,
-      // visible: userRule.includes('subsidy'),
+      visible: userRule.includes('subsidy'),
       formItem: (
         <>
           <div style={{ marginTop: subsidyRule && 5 }}>

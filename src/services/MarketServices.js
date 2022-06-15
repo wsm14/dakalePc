@@ -484,6 +484,22 @@ export function fetchMarketActivityDetail(params) {
   });
 }
 
+// post 营销活动 - 新增
+export function fetchMarketActivityAdd(data) {
+  return request('/admin/marketing/activity/admin/saveMarketingActivity', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 营销活动 - 编辑
+export function fetchMarketActivityEdit(data) {
+  return request('/admin/marketing/activity/admin/updateMarketingActivity', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 营销活动 - 下架
 export function fetchMarketActivityDown(data) {
   return request('/admin/marketing/activity/admin/offShelfMarketingActivity', {

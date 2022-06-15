@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Form, Divider } from 'antd';
 import { IFormModule } from './formModule';
 import { delectFormProps } from './utils';
+import QuestionTooltip from '@/components/QuestionTooltip';
 
 /**
  *
@@ -52,6 +53,7 @@ const FormComponents = ({
         title = '',
         label = '',
         name = '',
+        tips = '',
         type = 'input',
         addRules,
         visible = true,
@@ -95,13 +97,21 @@ const FormComponents = ({
       }
 
       const formProps = { ...delectFormProps(item) };
+      const checkProps = {
+        ...(name ? { name } : {}),
+        ...(tips
+          ? { label: <QuestionTooltip title={label} content={tips} /> }
+          : label
+          ? { label }
+          : {}),
+      };
       formItemArr.push(
         visible && (
           <FormItem
-            {...(name ? { name } : {})}
             key={`${label}${name}${type}`}
             style={formItemStyle}
             {...formProps}
+            {...checkProps} // 有额外检查的字段配置
             {...switchProps}
             rules={[...rules, ...(addRules || [])]}
           >

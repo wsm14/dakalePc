@@ -56,7 +56,7 @@ const MarketActivity = (props) => {
       render: (val, row) =>
         `${MARKETACTIVITY_STATUS[val]}\n${
           val === '0'
-            ? { true: '（即将开会）', false: '（已开始）' }[moment().isBefore(row.startDate)]
+            ? { true: '（即将开始）', false: '（已开始）' }[moment().isBefore(row.startDate)]
             : ''
         }`,
     },
@@ -70,6 +70,10 @@ const MarketActivity = (props) => {
       type: 'handle',
       dataIndex: 'markingActivityId',
       width: 150,
+      tips: `1.活动【已开始】不可下架
+      2.活动【已有报名商品】不可下架
+      3.活动【即将开始】且【无报名商品】可编辑
+      4.活动下架后【无上架操作】，若仍要上架需重新发布`,
       render: (val, row) => {
         const { url, offLineGoodsNum, onLineGoodsNum, startDate } = row;
         return [
@@ -85,7 +89,7 @@ const MarketActivity = (props) => {
           {
             type: 'down', // 即将开始 无报名商品
             pop: true,
-            popText: '下架后无法重新上架，若需上架需要重新发布',
+            popText: '下架后无法重新上架，\n若仍要上架需重新发布',
             visible: offLineGoodsNum === 0 && onLineGoodsNum === 0 && moment().isBefore(startDate),
             click: () => fetchMarketActivityDown(val),
           },
@@ -145,6 +149,7 @@ const MarketActivity = (props) => {
       ></TableDataBlock>
       {/* 新增修改详情 */}
       <MarketActivityDrawer
+        childRef={childRef}
         visible={visible}
         onClose={() => setVisible(false)}
       ></MarketActivityDrawer>
