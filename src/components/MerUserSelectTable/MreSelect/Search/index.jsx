@@ -71,7 +71,6 @@ const MreSelectSearch = ({ tradeList, cRef, hubData, dispatch, loading }) => {
         <FormItem label="商圈" name={'businessHubId'} style={{ width: 270 }}>
           <Select
             label="商圈"
-            select={true}
             allowClear
             loading={loading.models.baseData}
             disabled={hubSelect}

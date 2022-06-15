@@ -98,7 +98,7 @@ const FormComponents = ({
       formItemArr.push(
         visible && (
           <FormItem
-            name={name}
+            {...(name ? { name } : {})}
             key={`${label}${name}${type}`}
             style={formItemStyle}
             {...formProps}
