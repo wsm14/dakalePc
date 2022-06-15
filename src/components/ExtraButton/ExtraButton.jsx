@@ -58,6 +58,8 @@ const ExtraButton = ({ list = [], children }) => {
     }
   };
 
+  if (!list.length) return null;
+
   return (
     <Space>
       {list.map((item) => btnSwitch(item))}
