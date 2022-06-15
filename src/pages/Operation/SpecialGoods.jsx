@@ -22,8 +22,7 @@ import ShareImg from './components/SpecialGoods/ShareImg';
 import { checkCityName, changeTime } from '@/utils/utils';
 
 const SpecialGoods = (props) => {
-  const { specialGoods, loading, loadings, dispatch } = props;
-  const { list } = specialGoods;
+  const { specialGoods, loading, loadings, dispatch, list } = props;
 
   const childRef = useRef();
   const [visibleSet, setVisibleSet] = useState(false); // 新增特惠活动
@@ -417,7 +416,7 @@ const SpecialGoods = (props) => {
         searchItems={searchItems}
         rowKey={(record) => `${record.goodsId}`}
         dispatchType="specialGoods/fetchGetList"
-        {...specialGoods}
+        {...list}
       ></TableDataBlock>
       <PreferentialDrawer
         childRef={childRef}
@@ -462,7 +461,7 @@ const SpecialGoods = (props) => {
 };
 
 export default connect(({ specialGoods, loading }) => ({
-  specialGoods,
+  list: specialGoods.list,
   loading: loading.effects['specialGoods/fetchGetList'],
   loadings: loading,
 }))(SpecialGoods);

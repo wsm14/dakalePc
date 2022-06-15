@@ -220,8 +220,7 @@ const ResourceContentForm = (props) => {
             <ShareCoupon
               form={form}
               showTag={[
-                ['hotBlending', 'flashSale'].includes(form.getFieldValue('templateType')) ||
-                typeList.includes('classifiedListSelfTravel')
+                ['hotBlending', 'flashSale'].includes(form.getFieldValue('templateType'))
                   ? 'commerceGoods'
                   : 'specialGoods',
               ]}

@@ -22,8 +22,7 @@ export default {
   namespace: 'specialGoods',
 
   state: {
-    list: [],
-    total: 0,
+    list: { list: [], total: 0 },
   },
 
   reducers: {
@@ -46,8 +45,10 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.offlineManagerResps,
-          total: content.total,
+          list: {
+            list: content.offlineManagerResps,
+            total: content.total,
+          },
         },
       });
     },
