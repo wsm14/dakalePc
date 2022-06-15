@@ -9,6 +9,7 @@ import {
   TAG_COLOR_TYPE,
   SPECIAL_RECOMMEND_TYPE,
   SPECIAL_GOODS_TYPE,
+  SPECIAL_SHOW_TYPE,
 } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
@@ -54,6 +55,13 @@ const SpecialGoods = (props) => {
       type: 'select',
       allItem: false,
       select: SPECIAL_GOODS_TYPE,
+    },
+    {
+      label: '展示类型',
+      name: 'displayType',
+      type: 'select',
+      allItem: false,
+      select: SPECIAL_SHOW_TYPE.defaultMode,
     },
   ];
 
