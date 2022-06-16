@@ -69,6 +69,7 @@ const PreferentialDrawer = (props) => {
         useDay,
         skuInfoReq, //价格对象
         paymentModeType,
+        thirdInfoReq = {}, //第三方对象
         ...other
       } = values;
       const aimg = checkFileData(goodsBriefImg);
@@ -101,6 +102,7 @@ const PreferentialDrawer = (props) => {
               settlerId: settlerType === 'admin' ? '-1' : settlerId,
               settlerType: settlerType,
             },
+            thirdInfoReq: thirdInfoReq.thirdType === 'offline' ? undefined : thirdInfoReq,
             skuInfoReq: {
               ...skuInfoReq,
               sellPrice: paymentModeType === 'free' ? 0 : skuInfoReq?.sellPrice,

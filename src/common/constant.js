@@ -650,7 +650,7 @@ export const SPECIAL_RECOMMEND_TYPE = {
 export const SPECIAL_RECOMMEND_DELSTATUS = ['已删除', '未删除'];
 
 // 特惠活动 - 商品类别
-export const SPECIAL_GOODS_TYPE = { 1: '特惠商品', 2: '自我游商品' };
+export const SPECIAL_GOODS_TYPE = { offline: '特惠商品', selfTour: '自我游商品' };
 
 // 特惠活动 - 介绍类型
 export const SPECIAL_DESC_TYPE = {
