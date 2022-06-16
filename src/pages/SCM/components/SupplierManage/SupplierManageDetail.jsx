@@ -5,9 +5,10 @@ import { RefuseModal } from '@/components/PublicComponents';
 import ExtraButton from '@/components/ExtraButton';
 import DrawerCondition from '@/components/DrawerCondition';
 import BaseInfo from './Detail/BaseInfo';
-import IntelligenceInfo from './Detail/IntelligenceInfo';
 import AccountInfo from './Detail/AccountInfo';
+import WarehouseInfo from './Detail/WarehouseInfo';
 import SettlementInfo from './Detail/SettlementInfo';
+import IntelligenceInfo from './Detail/IntelligenceInfo';
 
 const { TabPane } = Tabs;
 
@@ -100,9 +101,9 @@ const SupplierManageDetail = (props) => {
           <TabPane tab="供应商资质" key="2">
             <IntelligenceInfo detail={detail}></IntelligenceInfo>
           </TabPane>
-          {/* <TabPane tab="仓库信息" key="3">
-            <WarehouseInfo  detail={detail}></WarehouseInfo>
-          </TabPane> */}
+          <TabPane tab="仓库信息" key="3">
+            <WarehouseInfo detail={detail}></WarehouseInfo>
+          </TabPane>
           {/* 未激活时不显示账户信息和结算记录 */}
           {detail.bankStatus === '3' && (
             <>

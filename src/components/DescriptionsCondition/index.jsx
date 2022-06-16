@@ -111,7 +111,7 @@ const DescriptionsCondition = (props) => {
         <Descriptions.Item
           span={span}
           label={label}
-          key={`${label}${i}`}
+          key={`${props.title || ''}${label}${i}`}
           className={styles.descriptions_item}
         >
           {/* 显示数据内容 默认值不存在 则显示为'--'*/}

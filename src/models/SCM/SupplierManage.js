@@ -69,11 +69,16 @@ export default {
           districtCode,
           classifyIds,
           proofInfoObject,
+          logisticList,
           ...other
         } = detailData;
         const { establishDate, validityPeriod } = proofInfoObject;
         detailData = {
           ...other,
+          logisticList: logisticList.map((item) => ({
+            ...item,
+            cityList: [item.provinceCode, item.cityCode, item.districtCode],
+          })),
           activeValidity: [moment(establishDate), moment(validityPeriod)],
           proofInfoObject,
           classifyIds: classifyIds.split(','),

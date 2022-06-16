@@ -3,6 +3,8 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const IntelligenceInfo = (props) => {
   const { detail } = props;
+  const { supplierObject } = detail;
+  const authDetail = supplierObject || detail;
 
   const itemArr = [
     {
@@ -52,7 +54,9 @@ const IntelligenceInfo = (props) => {
     },
   ];
 
-  return <DescriptionsCondition formItems={itemArr} initialValues={detail}></DescriptionsCondition>;
+  return (
+    <DescriptionsCondition formItems={itemArr} initialValues={authDetail}></DescriptionsCondition>
+  );
 };
 
 export default IntelligenceInfo;
