@@ -9,15 +9,8 @@ import TableDataBlock from '@/components/TableDataBlock';
 
 // 本地生活品（特惠商品） specialGoods
 const SpecialGoods = (props) => {
-  const {
-    visible,
-    searchValue,
-    selectItem,
-    offlineGoods,
-    selectType,
-    handleSelectItem,
-    loading,
-  } = props;
+  const { visible, searchValue, selectItem, offlineGoods, selectType, handleSelectItem, loading } =
+    props;
 
   const tableRef = useRef(null);
 
@@ -68,7 +61,16 @@ const SpecialGoods = (props) => {
       dataIndex: 'sellPrice',
       render: (val, row) => (
         <div>
-          <div>¥{val}</div>
+          <div>
+            {
+              {
+                defaultMode: `¥${val}`,
+                cashMode: `¥${val}`,
+                self: `¥${val}+${row.sellBean}卡豆`,
+                free: '免费',
+              }[row.paymentModeType]
+            }
+          </div>
           <div
             style={{
               textDecoration: 'line-through',
@@ -77,7 +79,7 @@ const SpecialGoods = (props) => {
           >
             ¥{row.oriPrice}
           </div>
-          {ELECTRICGOODS_SELL_PRICE_TYPE[row.paymentModeType]}
+          {row.paymentModeType !== 'free' && ELECTRICGOODS_SELL_PRICE_TYPE[row.paymentModeType]}
         </div>
       ),
     },
