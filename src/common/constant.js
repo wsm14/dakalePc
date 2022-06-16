@@ -1480,7 +1480,7 @@ export const FRONT_SHOW_TYPE_FREE = {
 // 电商品 - 运费类型
 export const FREIGHT_TYPE = {
   free: '免邮',
-  manual: '全国统一价',
+  // manual: '全国统一价',
 };
 
 // 电商品 - 结算人类型

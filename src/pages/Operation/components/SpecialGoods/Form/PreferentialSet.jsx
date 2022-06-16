@@ -409,7 +409,7 @@ const PreferentialSet = ({
       label: '商品类别',
       name: ['thirdInfoReq', 'thirdType'],
       type: 'radio',
-      // disabled: commonDisabled,
+      disabled: editDisabled,
       select: SPECIAL_GOODS_TYPE,
       onChange: (e) => {
         setGoodsType(e.target.value);
@@ -580,8 +580,8 @@ const PreferentialSet = ({
       name: ['skuInfoReq', 'initStock'],
       type: 'number',
       precision: 0,
-      // disabled: editDisabled,
-      min: 1,
+      disabled: ['edit'].includes(editActive),
+      min: 0,
       max: 100000000,
     },
     // {

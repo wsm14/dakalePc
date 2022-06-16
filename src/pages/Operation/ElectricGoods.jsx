@@ -151,19 +151,6 @@ const ElectricGoods = (props) => {
         </Button>
       ),
     },
-    // {
-    //   title: '权重',
-    //   dataIndex: 'rightWeights',
-    //   align: 'center',
-    //   // render: (val, row) => (
-    //   //   <TradeSortSet
-    //   //     detail={row}
-    //   //     onSubmit={fetchTradeSet}
-    //   //     getList={getList}
-    //   //     idName="goodsId"
-    //   //   ></TradeSortSet>
-    //   // ),
-    // },
     {
       title: '商品状态',
       dataIndex: 'status',

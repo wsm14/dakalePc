@@ -11,6 +11,12 @@ const AddSpecification = (props) => {
 
   // 添加规格项
   const addSpecificationType = () => {
+    const isType =
+      specificationTypeData.length == 0 ||
+      specificationTypeData[specificationTypeData.length - 1]?.name;
+    if (!isType) {
+      return;
+    }
     setSpecificationTypeData([...specificationTypeData, { name: '', value: [] }]);
   };
   const updateSpecificationType = (e, index) => {
@@ -38,6 +44,12 @@ const AddSpecification = (props) => {
   // 添加规格值
   const addSpecificationValue = (index) => {
     let list = specificationTypeData[index].value;
+
+    const isType = list.length == 0 || list[list.length - 1];
+    if (!isType) {
+      return;
+    }
+
     const newData = update(specificationTypeData, {
       $splice: [
         [
