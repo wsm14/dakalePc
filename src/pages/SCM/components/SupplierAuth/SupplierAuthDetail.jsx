@@ -4,9 +4,11 @@ import { Tabs, Alert } from 'antd';
 import { SUPPLIER_AUTH_TYPE } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
 import { checkCityName } from '@/utils/utils';
-import DrawerCondition from '@/components/DrawerCondition';
 import ExtraButton from '@/components/ExtraButton';
+import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
+import WarehouseInfo from '../SupplierManage/Detail/WarehouseInfo';
+import IntelligenceInfo from '../SupplierManage/Detail/IntelligenceInfo';
 
 const { TabPane } = Tabs;
 
@@ -111,55 +113,6 @@ const SpecialGoodCheckDetail = (props) => {
     },
   ];
 
-  // 供应商资质信息
-  const intelligenceFormItem = [
-    {
-      label: '营业执照',
-      type: 'upload',
-      name: ['supplierObject', 'proofInfoObject', 'businessLicenseImg'],
-    },
-    {
-      label: '公司名称',
-      name: ['supplierObject', 'proofInfoObject', 'businessName'],
-    },
-    {
-      label: '统一社会信用代码',
-      name: ['supplierObject', 'proofInfoObject', 'socialCreditCode'],
-    },
-    {
-      label: '注册地址',
-      name: ['supplierObject', 'proofInfoObject', 'signInAddress'],
-    },
-    {
-      label: '营业期限',
-      name: ['supplierObject', 'proofInfoObject', 'establishDate'],
-    },
-    {
-      label: '经营范围',
-      name: ['supplierObject', 'proofInfoObject', 'businessScope'],
-    },
-    {
-      label: '生产/经营许可证',
-      type: 'upload',
-      name: ['supplierObject', 'proofInfoObject', 'productLicense'],
-    },
-    {
-      label: '体系认证',
-      type: 'upload',
-      name: ['supplierObject', 'proofInfoObject', 'systemApprove'],
-    },
-    {
-      label: '产品认证',
-      type: 'upload',
-      name: ['supplierObject', 'proofInfoObject', 'productApprove'],
-    },
-    {
-      label: '授权证书',
-      type: 'upload',
-      name: ['supplierObject', 'proofInfoObject', 'authorizeImg'],
-    },
-  ];
-
   const btnList = [
     {
       auth: 'check',
@@ -215,11 +168,11 @@ const SpecialGoodCheckDetail = (props) => {
               ></DescriptionsCondition>
             ))}
           </TabPane>
-          <TabPane tab="供应商资质" key="2">
-            <DescriptionsCondition
-              formItems={intelligenceFormItem}
-              initialValues={detail}
-            ></DescriptionsCondition>
+          <TabPane tab="仓库信息" key="2">
+            <WarehouseInfo detail={detail}></WarehouseInfo>
+          </TabPane>
+          <TabPane tab="供应商资质" key="3">
+            <IntelligenceInfo detail={detail}></IntelligenceInfo>
           </TabPane>
         </Tabs>
       </DrawerCondition>

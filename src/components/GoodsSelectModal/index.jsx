@@ -11,6 +11,7 @@ import './index.less';
 const { TabPane } = Tabs;
 /**
  * 商品选择弹窗
+ * @param {Function} disabled 不可选择规则 (row) => Boolean
  * @param {String} selectType 选择的类型 单选多选 默认多选 checkbox | radio
  * @param {Array} goodsValues 已选值 商品源数据
  * @param {Array} showTag 显示的类型 可选
@@ -21,6 +22,7 @@ const { TabPane } = Tabs;
  */
 const GoodsSelectModal = (props) => {
   const {
+    disabled,
     visible = false,
     goodsValues = [],
     searchParams = {},
@@ -49,7 +51,13 @@ const GoodsSelectModal = (props) => {
     }
   }, [visible]);
 
-  const allTag = ['freeReduceCoupon', 'platformCoupon', 'reduceCoupon', 'specialGoods', 'commerceGoods'];
+  const allTag = [
+    'freeReduceCoupon',
+    'platformCoupon',
+    'reduceCoupon',
+    'specialGoods',
+    'commerceGoods',
+  ];
 
   // 点击选择
   const handleSelectItem = (newKeys = [], newlist = []) => {
@@ -69,6 +77,7 @@ const GoodsSelectModal = (props) => {
 
   const propsComponents = {
     visible,
+    disabled,
     selectItem,
     selectType,
     searchValue,

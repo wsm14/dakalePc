@@ -28,7 +28,7 @@
     "@antv/data-set": "0.11.4",
     "@antv/util": "^2.0.14",
     "ali-oss": "^6.10.0",
-    "antd": "^4.19.4",
+    "antd": "^4.21.1",
     "array-move": "^3.0.1",
     "classnames": "^2.2.6",
     "immutability-helper": "^3.1.1",

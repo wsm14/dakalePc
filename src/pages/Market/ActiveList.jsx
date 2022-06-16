@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { Button, Popover, message } from 'antd';
 import QRCode from 'qrcode.react';
 import { ACTIVE_TEMPLATE_TYPE } from '@/common/constant';
+import { handleCopyInfo } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import ExtraButton from '@/components/ExtraButton';
 import ActiveTemplateEdit from './components/ActiveList/template/ActiveTemplateEdit';
@@ -74,7 +75,7 @@ const ActiveListComponent = (props) => {
           title: '复制链接',
           type: 'copy',
           click: () =>
-            handleCopy(
+            handleCopyInfo(
               `${row.jumpUrl}?newPage=true&shareKey=${row.activityTemplateId}${
                 tabKey !== 'globalModal' ? '&showTitle=true' : ''
               }`,
@@ -92,22 +93,6 @@ const ActiveListComponent = (props) => {
       ],
     },
   ];
-
-  // 复制链接
-  const handleCopy = (jumpUrl) => {
-    const copyDOMs = document.createElement('span');
-    copyDOMs.innerHTML = jumpUrl;
-    document.body.appendChild(copyDOMs);
-    const range = document.createRange();
-    window.getSelection().removeAllRanges();
-    range.selectNode(copyDOMs);
-    window.getSelection().addRange(range);
-    const suessUrl = document.execCommand('copy');
-    if (suessUrl) {
-      message.success('复制成功！');
-    }
-    document.body.removeChild(copyDOMs);
-  };
 
   useEffect(() => {
     if (!visible.show) {

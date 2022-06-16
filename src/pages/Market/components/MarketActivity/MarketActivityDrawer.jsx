@@ -7,27 +7,33 @@ import MessageDetail from './Deatil/MessageDetail';
 import MarketActivityBaseForm from './Form/BaseForm';
 
 const MarketActivityDrawer = (props) => {
-  const { dispatch, visible, childRef, onClose, loading, userType } = props;
+  const { dispatch, visible, childRef, onClose, loading } = props;
 
-  const { type = 'info', shwo = false, detail = {} } = visible;
+  const { mode = 'info', shwo = false, detail = {} } = visible;
   const [form] = Form.useForm();
 
   const handleUpData = () => {
     form.validateFields().then((value) => {
-      const { pushTime, jumpUrlType, jumpUrl, pushObjectIds = [] } = value;
+      const { activeDate, activityRuleObject = {}, useRuleObject = {}, ...other } = value;
+      // 活动规则
+      const { activityRuleType, classifies = [], categories = [] } = activityRuleObject;
+      // 使用规则
+      const { useRuleType } = useRuleObject;
       dispatch({
-        type: {
-          add: 'messagePush/fetchMsgPushAdd', // 新增
-          edit: 'messagePush/fetchMsgPushEdit', // 修改
-        }[type],
+        type: 'marketActivity/fetchMarketActivitySet',
         payload: {
-          ...value,
-          pushObjectIds: pushObjectIds.toString(),
-          userType,
-          link: jumpUrl,
-          linkType: jumpUrlType,
-          pushTime: pushTime ? pushTime.format('YYYY-MM-DD HH:mm') : null,
-          id: detail.messagePushId,
+          ...other,
+          mode,
+          activityRuleObject: {
+            ...activityRuleObject,
+            activityRuleType: activityRuleType.toString(),
+            categories: categories.map((i) => ({ categoryId: i })), // 行业规则
+            classifies: classifies.map((i) => ({ classifyId: i[i.length - 1] })), // 类目规则
+          },
+          useRuleObject: { ...useRuleObject, useRuleType: useRuleType.toString() },
+          startDate: activeDate[0].format('YYYY-MM-DD'),
+          endDate: activeDate[1].format('YYYY-MM-DD'),
+          marketingActivityId: detail.marketingActivityId,
         },
         callback: () => {
           onClose();
@@ -39,11 +45,9 @@ const MarketActivityDrawer = (props) => {
 
   // 新增修改公共处理
   const addEditProps = {
-    children: (
-      <MarketActivityBaseForm form={form} initialValues={detail} userType={userType}></MarketActivityBaseForm>
-    ),
+    children: <MarketActivityBaseForm form={form} initialValues={detail}></MarketActivityBaseForm>,
     footer: (
-      <AuthConsumer auth="save" show={type === 'add'}>
+      <AuthConsumer auth="save" show={mode === 'add'}>
         <Button onClick={handleUpData} type="primary" loading={loading}>
           确定
         </Button>
@@ -65,7 +69,7 @@ const MarketActivityDrawer = (props) => {
       title: '查看活动',
       children: <MessageDetail initialValues={detail}></MessageDetail>,
     },
-  }[type];
+  }[mode];
 
   // 弹出窗属性
   const modalProps = {
@@ -80,5 +84,5 @@ const MarketActivityDrawer = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['franchiseApp/fetchFranchiseHandle'],
+  loading: loading.effects['marketActivity/fetchMarketActivitySet'],
 }))(MarketActivityDrawer);

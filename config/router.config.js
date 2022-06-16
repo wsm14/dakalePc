@@ -200,7 +200,7 @@ export default [
             path: '/market/marketActivity',
             name: '营销活动',
             component: './Market/MarketActivity',
-            buttons: ['info', 'enrollGoods', 'copyLink'],
+            buttons: ['save', 'info', 'edit', 'down', 'enrollGoods', 'copyLink'],
           },
         ],
       },

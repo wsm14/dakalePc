@@ -437,54 +437,6 @@ export function fetchUGCVideoRewardInfo(params) {
 
 // 平台视频 end
 
-// 种草管理
-
-// get 种草管理 - 列表
-export function fetchExpertRemdList(params) {
-  return request('/admin/kolMoments/listKolMomentsManagement', {
-    params,
-  });
-}
-
-// get 种草管理 - 统计举报数量
-export function fetchExpertCountReport(params) {
-  return request('/admin/userReport/countPendingUserReport', {
-    params,
-  });
-}
-
-// get 种草管理 - 详情
-export function fetchExpertRemdDetail(params) {
-  return request('/admin/kolMoments/kolMomentsDetail', {
-    params,
-  });
-}
-
-// post 种草管理 - 上下架
-export function fetchExpertRemdStatus(data) {
-  return request('/admin/kolMoments/kolMomentsDropOff', {
-    method: 'POST',
-    data,
-  });
-}
-
-// get 种草管理 - 举报列表
-export function fetchExpertReportList(params) {
-  return request('/admin/userReport/listUserReport', {
-    params,
-  });
-}
-
-// post 种草管理 - 举报列表 - 处理举报
-export function fetchExpertProcessReport(data) {
-  return request('/admin/userReport/processUserReport', {
-    method: 'POST',
-    data,
-  });
-}
-
-// 种草管理 end
-
 // 订单列表
 
 // get 订单列表 - 列表
@@ -692,80 +644,6 @@ export function fetchTagEdit(data) {
 }
 
 //店铺标签end
-
-//商品标签start
-
-//商品标签列表
-export function fetchGoodsTagList(params) {
-  return request('/admin/goodsTag/listConfigGoodsTag', {
-    params,
-  });
-}
-
-//运营后台-新增商品标签
-export function fetchGoodsTagAdd(data) {
-  return request('/admin/goodsTag/saveConfigGoodsTag', {
-    method: 'POST',
-    data,
-  });
-}
-
-//编辑
-export function fetchGoodsTagUpdate(data) {
-  return request('/admin/goodsTag/updateConfigGoodsTag', {
-    method: 'POST',
-    data,
-  });
-}
-
-//运营后台-商品标签排序
-export function fetchGoodsTagSort(data) {
-  return request('/admin/goodsTag/sortConfigGoodsTag', {
-    method: 'POST',
-    data,
-  });
-}
-
-// 运营后台-启用/禁用商品标签
-export function fetchGoodsTagSwitchStatus(data) {
-  return request('/admin/goodsTag/enableConfigGoodsTag', {
-    method: 'POST',
-    data,
-  });
-}
-
-// 商品标签 - 关联商品列表
-export function fetchConfigGoodsList(params) {
-  return request('/admin/goodsTag/pageListConfigGoodsTagRelatedGoods', {
-    params,
-  });
-}
-
-// 商品标签 - 关联商品列表 - 新增
-export function fetchConfigGoodsAdd(data) {
-  return request('/admin/goodsTag/batchSaveConfigGoodsTagRelatedGoods', {
-    method: 'POST',
-    data,
-  });
-}
-
-// 商品标签 - 关联商品列表 - 移除
-export function fetchConfigGoodsDel(data) {
-  return request('/admin/goodsTag/batchRemoveConfigGoodsTagRelatedGoods', {
-    method: 'POST',
-    data,
-  });
-}
-
-// 商品标签 - 权重设置
-export function fetchTagSortSet(data) {
-  return request('/admin/goodsTag/batchUpdateConfigGoodsTagPriorityRelatedGoods', {
-    method: 'POST',
-    data,
-  });
-}
-
-// 分类列表 end
 
 // 优惠券管理
 
