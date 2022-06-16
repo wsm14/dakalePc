@@ -7,6 +7,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 import BaseInfoForm from './Form/Info/BaseInfoForm';
 import IntelligenceForm from './Form/Info/IntelligenceForm';
 import OhterInfoForm from './Form/Info/OhterInfoForm';
+import WarehouseFrom from './Form/Info/WarehouseFrom';
 
 const SupplierManageAddEdit = (props) => {
   const { cRef, visible = false, dispatch, onClose, loading } = props;
@@ -86,6 +87,8 @@ const SupplierManageAddEdit = (props) => {
       <OhterInfoForm form={form} initialValues={detail}></OhterInfoForm>
       {/* 资质信息 */}
       <IntelligenceForm form={form} initialValues={detail}></IntelligenceForm>
+      {/* 仓库信息 */}
+      <WarehouseFrom form={form} initialValues={detail}></WarehouseFrom>
     </DrawerCondition>
   );
 };

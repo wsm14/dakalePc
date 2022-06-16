@@ -1,6 +1,7 @@
 import { Switch } from 'antd';
 import Ellipsis from '@/components/Ellipsis';
 import AuthConsumer from '@/layouts/AuthConsumer';
+import QuestionTooltip from '@/components/QuestionTooltip';
 import HandleSetTable from './HandleSetTable';
 import DraggableContent from './SortBlock';
 
@@ -25,10 +26,11 @@ const tablePropsHandle = {
     const newColumns = (order ? indexOrder : [])
       .concat(columns)
       .filter(({ show = true }) => show)
-      .map(({ ellipsis = false, type, render, ...other }) => ({
+      .map(({ ellipsis = false, type, render, tips, title, ...other }) => ({
         render,
         ...tablePropsHandle.tableComponents(type, render),
         ...(ellipsis ? tableRenderEllipsis(ellipsis, render) : {}),
+        title: tips ? <QuestionTooltip title={title || '操作'} content={tips} /> : title,
         ...other,
       }));
 

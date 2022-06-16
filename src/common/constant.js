@@ -1503,4 +1503,29 @@ export const ASTRICT_BUY = {
 };
 
 // 营销活动 - 活动状态
-export const MARKETACTIVITY_STATUS = ['已结束', '进行中'];
+export const MARKETACTIVITY_STATUS = ['进行中', '已下架'];
+
+// 营销活动 - 活动规则
+export const MARKETACTIVITY_RULE = {
+  discount: '优惠规则',
+  categories: '行业规则',
+  classifies: '类目规则',
+};
+
+// 营销活动 - 使用规则
+export const MARKETACTIVITY_USER_RULE = {
+  limit: '限购规则',
+  subsidy: '补贴规则',
+};
+
+// 营销活动 - 限购规则
+export const MARKETACTIVITY_BUY_RULE = {
+  unlimited: '不限',
+  personLimit: '每人限制',
+};
+
+// 营销活动 - 补贴规则
+export const MARKETACTIVITY_SUBSIDY_RULE = {
+  coupon: '赠送平台券',
+  rate: '卡豆抵扣比例',
+};

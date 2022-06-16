@@ -176,13 +176,13 @@ const SearchCondition = (props) => {
         <ExtraButton
           list={typeof btnExtra == 'function' ? btnExtra({ get: getData }) : btnExtra}
         ></ExtraButton>
+        {len > (componentSize !== 'default' ? 6 : count) ? (
+          <a style={{ fontSize: 12 }} onClick={() => setExpand(!expand)}>
+            {expand ? '收起' : '展开'}
+            {expand ? <UpOutlined /> : <DownOutlined />}
+          </a>
+        ) : null}
       </Space>
-      {len > (componentSize !== 'default' ? 6 : count) ? (
-        <a style={{ fontSize: 12 }} onClick={() => setExpand(!expand)}>
-          {expand ? '收起' : '展开'}
-          {expand ? <UpOutlined /> : <DownOutlined />}
-        </a>
-      ) : null}
     </div>
   );
 

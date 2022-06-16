@@ -1,26 +1,10 @@
+import { message } from 'antd';
+import { parse } from 'querystring';
 import md5 from 'md5';
 import moment from 'moment';
 import lodash from 'lodash';
 import cityJson from '@/common/cityJson';
-import { parse } from 'querystring';
 import { AUTH_SECRET_KEY } from '@/common/constant';
-
-export const store = {
-  save: (name, value, type = 'localtorage') => {
-    if ((type || '').toLocaleLowerCase() === 'localstorage') {
-      localStorage.setItem(name, JSON.stringify(value));
-    } else if ((type || '').toLocaleLowerCase() === 'sessionstorage') {
-      sessionStorage.setItem(name, JSON.stringify(value));
-    }
-  },
-  get: (name, type = 'localStorage') => {
-    if ((type || '').toLocaleLowerCase() === 'localstorage') {
-      return JSON.parse(localStorage.getItem(name) || '{}');
-    } else if ((type || '').toLocaleLowerCase() === 'sessionstorage') {
-      return JSON.parse(sessionStorage.getItem(name) || '{}');
-    }
-  },
-};
 
 // 设置随机字符串
 function setString(randomFlag, min, max) {
@@ -343,4 +327,20 @@ export const checkCityName = (code) => {
     const district = getCityName(codeStr);
     return `${getCityName(codeStr.slice(0, 2))}${checkCityNull(citySix)}${checkCityNull(district)}`;
   }
+};
+
+// 复制内容 复制链接
+export const handleCopyInfo = (messageInfo) => {
+  const copyDOMs = document.createElement('span');
+  copyDOMs.innerHTML = messageInfo;
+  document.body.appendChild(copyDOMs);
+  const range = document.createRange();
+  window.getSelection().removeAllRanges();
+  range.selectNode(copyDOMs);
+  window.getSelection().addRange(range);
+  const suessUrl = document.execCommand('copy');
+  if (suessUrl) {
+    message.success('复制成功！');
+  }
+  document.body.removeChild(copyDOMs);
 };

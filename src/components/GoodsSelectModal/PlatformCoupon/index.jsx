@@ -8,6 +8,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 // 平台券 platformCoupon
 const PlatformCoupon = (props) => {
   const {
+    disabled,
     visible,
     selectItem,
     selectType,
@@ -63,17 +64,15 @@ const PlatformCoupon = (props) => {
     {
       title: '有效期',
       align: 'right',
-      dataIndex: 'activeDateStr', // 使用有效期-固定时间-开始时间
+      dataIndex: 'activeDate', // 使用有效期-固定时间-开始时间
       render: (val, row) => {
         const {
-          activeDate,
-          endDateStr, //  使用有效期-固定时间-结束时间
           endDate,
           delayDays = 0, // 使用有效期-领取后-延迟生效天数
           activeDays, // 使用有效期-领取后-有效天数
         } = row;
-        return (val && endDateStr) || (activeDate && endDate)
-          ? `${val || activeDate}\n~${endDateStr || endDate}`
+        return val && endDate
+          ? `${val}\n~${endDate}`
           : delayDays != 0
           ? `领取后 ${delayDays} 天生效\n有效期 ${activeDays} 天`
           : `领取后 ${activeDays} 天内`;
@@ -105,7 +104,7 @@ const PlatformCoupon = (props) => {
         selectedRowKeys: selectItem.keys,
         preserveSelectedRowKeys: true,
         getCheckboxProps: (record) => ({
-          disabled: record.name === '',
+          disabled: disabled && disabled(record),
         }),
         onChange: (selectedRowKeys, selectedRows) => {
           console.log(`selectedRowKeys:`, selectedRowKeys, 'selectedRows: ', selectedRows);
