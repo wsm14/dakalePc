@@ -149,6 +149,8 @@ export const goodsDom = (item = {}, id, setSelectItem, onDel) => {
     specialGoodsId,
     activityGoodsId,
     sellPrice,
+    sellBean,
+    paymentModeType = 'defaultMode',
     oriPrice,
     productType = 'single',
     activityTimeRule = 'infinite',
@@ -190,14 +192,25 @@ export const goodsDom = (item = {}, id, setSelectItem, onDel) => {
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div className="share_tip">
-                {buyFlag === '0' ? '免费 ' : `¥${sellPrice} `}
-                <span style={{ textDecoration: 'line-through', color: '#9e9e9e' }}>
-                  ￥{oriPrice}
-                </span>
+                {
+                  {
+                    defaultMode: `¥${sellPrice}`,
+                    cashMode: `¥${sellPrice}`,
+                    self: `¥${sellPrice}+${sellBean}卡豆`,
+                    free: '免费',
+                  }[paymentModeType]
+                }
+                {oriPrice && (
+                  <span style={{ textDecoration: 'line-through', color: '#9e9e9e' }}>
+                    ￥{oriPrice}
+                  </span>
+                )}
               </div>
-              <div className="share_tip" style={{ color: '#b1b1b1' }}>
-                剩余{remain}张
-              </div>
+              {remain && (
+                <div className="share_tip" style={{ color: '#b1b1b1' }}>
+                  剩余{remain}张
+                </div>
+              )}
             </div>
             {inputDom && inputDom()}
           </div>

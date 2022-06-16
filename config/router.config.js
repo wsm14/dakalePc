@@ -796,6 +796,12 @@ export default [
             buttons: ['info'],
           },
           {
+            path: '/operation/refundList',
+            name: '退款列表',
+            component: './Operation/RefundList',
+            buttons: ['info'],
+          },
+          {
             path: '/operation/coupon',
             name: '优惠券管理',
             component: './Operation/CouponManage',
