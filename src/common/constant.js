@@ -339,6 +339,9 @@ export const ORDER_CLOSE_TYPE = {
 // 退款订单状态
 export const REFUND_ORDERS_STATUS = ['退款中', '已退款', '取消退款'];
 
+//退款订单审核状态
+export const REFUND_ORDERS_EXAMINE_STATUS = ['未审核', '审核通过', '审核拒绝', '已关闭'];
+
 // 哒人带货 订单状态
 export const EXPRET_DISTRIBUTION_STATUS = ['待分佣', '已分佣', false, false, '已退款'];
 

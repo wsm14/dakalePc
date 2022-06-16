@@ -229,6 +229,11 @@ export const ROLE_BUTTON_TYPE = {
   withdrawExpert: '哒人提现',
   withdrawAlliance: '加盟商提现',
   weekEdit: '周卡配置编辑',
+
+  agree: '同意',
+  refuse: '拒绝',
+  remarks: '备注',
+  payBack: '立即退款',
 };
 
 // 数据权限选项
