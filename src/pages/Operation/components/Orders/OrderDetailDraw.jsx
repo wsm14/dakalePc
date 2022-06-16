@@ -171,6 +171,30 @@ const OrderDetailDraw = (props) => {
     //   name: 'groupName',
     // },
   ];
+  //供应商信息
+  const supplierItem = [
+    {
+      label: '供应商名称 ',
+      name: 'merchantName',
+      span: 2,
+    },
+    {
+      label: '供应商ID',
+      name: 'merchantMobile',
+    },
+    {
+      label: '供应商地址',
+      name: 'merchantProvince',
+      span: 3,
+      render: (val, row) => checkCityName(row.merchantDistrict),
+    },
+    {
+      label: '供应商类型',
+      name: 'address',
+      render: () => '单店',
+      span: 3,
+    },
+  ];
   //团长信息
   const relateOwnerInfo = [
     {
@@ -332,6 +356,7 @@ const OrderDetailDraw = (props) => {
             <span className={styles.orderDetail_span}>{ORDERS_STATUS[status]}</span>
           </div>
         </div>
+        {/* 券码 */}
         {(orderStatusCheck || (status === '2' && orderCloseStatusCheck)) &&
           tabkey !== 'communityGoods' && (
             <div style={{ fontWeight: 'bold', fontSize: '16px', lineHeight: '50px' }}>券码</div>
@@ -345,6 +370,7 @@ const OrderDetailDraw = (props) => {
             column={3}
           ></DescriptionsCondition>
         ))}
+        {/* 核销明细 */}
         {tabkey === 'communityGoods' && (
           <div style={{ fontWeight: 'bold', fontSize: '16px', lineHeight: '50px' }}>核销明细</div>
         )}
@@ -366,12 +392,21 @@ const OrderDetailDraw = (props) => {
           initialValues={detail}
           column={2}
         ></DescriptionsCondition>
-        {tabkey !== 'communityGoods' && (
+        {tabkey !== 'communityGoods' && tabkey !== 'commerceGoods' && (
           <DescriptionsCondition
             title="商家信息"
             labelStyle={{ width: 120 }}
             formItems={merchartItem}
             column={2}
+            initialValues={detail}
+          ></DescriptionsCondition>
+        )}
+        {tabkey === 'commerceGoods' && (
+          <DescriptionsCondition
+            title="供应商信息"
+            labelStyle={{ width: 120 }}
+            formItems={supplierItem}
+            column={3}
             initialValues={detail}
           ></DescriptionsCondition>
         )}
