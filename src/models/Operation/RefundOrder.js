@@ -1,4 +1,9 @@
-import { fetchRefundOrderList, fetchOrdersDetail } from '@/services/OperationServices';
+import {
+  fetchRefundOrderList,
+  fetchOrdersDetail,
+  fetchRefundPayBack,
+  fetchRefundRrderDetail,
+} from '@/services/OperationServices';
 
 export default {
   namespace: 'refundOrder',
@@ -31,16 +36,20 @@ export default {
         },
       });
     },
-    *fetchOrderDetail({ payload }, { call, put }) {
-      const response = yield call(fetchOrdersDetail, payload);
+    *fetchRefundPayBack({ payload, callback }, { call }) {
+      const response = yield call(fetchRefundPayBack, payload);
       if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          orderDetail: content.order,
-        },
+      notification.success({
+        message: '温馨提示',
+        description: '退款成功',
       });
+      callback();
+    },
+    *fetchRefundOrderDetail({ payload }, { call, put }) {
+      const response = yield call(fetchRefundRrderDetail, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      callback(content.orderRefundDetail);
     },
   },
 };
