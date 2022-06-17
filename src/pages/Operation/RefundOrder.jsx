@@ -198,7 +198,7 @@ const RefundOrder = (props) => {
     },
     {
       type: 'handle',
-      dataIndex: 'adapayRefundId',
+      dataIndex: 'orderRefundId',
       width: 150,
       render: (val, row, index) => {
         return [
@@ -227,6 +227,7 @@ const RefundOrder = (props) => {
       icon: <ExclamationCircleOutlined />,
       content: '确定立即退款吗？确定后将直接退款给用户',
       onOk() {
+        console.log('1111');
         handlePayBack(val);
       },
       onCancel() {},
@@ -236,7 +237,7 @@ const RefundOrder = (props) => {
   //立即退款
   const handlePayBack = (val) => {
     dispatch({
-      type: 'RefundList/fetchRefundRrderDetail',
+      type: 'refundOrder/fetchRefundPayBack',
       payload: {
         orderRefundId: val,
       },
@@ -250,7 +251,7 @@ const RefundOrder = (props) => {
   const fetchRefundDetail = (index) => {
     const { adapayRefundId } = list[index];
     dispatch({
-      type: 'RefundList/fetchRefundRrderDetail',
+      type: 'refundOrder/fetchRefundRrderDetail',
       payload: {
         orderRefundId: adapayRefundId,
       },
@@ -277,7 +278,7 @@ const RefundOrder = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.adapayRefundId}`}
+        rowKey={(record) => `${record.orderRefundId}`}
         params={{ orderType: tabKey }}
         dispatchType="refundOrder/fetchGetList"
         {...refundOrder}
@@ -289,7 +290,7 @@ const RefundOrder = (props) => {
         visible={infoVisible}
         total={list.length}
         tabkey={tabKey}
-        loading={loadings.effects['RefundList/fetchRefundRrderDetail']}
+        loading={loadings.effects['refundOrder/fetchRefundRrderDetail']}
         getDetail={fetchRefundDetail}
       ></OrderDetailDraw>
     </>

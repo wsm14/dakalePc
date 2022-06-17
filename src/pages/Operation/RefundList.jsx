@@ -105,7 +105,6 @@ const RefundList = (props) => {
             }}
           >
             <div style={{ display: 'flex' }}>
-              <Tag color={TAG_COLOR_TYPE[row.orderType]}>{GOODS_CLASS_TYPE[row.orderType]}</Tag>
               <Ellipsis length={10} tooltip>
                 {val}
               </Ellipsis>
@@ -121,9 +120,9 @@ const RefundList = (props) => {
     },
     {
       title: '下单人',
-      dataIndex: 'userMobile',
+      dataIndex: 'applicantName',
       align: 'center',
-      render: (val, row) => `${row.userName}\n${val}\n${row.beanCode}`,
+      render: (val, row) => `${val}\n${val}\n${row.beanCode}`,
     },
     {
       title: '用户实付',
@@ -158,8 +157,8 @@ const RefundList = (props) => {
     {
       title: '申请时间',
       align: 'center',
-      dataIndex: 'updataTime',
-      render: (val, row) => `${moment(val).format('YYYY-MM-DD HH:mm')}\n${row.creatorName || ''}`,
+      dataIndex: 'createTime',
+      render: (val, row) => `${val}\n${row.applicantName || ''}`,
     },
     {
       title: '退款原因',
