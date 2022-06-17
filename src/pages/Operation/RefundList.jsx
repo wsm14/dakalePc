@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useUpdateEffect } from 'ahooks';
 import { connect } from 'umi';
-import { Tag } from 'antd';
+import { Tag, message } from 'antd';
 import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import RefundModal from './components/RefundList/RefundModal';
@@ -18,7 +18,7 @@ import { checkCityName } from '@/utils/utils';
 import moment from 'moment';
 
 const RefundList = (props) => {
-  const { loading, list, dispatch, loadings } = props;
+  const { loading, RefundList = {}, dispatch, loadings } = props;
 
   const childRef = useRef();
   const [tabKey, setTabKey] = useState('0'); // tab
@@ -240,6 +240,10 @@ const RefundList = (props) => {
   //同意退款事件
   const handleAgress = (val) => {
     const id = val ? val.split(',') : goodsList;
+    if (!id.length) {
+      message.info('请选择商品');
+      return false;
+    }
     dispatch({
       type: 'RefundList/fetchRefundApply',
       payload: {
@@ -254,7 +258,7 @@ const RefundList = (props) => {
 
   //获取详情
   const fetchRefundDetail = (index) => {
-    const { list = [] } = list;
+    const { list = [] } = RefundList;
     const { orderRefundApplyId } = list[index];
     dispatch({
       type: 'RefundList/fetchRefundRrderDetail',
@@ -276,7 +280,7 @@ const RefundList = (props) => {
       auth: true,
       text: '批量同意',
       show: ['0'].includes(tabKey),
-      onClick: () => fetchRefundDetail(),
+      onClick: () => handleAgress(),
     },
   ];
 
@@ -299,7 +303,7 @@ const RefundList = (props) => {
           onChange: setGoodsList,
         }}
         dispatchType="RefundList/fetchGetList"
-        {...list}
+        {...RefundList}
       ></TableDataBlock>
       {/* 拒绝弹窗 */}
       <RefundModal
@@ -310,7 +314,7 @@ const RefundList = (props) => {
       <OrderDetailDraw
         childRef={childRef}
         visible={infoVisible}
-        total={list?.list.length}
+        total={RefundList?.list.length}
         tabkey={tabKey}
         loading={loadings.effects['RefundList/fetchRefundRrderDetail']}
         getDetail={fetchRefundDetail}
@@ -321,6 +325,6 @@ const RefundList = (props) => {
 
 export default connect(({ RefundList, loading }) => ({
   loadings: loading,
-  list: RefundList.list,
+  RefundList: RefundList.list,
   loading: loading.effects['RefundList/fetchGetList'],
 }))(RefundList);

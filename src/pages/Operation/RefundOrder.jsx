@@ -1,19 +1,25 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Modal } from 'antd';
+import { Modal, Tag } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useUpdateEffect } from 'ahooks';
-import { REFUND_ORDERS_STATUS } from '@/common/constant';
+import {
+  REFUND_ORDERS_STATUS,
+  GOODS_CLASS_TYPE,
+  TAG_COLOR_TYPE,
+  BUSINESS_TYPE,
+} from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
+import PopImgShow from '@/components/PopImgShow';
+import Ellipsis from '@/components/Ellipsis';
 import OrdersDetail from './components/RefundOrder/OrdersDetail';
 import OrderDetailDraw from './components/Orders/OrderDetailDraw';
-import SpecialGoods from './SpecialGoods';
-
+import { checkCityName } from '@/utils/utils';
 const { confirm } = Modal;
 
 const RefundOrder = (props) => {
-  const { refundOrder, loading, loadings } = props;
-  const { list } = refundOrder;
+  const { refundOrder, loading, loadings, dispatch } = props;
+  const { list = [] } = refundOrder;
   const [tabKey, setTabKey] = useState('specialGoods');
   const [infoVisible, setinfoVisible] = useState(false);
 
@@ -163,7 +169,7 @@ const RefundOrder = (props) => {
       title: '退款申请时间',
       align: 'center',
       dataIndex: 'submitRefundTime',
-      render: (val, row) => `${moment(val).format('YYYY-MM-DD HH:mm')}\n${row.creatorName || ''}`,
+      render: (val, row) => `${val}\n${row.creatorName || ''}`,
     },
     {
       title: '退款原因',
@@ -206,7 +212,7 @@ const RefundOrder = (props) => {
           },
           {
             type: 'payBack',
-            pop: true,
+            // pop: true,
             click: () => handleModal(val),
           },
         ];

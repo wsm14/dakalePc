@@ -31,7 +31,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.recordList,
+          list: content.orderRefundDetailList,
           total: content.total,
         },
       });
