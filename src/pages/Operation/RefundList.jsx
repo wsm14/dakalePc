@@ -230,7 +230,7 @@ const RefundList = (props) => {
         orderRefundApplyId,
       },
       callback: () => {
-        setVisibleRefuse({ show: false, detail: {} });
+        setRefundModal({ show: false, detail: {} });
         childRef.current.fetchGetData();
       },
     });
@@ -249,7 +249,6 @@ const RefundList = (props) => {
         orderRefundApplyIds: id,
       },
       callback: () => {
-        setVisibleRefuse({ show: false, detail: {} });
         childRef.current.fetchGetData();
       },
     });
