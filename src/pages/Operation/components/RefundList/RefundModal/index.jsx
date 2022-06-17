@@ -3,26 +3,16 @@ import { Modal, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
 
 const RefuseModal = (props) => {
-  const { visible = false, onClose, childRef, loading } = props;
+  const { visible = false, onClose, loading } = props;
   const { show = false, formProps = {} } = visible;
-  const { type = 'refuse', key = 'rejectReason', id } = formProps;
+  const { type = 'refuse', key = 'rejectReason', handleClick } = formProps;
 
   const [form] = Form.useForm();
   const showProps = { refuse: '拒绝原因', remark: '请填写备注' }[type];
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then((values) => {
-      dispatch({
-        type: { refuse: 'RefundList/fetchRefundApply' }[type],
-        payload: {
-          orderRefundApplyId: id,
-          ...values,
-        },
-        callback: () => {
-          setVisibleRefuse({ show: false, detail: {} });
-          childRef.current.fetchGetData();
-        },
-      });
+      handleClick && handleClick(values);
     });
   };
 

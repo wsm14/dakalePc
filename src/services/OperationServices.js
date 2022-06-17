@@ -566,9 +566,9 @@ export function fetchRefundRefuse(data) {
   });
 }
 
-//退款列表 -- 详情
+//退款列表/退款管理  -- 详情
 export function fetchRefundRrderDetail(params) {
-  return request('/admin/order/refund/apply/getOrderRefundApply', {
+  return request('/admin/order/order/getOrderForAdmin', {
     params,
   });
 }
@@ -595,12 +595,6 @@ export function fetchRefundPayBack(data) {
   return request('/admin/order/refund/immediateRefund', {
     method: 'POST',
     data,
-  });
-}
-// get 退款管理 - 详情
-export function fetchRefundOrderDetail(params) {
-  return request('/admin/order/refund/getOrderRefund', {
-    params,
   });
 }
 

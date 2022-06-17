@@ -1,10 +1,15 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
+import { Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useUpdateEffect } from 'ahooks';
 import { REFUND_ORDERS_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrdersDetail from './components/RefundOrder/OrdersDetail';
 import OrderDetailDraw from './components/Orders/OrderDetailDraw';
+import SpecialGoods from './SpecialGoods';
+
+const { confirm } = Modal;
 
 const RefundOrder = (props) => {
   const { refundOrder, loading, loadings } = props;
@@ -70,15 +75,11 @@ const RefundOrder = (props) => {
   const getColumns = [
     {
       title: '下单商品/订单号',
-      dataIndex: 'refundImg',
-      render: (val, row) => <PopImgShow url={val} />,
-    },
-    {
-      title: '商品名称/订单号',
       dataIndex: 'goodsName',
       align: 'center',
       render: (val, row) => (
         <div style={{ display: 'flex' }}>
+          <PopImgShow url={row.refundImg} />
           <div
             style={{
               display: 'flex',
@@ -132,28 +133,36 @@ const RefundOrder = (props) => {
     },
     {
       title: '下单人',
-      dataIndex: 'applicantName',
+      dataIndex: 'userMobile',
+      align: 'center',
+      render: (val, row) => `${row.userName}\n${val}\n${row.beanCode}`,
     },
+
     {
-      title: '用户实付',
-      dataIndex: 'applicantName',
-    },
-    {
-      title: '购买数量',
+      title: '下单数量',
       dataIndex: 'orderSn',
     },
     {
       title: '退款数量',
-      dataIndex: 'orderSn',
+      dataIndex: 'refundCount',
     },
     {
-      title: '退款金额',
-      dataIndex: 'orderSn',
+      title: '申请退款金额',
+      dataIndex: 'refundTotalFee',
+      render: () => (val, row) => `${val}\n(含${row.refundBean || 0}卡豆)`,
     },
     {
-      title: '申请时间',
+      title: { specialGoods: '发货状态/退款申请时间', commerceGoods: '退款申请时间' }[tabKey],
       align: 'center',
-      dataIndex: 'updataTime',
+      dataIndex: 'submitRefundTime',
+      render: (val, row) => {
+        return { specialGoods: `${row.creatorName}}\n${val}`, commerceGoods: `${val}` }[tabKey];
+      },
+    },
+    {
+      title: '退款申请时间',
+      align: 'center',
+      dataIndex: 'submitRefundTime',
       render: (val, row) => `${moment(val).format('YYYY-MM-DD HH:mm')}\n${row.creatorName || ''}`,
     },
     {
@@ -161,20 +170,22 @@ const RefundOrder = (props) => {
       dataIndex: 'refundReason',
     },
     {
-      title: '审核结果',
+      title: '寄回状态/寄回单号',
+      dataIndex: 'aaa',
+      visible: ['commerceGoods'].includes(tabKey),
+    },
+    {
+      title: '订单状态',
       dataIndex: 'auditStatus',
-      show: ['1'].includes(tabKey),
-      render: (val) => REFUND_ORDERS_EXAMINE_STATUS[val],
     },
     {
-      title: '审核时间',
-      dataIndex: 'verifyTime',
-      show: ['1'].includes(tabKey),
+      title: '退款完成时间',
+      dataIndex: 'completeRefundTime',
     },
-    {
-      title: '物流状态',
-      dataIndex: 'orderSn',
-    },
+    // {
+    //   title: '物流状态',
+    //   dataIndex: 'orderSn',
+    // },
     {
       title: '备注',
       dataIndex: 'remarks',
@@ -196,12 +207,25 @@ const RefundOrder = (props) => {
           {
             type: 'payBack',
             pop: true,
-            click: () => handlePayBack(val),
+            click: () => handleModal(val),
           },
         ];
       },
     },
   ];
+
+  //确认退款弹窗
+  const handleModal = (val) => {
+    confirm({
+      title: '提示',
+      icon: <ExclamationCircleOutlined />,
+      content: '确定立即退款吗？确定后将直接退款给用户',
+      onOk() {
+        handlePayBack(val);
+      },
+      onCancel() {},
+    });
+  };
 
   //立即退款
   const handlePayBack = (val) => {

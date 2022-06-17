@@ -2,7 +2,7 @@ import {
   fetchRefundOrderList,
   fetchOrdersDetail,
   fetchRefundPayBack,
-  fetchRefundOrderDetail,
+  fetchRefundRrderDetail,
 } from '@/services/OperationServices';
 
 export default {
@@ -46,7 +46,7 @@ export default {
       callback();
     },
     *fetchRefundOrderDetail({ payload }, { call, put }) {
-      const response = yield call(fetchRefundOrderDetail, payload);
+      const response = yield call(fetchRefundRrderDetail, payload);
       if (!response) return;
       const { content = {} } = response;
       callback(content.orderRefundDetail);
