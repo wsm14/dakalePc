@@ -220,11 +220,11 @@ const RefundList = (props) => {
     },
   ];
 
-  //决绝退款
+  //拒绝退款
   const handleRefund = (values) => {
     const { orderRefundApplyId } = refundModal.detail;
     dispatch({
-      type: 'RefundList/fetchRefundApply',
+      type: 'RefundList/fetchRefundRefuse',
       payload: {
         ...values,
         orderRefundApplyId,
