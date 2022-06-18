@@ -26,7 +26,7 @@ const RefundOrder = (props) => {
   const childRef = useRef();
 
   useUpdateEffect(() => {
-    childRef.current && childRef.current.fetchGetData();
+    childRef.current && childRef.current.fetchGetData({ orderType: tabKey });
   }, [tabKey]);
   // tab栏列表
   const tabList = [
@@ -48,7 +48,7 @@ const RefundOrder = (props) => {
     },
     {
       label: '商品名称',
-      name: 'orderSn',
+      name: 'goodsName',
     },
     {
       label: '供应商',
@@ -96,7 +96,6 @@ const RefundOrder = (props) => {
             }}
           >
             <div style={{ display: 'flex' }}>
-              <Tag color={TAG_COLOR_TYPE[row.orderType]}>{GOODS_CLASS_TYPE[row.orderType]}</Tag>
               <Ellipsis length={10} tooltip>
                 {val}
               </Ellipsis>
@@ -166,12 +165,6 @@ const RefundOrder = (props) => {
       },
     },
     {
-      title: '退款申请时间',
-      align: 'center',
-      dataIndex: 'submitRefundTime',
-      render: (val, row) => `${val}\n${row.creatorName || ''}`,
-    },
-    {
       title: '退款原因',
       dataIndex: 'refundReason',
     },
@@ -182,19 +175,17 @@ const RefundOrder = (props) => {
     },
     {
       title: '订单状态',
-      dataIndex: 'auditStatus',
+      dataIndex: 'status',
+      render: (val) => ['退款中/待退款', '已退款', '取消退款'][val],
     },
     {
       title: '退款完成时间',
       dataIndex: 'completeRefundTime',
+      show: ['specialGoods'].includes(tabKey),
     },
-    // {
-    //   title: '物流状态',
-    //   dataIndex: 'orderSn',
-    // },
     {
       title: '备注',
-      dataIndex: 'remarks',
+      dataIndex: 'remark',
     },
     {
       type: 'handle',
@@ -214,6 +205,7 @@ const RefundOrder = (props) => {
             type: 'payBack',
             // pop: true,
             click: () => handleModal(val),
+            visible: ['0'].includes(row.status),
           },
         ];
       },
@@ -227,7 +219,6 @@ const RefundOrder = (props) => {
       icon: <ExclamationCircleOutlined />,
       content: '确定立即退款吗？确定后将直接退款给用户',
       onOk() {
-        console.log('1111');
         handlePayBack(val);
       },
       onCancel() {},
@@ -249,11 +240,12 @@ const RefundOrder = (props) => {
 
   //查看详情
   const fetchRefundDetail = (index) => {
-    const { adapayRefundId } = list[index];
+    const { orderId, userId } = list[index];
     dispatch({
       type: 'refundOrder/fetchRefundRrderDetail',
       payload: {
-        orderRefundId: adapayRefundId,
+        orderId,
+        userId,
       },
       callback: (detail) => {
         setinfoVisible({
@@ -272,7 +264,6 @@ const RefundOrder = (props) => {
           tabList: tabList,
           activeTabKey: tabKey,
           onTabChange: setTabKey,
-          // tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
         }}
         cRef={childRef}
         loading={loading}

@@ -64,7 +64,7 @@ export default {
       const response = yield call(fetchRefundRrderDetail, payload);
       if (!response) return;
       const { content = {} } = response;
-      callback(content.orderRefundApplyDetail);
+      callback(content.orderDetail);
     },
   },
 };

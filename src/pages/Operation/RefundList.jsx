@@ -26,7 +26,7 @@ const RefundList = (props) => {
   const [goodsList, setGoodsList] = useState([]); // 选择同意的商品
   const [infoVisible, setinfoVisible] = useState(false);
   useUpdateEffect(() => {
-    childRef.current && childRef.current.fetchGetData();
+    childRef.current && childRef.current.fetchGetData({ isVerify: tabKey });
   }, [tabKey]);
   // tab栏列表
   const tabList = [
@@ -54,7 +54,7 @@ const RefundList = (props) => {
       },
       {
         label: '商品名称',
-        name: 'supplierName',
+        name: 'goodsName',
       },
       {
         label: '供应商',
@@ -73,7 +73,7 @@ const RefundList = (props) => {
       },
       {
         label: '商品名称',
-        name: 'supplierName',
+        name: 'goodsName',
       },
       {
         label: '供应商',
@@ -131,12 +131,8 @@ const RefundList = (props) => {
       render: (val, record) => (
         <div style={{ textAlign: 'center' }}>
           <div>{`￥${val}`}</div>
-          <div className={styles.fontColor}>
-            {record.settleBeanFee ? `(${record.settleBeanFee}卡豆` : '(' + '0卡豆'}
-          </div>
-          <div className={styles.fontColor}>
-            {(record.settlePayFee ? `+ ￥${record.settlePayFee}` : 0) + ')'}
-          </div>
+          <div>{record.settleBeanFee ? `(${record.settleBeanFee}卡豆` : '(' + '0卡豆'}</div>
+          <div>{(record.settlePayFee ? `+ ￥${record.settlePayFee}` : 0) + ')'}</div>
         </div>
       ),
     },
@@ -181,7 +177,7 @@ const RefundList = (props) => {
     },
     {
       title: '备注',
-      dataIndex: 'remarks',
+      dataIndex: 'remark',
     },
     {
       type: 'handle',
@@ -196,14 +192,17 @@ const RefundList = (props) => {
           {
             type: 'remarks',
             click: () => setRefundModal({ show: true, formProps: { type: 'remark' } }),
+            visible: ['0'].includes(tabKey),
           },
           {
             type: 'agree',
             pop: true,
             click: () => handleAgress(val),
+            visible: ['0'].includes(tabKey),
           },
           {
             type: 'refuse',
+            visible: ['0'].includes(tabKey),
             click: () =>
               setRefundModal({
                 show: true,
@@ -219,10 +218,10 @@ const RefundList = (props) => {
       },
     },
   ];
-
+  console.log(refundModal, 'refundModal');
   //拒绝退款
-  const handleRefund = (values) => {
-    const { orderRefundApplyId } = refundModal.detail;
+  const handleRefund = (values, detail) => {
+    const { orderRefundApplyId } = detail;
     dispatch({
       type: 'RefundList/fetchRefundRefuse',
       payload: {
@@ -257,11 +256,12 @@ const RefundList = (props) => {
   //获取详情
   const fetchRefundDetail = (index) => {
     const { list = [] } = RefundList;
-    const { orderRefundApplyId } = list[index];
+    const { orderId, userId } = list[index];
     dispatch({
       type: 'RefundList/fetchRefundRrderDetail',
       payload: {
-        orderRefundApplyId,
+        orderId,
+        userId,
       },
       callback: (detail) => {
         setinfoVisible({
@@ -316,6 +316,9 @@ const RefundList = (props) => {
         tabkey={tabKey}
         loading={loadings.effects['RefundList/fetchRefundRrderDetail']}
         getDetail={fetchRefundDetail}
+        onClose={() => {
+          setinfoVisible(false);
+        }}
       ></OrderDetailDraw>
     </>
   );

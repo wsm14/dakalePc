@@ -4,7 +4,7 @@ import FormCondition from '@/components/FormCondition';
 
 const RefuseModal = (props) => {
   const { visible = false, onClose, loading } = props;
-  const { show = false, formProps = {} } = visible;
+  const { show = false, formProps = {}, detail } = visible;
   const { type = 'refuse', key = 'rejectReason', handleClick } = formProps;
 
   const [form] = Form.useForm();
@@ -12,7 +12,7 @@ const RefuseModal = (props) => {
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then((values) => {
-      handleClick && handleClick(values);
+      handleClick && handleClick(values, detail);
     });
   };
 

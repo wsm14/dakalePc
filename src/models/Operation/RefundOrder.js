@@ -1,3 +1,4 @@
+import { notification } from 'antd';
 import {
   fetchRefundOrderList,
   fetchOrdersDetail,
@@ -45,7 +46,7 @@ export default {
       });
       callback();
     },
-    *fetchRefundOrderDetail({ payload }, { call, put }) {
+    *fetchRefundRrderDetail({ payload }, { call, put }) {
       const response = yield call(fetchRefundRrderDetail, payload);
       if (!response) return;
       const { content = {} } = response;
