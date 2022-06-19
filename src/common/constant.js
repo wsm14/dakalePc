@@ -304,6 +304,18 @@ export const ORDERS_STATUS = [
   '已过期',
 ];
 
+// 订单状态
+export const ORDER_STATUS = [
+  '待支付',
+  '已支付',
+  '订单关闭',
+  '交易完成',
+  '已确认',
+  '预支付',
+  '退款中',
+  '已过期',
+];
+
 // 游戏类型名称
 export const GAME_TYPE_NAME = {
   mark: '哒小卡中奖',
@@ -613,6 +625,14 @@ export const ORDER_TYPE_PROPS = {
   communityGoods: '团购商品',
   commerceGoods: '电商商品',
   communityGoods: '团购商品',
+};
+
+// specialGoods-特惠商品 reduceCoupon-优惠券
+export const ORDER_TYPE = {
+  RC: '抵扣券',
+  SG: '特惠',
+  TP: '充值',
+  SC: '扫码',
 };
 
 export const ORDER_ORDERTYPE = {

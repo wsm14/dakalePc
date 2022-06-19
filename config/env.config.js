@@ -32,10 +32,6 @@ export default {
         target,
         changeOrigin: true,
       },
-      // '/1034470': {
-      //   target: targetMoke,
-      //   changeOrigin: true,
-      // },
     },
   },
   test: {
