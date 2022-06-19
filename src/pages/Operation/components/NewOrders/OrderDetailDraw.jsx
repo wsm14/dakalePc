@@ -181,7 +181,6 @@ const OrderDetailDraw = (props) => {
     {
       name: 'goodsCount',
       render: (val) => <div style={{ textAlign: 'center' }}>数量：{val}</div>,
-      show: tabkey === 'goods',
     },
   ];
 
@@ -335,7 +334,6 @@ const OrderDetailDraw = (props) => {
                     type="quest"
                   ></QuestionTooltip>
                 </span>
-
                 <span>
                   ￥
                   {`${(
