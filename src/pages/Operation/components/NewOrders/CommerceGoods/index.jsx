@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Avatar, Modal } from 'antd';
-import { COMMERCE_ORDERS_STATUS, ORDER_CLOSE_TYPE, ORDER_PAY_LOGO } from '@/common/constant';
+import { ORDER_STATUS, ORDER_CLOSE_TYPE, ORDER_PAY_LOGO } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
 import Ellipsis from '@/components/Ellipsis';
@@ -44,7 +44,7 @@ const CommerceGoods = (props) => {
       label: '订单状态',
       name: 'status',
       type: 'select',
-      select: COMMERCE_ORDERS_STATUS,
+      select: ORDER_STATUS,
     },
     {
       label: '下单日期',
@@ -102,8 +102,8 @@ const CommerceGoods = (props) => {
     {
       title: '下单人',
       align: 'center',
-      dataIndex: 'userMobile',
-      render: (val, row) => `${row.userName}\n${val}\n${row.beanCode}`,
+      dataIndex: 'userInfo',
+      render: (val, row) => `${row.userName}\n${val.mobile}\n${row.beanCode}`,
     },
     {
       title: '数量',
@@ -166,10 +166,10 @@ const CommerceGoods = (props) => {
       render: (val, row) => (
         <>
           <span style={{ display: 'inline-flex', marginBottom: 5 }}>
-            {['2', '6'].includes(val) ? (
+            {['2'].includes(val) ? (
               <div style={{ color: '#999' }}>{ORDER_CLOSE_TYPE[row.closeType]}</div>
             ) : (
-              COMMERCE_ORDERS_STATUS[val]
+              ORDER_STATUS[val]
             )}
             <Avatar
               src={ORDER_PAY_LOGO[row.orderSource]}
@@ -192,7 +192,7 @@ const CommerceGoods = (props) => {
         {
           // 发货
           type: 'goodsDeliver',
-          // visible: ['1'].includes(record.status),
+          visible: ['1'].includes(record.status),
           click: () => fetchOderDrawer('add', record),
         },
         {

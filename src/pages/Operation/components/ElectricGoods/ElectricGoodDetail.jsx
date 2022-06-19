@@ -11,6 +11,7 @@ import {
   SETTLE_TYPE,
   ASTRICT_BUY,
 } from '@/common/constant';
+import { checkCityName } from '@/utils/utils';
 import ExtraButton from '@/components/ExtraButton';
 import SkuListTable from './Detail/SkuListTable';
 
@@ -233,6 +234,26 @@ const ElectricGoodDetail = (props) => {
         ),
     },
   ];
+
+  const ReturnItems = [
+    {
+      label: `收件人`,
+      name: ['returnRuleObject', 'name'],
+    },
+    {
+      label: `手机号`,
+      name: ['returnRuleObject', 'mobile'],
+    },
+    {
+      label: `省市区`,
+      name: ['returnRuleObject', 'districtCode'],
+      render: (val) => checkCityName(val),
+    },
+    {
+      label: `详细地址`,
+      name: ['returnRuleObject', 'address'],
+    },
+  ];
   const SettleformItems = [
     {
       label: `结算人类型`,
@@ -309,6 +330,11 @@ const ElectricGoodDetail = (props) => {
       <DescriptionsCondition
         title="发货设置"
         formItems={DeliverformItems}
+        initialValues={detail}
+      ></DescriptionsCondition>
+      <DescriptionsCondition
+        title="退款设置"
+        formItems={ReturnItems}
         initialValues={detail}
       ></DescriptionsCondition>
       <DescriptionsCondition
