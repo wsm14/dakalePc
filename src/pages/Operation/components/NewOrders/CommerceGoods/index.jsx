@@ -1,7 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Avatar, Modal } from 'antd';
-import { ORDER_STATUS, ORDER_CLOSE_TYPE, ORDER_PAY_LOGO } from '@/common/constant';
+import { Avatar, Badge, Modal } from 'antd';
+import {
+  ORDER_STATUS,
+  ORDER_CLOSE_TYPE,
+  ORDER_PAY_LOGO,
+  ELECTRICGOODS_SELL_STATUS,
+} from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
 import Ellipsis from '@/components/Ellipsis';
@@ -57,58 +62,54 @@ const CommerceGoods = (props) => {
   // table 表头
   const getColumns = [
     {
+      title: '商品主图',
+      dataIndex: 'goodsImg',
+      render: (val, row) => (
+        <Badge.Ribbon text={ELECTRICGOODS_SELL_STATUS[row.sellType]} color="cyan" placement="start">
+          <PopImgShow url={val} />
+        </Badge.Ribbon>
+      ),
+    },
+    {
       title: '商品名称',
       dataIndex: 'goodsName',
-      render: (val, row) => {
-        const { remark = '', togetherGroupId = '' } = row;
-        let showRemark = '';
-        if (togetherGroupId) {
-          if (remark) {
-            showRemark = `${togetherGroupId}--${remark}`;
-          } else {
-            showRemark = togetherGroupId;
-          }
-        } else {
-          showRemark = remark;
-        }
-        return (
-          <div style={{ display: 'flex' }}>
-            <PopImgShow url={row.goodsImg} />
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                flex: 1,
-                marginLeft: 5,
-              }}
-            >
-              <Ellipsis length={15} tooltip>
-                {val}
-              </Ellipsis>
-              <div style={{ marginTop: 5 }} className={styles.specFont}>
-                <Ellipsis length={12} tooltip>
-                  {`备注：${showRemark}`}
-                </Ellipsis>
-              </div>
-              <div style={{ marginTop: 5 }} className={styles.specFont}>
-                订单号：{row.orderSn}
-              </div>
-            </div>
+      render: (val, row) => (
+        <div>
+          <Ellipsis length={15} tooltip>
+            {val}
+          </Ellipsis>
+          <div style={{ marginTop: 5 }} className={styles.specFont}>
+            {row.orderSn}
           </div>
-        );
-      },
+        </div>
+      ),
+    },
+    {
+      title: '规格/供应商',
+      dataIndex: 'supplierInfo',
+      render: (val, row) => (
+        <div>
+          <div></div>
+          <div>{val?.supplierName}</div>
+        </div>
+      ),
     },
     {
       title: '下单人',
       align: 'center',
       dataIndex: 'userInfo',
-      render: (val, row) => `${row.userName}\n${val.mobile}\n${row.beanCode}`,
+      render: (val, row) => `${val.userName}\n${val.mobile}\n${val.beanCode}`,
     },
     {
       title: '数量',
       align: 'center',
       dataIndex: 'goodsCount',
+      render: (val, row) => (
+        <div>
+          <div></div>
+          <div>{`×${val}`}</div>
+        </div>
+      ),
     },
     {
       title: '用户实付',
@@ -166,11 +167,10 @@ const CommerceGoods = (props) => {
       render: (val, row) => (
         <>
           <span style={{ display: 'inline-flex', marginBottom: 5 }}>
-            {['2'].includes(val) ? (
-              <div style={{ color: '#999' }}>{ORDER_CLOSE_TYPE[row.closeType]}</div>
-            ) : (
-              ORDER_STATUS[val]
-            )}
+            <div>
+              <div>{ORDER_STATUS[val]}</div>
+              {['2'].includes(val) && <div>{`（${ORDER_CLOSE_TYPE[row.closeType]}）`}</div>}
+            </div>
             <Avatar
               src={ORDER_PAY_LOGO[row.orderSource]}
               size="small"

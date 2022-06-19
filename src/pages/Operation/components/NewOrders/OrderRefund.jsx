@@ -85,7 +85,7 @@ const OrderRefund = (props) => {
 
   return (
     <Modal {...modalProps} onCancel={onClose} onOk={handleUpAudit}>
-      <FormCondition form={form} formItems={formItems}></FormCondition>
+      <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>
       提示：确定退款后系统将在5分钟内自动完成退款。确定后不可取消，资金将原路退回付款账户。
     </Modal>
   );

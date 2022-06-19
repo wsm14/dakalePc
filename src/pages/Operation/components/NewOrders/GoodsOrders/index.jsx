@@ -115,7 +115,6 @@ const GoodsOrders = (props) => {
       dataIndex: 'merchantName',
       render: (val, row) => (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div>账号:{row.merchantMobile}</div>
           <div style={{ display: 'flex', alignItems: 'center', margin: '5px 0' }}>
             <Tag color="magenta">{BUSINESS_TYPE[row.relateOwnerType]}</Tag>
             <Ellipsis length={10} tooltip>
@@ -130,7 +129,7 @@ const GoodsOrders = (props) => {
       title: '下单人',
       align: 'center',
       dataIndex: 'userInfo',
-      render: (val, row) => `${val.userName}\n${val.mobile}\n${row.beanCode}`,
+      render: (val, row) => `${val.userName}\n${val.mobile}\n${val.beanCode}`,
     },
     {
       title: '单价/数量',
@@ -211,7 +210,7 @@ const GoodsOrders = (props) => {
       render: (val, row) => (
         <div style={{ textAlign: 'center' }}>
           <div>{val}</div>
-          <div className={styles.fontColor}>已核销：{row.verificationCount}</div>
+          <div className={styles.fontColor}>已核销：{row.verificationCount || 0}</div>
           <div className={styles.fontColor}>{row.verificationTime}</div>
         </div>
       ),
@@ -223,7 +222,10 @@ const GoodsOrders = (props) => {
       render: (val, row) => (
         <>
           <span style={{ display: 'inline-flex', marginBottom: 5 }}>
-            {ORDER_STATUS[val]}
+            <div>
+              <div>{ORDER_STATUS[val]}</div>
+              {['2'].includes(val) && <div>{`（${ORDER_CLOSE_TYPE[row.closeType]}）`}</div>}
+            </div>
             <Avatar
               src={ORDER_PAY_LOGO[row.orderSource]}
               size="small"
@@ -231,9 +233,6 @@ const GoodsOrders = (props) => {
               style={{ marginLeft: 5 }}
             />
           </span>
-          {(val === 2 || val === 6) && (
-            <div style={{ color: '#999' }}>{ORDER_CLOSE_TYPE[row.closeType]}</div>
-          )}
         </>
       ),
     },

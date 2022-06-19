@@ -137,6 +137,7 @@ export default {
         divisionParam: JSON.parse(orderDetail.divisionParam || '{}'),
       };
 
+      console.log('data: ', data);
       callback(data);
       yield put({
         type: 'save',
