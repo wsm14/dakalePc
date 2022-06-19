@@ -540,6 +540,7 @@ const PreferentialSet = ({
       label: '退款地址',
       name: 'returnRuleObject',
       type: 'formItem',
+      rules: [{ required: true }],
       formItem: (
         <Button
           type="primary"
