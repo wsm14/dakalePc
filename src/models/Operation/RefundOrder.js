@@ -3,6 +3,7 @@ import {
   fetchRefundOrderList,
   fetchOrdersDetail,
   fetchRefundPayBack,
+  fetchRefundOrderRemark,
   fetchRefundRrderDetail,
 } from '@/services/OperationServices';
 
@@ -46,7 +47,16 @@ export default {
       });
       callback();
     },
-    *fetchRefundRrderDetail({ payload }, { call, put }) {
+    *fetchRefundOrderRemark({ payload, callback }, { call }) {
+      const response = yield call(fetchRefundOrderRemark, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '备注成功',
+      });
+      callback();
+    },
+    *fetchRefundRrderDetail({ payload, callback }, { call, put }) {
       const response = yield call(fetchRefundRrderDetail, payload);
       if (!response) return;
       const { content = {} } = response;

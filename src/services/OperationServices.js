@@ -518,6 +518,14 @@ export function fetchRefundRefuse(data) {
   });
 }
 
+// post 退款列表 - 备注
+export function fetchRefundRemark(data) {
+  return request('/admin/order/refund/apply/remarkOrderRefundApply', {
+    method: 'POST',
+    data,
+  });
+}
+
 //退款列表/退款管理  -- 详情
 export function fetchRefundRrderDetail(params) {
   return request('/admin/order/order/getOrderForAdmin', {
@@ -545,6 +553,14 @@ export function fetchRefundOrderList(params) {
 // post 退款管理 - 立即退款
 export function fetchRefundPayBack(data) {
   return request('/admin/order/refund/immediateRefund', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 退款管理 - 备注
+export function fetchRefundOrderRemark(data) {
+  return request('/admin/order/refund/remarkOrderRefund', {
     method: 'POST',
     data,
   });

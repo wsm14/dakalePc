@@ -24,6 +24,7 @@ const RefundList = (props) => {
   const [tabKey, setTabKey] = useState('0'); // tab
   const [refundModal, setRefundModal] = useState({ detail: {}, show: false });
   const [goodsList, setGoodsList] = useState([]); // 选择同意的商品
+  const [goodsRowKeys, setGoodsRowKeys] = useState([]); //选择商品的keys
   const [infoVisible, setinfoVisible] = useState(false);
   useUpdateEffect(() => {
     childRef.current && childRef.current.fetchGetData({ isVerify: tabKey });
@@ -190,14 +191,22 @@ const RefundList = (props) => {
             click: () => fetchRefundDetail(index),
           },
           {
-            type: 'remarks',
-            click: () => setRefundModal({ show: true, formProps: { type: 'remark' } }),
+            type: 'remark',
+            click: () =>
+              setRefundModal({
+                show: true,
+                detail: row,
+                formProps: { type: 'remark', key: 'remark', handleClick: handleRemark },
+              }),
             visible: ['0'].includes(tabKey),
           },
           {
             type: 'agree',
             pop: true,
-            click: () => handleAgress(val),
+            click: () =>
+              handleAgress([
+                { orderRefundApplyId: val, orderType: row.orderType, userId: row.userId },
+              ]),
             visible: ['0'].includes(tabKey),
           },
           {
@@ -218,15 +227,33 @@ const RefundList = (props) => {
       },
     },
   ];
-  console.log(refundModal, 'refundModal');
   //拒绝退款
   const handleRefund = (values, detail) => {
-    const { orderRefundApplyId } = detail;
+    const { orderRefundApplyId, orderType, userId } = detail;
     dispatch({
       type: 'RefundList/fetchRefundRefuse',
       payload: {
         ...values,
         orderRefundApplyId,
+        orderType,
+        userId,
+      },
+      callback: () => {
+        setRefundModal({ show: false, detail: {} });
+        childRef.current.fetchGetData();
+      },
+    });
+  };
+
+  //备注
+  const handleRemark = (values, detail) => {
+    const { orderRefundApplyId, userId } = detail;
+    dispatch({
+      type: 'RefundList/fetchRefundRemark',
+      payload: {
+        ...values,
+        orderRefundId: orderRefundApplyId,
+        userId,
       },
       callback: () => {
         setRefundModal({ show: false, detail: {} });
@@ -237,15 +264,24 @@ const RefundList = (props) => {
 
   //同意退款事件
   const handleAgress = (val) => {
-    const id = val ? val.split(',') : goodsList;
-    if (!id.length) {
+    const list = goodsList.map((item) => {
+      return {
+        orderRefundApplyId: item.orderRefundApplyId,
+        orderType: item.orderType,
+        userId: item.userId,
+      };
+    });
+    console.log(list);
+
+    const idList = val ? val : list;
+    if (!idList.length) {
       message.info('请选择商品');
       return false;
     }
     dispatch({
       type: 'RefundList/fetchRefundApply',
       payload: {
-        orderRefundApplyIds: id,
+        orderRefundApplies: idList,
       },
       callback: () => {
         childRef.current.fetchGetData();
@@ -288,7 +324,10 @@ const RefundList = (props) => {
         cardProps={{
           tabList: tabList,
           activeTabKey: tabKey,
-          onTabChange: setTabKey,
+          onTabChange: (val) => {
+            setTabKey(val);
+            setGoodsRowKeys([]);
+          },
           tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
         }}
         cRef={childRef}
@@ -298,7 +337,11 @@ const RefundList = (props) => {
         rowKey={(record) => `${record.orderRefundApplyId}`}
         params={{ isVerify: tabKey }}
         rowSelection={{
-          onChange: setGoodsList,
+          selectedRowKeys: goodsRowKeys,
+          onChange: (selectedRowKeys, selectedRows) => {
+            setGoodsRowKeys(selectedRowKeys);
+            setGoodsList([...selectedRows]);
+          },
         }}
         dispatchType="RefundList/fetchGetList"
         {...RefundList}

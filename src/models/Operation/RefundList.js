@@ -4,6 +4,7 @@ import {
   fetchRefundPageOrderList,
   fetchRefundApply,
   fetchRefundRefuse,
+  fetchRefundRemark,
   fetchRefundRrderDetail,
 } from '@/services/OperationServices';
 
@@ -59,7 +60,15 @@ export default {
       });
       callback();
     },
-
+    *fetchRefundRemark({ payload, callback }, { call }) {
+      const response = yield call(fetchRefundRemark, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '备注成功',
+      });
+      callback();
+    },
     *fetchRefundRrderDetail({ payload, callback }, { call }) {
       const response = yield call(fetchRefundRrderDetail, payload);
       if (!response) return;

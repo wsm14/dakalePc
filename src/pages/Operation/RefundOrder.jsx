@@ -12,8 +12,9 @@ import {
 import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
 import Ellipsis from '@/components/Ellipsis';
-import OrdersDetail from './components/RefundOrder/OrdersDetail';
+import RefundModal from './components/RefundList/RefundModal';
 import OrderDetailDraw from './components/Orders/OrderDetailDraw';
+import LogisticsDraw from './components/RefundOrder/LogisticsDraw';
 import { checkCityName } from '@/utils/utils';
 const { confirm } = Modal;
 
@@ -22,6 +23,8 @@ const RefundOrder = (props) => {
   const { list = [] } = refundOrder;
   const [tabKey, setTabKey] = useState('specialGoods');
   const [infoVisible, setinfoVisible] = useState(false);
+  const [refundModal, setRefundModal] = useState({ detail: {}, show: false }); //备注弹窗
+  const [logisticsVisible, setLogisticsVisible] = useState({ show: false, detail: {} }); //查看物流弹窗
 
   const childRef = useRef();
 
@@ -171,7 +174,23 @@ const RefundOrder = (props) => {
     {
       title: '寄回状态/寄回单号',
       dataIndex: 'aaa',
+      align: 'center',
       visible: ['commerceGoods'].includes(tabKey),
+      render: () => {
+        return (
+          <div>
+            <div>已寄回</div>
+            <div>111111</div>
+            <a
+              onClick={() => {
+                handleGetLogistics();
+              }}
+            >
+              查看物流
+            </a>
+          </div>
+        );
+      },
     },
     {
       title: '订单状态',
@@ -198,13 +217,19 @@ const RefundOrder = (props) => {
             click: () => fetchRefundDetail(index),
           },
           {
-            type: 'remarks',
-            click: () => setRefundModal({ show: true, formProps: { type: 'remark' } }),
+            type: 'remark',
+            click: () =>
+              setRefundModal({
+                show: true,
+                detail: row,
+                formProps: { type: 'remark', key: 'remark', handleClick: handleRemark },
+              }),
           },
           {
             type: 'payBack',
             // pop: true,
-            click: () => handleModal(val),
+            click: () =>
+              handleModal({ orderRefundId: val, orderSn: row.orderSn, userId: row.userId }),
             visible: ['0'].includes(row.status),
           },
         ];
@@ -213,24 +238,41 @@ const RefundOrder = (props) => {
   ];
 
   //确认退款弹窗
-  const handleModal = (val) => {
+  const handleModal = (values) => {
     confirm({
       title: '提示',
       icon: <ExclamationCircleOutlined />,
       content: '确定立即退款吗？确定后将直接退款给用户',
       onOk() {
-        handlePayBack(val);
+        handlePayBack(values);
       },
       onCancel() {},
     });
   };
 
+  //备注
+  const handleRemark = (values, detail) => {
+    const { orderRefundId, userId } = detail;
+    dispatch({
+      type: 'refundOrder/fetchRefundOrderRemark',
+      payload: {
+        ...values,
+        orderRefundId,
+        userId,
+      },
+      callback: () => {
+        setRefundModal({ show: false, detail: {} });
+        childRef.current.fetchGetData();
+      },
+    });
+  };
+
   //立即退款
-  const handlePayBack = (val) => {
+  const handlePayBack = (values) => {
     dispatch({
       type: 'refundOrder/fetchRefundPayBack',
       payload: {
-        orderRefundId: val,
+        ...values,
       },
       callback: () => {
         childRef.current.fetchGetData();
@@ -241,6 +283,7 @@ const RefundOrder = (props) => {
   //查看详情
   const fetchRefundDetail = (index) => {
     const { orderId, userId } = list[index];
+    console.log(orderId, userId);
     dispatch({
       type: 'refundOrder/fetchRefundRrderDetail',
       payload: {
@@ -255,6 +298,11 @@ const RefundOrder = (props) => {
         });
       },
     });
+  };
+
+  //查看物流
+  const handleGetLogistics = () => {
+    setLogisticsVisible({ show: true });
   };
 
   return (
@@ -274,7 +322,11 @@ const RefundOrder = (props) => {
         dispatchType="refundOrder/fetchGetList"
         {...refundOrder}
       ></TableDataBlock>
-
+      {/* 备注 */}
+      <RefundModal
+        visible={refundModal}
+        onClose={() => setRefundModal({ show: false, detail: {} })}
+      ></RefundModal>
       {/* 详情页面 */}
       <OrderDetailDraw
         childRef={childRef}
@@ -283,7 +335,18 @@ const RefundOrder = (props) => {
         tabkey={tabKey}
         loading={loadings.effects['refundOrder/fetchRefundRrderDetail']}
         getDetail={fetchRefundDetail}
+        onClose={() => {
+          setinfoVisible({ show: false });
+        }}
       ></OrderDetailDraw>
+
+      {/* 查看物流 */}
+      <LogisticsDraw
+        visible={logisticsVisible}
+        onClose={() => {
+          setLogisticsVisible({ show: false });
+        }}
+      />
     </>
   );
 };

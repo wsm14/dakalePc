@@ -232,7 +232,7 @@ export const ROLE_BUTTON_TYPE = {
 
   agree: '同意',
   refuse: '拒绝',
-  remarks: '备注',
+  remark: '备注',
   payBack: '立即退款',
 };
 
