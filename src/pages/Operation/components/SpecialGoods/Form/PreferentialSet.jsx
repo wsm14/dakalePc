@@ -418,7 +418,7 @@ const PreferentialSet = ({
     {
       label: '自我游编码',
       name: ['thirdInfoReq', 'thirdId'],
-      visible: goodsType === '2',
+      visible: goodsType === 'selfTour',
       onChange: (e) => {
         form.setFieldsValue({
           thirdId: e.target.value.replace(/ /g, ''),

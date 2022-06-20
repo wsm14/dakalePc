@@ -1,4 +1,12 @@
-import { fetchRefundOrderList, fetchOrdersDetail } from '@/services/OperationServices';
+import { notification } from 'antd';
+import {
+  fetchRefundOrderList,
+  fetchOrdersDetail,
+  fetchRefundPayBack,
+  fetchRefundOrderRemark,
+  fetchGetExpressInfo,
+  fetchRefundRrderDetail,
+} from '@/services/OperationServices';
 
 export default {
   namespace: 'refundOrder',
@@ -26,21 +34,41 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.recordList,
+          list: content.orderRefundDetailList,
           total: content.total,
         },
       });
     },
-    *fetchOrderDetail({ payload }, { call, put }) {
-      const response = yield call(fetchOrdersDetail, payload);
+    *fetchRefundPayBack({ payload, callback }, { call }) {
+      const response = yield call(fetchRefundPayBack, payload);
       if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          orderDetail: content.order,
-        },
+      notification.success({
+        message: '温馨提示',
+        description: '退款成功',
       });
+      callback();
+    },
+    *fetchRefundOrderRemark({ payload, callback }, { call }) {
+      const response = yield call(fetchRefundOrderRemark, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '备注成功',
+      });
+      callback();
+    },
+    *fetchGetExpressInfo({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetExpressInfo, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      console.log(content, 'content');
+      callback(content);
+    },
+    *fetchRefundRrderDetail({ payload, callback }, { call, put }) {
+      const response = yield call(fetchRefundRrderDetail, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      callback(content.orderDetail);
     },
   },
 };

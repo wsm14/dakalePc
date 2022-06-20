@@ -1,13 +1,48 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { REFUND_ORDERS_STATUS } from '@/common/constant';
+import { Tag } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { useUpdateEffect } from 'ahooks';
+import {
+  REFUND_ORDERS_STATUS,
+  GOODS_CLASS_TYPE,
+  TAG_COLOR_TYPE,
+  BUSINESS_TYPE,
+} from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
-import OrdersDetail from './components/RefundOrder/OrdersDetail';
+import PopImgShow from '@/components/PopImgShow';
+import Ellipsis from '@/components/Ellipsis';
+import RefundModal from './components/RefundList/RefundModal';
+import OrderDetailDraw from './components/Orders/OrderDetailDraw';
+import LogisticsDraw from './components/RefundOrder/LogisticsDraw';
+import ConfirmRefundModal from './components/RefundOrder/ConfirmRefundModal';
+import { checkCityName } from '@/utils/utils';
 
 const RefundOrder = (props) => {
-  const { refundOrder, loading } = props;
+  const { refundOrder, loading, loadings, dispatch } = props;
+  const { list = [] } = refundOrder;
+  const [tabKey, setTabKey] = useState('specialGoods');
+  const [infoVisible, setinfoVisible] = useState(false);
+  const [refundModal, setRefundModal] = useState({ detail: {}, show: false }); //备注弹窗
+  const [logisticsVisible, setLogisticsVisible] = useState({ show: false, detail: {} }); //查看物流弹窗
+  const [confirmVisible, setConfirmVisible] = useState({ show: false, detail: {} }); //确认立即退款的弹窗
 
   const childRef = useRef();
+
+  useUpdateEffect(() => {
+    childRef.current && childRef.current.fetchGetData({ orderType: tabKey });
+  }, [tabKey]);
+  // tab栏列表
+  const tabList = [
+    {
+      key: 'specialGoods',
+      tab: '特惠订单',
+    },
+    {
+      key: 'commerceGoods',
+      tab: '电商订单',
+    },
+  ];
 
   // 搜索参数
   const searchItems = [
@@ -16,116 +51,323 @@ const RefundOrder = (props) => {
       name: 'orderSn',
     },
     {
-      label: '店铺',
-      name: 'ownerId',
-      type: 'merchant',
+      label: '商品名称',
+      name: 'goodsName',
+    },
+    // {
+    //   label: '供应商',
+    //   name: 'ownerId',
+    // },
+    {
+      label: '下单人',
+      type: 'user',
+      name: 'userId',
+    },
+    {
+      label: '退款状态',
+      type: 'select',
+      name: 'status',
+      select: REFUND_ORDERS_STATUS,
     },
     {
       label: '退款原因',
       name: 'refundReason',
     },
     {
-      label: '区域',
-      name: 'city',
-      type: 'cascader',
-      changeOnSelect: true,
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-    },
-    {
-      label: '提交退款时间',
+      label: '退款日期',
       type: 'rangePicker',
-      name: 'submitRefundTimeStart',
-      end: 'submitRefundTimeEnd',
-    },
-    {
-      label: '状态',
-      type: 'select',
-      name: 'status',
-      select: REFUND_ORDERS_STATUS,
+      name: 'refundReason',
+      name: 'completeRefundBeginTime',
+      end: 'completeRefundEndTime',
     },
   ];
 
   // table 表头
   const getColumns = [
     {
-      title: '订单号',
-      fixed: 'left',
-      dataIndex: 'orderSn',
+      title: '下单商品/订单号',
+      dataIndex: 'orderDesc',
+      align: 'center',
+      render: (val, row) => {
+        const goodsInfo = JSON.parse(val) || {};
+        const { commerceGoods = {}, specialGoods = {} } = goodsInfo;
+        return (
+          <div style={{ display: 'flex' }}>
+            <PopImgShow url={row.refundImg} />
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                flex: 1,
+                marginLeft: 5,
+              }}
+            >
+              <div style={{ display: 'flex' }}>
+                <Ellipsis length={10} tooltip>
+                  {commerceGoods.goodsName || specialGoods.goodsName}
+                </Ellipsis>
+              </div>
+              <div style={{ display: 'flex' }}>{row.orderSn}</div>
+            </div>
+          </div>
+        );
+      },
     },
     {
-      title: '手机号',
-      fixed: 'left',
-      dataIndex: 'mobile',
+      title: '所属店铺/地区',
+      dataIndex: 'goodsImg',
+      show: ['specialGoods'].includes(tabKey),
+      render: (val, row) => (
+        <div style={{ display: 'flex' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              flex: 1,
+              marginLeft: 5,
+            }}
+          >
+            <div style={{ display: 'flex' }}>
+              <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
+              <Ellipsis length={10} tooltip>
+                {row.relateName}
+              </Ellipsis>
+            </div>
+            <div style={{ display: 'flex' }}>{checkCityName(row.districtCode)}</div>
+          </div>
+        </div>
+      ),
     },
     {
-      title: '购买商品',
-      dataIndex: 'goodsName',
-      ellipsis: true,
+      title: '供应商',
+      show: ['commerceGoods'].includes(tabKey),
+      dataIndex: 'supplierInfo',
+      render: (val) => val.supplierName,
     },
     {
-      title: '店铺名称',
-      dataIndex: 'merchantName',
+      title: '下单人',
+      dataIndex: 'userInfo',
+      align: 'center',
+      render: (val, row) => `${val.userName}\n${val.mobile}\n${row.userId}`,
     },
+
     {
-      title: '购买数量',
-      align: 'right',
+      title: '下单数量',
       dataIndex: 'goodsCount',
     },
     {
       title: '退款数量',
-      align: 'right',
       dataIndex: 'refundCount',
     },
     {
-      title: '退款金额',
-      align: 'right',
-      dataIndex: 'refundFee',
-      render: (val, record) => `￥${val || 0} (含${record.refundBean ? record.refundBean : 0}卡豆)`,
+      title: '申请退款金额',
+      dataIndex: 'refundTotalFee',
+      render: (val, row) => `${val}\n(含${row.refundBean || 0}卡豆)`,
     },
     {
-      title: '提交退款时间',
-      align: 'right',
-      dataIndex: 'submitRefundTime',
+      title: { specialGoods: '发货状态/退款申请时间', commerceGoods: '退款申请时间' }[tabKey],
+      align: 'center',
+      dataIndex: 'createTime',
+      render: (val, row) => {
+        return {
+          specialGoods: `${row.orderLogisticInfo ? '已发货' : '未发货'}\n${val}`,
+          commerceGoods: `${val}`,
+        }[tabKey];
+      },
     },
     {
       title: '退款原因',
       dataIndex: 'refundReason',
     },
     {
-      title: '状态',
+      title: '寄回状态/寄回单号',
+      dataIndex: 'logisticsParam',
       align: 'center',
+      show: ['commerceGoods'].includes(tabKey),
+      render: (val, row) => {
+        const logisticsParam = val ? JSON.parse(val) : {};
+        const { code, name } = logisticsParam;
+        const renderItem = Object.keys(logisticsParam).length ? (
+          <div>
+            <div>已寄回</div>
+            <div>
+              {name}
+              {code}
+            </div>
+            <a
+              onClick={() => {
+                handleGetLogistics(row);
+              }}
+            >
+              查看物流
+            </a>
+          </div>
+        ) : (
+          '未寄回'
+        );
+        return renderItem;
+      },
+    },
+    {
+      title: '订单状态',
       dataIndex: 'status',
-      render: (val) => REFUND_ORDERS_STATUS[val],
+      render: (val) => ['退款中/待退款', '已退款', '取消退款'][val],
     },
     {
       title: '退款完成时间',
-      align: 'right',
       dataIndex: 'completeRefundTime',
+      show: ['specialGoods'].includes(tabKey),
     },
     {
-      title: '操作',
-      dataIndex: 'orderId',
-      align: 'right',
-      fixed: 'right',
-      render: (val, record) => <OrdersDetail order={val} name={record.goodsName}></OrdersDetail>,
+      title: '备注',
+      dataIndex: 'remark',
+    },
+    {
+      type: 'handle',
+      dataIndex: 'orderRefundId',
+      width: 150,
+      render: (val, row, index) => {
+        return [
+          {
+            type: 'info',
+            click: () => fetchRefundDetail(index),
+          },
+          {
+            type: 'remark',
+            click: () =>
+              setRefundModal({
+                show: true,
+                detail: row,
+                formProps: { type: 'remark', key: 'remark', handleClick: handleRemark },
+              }),
+          },
+          {
+            type: 'payBack',
+            // pop: true,
+            click: () => {
+              console.log(row);
+              setConfirmVisible({ show: true, detail: row });
+            },
+            visible: ['0'].includes(row.status),
+          },
+        ];
+      },
     },
   ];
 
+  //备注
+  const handleRemark = (values, detail) => {
+    const { orderRefundId, userId } = detail;
+    dispatch({
+      type: 'refundOrder/fetchRefundOrderRemark',
+      payload: {
+        ...values,
+        orderRefundId,
+        userId,
+      },
+      callback: () => {
+        setRefundModal({ show: false, detail: {} });
+        childRef.current.fetchGetData();
+      },
+    });
+  };
+
+  //查看详情
+  const fetchRefundDetail = (index) => {
+    const { orderId, userId } = list[index];
+    console.log(orderId, userId);
+    dispatch({
+      type: 'refundOrder/fetchRefundRrderDetail',
+      payload: {
+        orderId,
+        userId,
+      },
+      callback: (detail) => {
+        setinfoVisible({
+          index,
+          show: true,
+          detail,
+        });
+      },
+    });
+  };
+
+  //查看物流
+  const handleGetLogistics = (val) => {
+    const { logisticsParam, userInfo, supplierInfo } = val;
+
+    const expressInfo = logisticsParam ? JSON.parse(logisticsParam) : {};
+    const { companyCode, code } = expressInfo;
+    dispatch({
+      type: 'refundOrder/fetchGetExpressInfo',
+      payload: {
+        expressCompany: companyCode,
+        expressNo: code,
+      },
+      callback: (detail) => {
+        console.log(detail);
+        setLogisticsVisible({ show: true, detail: { ...detail, code, supplierInfo } });
+      },
+    });
+  };
+
   return (
-    <TableDataBlock
-      
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.orderRefundId}`}
-      dispatchType="refundOrder/fetchGetList"
-      {...refundOrder}
-    ></TableDataBlock>
+    <>
+      <TableDataBlock
+        cardProps={{
+          tabList: tabList,
+          activeTabKey: tabKey,
+          onTabChange: setTabKey,
+        }}
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.orderRefundId}`}
+        params={{ orderType: tabKey }}
+        dispatchType="refundOrder/fetchGetList"
+        {...refundOrder}
+      ></TableDataBlock>
+      {/* 备注 */}
+      <RefundModal
+        visible={refundModal}
+        onClose={() => setRefundModal({ show: false, detail: {} })}
+      ></RefundModal>
+      {/* 详情页面 */}
+      <OrderDetailDraw
+        childRef={childRef}
+        visible={infoVisible}
+        total={list.length}
+        tabkey={tabKey}
+        loading={loadings.effects['refundOrder/fetchRefundRrderDetail']}
+        getDetail={fetchRefundDetail}
+        onClose={() => {
+          setinfoVisible({ show: false });
+        }}
+      ></OrderDetailDraw>
+      {/* 查看物流 */}
+      <LogisticsDraw
+        visible={logisticsVisible}
+        onClose={() => {
+          setLogisticsVisible({ show: false });
+        }}
+      ></LogisticsDraw>
+      {/* 确认退款弹窗 */}
+      <ConfirmRefundModal
+        visible={confirmVisible}
+        onClose={() => {
+          setConfirmVisible({ show: false });
+        }}
+        childRef={childRef}
+      ></ConfirmRefundModal>
+    </>
   );
 };
 
 export default connect(({ refundOrder, loading }) => ({
   refundOrder,
+  loadings: loading,
   loading: loading.effects['refundOrder/fetchGetList'],
 }))(RefundOrder);

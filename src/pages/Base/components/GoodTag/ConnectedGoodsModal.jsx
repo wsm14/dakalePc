@@ -160,7 +160,9 @@ const ConnectedGoodsModal = (props) => {
         configGoodsTagRelatedGoodsList: list,
       },
       callback: () => {
-        childRef.current.fetchGetData({ checkOnly: configGoodsList.list.length === 1 });
+        if (mode === 'add') {
+          childRef.current.fetchGetData();
+        } else childRef.current.fetchGetData({ checkOnly: configGoodsList.list.length === 1 });
         callback && callback();
       },
     });

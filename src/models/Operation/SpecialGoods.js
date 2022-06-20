@@ -152,7 +152,7 @@ export default {
         platformTagIds: platformTagIds ? platformTagIds.split(',') : [],
         // displayFilterTags: displayFilterTags.split(','),
         relationOwnerInfoResps: relationOwnerInfoRespsList,
-        thirdInfoReq: thirdInfoResp,
+        thirdInfoReq: thirdInfoResp ? thirdInfoResp : { thirdType: 'offline' },
         divisionParamInfoReq: divisionParamInfoResp,
       });
     },

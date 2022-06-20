@@ -351,6 +351,9 @@ export const ORDER_CLOSE_TYPE = {
 // 退款订单状态
 export const REFUND_ORDERS_STATUS = ['退款中', '已退款', '取消退款'];
 
+//退款订单审核状态
+export const REFUND_ORDERS_EXAMINE_STATUS = ['未审核', '审核通过', '审核拒绝', '已关闭'];
+
 // 哒人带货 订单状态
 export const EXPRET_DISTRIBUTION_STATUS = ['待分佣', '已分佣', false, false, '已退款'];
 
@@ -664,7 +667,7 @@ export const SPECIAL_RECOMMEND_TYPE = {
 export const SPECIAL_RECOMMEND_DELSTATUS = ['已删除', '未删除'];
 
 // 特惠活动 - 商品类别
-export const SPECIAL_GOODS_TYPE = { 1: '特惠商品', 2: '自我游商品' };
+export const SPECIAL_GOODS_TYPE = { offline: '特惠商品', selfTour: '自我游商品' };
 
 // 特惠活动 - 介绍类型
 export const SPECIAL_DESC_TYPE = {

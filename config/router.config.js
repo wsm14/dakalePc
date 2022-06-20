@@ -802,13 +802,13 @@ export default [
             path: '/operation/refund',
             name: '退款管理',
             component: './Operation/RefundOrder',
-            buttons: ['info'],
+            buttons: ['info', 'remark', 'payBack'],
           },
           {
             path: '/operation/refundList',
             name: '退款列表',
             component: './Operation/RefundList',
-            buttons: ['info'],
+            buttons: ['info', 'remark', 'agree', 'refuse'],
           },
           {
             path: '/operation/coupon',

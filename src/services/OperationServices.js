@@ -531,6 +531,48 @@ export function fetchSubLedger(data) {
 
 // 订单列表 end
 
+//退款列表
+
+//退款列表 -list
+export function fetchRefundPageOrderList(params) {
+  return request('/admin/order/refund/apply/pageListOrderRefundApply', {
+    params,
+  });
+}
+
+// post 退款列表 - 同意
+export function fetchRefundApply(data) {
+  return request('/admin/order/refund/apply/batchConsent', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 退款列表 - 拒绝
+export function fetchRefundRefuse(data) {
+  return request('/admin/order/refund/apply/refuse', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 退款列表 - 备注
+export function fetchRefundRemark(data) {
+  return request('/admin/order/refund/apply/remarkOrderRefundApply', {
+    method: 'POST',
+    data,
+  });
+}
+
+//退款列表/退款管理  -- 详情
+export function fetchRefundRrderDetail(params) {
+  return request('/admin/order/order/getOrderForAdmin', {
+    params,
+  });
+}
+
+//退款列表 --end
+
 // 核销列表
 export function fetchVerificationList(params) {
   return request('/admin/orderGoodsVerification/listOrderGoodsVerification', {
@@ -542,7 +584,29 @@ export function fetchVerificationList(params) {
 
 // get 退款管理 - 列表
 export function fetchRefundOrderList(params) {
-  return request('/admin/orderManagement/listRefundOrder', {
+  return request('/admin/order/refund/pageListOrderRefund', {
+    params,
+  });
+}
+// post 退款管理 - 立即退款
+export function fetchRefundPayBack(data) {
+  return request('/admin/order/refund/immediateRefund', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 退款管理 - 备注
+export function fetchRefundOrderRemark(data) {
+  return request('/admin/order/refund/remarkOrderRefund', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 退款管理 - 查询快递物流信息
+export function fetchGetExpressInfo(params) {
+  return request('/common/express/getExpressInfo', {
     params,
   });
 }

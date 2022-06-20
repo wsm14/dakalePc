@@ -41,7 +41,8 @@ const SpecialGoods = (props) => {
     },
     {
       label: '集团/店铺名',
-      name: 'relateName',
+      type: 'merchant',
+      name: 'relateId',
     },
     {
       label: '活动状态',
@@ -54,7 +55,7 @@ const SpecialGoods = (props) => {
       name: 'goodsClass',
       type: 'select',
       allItem: false,
-      select: SPECIAL_GOODS_TYPE,
+      select: { offline: '特惠商品', selfTour: '自我游' },
     },
     {
       label: '展示类型',
@@ -196,8 +197,8 @@ const SpecialGoods = (props) => {
     {
       title: '最后更新时间',
       align: 'center',
-      dataIndex: 'updataTime',
-      render: (val, row) => `${moment(val).format('YYYY-MM-DD HH:mm')}\n${row.creatorName || ''}`,
+      dataIndex: 'updateTime',
+      render: (val, row) => `${val}\n${row.creatorName || ''}`,
     },
     {
       title: '商品状态',
