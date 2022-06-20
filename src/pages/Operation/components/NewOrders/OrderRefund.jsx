@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Modal, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
+import aliOssUpload from '@/utils/aliOssUpload';
 
 /**
  * 订单退款
@@ -15,13 +16,17 @@ const OrderRefund = (props) => {
 
   // 确认提交
   const handleUpAudit = () => {
-    form.validateFields().then((values) => {
-      const { refundReason, payFee, ...other } = values;
+    form.validateFields().then(async (values) => {
+      const { refundReason, payFee, refundImg, ...other } = values;
+
+      const rImg = await aliOssUpload(refundImg);
+
       dispatch({
         type: 'ordersList/fetchOrderImmediateRefund',
         payload: {
           ...detail,
           ...other,
+          refundImg: rImg.toString(),
           refundReason: select[refundReason],
         },
         callback: () => {

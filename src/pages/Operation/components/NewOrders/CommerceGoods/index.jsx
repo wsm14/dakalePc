@@ -36,26 +36,21 @@ const CommerceGoods = (props) => {
       type: 'good',
     },
     {
-      label: '下单人',
-      name: 'userId',
-      type: 'user',
-    },
-    {
       label: '供应商',
       name: 'relateOwnerId',
       type: 'supplier',
     },
     {
+      label: '下单人',
+      name: 'userId',
+      type: 'user',
+    },
+    {
       label: '订单状态',
       name: 'status',
       type: 'select',
+      allItem: false,
       select: ORDER_STATUS,
-    },
-    {
-      label: '下单日期',
-      type: 'rangePicker',
-      name: 'orderTimeStart',
-      end: 'orderTimeEnd',
     },
   ];
 
@@ -63,20 +58,20 @@ const CommerceGoods = (props) => {
   const getColumns = [
     {
       title: '商品主图',
-      dataIndex: 'goodsImg',
+      dataIndex: 'orderDesc',
       render: (val, row) => (
-        <Badge.Ribbon text={ELECTRICGOODS_SELL_STATUS[row.sellType]} color="cyan" placement="start">
-          <PopImgShow url={val} />
-        </Badge.Ribbon>
+        // <Badge.Ribbon text={ELECTRICGOODS_SELL_STATUS[row.sellType]} color="cyan" placement="start">
+        <PopImgShow url={val?.commerceGoods?.goodsImg} />
+        // </Badge.Ribbon>
       ),
     },
     {
       title: '商品名称',
-      dataIndex: 'goodsName',
+      dataIndex: 'orderDesc',
       render: (val, row) => (
         <div>
           <Ellipsis length={15} tooltip>
-            {val}
+            {val?.commerceGoods?.goodsName}
           </Ellipsis>
           <div style={{ marginTop: 5 }} className={styles.specFont}>
             {row.orderSn}
@@ -89,7 +84,7 @@ const CommerceGoods = (props) => {
       dataIndex: 'supplierInfo',
       render: (val, row) => (
         <div>
-          <div></div>
+          <div>{}</div>
           <div>{val?.supplierName}</div>
         </div>
       ),
@@ -193,22 +188,21 @@ const CommerceGoods = (props) => {
           // 发货
           type: 'goodsDeliver',
           visible: ['1'].includes(record.status),
-          click: () => fetchOderDrawer('add', record),
+          click: () => fetchOderDrawer(record),
         },
         {
           // 查看物流
           type: 'goodsView',
-          // visible: ['3', '8'].includes(record.status),
-          click: () => fetchOderDrawer('info', record),
+          visible: ['1', '2', '3', '6'].includes(record.status),
+          // click: () => fetchOderDrawer('info', record),
         },
         {
-          // 分账
-          title: record?.status === '3' ? '已分账' : '分账',
+          // 分账   已付款且已发货才可以分账，分账后状态变为3（交易完成）
+          title: '分账',
           type: 'routing',
-          pop: ['8'].includes(record.status) && true,
+          pop: true,
           popText: '确定要进行分账吗？分账后无法取消。',
-          visible: ['3', '8'].includes(record.status),
-          disabled: ['3'].includes(record.status),
+          visible: ['1'].includes(record.status) && true,
           click: () => handleOk(val),
         },
       ],
@@ -231,11 +225,10 @@ const CommerceGoods = (props) => {
     });
   };
 
-  //发货和查看物流
-  const fetchOderDrawer = (type, record) => {
+  //发货
+  const fetchOderDrawer = (record) => {
     const { orderId, userId } = record;
     setVisivleSet({
-      type,
       show: true,
       detail: {
         userId,
@@ -282,7 +275,6 @@ const CommerceGoods = (props) => {
         getDetail={fetchGoodsDetail}
       ></OrderDetailDraw>
       {/* 发货 */}
-      {/*  查看物流*/}
       <OrderDrawer childRef={childRef} visible={visivleSet} onClose={() => setVisivleSet(false)} />
       {/* 确认分账 */}
       <Modal

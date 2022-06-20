@@ -244,7 +244,10 @@ const VideoDetail = (props) => {
   };
 
   const modalProps = {
-    title: `视频广告${{ info: '详情', edit: '编辑' }[type]} - ${detail.title}`,
+    title:
+      type == 'information'
+        ? '数据统计'
+        : `视频广告${{ info: '详情', edit: '编辑' }[type]} - ${detail.title}`,
     visible: show,
     onClose,
     loading: loadingDetail,
@@ -258,7 +261,7 @@ const VideoDetail = (props) => {
     },
     footer: (
       <>
-        {type !== 'info' && (
+        {!['info', 'information'].includes(type) && (
           <Button type="primary" onClick={handleUpdataSava} loading={loading}>
             保存
           </Button>
@@ -278,12 +281,13 @@ const VideoDetail = (props) => {
                 formItems={formItems}
                 initialValues={detail}
               ></DescriptionsCondition>
-              <DescriptionsCondition
-                title="数据统计"
-                formItems={formItemsData}
-                initialValues={detail}
-              ></DescriptionsCondition>
             </>
+          ),
+          information: (
+            <DescriptionsCondition
+              formItems={formItemsData}
+              initialValues={detail}
+            ></DescriptionsCondition>
           ),
           // 修改
           edit: (

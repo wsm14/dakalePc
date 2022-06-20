@@ -111,6 +111,7 @@ export const ROLE_BUTTON_TYPE = {
   iconVersionEdit: '底部icon-编辑版本',
   iconVersionDel: '底部icon-删除版本',
   iconVersionSave: '底部icon-新增版本',
+  information: '数据',
 
   jobClass: '职位类别',
 

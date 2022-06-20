@@ -6,7 +6,7 @@ import { checkCityName } from '@/utils/utils';
 import AddressDrawer from './AddressDrawer';
 
 const OrderPushSet = (props) => {
-  const { form, initialValues, dispatch } = props;
+  const { form, initialValues, dispatch, companyList } = props;
   const { orderId, userId } = initialValues;
 
   const [orderLogistic, setOrderLogistic] = useState({});
@@ -14,6 +14,7 @@ const OrderPushSet = (props) => {
 
   useEffect(() => {
     !visible &&
+      orderId &&
       dispatch({
         type: 'ordersList/fetchOrderDetail',
         payload: { orderId, userId },
@@ -23,18 +24,31 @@ const OrderPushSet = (props) => {
         },
       });
   }, [orderId, visible]);
+
   const formItems = [
     {
       label: '物流公司',
-      name: ['orderLogistic', 'logisticsCompany'],
+      name: ['orderLogistic', 'companyCode'],
+      type: 'select',
+      select: companyList,
+      fieldNames: { label: 'companyName', value: 'companyCode' },
+      onSelect: (val, option) => {
+        option &&
+          form.setFieldsValue({
+            orderLogistic: {
+              logisticsCompany: option.option.companyName,
+            },
+          });
+      },
     },
     {
       label: '物流单号',
       name: ['orderLogistic', 'logisticsCode'],
     },
     {
-      label: '公司编码',
-      name: ['orderLogistic', 'companyCode'],
+      label: '物流公司名称',
+      name: ['orderLogistic', 'logisticsCompany'],
+      hidden: true,
     },
     {
       label: '买家收货信息',
@@ -75,6 +89,7 @@ const OrderPushSet = (props) => {
   );
 };
 
-export default connect(({ loading }) => ({
+export default connect(({ baseData, loading }) => ({
+  companyList: baseData.companyList,
   loading: loading.effects['ordersList/fetchOrderDetail'],
 }))(OrderPushSet);

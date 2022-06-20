@@ -151,18 +151,7 @@ export default {
     *fetchVideoAdvertDetail({ payload, callback }, { call }) {
       const { type = 'info', momentType, relateId, ...cell } = payload;
       const response = yield call(fetchVideoAdvertDetail, cell);
-      // 查询视频统计信息
-      let content2 = {};
-      if (type === 'info') {
-        const response2 = yield call(fetchNewShareStatisticsList, {
-          momentType,
-          ownerId: relateId,
-          momentId: cell.platformMomentId,
-        });
-        if (!response2) return;
-        const { content } = response2;
-        content2 = content;
-      }
+
       if (!response) return;
       const { content = {} } = response;
       const {
@@ -188,7 +177,6 @@ export default {
           : {};
       const newObj = {
         ...other,
-        ...content2,
         param: JSON.parse(param || '{}'),
         age,
         area,
@@ -217,6 +205,20 @@ export default {
         description: `修改成功`,
       });
       callback();
+    },
+    // 查询视频统计信息
+    *fetchNewShareStatisticsList({ payload, callback }, { call }) {
+      const { type = 'info', momentType, relateId, ...cell } = payload;
+
+      const response = yield call(fetchNewShareStatisticsList, {
+        momentType,
+        ownerId: relateId,
+        momentId: cell.platformMomentId,
+      });
+      if (!response) return;
+      const { content } = response;
+
+      callback(content);
     },
   },
 };

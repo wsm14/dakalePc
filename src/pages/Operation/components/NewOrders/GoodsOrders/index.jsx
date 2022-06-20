@@ -8,7 +8,7 @@ import {
   ORDER_PAY_LOGO,
   GOODS_CLASS_TYPE,
   BUSINESS_TYPE,
-  ORDER_ORDERTYPE,
+  SPECIAL_GOODS_TYPE,
 } from '@/common/constant';
 import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -43,40 +43,23 @@ const GoodsOrders = (props) => {
       type: 'user',
     },
     {
-      label: '店铺名称',
+      label: '店铺/集团',
       name: 'merchantId',
       type: 'merchant',
     },
     {
       label: '订单属性',
       type: 'select',
-      name: 'orderType',
-      select: ORDER_ORDERTYPE,
+      name: 'goodsClass',
+      allItem: false,
+      select: SPECIAL_GOODS_TYPE,
     },
     {
       label: '状态',
       name: 'status',
       type: 'select',
+      allItem: false,
       select: ORDER_STATUS,
-    },
-    {
-      label: '下单日期',
-      type: 'rangePicker',
-      name: 'orderTimeStart',
-      end: 'orderTimeEnd',
-    },
-    {
-      label: '核销日期',
-      type: 'rangePicker',
-      name: 'verificationTimeStart',
-      end: 'verificationTimeEnd',
-    },
-    {
-      label: '地区',
-      name: 'city',
-      type: 'cascader',
-      changeOnSelect: true,
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
   ];
 
@@ -129,7 +112,7 @@ const GoodsOrders = (props) => {
       title: '下单人',
       align: 'center',
       dataIndex: 'userInfo',
-      render: (val, row) => `${val.userName}\n${val.mobile}\n${val.beanCode}`,
+      render: (val, row) => `${val?.userName}\n${val?.mobile}\n${val?.beanCode}`,
     },
     {
       title: '单价/数量',

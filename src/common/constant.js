@@ -616,23 +616,17 @@ export const ADD_AND_MINUS = { add: '收入', minus: '支出' };
 
 // specialGoods-特惠商品 reduceCoupon-优惠券
 export const ORDER_TYPE_PROPS = {
-  specialGoods: '特惠商品',
-  reduceCoupon: '优惠券',
   scan: '扫码',
+  topUp: '充值订单',
+  specialGoods: '特惠商品',
+  reduceCoupon: '有价券',
+  communityGoods: '团购商品',
+  virtualProduct: '虚拟商品',
   rightGoods: '权益商品',
   rightCoupon: '权益券',
-  virtualProduct: '虚拟商品',
-  communityGoods: '团购商品',
   commerceGoods: '电商商品',
-  communityGoods: '团购商品',
-};
-
-// specialGoods-特惠商品 reduceCoupon-优惠券
-export const ORDER_TYPE = {
-  RC: '抵扣券',
-  SG: '特惠',
-  TP: '充值',
-  SC: '扫码',
+  platformGift: '平台礼包订单',
+  weeklyCard: '卡豆周卡订单',
 };
 
 export const ORDER_ORDERTYPE = {

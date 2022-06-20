@@ -319,3 +319,10 @@ export function fetchPageResourceTemplateContent(params) {
     params,
   });
 }
+
+//查询快递公司列表
+export function fetchListExpressCompany(params) {
+  return request('/common/express/listExpressCompany', {
+    params,
+  });
+}

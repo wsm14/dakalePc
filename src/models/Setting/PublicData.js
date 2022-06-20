@@ -44,6 +44,7 @@ import {
   fetchGlobalListPartner,
   fetchListHittingMain,
   fetchPageResourceTemplateContent,
+  fetchListExpressCompany,
 } from '@/services/PublicServices';
 
 export default {
@@ -83,6 +84,7 @@ export default {
     classifyParentList: [],
     brandList: [],
     tagsPlatform: [],
+    companyList: [],
   },
 
   reducers: {
@@ -828,6 +830,18 @@ export default {
         },
       });
       // callback && callback(content.configGoodsTagDTOS);
+    },
+    //查询快递公司列表
+    *fetchListExpressCompany({ payload, callback }, { call, put }) {
+      const response = yield call(fetchListExpressCompany, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          companyList: content.companyList,
+        },
+      });
     },
   },
 };

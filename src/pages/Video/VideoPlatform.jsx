@@ -208,6 +208,10 @@ const VideoPlatform = (props) => {
             click: () => fetchShareDetail(index, 'info'),
           },
           {
+            type: 'information', // 数据
+            click: () => fetchShareDetail(index, 'information'),
+          },
+          {
             type: 'down', // 下架
             pop: false,
             visible: status == 1 || status == 2,
@@ -329,7 +333,10 @@ const VideoPlatform = (props) => {
   const fetchShareDetail = (index, type, momentType) => {
     const { momentId, ownerId } = list[index];
     dispatch({
-      type: 'videoPlatform/fetchNewShareDetail',
+      type:
+        type == 'information'
+          ? 'videoPlatform/fetchNewShareStatisticsList'
+          : 'videoPlatform/fetchNewShareDetail',
       payload: {
         momentId,
         ownerId,
@@ -391,7 +398,7 @@ const VideoPlatform = (props) => {
         visible={visibleShare}
         onClose={() => setVisibleShare(false)}
       ></VideoPlatformDrawer>
-      {/* 详情 修改 编辑画像 带货设置 分享配置*/}
+      {/* 详情 数据统计 修改 编辑画像 带货设置 分享配置*/}
       <ShareDetail
         childRef={childRef}
         tabKey={tabKey}

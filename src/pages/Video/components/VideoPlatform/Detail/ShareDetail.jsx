@@ -345,7 +345,7 @@ const ShareDetail = (props) => {
 
   // 抽屉属性
   const modalProps = {
-    title: type == 'share' ? `${ownerName}` : '视频详情',
+    title: type == 'share' ? `${ownerName}` : type == 'information' ? '数据统计' : '视频详情',
     visible: show,
     onClose,
     loading: loadingDetail,
@@ -363,7 +363,7 @@ const ShareDetail = (props) => {
     },
     footer: (
       <>
-        {type !== 'info' && (
+        {!['info', 'information'].includes(type) && (
           <Button type="primary" onClick={handleUpdataSava} loading={loading}>
             保存
           </Button>
@@ -383,12 +383,13 @@ const ShareDetail = (props) => {
                 formItems={formItems}
                 initialValues={detail}
               ></DescriptionsCondition>
-              <DescriptionsCondition
-                title="数据统计"
-                formItems={formItemsData}
-                initialValues={detail}
-              ></DescriptionsCondition>
             </>
+          ),
+          information: (
+            <DescriptionsCondition
+              formItems={formItemsData}
+              initialValues={detail}
+            ></DescriptionsCondition>
           ),
           // 带货修改
           commerce: (

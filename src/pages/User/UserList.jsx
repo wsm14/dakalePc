@@ -64,11 +64,6 @@ const UserListComponent = (props) => {
       dataIndex: 'userIdString',
     },
     {
-      title: '豆号',
-      fixed: 'left',
-      dataIndex: 'beanCode',
-    },
-    {
       title: '注册手机号',
       dataIndex: 'mobile',
       render: (val) => val || '小程序用户',
@@ -96,12 +91,6 @@ const UserListComponent = (props) => {
       render: (val) => checkCityName(val) || '--',
     },
     {
-      title: '常驻地',
-      align: 'center',
-      dataIndex: 'residentAddress',
-      render: (val) => val || '-',
-    },
-    {
       title: '注册时间',
       align: 'center',
       dataIndex: 'createTime',
@@ -116,12 +105,6 @@ const UserListComponent = (props) => {
           {val == '2' ? <div>{`注销时间：${row.cancellationTime || ''}`}</div> : null}
         </>
       ),
-    },
-    {
-      title: '用户来源',
-      align: 'center',
-      dataIndex: 'userSource',
-      render: (val) => USER_SOURCE[val],
     },
     {
       type: 'handle',
@@ -168,7 +151,6 @@ const UserListComponent = (props) => {
       {/* 用户chart统计 */}
       {/* <UserTotalSpread></UserTotalSpread> */}
       <TableDataBlock
-        
         cRef={childRef}
         loading={loading}
         columns={getColumns}
