@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { connect } from 'umi';
-import { Tag, Badge, Avatar } from 'antd';
+import { connect, history } from 'umi';
+import { Tag, Badge, Avatar, Button } from 'antd';
 import {
   ORDER_STATUS,
   SPECIAL_GOODS_TYPE,
@@ -191,7 +191,7 @@ const GoodsOrders = (props) => {
         <div style={{ textAlign: 'center' }}>
           <div>{val}</div>
           <div className={styles.fontColor}>
-            已核销：<a href="">查看</a>
+            已核销：<Button onClick={() => handleCancelList(row.orderSn)}>查看</Button>
           </div>
         </div>
       ),
@@ -228,6 +228,16 @@ const GoodsOrders = (props) => {
       ],
     },
   ];
+
+  // 跳转核销列表
+  const handleCancelList = (orderSn) => {
+    history.push({
+      pathname: '/operation/verificationList',
+      query: {
+        orderSn,
+      },
+    });
+  };
 
   //详情
   const fetchGoodsDetail = (index) => {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PAY_TYPE, ORDER_TYPE, ORDER_STATUS } from '@/common/constant';
+import { PAY_TYPE, ORDER_TYPE_PROPS, ORDER_STATUS } from '@/common/constant';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -143,7 +143,7 @@ const OrderDetailDraw = (props) => {
     {
       label: '订单类型',
       name: 'orderType',
-      render: (val) => ORDER_TYPE[val],
+      render: (val) => ORDER_TYPE_PROPS[val],
     },
     // {
     //   label: '交易来源',

@@ -12,6 +12,7 @@ import OrderDetailDraw from '../OrderDetailDraw';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import OrderDrawer from './OrderDrawer';
+import LogisticsDraw from '../LogisticsDraw';
 import styles from '../style.less';
 
 const CommerceGoods = (props) => {
@@ -21,6 +22,7 @@ const CommerceGoods = (props) => {
   const [visible, setVisible] = useState(false);
   const [visivleSet, setVisivleSet] = useState(false);
   const [visibleRouting, setVisibleRouting] = useState(false);
+  const [logisticsVisible, setLogisticsVisible] = useState({ show: false, detail: {} }); //查看物流弹窗
 
   const childRef = useRef();
 
@@ -214,7 +216,7 @@ const CommerceGoods = (props) => {
           // 查看物流
           type: 'goodsView',
           visible: ['1', '2', '3', '6'].includes(record.status),
-          // click: () => fetchOderDrawer('info', record),
+          click: () => handleGetLogistics(record),
         },
         {
           // 分账   已付款且已发货才可以分账，分账后状态变为3（交易完成）
@@ -228,6 +230,29 @@ const CommerceGoods = (props) => {
       ],
     },
   ];
+
+  //查看物流
+  const handleGetLogistics = (val) => {
+    const {
+      orderLogisticInfo, //发货信息对象
+    } = val;
+
+    const { mobile, companyCode, logisticsCode } = orderLogisticInfo;
+    dispatch({
+      type: 'refundOrder/fetchGetExpressInfo',
+      payload: {
+        expressCompany: companyCode,
+        expressNo: logisticsCode,
+        receiveUserMobile: mobile,
+      },
+      callback: (detail) => {
+        setLogisticsVisible({
+          show: true,
+          detail: { ...detail, orderLogisticInfo },
+        });
+      },
+    });
+  };
 
   //详情
   const fetchGoodsDetail = (index) => {
@@ -305,6 +330,13 @@ const CommerceGoods = (props) => {
       >
         确定要进行分账吗？分账后无法取消。
       </Modal>
+      {/* 查看物流 */}
+      <LogisticsDraw
+        visible={logisticsVisible}
+        onClose={() => {
+          setLogisticsVisible({ show: false });
+        }}
+      ></LogisticsDraw>
     </>
   );
 };

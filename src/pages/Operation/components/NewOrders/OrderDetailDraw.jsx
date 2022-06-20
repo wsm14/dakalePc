@@ -358,7 +358,7 @@ const OrderDetailDraw = (props) => {
                     type="quest"
                   ></QuestionTooltip>
                 </span>
-                <span>{`￥${detail.settleParam.settlePrice}`}</span>
+                <span>{`￥${detail?.settleParam?.settlePrice || 0}`}</span>
               </div>
             )}
             {['2'][detail.status] && orderCloseStatusCheck && (
