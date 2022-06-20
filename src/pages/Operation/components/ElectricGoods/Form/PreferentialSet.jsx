@@ -14,6 +14,8 @@ import {
   SETTLE_TYPE,
   ASTRICT_BUY,
 } from '@/common/constant';
+import { checkCityName } from '@/utils/utils';
+import DescriptionsCondition from '@/components/DescriptionsCondition';
 import EditorForm from '@/components/EditorForm';
 import FormCondition from '@/components/FormCondition';
 import Shipping from './Shipping';
@@ -50,8 +52,9 @@ const PreferentialSet = ({
   const [sellType, setSellType] = useState('single'); // 售卖类型
   const [priceType, setPriceType] = useState('defaultMode'); // 售卖价格类型
   const [freightType, setFreightType] = useState('free'); // 运费类型
-  // const [visibleRefund, setVisibleRefund] = useState(false); // 退货地址modal
-  // const [refundList, setRefundList] = useState([]); // 退货地址数据暂存
+  const [visibleRefund, setVisibleRefund] = useState(false); // 退货地址modal
+  const [refundList, setRefundList] = useState([]); // 退货地址数据暂存
+  const [refundAllData, setRefundAllData] = useState([]); // 供应商详情数据-退货地址用
   const [specificationTypeData, setSpecificationTypeData] = useState([]); // 规格类型数据暂存
   const [tieredModal, setTieredModal] = useState(false); // 设置阶梯价model
   const [AstrictType, setAstrictType] = useState('unlimited'); // 限购状态
@@ -67,6 +70,7 @@ const PreferentialSet = ({
     paymentModeType,
     postageRuleObject,
     buyLimitRuleObject,
+    returnRuleObject,
   } = initialValues;
 
   useEffect(() => {
@@ -80,6 +84,7 @@ const PreferentialSet = ({
       setPriceType(paymentModeType); // 回显售卖价格类型
       setFreightType(postageRuleObject.type); // 回显运费类型
       setAstrictType(buyLimitRuleObject.type); // 回显限购状态
+      setRefundList(returnRuleObject);
     }
     // 延迟赋值: skuInfoReqs 详细规格组件使用
     setTimeout(() => {
@@ -156,7 +161,7 @@ const PreferentialSet = ({
     });
   }, 500);
 
-  // 搜索品牌列表
+  // 搜索品牌列表  + 搜索供应商详情退货地址列表
   const fetchBrandIdList = (supplierId = '') => {
     if (typeof supplierId != 'string') return;
     // form.setFieldsValue({
@@ -167,6 +172,14 @@ const PreferentialSet = ({
     dispatch({
       type: 'baseData/fetchSupplierBrandList',
       payload: { supplierId },
+    });
+    dispatch({
+      type: 'supplierManage/fetchGetSupplierManageDetail',
+      payload: { supplierId },
+      callback: (detail) => {
+        const { logisticList = [] } = detail;
+        setRefundAllData(logisticList);
+      },
     });
   };
 
@@ -190,6 +203,27 @@ const PreferentialSet = ({
     dispatch({ type: 'baseData/fetchGoodsTagList' });
   };
 
+  // 退货地址描述列表
+  const descriptionsItems = [
+    {
+      label: '收货人',
+      name: 'name',
+    },
+    {
+      label: '手机号码',
+      name: 'mobile',
+    },
+    {
+      label: '所在地区',
+      name: 'districtCode',
+      render: (val) => checkCityName(val),
+    },
+    {
+      label: '详细地址',
+      name: 'address',
+    },
+  ];
+
   // 信息
   const formItems = [
     {
@@ -200,8 +234,9 @@ const PreferentialSet = ({
       select: supplierSelect,
       loading: loadings.models.baseData,
       onSearch: (val) => fetchGetSearchSupplier({ name: val.replace(/'/g, '') }, 'all'),
-      onSelect: (val) => fetchBrandIdList(val),
-      rules: [{ required: false }],
+      onSelect: (val) => {
+        fetchBrandIdList(val);
+      },
       disabled: againUpDisabled,
     },
     {
@@ -500,46 +535,34 @@ const PreferentialSet = ({
       visible: freightType == 'manual',
       extra: '运费为全国统一价格，不支持按城市配置，且不可使用卡豆抵扣',
     },
-    // {
-    //   title: '退款设置',
-    //   label: '退款地址',
-    //   name: 'a22',
-    //   type: 'formItem',
-    //   formItem: (
-    //     <Button
-    //       type="primary"
-    //       ghost
-    //       onClick={() => {
-    //         setVisibleRefund({ show: true });
-    //       }}
-    //     >
-    //       选择地址
-    //     </Button>
-    //   ),
-    // },
-    // {
-    //   type: 'noForm',
-    //   formItem: (
-    //     <>
-    //       <div className={styles.refund_box}>
-    //         <div className={styles.refund_box_1}>收货人</div>
-    //         <div style={{ flex: '1' }}>小圆脸</div>
-    //       </div>
-    //       <div className={styles.refund_box}>
-    //         <div className={styles.refund_box_1}>手机号码</div>
-    //         <div style={{ flex: '1' }}>18300938232</div>
-    //       </div>
-    //       <div className={styles.refund_box}>
-    //         <div className={styles.refund_box_1}>所在地区</div>
-    //         <div style={{ flex: '1' }}>浙江省/杭州市/萧山区</div>
-    //       </div>
-    //       <div className={styles.refund_box}>
-    //         <div className={styles.refund_box_1}>详细地址</div>
-    //         <div style={{ flex: '1' }}>国泰科技大厦999</div>
-    //       </div>
-    //     </>
-    //   ),
-    // },
+    {
+      title: '退款设置',
+      label: '退款地址',
+      name: 'returnRuleObject',
+      type: 'formItem',
+      rules: [{ required: true }],
+      formItem: (
+        <Button
+          type="primary"
+          ghost
+          onClick={() => {
+            setVisibleRefund({ show: true, list: refundAllData });
+          }}
+        >
+          选择地址
+        </Button>
+      ),
+    },
+    {
+      type: 'noForm',
+      formItem: (
+        <DescriptionsCondition
+          labelStyle={{ width: 120 }}
+          initialValues={refundList}
+          formItems={descriptionsItems}
+        />
+      ),
+    },
     {
       title: '结算设置',
       label: '结算人类型',
@@ -583,13 +606,12 @@ const PreferentialSet = ({
         initialValues={initialValues}
       ></FormCondition>
       {/* 退货地址modal */}
-      {/* <RefundLocation
+      <RefundLocation
         form={form}
         visible={visibleRefund}
         onClose={() => setVisibleRefund(false)}
-        refundList={refundList}
         setRefundList={setRefundList}
-      ></RefundLocation> */}
+      ></RefundLocation>
       {/* 批采价 */}
       <TieredPricing
         form={form}

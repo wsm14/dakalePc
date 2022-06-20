@@ -135,7 +135,7 @@ const UploadBlock = (props) => {
     maxSize,
     onChange = undefined,
     onRemove,
-    isCut,
+    isCut = false,
     drop = true,
     imgRatio,
     disabled,

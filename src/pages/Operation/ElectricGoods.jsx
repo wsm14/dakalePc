@@ -336,6 +336,7 @@ const ElectricGoods = (props) => {
         dispatchType="electricGoods/fetchGetList"
         {...list}
       ></TableDataBlock>
+      {/* 新增/编辑 */}
       <PreferentialDrawer
         childRef={childRef}
         visible={visibleSet}

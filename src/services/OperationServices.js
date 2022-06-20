@@ -491,6 +491,44 @@ export function fetchOrdersListActionLog(params) {
   });
 }
 
+// get 订单列表 - 列表(新)
+export function fetchPageListOrdersList(params) {
+  return request('/admin/order/order/pageListOrder', {
+    params,
+  });
+}
+
+// get 订单列表 - 详情（新）
+export function fetchGetOrderDetail(params) {
+  return request('/admin/order/order/getOrderForAdmin', {
+    params,
+  });
+}
+
+// post 电商订单-发货(新)
+export function fetchDeliverGoods(data) {
+  return request('/admin/order/order/deliverGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 订单列表 - 手动退款（新）
+export function fetchOrderImmediateRefund(data) {
+  return request('/admin/order/order/orderImmediateRefund', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 订单列表 - 分账(新)
+export function fetchSubLedger(data) {
+  return request('/admin/order/order/subLedger', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 订单列表 end
 
 //退款列表
