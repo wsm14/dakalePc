@@ -3,12 +3,11 @@ import { connect } from 'umi';
 import { Tag, Badge, Avatar } from 'antd';
 import {
   ORDER_STATUS,
-  ORDER_TYPE_PROPS,
+  SPECIAL_GOODS_TYPE,
   ORDER_CLOSE_TYPE,
   ORDER_PAY_LOGO,
   GOODS_CLASS_TYPE,
   BUSINESS_TYPE,
-  SPECIAL_GOODS_TYPE,
 } from '@/common/constant';
 import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -67,24 +66,24 @@ const GoodsOrders = (props) => {
   const getColumns = [
     {
       title: '商品主图',
-      dataIndex: 'goodsImg',
+      dataIndex: ['orderDesc', 'specialGoods'],
       render: (val, row) => (
-        <Badge.Ribbon text={ORDER_TYPE_PROPS[row.orderType]} color="cyan" placement="start">
-          <PopImgShow url={row.goodsImg || coupon} />
+        <Badge.Ribbon text={SPECIAL_GOODS_TYPE[row.goodsClass]} color="cyan" placement="start">
+          <PopImgShow url={val?.goodsImg || coupon} />
         </Badge.Ribbon>
       ),
     },
     {
       title: '商品名称/订单号',
-      dataIndex: 'goodsName',
+      dataIndex: ['orderDesc', 'specialGoods'],
       render: (val, row) => (
         <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 5 }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            {row.goodsType && row.goodsType !== 'reduce' && (
+            {/* {row.goodsType && row.goodsType !== 'reduce' && (
               <Tag color="magenta">{GOODS_CLASS_TYPE[row.goodsType]}</Tag>
-            )}
+            )} */}
             <Ellipsis length={12} tooltip>
-              {val}
+              {val?.goodsName}
             </Ellipsis>
           </div>
           <div style={{ marginTop: 5 }} className={styles.specFont}>
@@ -117,8 +116,17 @@ const GoodsOrders = (props) => {
     {
       title: '单价/数量',
       align: 'center',
-      dataIndex: 'realPrice',
-      render: (val, row) => `￥${val || 0}\n×${row.goodsCount || 0}`,
+      dataIndex: ['orderDesc', 'specialGoods'],
+      render: (val, row) => {
+        // const num = Number(val?.sellPrice || 0) + Number(val?.sellBean || 0) / 100;
+
+        return (
+          <div>
+            <div>{`￥${val?.realPrice || 0}`}</div>
+            <div>{`×${row?.goodsCount || 0}`}</div>
+          </div>
+        );
+      },
     },
     {
       title: '用户实付',
@@ -154,17 +162,11 @@ const GoodsOrders = (props) => {
     {
       title: '商户实收',
       align: 'center',
-      dataIndex: 'actualCashFee',
+      dataIndex: 'settleParam',
       render: (val, record) => {
-        const actualBean = record.actualBeanFee ? record.actualBeanFee / 100 : 0;
         return (
           <div style={{ textAlign: 'center' }}>
-            <div>{`￥${Number(val) + actualBean ? (Number(val) + actualBean).toFixed(2) : 0}`}</div>
-
-            {/* <div className={styles.fontColor}>
-              {record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}
-            </div>
-            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div> */}
+            <div>{`￥${val?.settlePrice || 0}`}</div>
           </div>
         );
       },
@@ -172,16 +174,11 @@ const GoodsOrders = (props) => {
     {
       title: '商品佣金',
       align: 'center',
-      dataIndex: 'cashCommission',
+      dataIndex: 'divisionParam',
       render: (val, record) => {
-        const beanCount = record.beanCommission ? record.beanCommission / 100 : 0;
         return (
           <div style={{ textAlign: 'center' }}>
-            <div>{`￥${Number(val) + beanCount ? (Number(val) + beanCount).toFixed(2) : 0}`}</div>
-            {/* <div className={styles.fontColor}>
-              {record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}
-            </div>
-            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div> */}
+            <div>{`￥${val?.commission || 0}`}</div>
           </div>
         );
       },
@@ -193,8 +190,9 @@ const GoodsOrders = (props) => {
       render: (val, row) => (
         <div style={{ textAlign: 'center' }}>
           <div>{val}</div>
-          <div className={styles.fontColor}>已核销：{row.verificationCount || 0}</div>
-          <div className={styles.fontColor}>{row.verificationTime}</div>
+          <div className={styles.fontColor}>
+            已核销：<a href="">查看</a>
+          </div>
         </div>
       ),
     },

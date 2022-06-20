@@ -121,15 +121,16 @@ export default {
       const { orderDetailList = [], total } = content;
 
       const list = orderDetailList.map((item) => {
-        const { orderDesc } = item;
+        const { orderDesc, settleParam, divisionParam } = item;
 
         return {
           ...item,
           orderDesc: JSON.parse(orderDesc || '{}'),
+          settleParam: JSON.parse(settleParam || '{}'),
+          divisionParam: JSON.parse(divisionParam || '{}'),
         };
       });
 
-      console.log('list: ', list);
       yield put({
         type: 'save',
         payload: {
@@ -146,6 +147,8 @@ export default {
       const { orderDetail = {} } = content;
       const data = {
         ...orderDetail,
+        orderDesc: JSON.parse(orderDetail.orderDesc || '{}'),
+        settleParam: JSON.parse(orderDetail.settleParam || '{}'),
         divisionParam: JSON.parse(orderDetail.divisionParam || '{}'),
       };
 

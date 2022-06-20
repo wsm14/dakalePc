@@ -63,7 +63,7 @@ const OrderDetailDraw = (props) => {
           <div>
             {`${val?.addressName || '--'}，${val?.mobile || '--'}，${checkCityName(
               val?.districtCode,
-            )}，${val?.address}，${val?.postalCode}`}
+            )}，${val?.address}`}
           </div>
         );
       },
@@ -171,12 +171,18 @@ const OrderDetailDraw = (props) => {
 
   const orderImgItem = [
     {
-      name: 'goodsImg',
+      name: ['orderDesc', 'specialGoods', 'goodsImg'],
       type: 'upload',
     },
     {
-      name: 'realPrice',
-      render: (val) => <div style={{ textAlign: 'center' }}>单价：{val ? `￥${val}` : '0'}</div>,
+      name: 'orderDesc',
+      render: (val) => {
+        const num = val.specialGoods
+          ? val.specialGoods.realPrice || 0
+          : Number(val?.sellPrice || 0) + Number(val?.sellBean || 0) / 100;
+
+        return <div style={{ textAlign: 'center' }}>单价：{`￥${num}`}</div>;
+      },
     },
     {
       name: 'goodsCount',
@@ -352,15 +358,7 @@ const OrderDetailDraw = (props) => {
                     type="quest"
                   ></QuestionTooltip>
                 </span>
-                <span>
-                  ￥
-                  {`${(Number(detail.actualCashFee) + Number(detail.actualBeanFee / 100)).toFixed(
-                    2,
-                  )}`}
-                  (含{detail.actualBeanFee}卡豆)
-                  {/* {`￥${detail.actualCashFee}
-            (${detail.actualBeanFee ? detail.actualBeanFee : 0}卡豆)`} */}
-                </span>
+                <span>{`￥${detail.settleParam.settlePrice}`}</span>
               </div>
             )}
             {['2'][detail.status] && orderCloseStatusCheck && (
