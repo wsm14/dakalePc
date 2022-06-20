@@ -280,14 +280,6 @@ export default {
     *fetchNewShareDetail({ payload, callback }, { call }) {
       const { type = 'info', momentType, ...cell } = payload;
       const response = yield call(fetchNewShareDetail, cell);
-      // 查询视频统计信息
-      let content2 = {};
-      if (type === 'info') {
-        const response2 = yield call(fetchNewShareStatisticsList, { momentType, ...cell });
-        if (!response2) return;
-        const { content } = response2;
-        content2 = content;
-      }
       if (!response) return;
       const { content } = response;
       // console.log(content, 'content');
@@ -345,7 +337,6 @@ export default {
           : {};
       const newObj = {
         ...other,
-        ...content2,
         age,
         area,
         areaType,
@@ -365,6 +356,16 @@ export default {
         ...editData,
       };
       callback(newObj);
+    },
+    // 查询视频统计信息
+    *fetchNewShareStatisticsList({ payload, callback }, { call }) {
+      const { type = 'info', momentType, ...cell } = payload;
+
+      const response = yield call(fetchNewShareStatisticsList, { momentType, ...cell });
+      if (!response) return;
+      const { content } = response;
+
+      callback(content);
     },
   },
 };

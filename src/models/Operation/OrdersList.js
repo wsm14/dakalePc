@@ -118,11 +118,24 @@ export default {
       const response = yield call(fetchPageListOrdersList, payload);
       if (!response) return;
       const { content } = response;
+      const { orderDetailList = [], total } = content;
+
+      const list = orderDetailList.map((item) => {
+        const { orderDesc, settleParam, divisionParam } = item;
+
+        return {
+          ...item,
+          orderDesc: JSON.parse(orderDesc || '{}'),
+          settleParam: JSON.parse(settleParam || '{}'),
+          divisionParam: JSON.parse(divisionParam || '{}'),
+        };
+      });
+
       yield put({
         type: 'save',
         payload: {
-          list: content.orderDetailList,
-          total: content.total,
+          list: list,
+          total: total,
         },
       });
     },
@@ -134,10 +147,11 @@ export default {
       const { orderDetail = {} } = content;
       const data = {
         ...orderDetail,
+        orderDesc: JSON.parse(orderDetail.orderDesc || '{}'),
+        settleParam: JSON.parse(orderDetail.settleParam || '{}'),
         divisionParam: JSON.parse(orderDetail.divisionParam || '{}'),
       };
 
-      console.log('data: ', data);
       callback(data);
       yield put({
         type: 'save',

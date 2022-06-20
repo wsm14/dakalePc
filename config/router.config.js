@@ -224,6 +224,7 @@ export default [
               'commerceSet',
               'portraitEdit',
               'peasDetail',
+              'information',
             ],
           },
           {
@@ -242,6 +243,7 @@ export default [
               'shareImg',
               'commerceSet',
               'portraitEdit',
+              'information',
             ],
           },
           {
@@ -267,6 +269,7 @@ export default [
               'down',
               'rewardPeo',
               'peasDetail',
+              'information',
             ],
           },
           {
