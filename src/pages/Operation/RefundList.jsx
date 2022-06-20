@@ -7,15 +7,8 @@ import TableDataBlock from '@/components/TableDataBlock';
 import RefundModal from './components/RefundList/RefundModal';
 import PopImgShow from '@/components/PopImgShow';
 import Ellipsis from '@/components/Ellipsis';
-import OrderDetailDraw from './components/Orders/OrderDetailDraw';
-import {
-  GOODS_CLASS_TYPE,
-  TAG_COLOR_TYPE,
-  BUSINESS_TYPE,
-  REFUND_ORDERS_EXAMINE_STATUS,
-} from '@/common/constant';
-import { checkCityName } from '@/utils/utils';
-import moment from 'moment';
+import OrderDetailDraw from './components/RefundOrder/OrderDetailDraw';
+import { REFUND_ORDERS_EXAMINE_STATUS } from '@/common/constant';
 
 const RefundList = (props) => {
   const { loading, RefundList = {}, dispatch, loadings } = props;
@@ -90,8 +83,8 @@ const RefundList = (props) => {
       dataIndex: 'orderDesc',
       render: (val, row) => {
         const goodsInfo = JSON.parse(val) || {};
-        const { commerceGoods = {} } = goodsInfo;
-        return <PopImgShow url={commerceGoods.goodsImg} />;
+        const { commerceGoods = {}, specialGoods = {} } = goodsInfo;
+        return <PopImgShow url={commerceGoods.goodsImg || specialGoods.goodsImg} />;
       },
     },
     {

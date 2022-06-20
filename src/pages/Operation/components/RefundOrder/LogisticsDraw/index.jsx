@@ -4,6 +4,7 @@ import { Button, Form, Timeline, Typography } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
+import { checkCityName } from '@/utils/utils';
 const { Title } = Typography;
 
 const Index = (props) => {
@@ -12,11 +13,6 @@ const Index = (props) => {
   const { statusInfoList = [] } = detail; //快递状态信息
 
   const LogisticsItem = [
-    {
-      label: '运单号码 ',
-      name: 'number',
-      span: 1,
-    },
     {
       label: '物流编号',
       name: 'number',
@@ -28,37 +24,13 @@ const Index = (props) => {
       span: 1,
     },
     {
-      label: '客服电话',
-      name: 'expPhone',
-      span: 1,
-    },
-    {
-      label: '供应商名称',
-      name: 'supplierInfo',
-      span: 2,
-      render: (val) => val.supplierName,
-    },
-    {
-      label: '发货地址',
-      name: 'address',
-      render: () => '单店',
-      span: 2,
-    },
-    {
       label: '收货地址',
-      name: 'address',
-      render: () => '单店',
+      name: 'orderLogisticInfo',
+      render: (val) => {
+        const { districtCode, address, mobile, addressName } = val;
+        return `${checkCityName(districtCode)}${address}  ${addressName}  ${mobile}`;
+      },
       span: 2,
-    },
-    {
-      label: '发货人 ',
-      name: 'merchantName',
-      span: 1,
-    },
-    {
-      label: '发货时间',
-      name: 'takeTime',
-      span: 1,
     },
   ];
 

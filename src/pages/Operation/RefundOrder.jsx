@@ -13,7 +13,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
 import Ellipsis from '@/components/Ellipsis';
 import RefundModal from './components/RefundList/RefundModal';
-import OrderDetailDraw from './components/Orders/OrderDetailDraw';
+import OrderDetailDraw from './components/RefundOrder/OrderDetailDraw';
 import LogisticsDraw from './components/RefundOrder/LogisticsDraw';
 import ConfirmRefundModal from './components/RefundOrder/ConfirmRefundModal';
 import { checkCityName } from '@/utils/utils';
@@ -93,7 +93,7 @@ const RefundOrder = (props) => {
         const { commerceGoods = {}, specialGoods = {} } = goodsInfo;
         return (
           <div style={{ display: 'flex' }}>
-            <PopImgShow url={row.refundImg} />
+            <PopImgShow url={commerceGoods.goodsImg || specialGoods.goodsImg} />
             <div
               style={{
                 display: 'flex',
@@ -116,35 +116,53 @@ const RefundOrder = (props) => {
     },
     {
       title: '所属店铺/地区',
-      dataIndex: 'goodsImg',
+      dataIndex: 'merchantInfo',
       show: ['specialGoods'].includes(tabKey),
-      render: (val, row) => (
-        <div style={{ display: 'flex' }}>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              flex: 1,
-              marginLeft: 5,
-            }}
-          >
-            <div style={{ display: 'flex' }}>
-              <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
-              <Ellipsis length={10} tooltip>
-                {row.relateName}
-              </Ellipsis>
+      render: (val, row) => {
+        const { relateType, merchantGroupInfo = {} } = row;
+        return (
+          <div style={{ display: 'flex' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                flex: 1,
+                marginLeft: 5,
+              }}
+            >
+              <div style={{ display: 'flex' }}>
+                <Tag>{BUSINESS_TYPE[relateType]}</Tag>
+                <Ellipsis length={10} tooltip>
+                  {relateType === 'merchant' ? val.merchantName : merchantGroupInfo.merchantName}
+                </Ellipsis>
+              </div>
+              <div style={{ display: 'flex' }}>
+                {checkCityName(
+                  relateType === 'merchat' ? val.districtCode : merchantGroupInfo.districtCode,
+                )}
+              </div>
             </div>
-            <div style={{ display: 'flex' }}>{checkCityName(row.districtCode)}</div>
           </div>
-        </div>
-      ),
+        );
+      },
     },
     {
-      title: '供应商',
+      title: '规格/供应商',
       show: ['commerceGoods'].includes(tabKey),
+      align: 'center',
       dataIndex: 'supplierInfo',
-      render: (val) => val.supplierName,
+      render: (val, row) => {
+        const goodsInfo = JSON.parse(row.orderDesc) || {};
+        const { commerceGoods = {} } = goodsInfo;
+        const { attributeObjects = [] } = commerceGoods;
+        return (
+          <>
+            <div>{attributeObjects.map((item) => `${item.value}${item.name}`)}</div>
+            <div>{val.supplierName}</div>
+          </>
+        );
+      },
     },
     {
       title: '下单人',
@@ -247,7 +265,6 @@ const RefundOrder = (props) => {
             type: 'payBack',
             // pop: true,
             click: () => {
-              console.log(row);
               setConfirmVisible({ show: true, detail: row });
             },
             visible: ['0'].includes(row.status),
@@ -277,7 +294,6 @@ const RefundOrder = (props) => {
   //查看详情
   const fetchRefundDetail = (index) => {
     const { orderId, userId } = list[index];
-    console.log(orderId, userId);
     dispatch({
       type: 'refundOrder/fetchRefundRrderDetail',
       payload: {
@@ -296,7 +312,10 @@ const RefundOrder = (props) => {
 
   //查看物流
   const handleGetLogistics = (val) => {
-    const { logisticsParam, userInfo, supplierInfo } = val;
+    const {
+      logisticsParam,
+      orderLogisticInfo, //发货信息对象
+    } = val;
 
     const expressInfo = logisticsParam ? JSON.parse(logisticsParam) : {};
     const { companyCode, code } = expressInfo;
@@ -307,8 +326,10 @@ const RefundOrder = (props) => {
         expressNo: code,
       },
       callback: (detail) => {
-        console.log(detail);
-        setLogisticsVisible({ show: true, detail: { ...detail, code, supplierInfo } });
+        setLogisticsVisible({
+          show: true,
+          detail: { ...detail, orderLogisticInfo },
+        });
       },
     });
   };
