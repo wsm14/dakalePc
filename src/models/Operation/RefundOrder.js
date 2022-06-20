@@ -4,6 +4,7 @@ import {
   fetchOrdersDetail,
   fetchRefundPayBack,
   fetchRefundOrderRemark,
+  fetchGetExpressInfo,
   fetchRefundRrderDetail,
 } from '@/services/OperationServices';
 
@@ -56,11 +57,18 @@ export default {
       });
       callback();
     },
+    *fetchGetExpressInfo({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetExpressInfo, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      console.log(content, 'content');
+      callback(content);
+    },
     *fetchRefundRrderDetail({ payload, callback }, { call, put }) {
       const response = yield call(fetchRefundRrderDetail, payload);
       if (!response) return;
       const { content = {} } = response;
-      callback(content.orderRefundDetail);
+      callback(content.orderDetail);
     },
   },
 };

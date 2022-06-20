@@ -57,10 +57,10 @@ const RefundList = (props) => {
         label: '商品名称',
         name: 'goodsName',
       },
-      {
-        label: '供应商',
-        name: 'supplierName',
-      },
+      // {
+      //   label: '供应商',
+      //   name: 'supplierName',
+      // },
     ],
     1: [
       {
@@ -76,10 +76,10 @@ const RefundList = (props) => {
         label: '商品名称',
         name: 'goodsName',
       },
-      {
-        label: '供应商',
-        name: 'supplierName',
-      },
+      // {
+      //   label: '供应商',
+      //   name: 'supplierName',
+      // },
     ],
   }[tabKey];
 
@@ -87,53 +87,62 @@ const RefundList = (props) => {
   const getColumns = [
     {
       title: '商品主图',
-      dataIndex: 'refundImg',
-      render: (val, row) => <PopImgShow url={val} />,
+      dataIndex: 'orderDesc',
+      render: (val, row) => {
+        const goodsInfo = JSON.parse(val) || {};
+        const { commerceGoods = {} } = goodsInfo;
+        return <PopImgShow url={commerceGoods.goodsImg} />;
+      },
     },
     {
       title: '商品名称/订单号',
-      dataIndex: 'goodsName',
+      dataIndex: 'orderDesc',
       align: 'center',
-      render: (val, row) => (
-        <div style={{ display: 'flex' }}>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              flex: 1,
-              marginLeft: 5,
-            }}
-          >
-            <div style={{ display: 'flex' }}>
-              <Ellipsis length={10} tooltip>
-                {val}
-              </Ellipsis>
+      render: (val, row) => {
+        const goodsInfo = JSON.parse(val) || {};
+        const { commerceGoods = {}, specialGoods = {} } = goodsInfo;
+        return (
+          <div style={{ display: 'flex' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                flex: 1,
+                marginLeft: 5,
+              }}
+            >
+              <div style={{ display: 'flex' }}>
+                <Ellipsis length={10} tooltip>
+                  {commerceGoods.goodsName || specialGoods.goodsName}
+                </Ellipsis>
+              </div>
+              <div style={{ display: 'flex' }}>{row.orderSn}</div>
             </div>
-            <div style={{ display: 'flex' }}>{row.orderSn}</div>
           </div>
-        </div>
-      ),
+        );
+      },
     },
     {
       title: '供应商',
-      dataIndex: 'applicantName',
+      dataIndex: 'supplierInfo',
+      render: (val) => val.supplierName,
     },
     {
       title: '下单人',
-      dataIndex: 'applicantName',
+      dataIndex: 'userInfo',
       align: 'center',
-      render: (val, row) => `${val}\n${val}\n${row.beanCode}`,
+      render: (val, row) => `${val.userName}\n${val.mobile}\n${row.userId}`,
     },
     {
       title: '用户实付',
       align: 'center',
-      dataIndex: 'settleTotalFee',
-      render: (val, record) => (
+      dataIndex: 'totalFee',
+      render: (val, row) => (
         <div style={{ textAlign: 'center' }}>
           <div>{`￥${val}`}</div>
-          <div>{record.settleBeanFee ? `(${record.settleBeanFee}卡豆` : '(' + '0卡豆'}</div>
-          <div>{(record.settlePayFee ? `+ ￥${record.settlePayFee}` : 0) + ')'}</div>
+          <div>{row.beanFee ? `(${row.beanFee}卡豆` : '(' + '0卡豆'}</div>
+          <div>{(row.payFee ? `+ ￥${row.payFee}` : 0) + ')'}</div>
         </div>
       ),
     },
@@ -149,7 +158,7 @@ const RefundList = (props) => {
       title: '退款金额',
       dataIndex: 'refundTotalFee',
       align: 'center',
-      render: () => (val, row) => `${val}\n(含${row.refundBean || 0}卡豆)`,
+      render: (val, row) => `${val}\n(含${row.refundBean || 0}卡豆)`,
     },
     {
       title: '申请时间',
@@ -174,7 +183,8 @@ const RefundList = (props) => {
     },
     {
       title: '物流状态',
-      dataIndex: 'orderSn',
+      dataIndex: 'orderLogisticInfo',
+      render: (val) => (val ? '已发货' : '未发货'),
     },
     {
       title: '备注',

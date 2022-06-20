@@ -9,46 +9,56 @@ const { Title } = Typography;
 const Index = (props) => {
   const { visible = {}, onClose, loading } = props;
   const { show = fasle, detail = {} } = visible;
+  const { statusInfoList = [] } = detail; //快递状态信息
 
   const LogisticsItem = [
     {
       label: '运单号码 ',
-      name: 'merchantName',
+      name: 'number',
+      span: 1,
     },
     {
       label: '物流编号',
-      name: 'merchantMobile',
+      name: 'number',
+      span: 1,
     },
     {
-      label: ' 物流公司',
-      name: 'merchantProvince',
+      label: '物流公司',
+      name: 'expName',
+      span: 1,
+    },
+    {
+      label: '客服电话',
+      name: 'expPhone',
+      span: 1,
     },
     {
       label: '供应商名称',
-      name: 'businessTime',
-      span: 3,
+      name: 'supplierInfo',
+      span: 2,
+      render: (val) => val.supplierName,
     },
     {
       label: '发货地址',
       name: 'address',
       render: () => '单店',
-      span: 3,
+      span: 2,
     },
     {
       label: '收货地址',
       name: 'address',
       render: () => '单店',
-      span: 3,
+      span: 2,
     },
     {
       label: '发货人 ',
       name: 'merchantName',
-      span: 1.5,
+      span: 1,
     },
     {
       label: '发货时间',
-      name: 'merchantMobile',
-      span: 1.5,
+      name: 'takeTime',
+      span: 1,
     },
   ];
 
@@ -61,17 +71,28 @@ const Index = (props) => {
   };
   return (
     <DrawerCondition {...modalProps}>
-      <Title level={4}>已揽件，预计后天送达</Title>
+      <Title level={4}>
+        {
+          ['快递收件(揽件)', '在途中', '正在派件', '已签收', '派送失败', '疑难件', '退件签收'][
+            detail.deliveryStatus
+          ]
+        }
+      </Title>
       <Timeline>
-        <Timeline.Item>Create a services site 2015-09-01</Timeline.Item>
-        <Timeline.Item>Solve initial network problems 2015-09-01</Timeline.Item>
-        <Timeline.Item>Technical testing 2015-09-01</Timeline.Item>
-        <Timeline.Item color="red">Network problems being solved 2015-09-01</Timeline.Item>
+        {statusInfoList.map((item, index) => (
+          <Timeline.Item
+            key={index + 1}
+            color={index === statusInfoList.length - 1 ? 'red' : 'blue'}
+          >
+            <span style={{ marginRight: 20 }}>{item.time}</span>
+            <span>{item.status}</span>
+          </Timeline.Item>
+        ))}
       </Timeline>
       <DescriptionsCondition
         labelStyle={{ width: 120 }}
         formItems={LogisticsItem}
-        column={3}
+        column={2}
         initialValues={detail}
       ></DescriptionsCondition>
     </DrawerCondition>

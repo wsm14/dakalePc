@@ -604,6 +604,13 @@ export function fetchRefundOrderRemark(data) {
   });
 }
 
+// post 退款管理 - 查询快递物流信息
+export function fetchGetExpressInfo(params) {
+  return request('/common/express/getExpressInfo', {
+    params,
+  });
+}
+
 // 退款管理 end
 
 // 商品管理
