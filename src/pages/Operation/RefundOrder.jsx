@@ -319,11 +319,13 @@ const RefundOrder = (props) => {
 
     const expressInfo = logisticsParam ? JSON.parse(logisticsParam) : {};
     const { companyCode, code } = expressInfo;
+    const { mobile } = orderLogisticInfo;
     dispatch({
       type: 'refundOrder/fetchGetExpressInfo',
       payload: {
         expressCompany: companyCode,
         expressNo: code,
+        receiveUserMobile: mobile,
       },
       callback: (detail) => {
         setLogisticsVisible({
