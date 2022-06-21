@@ -80,10 +80,7 @@ const OrderDetailDraw = (props) => {
     },
     {
       label: '店铺账号',
-      name:
-        relateType == 'merchant'
-          ? ['merchantInfo', 'merchantMobile']
-          : ['merchantGroupInfo', 'merchantGroupMobile'],
+      name: relateType == 'merchant' ? ['merchantInfo', 'mobile'] : ['merchantGroupInfo', 'mobile'],
     },
     {
       label: '店铺地址',
