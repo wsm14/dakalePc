@@ -137,7 +137,7 @@ export const MRE_SORT_STATUS = ['提交审核时间倒序', '按审核时间倒�
 export const BUSINESS_STATUS = ['禁用', '启用'];
 
 // 店铺 类型
-export const BUSINESS_TYPE = { merchant: '单店', group: '集团' };
+export const BUSINESS_TYPE = { supplier: '供应商', merchant: '单店', group: '集团' };
 
 //售卖价格类型
 export const BUSINESS_SALE_TYPE = {
