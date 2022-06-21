@@ -28,8 +28,7 @@ const Index = (props) => {
       label: '退款商品 ',
       name: 'orderDesc',
       render: (val) => {
-        const goodsInfo = JSON.parse(val) || {};
-        const { commerceGoods = {}, specialGoods = {} } = goodsInfo;
+        const { commerceGoods = {}, specialGoods = {} } = val;
         const goodsName = commerceGoods.goodsName || specialGoods.goodsName;
         return goodsName;
       },
