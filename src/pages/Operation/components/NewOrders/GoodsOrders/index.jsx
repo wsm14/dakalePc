@@ -31,11 +31,11 @@ const GoodsOrders = (props) => {
       label: '订单号',
       name: 'orderSn',
     },
-    {
-      label: '商品名称',
-      name: 'goodsId',
-      type: 'good',
-    },
+    // {
+    //   label: '商品名称',
+    //   name: 'goodsId',
+    //   type: 'good',
+    // },
     {
       label: '下单人',
       name: 'userId',
@@ -94,16 +94,24 @@ const GoodsOrders = (props) => {
     },
     {
       title: '所属店铺/地区',
-      dataIndex: 'merchantInfo',
+      dataIndex: 'relateType',
       render: (val, row) => (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div style={{ display: 'flex', alignItems: 'center', margin: '5px 0' }}>
-            <Tag color="magenta">{BUSINESS_TYPE[row.relateType]}</Tag>
+            <Tag color="magenta">{BUSINESS_TYPE[val]}</Tag>
             <Ellipsis length={10} tooltip>
-              {val?.merchantName}
+              {val == 'merchant'
+                ? row?.merchantInfo?.merchantName
+                : row?.merchantGroupInfo?.merchantGroupName}
             </Ellipsis>
           </div>
-          <div className={styles.specFont}>{checkCityName(val?.districtCode)}</div>
+          <div className={styles.specFont}>
+            {checkCityName(
+              val == 'merchant'
+                ? row?.merchantInfo?.districtCode
+                : row?.merchantGroupInfo?.districtCode,
+            )}
+          </div>
         </div>
       ),
     },

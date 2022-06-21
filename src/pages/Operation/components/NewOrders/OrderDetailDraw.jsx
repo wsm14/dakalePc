@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PAY_TYPE, ORDER_TYPE_PROPS, ORDER_STATUS } from '@/common/constant';
+import { PAY_TYPE, ORDER_TYPE_PROPS, ORDER_STATUS, BUSINESS_TYPE } from '@/common/constant';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -14,7 +14,7 @@ import styles from './style.less';
 const OrderDetailDraw = (props) => {
   const { visible, onClose, getDetail, childRef, total, tabkey, loading, dispatch } = props;
   const { detail = {}, show = false, index } = visible;
-  const { status, closeType, divisionParam = {} } = detail;
+  const { status, closeType, divisionParam = {}, relateType = 'merchant' } = detail;
 
   const [isShow, setIsShow] = useState(true);
   const [isShow1, setIsShow1] = useState(true);
@@ -73,17 +73,26 @@ const OrderDetailDraw = (props) => {
   const merchartItem = [
     {
       label: '店铺名称 ',
-      name: 'merchantName',
+      name:
+        relateType == 'merchant'
+          ? ['merchantInfo', 'merchantName']
+          : ['merchantGroupInfo', 'merchantGroupName'],
     },
     {
       label: '店铺账号',
-      name: 'merchantMobile',
+      name:
+        relateType == 'merchant'
+          ? ['merchantInfo', 'merchantMobile']
+          : ['merchantGroupInfo', 'merchantGroupMobile'],
     },
     {
       label: '店铺地址',
-      name: 'merchantProvince',
+      name:
+        relateType == 'merchant'
+          ? ['merchantInfo', 'districtCode']
+          : ['merchantGroupInfo', 'districtCode'],
       span: 2,
-      render: (val, row) => checkCityName(row.merchantDistrict),
+      render: (val, row) => checkCityName(val),
     },
     {
       label: '营业时间',
@@ -93,8 +102,8 @@ const OrderDetailDraw = (props) => {
     },
     {
       label: '店铺类型',
-      name: 'address',
-      render: () => '单店',
+      name: 'relateType',
+      render: (val) => BUSINESS_TYPE[val],
       span: 2,
     },
     // {

@@ -32,11 +32,11 @@ const CommerceGoods = (props) => {
       label: '订单号',
       name: 'orderSn',
     },
-    {
-      label: '商品名称',
-      name: 'goodsId',
-      type: 'good',
-    },
+    // {
+    //   label: '商品名称',
+    //   name: 'goodsId',
+    //   type: 'good',
+    // },
     {
       label: '供应商',
       name: 'relateOwnerId',
