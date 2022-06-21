@@ -94,16 +94,16 @@ const GoodsOrders = (props) => {
     },
     {
       title: '所属店铺/地区',
-      dataIndex: 'merchantName',
+      dataIndex: 'merchantInfo',
       render: (val, row) => (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div style={{ display: 'flex', alignItems: 'center', margin: '5px 0' }}>
             <Tag color="magenta">{BUSINESS_TYPE[row.relateOwnerType]}</Tag>
             <Ellipsis length={10} tooltip>
-              {val}
+              {val?.merchantName}
             </Ellipsis>
           </div>
-          <div className={styles.specFont}>{checkCityName(row.districtCode)}</div>
+          <div className={styles.specFont}>{checkCityName(val?.districtCode)}</div>
         </div>
       ),
     },
