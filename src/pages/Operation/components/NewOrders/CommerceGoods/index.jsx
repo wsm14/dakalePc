@@ -209,13 +209,13 @@ const CommerceGoods = (props) => {
         {
           // 发货
           type: 'goodsDeliver',
-          visible: ['1'].includes(record.status),
+          visible: ['1'].includes(record.status) && !record?.orderLogisticInfo?.logisticsCode,
           click: () => fetchOderDrawer(record),
         },
         {
           // 查看物流
           type: 'goodsView',
-          visible: ['1', '2', '3', '6'].includes(record.status),
+          visible: !!record?.orderLogisticInfo?.logisticsCode,
           click: () => handleGetLogistics(record),
         },
         {

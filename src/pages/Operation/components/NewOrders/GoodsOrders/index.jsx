@@ -43,7 +43,7 @@ const GoodsOrders = (props) => {
     },
     {
       label: '店铺/集团',
-      name: 'merchantId',
+      name: 'relateOwnerId',
       type: 'merchant',
     },
     {
