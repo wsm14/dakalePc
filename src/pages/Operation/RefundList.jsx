@@ -82,7 +82,7 @@ const RefundList = (props) => {
       title: '商品主图',
       dataIndex: 'orderDesc',
       render: (val, row) => {
-        const goodsInfo = JSON.parse(val) || {};
+        const goodsInfo = JSON.parse(val || '{}');
         const { commerceGoods = {}, specialGoods = {} } = goodsInfo;
         return <PopImgShow url={commerceGoods.goodsImg || specialGoods.goodsImg} />;
       },
@@ -92,7 +92,7 @@ const RefundList = (props) => {
       dataIndex: 'orderDesc',
       align: 'center',
       render: (val, row) => {
-        const goodsInfo = JSON.parse(val) || {};
+        const goodsInfo = JSON.parse(val || '{}');
         const { commerceGoods = {}, specialGoods = {} } = goodsInfo;
         return (
           <div style={{ display: 'flex' }}>

@@ -89,7 +89,7 @@ const RefundOrder = (props) => {
       dataIndex: 'orderDesc',
       align: 'center',
       render: (val, row) => {
-        const goodsInfo = JSON.parse(val) || {};
+        const goodsInfo = JSON.parse(val || '{}');
         const { commerceGoods = {}, specialGoods = {} } = goodsInfo;
         return (
           <div style={{ display: 'flex' }}>
@@ -134,7 +134,9 @@ const RefundOrder = (props) => {
               <div style={{ display: 'flex' }}>
                 <Tag>{BUSINESS_TYPE[relateType]}</Tag>
                 <Ellipsis length={10} tooltip>
-                  {relateType === 'merchant' ? val.merchantName : merchantGroupInfo.merchantName}
+                  {relateType === 'merchant'
+                    ? val.merchantName
+                    : merchantGroupInfo.merchantGroupName}
                 </Ellipsis>
               </div>
               <div style={{ display: 'flex' }}>
@@ -153,7 +155,7 @@ const RefundOrder = (props) => {
       align: 'center',
       dataIndex: 'supplierInfo',
       render: (val, row) => {
-        const goodsInfo = JSON.parse(row.orderDesc) || {};
+        const goodsInfo = JSON.parse(row.orderDesc || '{}');
         const { commerceGoods = {} } = goodsInfo;
         const { attributeObjects = [] } = commerceGoods;
         return (
@@ -205,7 +207,7 @@ const RefundOrder = (props) => {
       align: 'center',
       show: ['commerceGoods'].includes(tabKey),
       render: (val, row) => {
-        const logisticsParam = val ? JSON.parse(val) : {};
+        const logisticsParam = JSON.parse(val || '{}');
         const { code, name } = logisticsParam;
         const renderItem = Object.keys(logisticsParam).length ? (
           <div>
@@ -317,7 +319,7 @@ const RefundOrder = (props) => {
       orderLogisticInfo, //发货信息对象
     } = val;
 
-    const expressInfo = logisticsParam ? JSON.parse(logisticsParam) : {};
+    const expressInfo = JSON.parse(logisticsParam || '{}');
     const { companyCode, code } = expressInfo;
     const { mobile } = orderLogisticInfo;
     dispatch({
