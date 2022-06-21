@@ -106,7 +106,7 @@ const CommerceGoods = (props) => {
 
         return (
           <div>
-            <div>{`￥${num || 0}`}</div>
+            <div>{`￥${num.toFixed(2) || 0}`}</div>
             <div>{`×${row?.goodsCount || 0}`}</div>
           </div>
         );

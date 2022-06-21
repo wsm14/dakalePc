@@ -189,7 +189,7 @@ const OrderDetailDraw = (props) => {
       render: (val) => {
         const num = Number(val?.sellPrice || 0) + Number(val?.sellBean || 0) / 100;
 
-        return <div style={{ textAlign: 'center' }}>单价：{`￥${num}`}</div>;
+        return <div style={{ textAlign: 'center' }}>单价：{`￥${num.toFixed(2)}`}</div>;
       },
     },
     {
