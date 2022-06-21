@@ -131,6 +131,7 @@ export default {
         };
       });
 
+      console.log('list: ', list);
       yield put({
         type: 'save',
         payload: {
