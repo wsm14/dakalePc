@@ -73,6 +73,7 @@ export default {
       const response = yield call(fetchRefundRrderDetail, payload);
       if (!response) return;
       const { content = {} } = response;
+      const { orderDetail = {} } = content;
       const data = {
         ...orderDetail,
         orderDesc: JSON.parse(orderDetail.orderDesc || '{}'),
