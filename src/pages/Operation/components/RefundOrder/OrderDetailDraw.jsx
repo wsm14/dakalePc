@@ -81,8 +81,8 @@ const OrderDetailDraw = (props) => {
     {
       label: '店铺账号',
       name: {
-        merchant: ['merchantInfo', 'merchantMobile'],
-        group: ['merchantGroupInfo', 'merchantGroupMobile'],
+        merchant: ['merchantInfo', 'mobile'],
+        group: ['merchantGroupInfo', 'mobile'],
       }[relateType],
     },
     {

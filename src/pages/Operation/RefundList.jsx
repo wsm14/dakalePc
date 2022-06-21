@@ -58,7 +58,7 @@ const RefundList = (props) => {
     1: [
       {
         label: '订单号',
-        name: 'orderId',
+        name: 'orderSn',
       },
       {
         label: '下单人',
