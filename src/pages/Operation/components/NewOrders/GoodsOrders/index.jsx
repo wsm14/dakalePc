@@ -31,11 +31,11 @@ const GoodsOrders = (props) => {
       label: '订单号',
       name: 'orderSn',
     },
-    {
-      label: '商品名称',
-      name: 'goodsId',
-      type: 'good',
-    },
+    // {
+    //   label: '商品名称',
+    //   name: 'goodsId',
+    //   type: 'good',
+    // },
     {
       label: '下单人',
       name: 'userId',
