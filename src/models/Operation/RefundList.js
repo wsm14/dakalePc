@@ -73,7 +73,13 @@ export default {
       const response = yield call(fetchRefundRrderDetail, payload);
       if (!response) return;
       const { content = {} } = response;
-      callback(content.orderDetail);
+      const data = {
+        ...orderDetail,
+        orderDesc: JSON.parse(orderDetail.orderDesc || '{}'),
+        settleParam: JSON.parse(orderDetail.settleParam || '{}'),
+        divisionParam: JSON.parse(orderDetail.divisionParam || '{}'),
+      };
+      callback(data);
     },
   },
 };
