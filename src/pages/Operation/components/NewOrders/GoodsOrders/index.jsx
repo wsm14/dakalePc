@@ -68,7 +68,7 @@ const GoodsOrders = (props) => {
       title: '商品主图',
       dataIndex: ['orderDesc', 'specialGoods'],
       render: (val, row) => (
-        <Badge.Ribbon text={SPECIAL_GOODS_TYPE[val.goodsClass]} color="cyan" placement="start">
+        <Badge.Ribbon text={SPECIAL_GOODS_TYPE[val?.goodsClass]} color="cyan" placement="start">
           <PopImgShow url={val?.goodsImg || coupon} />
         </Badge.Ribbon>
       ),
