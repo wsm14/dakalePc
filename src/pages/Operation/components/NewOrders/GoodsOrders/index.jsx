@@ -94,16 +94,16 @@ const GoodsOrders = (props) => {
     },
     {
       title: '所属店铺/地区',
-      dataIndex: 'merchantName',
+      dataIndex: 'merchantInfo',
       render: (val, row) => (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div style={{ display: 'flex', alignItems: 'center', margin: '5px 0' }}>
-            <Tag color="magenta">{BUSINESS_TYPE[row.relateOwnerType]}</Tag>
+            <Tag color="magenta">{BUSINESS_TYPE[row.relateType]}</Tag>
             <Ellipsis length={10} tooltip>
-              {val}
+              {val?.merchantName}
             </Ellipsis>
           </div>
-          <div className={styles.specFont}>{checkCityName(row.districtCode)}</div>
+          <div className={styles.specFont}>{checkCityName(val?.districtCode)}</div>
         </div>
       ),
     },
@@ -191,7 +191,10 @@ const GoodsOrders = (props) => {
         <div style={{ textAlign: 'center' }}>
           <div>{val}</div>
           <div className={styles.fontColor}>
-            已核销：<Button onClick={() => handleCancelList(row.orderSn)}>查看</Button>
+            已核销：
+            <Button type="link" onClick={() => handleCancelList(row.orderSn)}>
+              查看
+            </Button>
           </div>
         </div>
       ),
