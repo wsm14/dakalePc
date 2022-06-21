@@ -1,13 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Tag } from 'antd';
+import { Tag, Badge } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useUpdateEffect } from 'ahooks';
 import {
   REFUND_ORDERS_STATUS,
-  GOODS_CLASS_TYPE,
-  TAG_COLOR_TYPE,
   BUSINESS_TYPE,
+  SPECIAL_GOODS_TYPE,
+  ELECTRICGOODS_SELL_STATUS,
 } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
@@ -89,10 +89,21 @@ const RefundOrder = (props) => {
       dataIndex: 'orderDesc',
       align: 'center',
       render: (val, row) => {
-        const { commerceGoods = {}, specialGoods = {} } = val;
+        const { commerceGoods = {}, specialGoods = {}, orderType } = val;
         return (
           <div style={{ display: 'flex' }}>
-            <PopImgShow url={commerceGoods.goodsImg || specialGoods.goodsImg} />
+            <Badge.Ribbon
+              text={
+                {
+                  commerceGoods: ELECTRICGOODS_SELL_STATUS[commerceGoods.goodsClass],
+                  specialGoods: SPECIAL_GOODS_TYPE[[specialGoods.goodsClass]],
+                }[orderType]
+              }
+              color="cyan"
+              placement="start"
+            >
+              <PopImgShow url={commerceGoods.goodsImg || specialGoods.goodsImg} />
+            </Badge.Ribbon>
             <div
               style={{
                 display: 'flex',

@@ -95,7 +95,6 @@ const RefundList = (props) => {
       dataIndex: 'orderDesc',
       render: (val, row) => {
         const { commerceGoods = {}, specialGoods = {}, orderType } = val;
-
         return (
           <Badge.Ribbon
             text={
