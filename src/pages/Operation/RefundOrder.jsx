@@ -76,7 +76,6 @@ const RefundOrder = (props) => {
     {
       label: '退款日期',
       type: 'rangePicker',
-      name: 'refundReason',
       name: 'completeRefundBeginTime',
       end: 'completeRefundEndTime',
     },
@@ -92,7 +91,7 @@ const RefundOrder = (props) => {
         const { commerceGoods = {}, specialGoods = {}, orderType } = val;
         return (
           <div style={{ display: 'flex' }}>
-            <Badge.Ribbon
+            {/* <Badge.Ribbon
               text={
                 {
                   commerceGoods: ELECTRICGOODS_SELL_STATUS[commerceGoods.goodsClass],
@@ -101,9 +100,9 @@ const RefundOrder = (props) => {
               }
               color="cyan"
               placement="start"
-            >
-              <PopImgShow url={commerceGoods.goodsImg || specialGoods.goodsImg} />
-            </Badge.Ribbon>
+            > */}
+            <PopImgShow url={commerceGoods.goodsImg || specialGoods.goodsImg} />
+            {/* </Badge.Ribbon> */}
             <div
               style={{
                 display: 'flex',
@@ -251,6 +250,11 @@ const RefundOrder = (props) => {
     {
       title: '备注',
       dataIndex: 'remark',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
       type: 'handle',

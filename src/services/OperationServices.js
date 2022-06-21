@@ -74,7 +74,7 @@ export function fetchSpecialGoodsShareEdit(data) {
 
 // post 周边特惠 - 编辑
 export function fetchSpecialGoodsEdit(data) {
-  return request('/admin/offline/goods/admin/updateOnlineGoods', {
+  return request('/admin/offline/goods/admin/updateOfflineGoods', {
     method: 'POST',
     data,
   });

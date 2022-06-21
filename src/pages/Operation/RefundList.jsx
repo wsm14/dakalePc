@@ -96,18 +96,18 @@ const RefundList = (props) => {
       render: (val, row) => {
         const { commerceGoods = {}, specialGoods = {}, orderType } = val;
         return (
-          <Badge.Ribbon
-            text={
-              {
-                commerceGoods: ELECTRICGOODS_SELL_STATUS[commerceGoods.goodsClass],
-                specialGoods: SPECIAL_GOODS_TYPE[[specialGoods.goodsClass]],
-              }[orderType]
-            }
-            color="cyan"
-            placement="start"
-          >
-            <PopImgShow url={commerceGoods.goodsImg || specialGoods.goodsImg} />;
-          </Badge.Ribbon>
+          // <Badge.Ribbon
+          //   text={
+          //     {
+          //       commerceGoods: ELECTRICGOODS_SELL_STATUS[commerceGoods.goodsClass],
+          //       specialGoods: SPECIAL_GOODS_TYPE[[specialGoods.goodsClass]],
+          //     }[orderType]
+          //   }
+          //   color="cyan"
+          //   placement="start"
+          // >
+          // </Badge.Ribbon>
+          <PopImgShow url={commerceGoods.goodsImg || specialGoods.goodsImg} />
         );
       },
     },
@@ -205,6 +205,11 @@ const RefundList = (props) => {
     {
       title: '备注',
       dataIndex: 'remark',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
       type: 'handle',
@@ -309,7 +314,6 @@ const RefundList = (props) => {
         userId: item.userId,
       };
     });
-    console.log(list);
 
     const idList = val ? val : list;
     if (!idList.length) {
