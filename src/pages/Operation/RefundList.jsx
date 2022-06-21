@@ -46,10 +46,10 @@ const RefundList = (props) => {
         name: 'userId',
         type: 'user',
       },
-      {
-        label: '商品名称',
-        name: 'goodsName',
-      },
+      // {
+      //   label: '商品名称',
+      //   name: 'goodsName',
+      // },
       // {
       //   label: '供应商',
       //   name: 'supplierName',
@@ -65,10 +65,10 @@ const RefundList = (props) => {
         name: 'userId',
         type: 'user',
       },
-      {
-        label: '商品名称',
-        name: 'goodsName',
-      },
+      // {
+      //   label: '商品名称',
+      //   name: 'goodsName',
+      // },
       // {
       //   label: '供应商',
       //   name: 'supplierName',

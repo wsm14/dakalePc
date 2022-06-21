@@ -50,10 +50,10 @@ const RefundOrder = (props) => {
       label: '订单号',
       name: 'orderSn',
     },
-    {
-      label: '商品名称',
-      name: 'goodsName',
-    },
+    // {
+    //   label: '商品名称',
+    //   name: 'goodsName',
+    // },
     // {
     //   label: '供应商',
     //   name: 'ownerId',
