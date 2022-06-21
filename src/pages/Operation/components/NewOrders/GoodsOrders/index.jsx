@@ -43,7 +43,7 @@ const GoodsOrders = (props) => {
     },
     {
       label: '店铺/集团',
-      name: 'merchantId',
+      name: 'relateOwnerId',
       type: 'merchant',
     },
     {
@@ -126,11 +126,11 @@ const GoodsOrders = (props) => {
       align: 'center',
       dataIndex: ['orderDesc', 'specialGoods'],
       render: (val, row) => {
-        // const num = Number(val?.sellPrice || 0) + Number(val?.sellBean || 0) / 100;
+        const num = Number(val?.sellPrice || 0) + Number(val?.sellBean || 0) / 100;
 
         return (
           <div>
-            <div>{`￥${val?.realPrice || 0}`}</div>
+            <div>{`￥${num || 0}`}</div>
             <div>{`×${row?.goodsCount || 0}`}</div>
           </div>
         );
