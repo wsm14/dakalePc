@@ -14,7 +14,6 @@ const OrderDetailDraw = (props) => {
   const { visible, onClose, getDetail, childRef, total, loading, dispatch } = props;
   const { detail = {}, show = false, index } = visible;
   const { status, closeType, divisionParam = {}, orderType: tabkey, relateType } = detail;
-  console.log(divisionParam);
 
   const [isShow, setIsShow] = useState(true);
   const [isShow1, setIsShow1] = useState(true);
