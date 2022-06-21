@@ -37,11 +37,11 @@ const CommerceGoods = (props) => {
     //   name: 'goodsId',
     //   type: 'good',
     // },
-    {
-      label: '供应商',
-      name: 'relateOwnerId',
-      type: 'supplier',
-    },
+    // {
+    //   label: '供应商',
+    //   name: 'relateOwnerId',
+    //   type: 'supplier',
+    // },
     {
       label: '下单人',
       name: 'userId',

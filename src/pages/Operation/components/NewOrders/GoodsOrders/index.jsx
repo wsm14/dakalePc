@@ -41,18 +41,18 @@ const GoodsOrders = (props) => {
       name: 'userId',
       type: 'user',
     },
-    {
-      label: '店铺/集团',
-      name: 'relateOwnerId',
-      type: 'merchant',
-    },
-    {
-      label: '订单属性',
-      type: 'select',
-      name: 'goodsClass',
-      allItem: false,
-      select: SPECIAL_GOODS_TYPE,
-    },
+    // {
+    //   label: '店铺/集团',
+    //   name: 'relateOwnerId',
+    //   type: 'merchant',
+    // },
+    // {
+    //   label: '订单属性',
+    //   type: 'select',
+    //   name: 'goodsClass',
+    //   allItem: false,
+    //   select: SPECIAL_GOODS_TYPE,
+    // },
     {
       label: '状态',
       name: 'status',
