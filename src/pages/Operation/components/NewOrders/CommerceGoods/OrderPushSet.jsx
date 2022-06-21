@@ -16,11 +16,11 @@ const OrderPushSet = (props) => {
     !visible &&
       orderId &&
       dispatch({
-        type: 'ordersList/fetchOrderDetail',
+        type: 'ordersList/fetchGetOrderDetail',
         payload: { orderId, userId },
         callback: (detail) => {
-          const { orderLogistics } = detail;
-          setOrderLogistic(orderLogistics);
+          const { orderLogisticInfo } = detail;
+          setOrderLogistic(orderLogisticInfo);
         },
       });
   }, [orderId, visible]);
