@@ -1,14 +1,20 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useUpdateEffect } from 'ahooks';
 import { connect } from 'umi';
-import { Tag, message } from 'antd';
+import { Tag, message, Badge, Modal } from 'antd';
 import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import RefundModal from './components/RefundList/RefundModal';
 import PopImgShow from '@/components/PopImgShow';
 import Ellipsis from '@/components/Ellipsis';
 import OrderDetailDraw from './components/RefundOrder/OrderDetailDraw';
-import { REFUND_ORDERS_EXAMINE_STATUS } from '@/common/constant';
+import {
+  REFUND_ORDERS_EXAMINE_STATUS,
+  SPECIAL_GOODS_TYPE,
+  ELECTRICGOODS_SELL_STATUS,
+} from '@/common/constant';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+const { confirm } = Modal;
 
 const RefundList = (props) => {
   const { loading, RefundList = {}, dispatch, loadings } = props;
@@ -65,6 +71,12 @@ const RefundList = (props) => {
         name: 'userId',
         type: 'user',
       },
+      {
+        label: '审核结果',
+        name: 'auditStatus',
+        type: 'select',
+        select: REFUND_ORDERS_EXAMINE_STATUS,
+      },
       // {
       //   label: '商品名称',
       //   name: 'goodsName',
@@ -82,9 +94,22 @@ const RefundList = (props) => {
       title: '商品主图',
       dataIndex: 'orderDesc',
       render: (val, row) => {
-        const goodsInfo = JSON.parse(val || '{}');
-        const { commerceGoods = {}, specialGoods = {} } = goodsInfo;
-        return <PopImgShow url={commerceGoods.goodsImg || specialGoods.goodsImg} />;
+        const { commerceGoods = {}, specialGoods = {}, orderType } = val;
+
+        return (
+          <Badge.Ribbon
+            text={
+              {
+                commerceGoods: ELECTRICGOODS_SELL_STATUS[commerceGoods.goodsClass],
+                specialGoods: SPECIAL_GOODS_TYPE[[specialGoods.goodsClass]],
+              }[orderType]
+            }
+            color="cyan"
+            placement="start"
+          >
+            <PopImgShow url={commerceGoods.goodsImg || specialGoods.goodsImg} />;
+          </Badge.Ribbon>
+        );
       },
     },
     {
@@ -92,8 +117,7 @@ const RefundList = (props) => {
       dataIndex: 'orderDesc',
       align: 'center',
       render: (val, row) => {
-        const goodsInfo = JSON.parse(val || '{}');
-        const { commerceGoods = {}, specialGoods = {} } = goodsInfo;
+        const { commerceGoods = {}, specialGoods = {} } = val;
         return (
           <div style={{ display: 'flex' }}>
             <div
@@ -145,7 +169,7 @@ const RefundList = (props) => {
     },
     {
       title: '退款数量',
-      dataIndex: 'refundCount',
+      dataIndex: 'goodsCount',
     },
     {
       title: '退款金额',
@@ -255,13 +279,25 @@ const RefundList = (props) => {
       type: 'RefundList/fetchRefundRemark',
       payload: {
         ...values,
-        orderRefundId: orderRefundApplyId,
+        orderRefundApplyId: orderRefundApplyId,
         userId,
       },
       callback: () => {
         setRefundModal({ show: false, detail: {} });
         childRef.current.fetchGetData();
       },
+    });
+  };
+
+  const handleBathAgree = () => {
+    confirm({
+      title: '提示',
+      icon: <ExclamationCircleOutlined />,
+      content: '确定同意所有的勾选申请吗',
+      onOk() {
+        handleAgress();
+      },
+      onCancel() {},
     });
   };
 
@@ -317,7 +353,7 @@ const RefundList = (props) => {
       auth: true,
       text: '批量同意',
       show: ['0'].includes(tabKey),
-      onClick: () => handleAgress(),
+      onClick: () => handleBathAgree(),
     },
   ];
 

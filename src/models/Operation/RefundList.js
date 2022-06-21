@@ -31,12 +31,22 @@ export default {
       });
       if (!response) return;
       const { content } = response;
+      const { orderRefundApplyDetailList = [], total } = content;
+      const list = orderRefundApplyDetailList.map((item) => {
+        const { orderDesc } = item;
+
+        return {
+          ...item,
+          orderDesc: JSON.parse(orderDesc || '{}'),
+        };
+      });
+
       yield put({
         type: 'save',
         payload: {
           list: {
-            list: content.orderRefundApplyDetailList,
-            total: content.total,
+            list: list,
+            total: total,
           },
         },
       });

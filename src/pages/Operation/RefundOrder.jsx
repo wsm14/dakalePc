@@ -89,8 +89,7 @@ const RefundOrder = (props) => {
       dataIndex: 'orderDesc',
       align: 'center',
       render: (val, row) => {
-        const goodsInfo = JSON.parse(val || '{}');
-        const { commerceGoods = {}, specialGoods = {} } = goodsInfo;
+        const { commerceGoods = {}, specialGoods = {} } = val;
         return (
           <div style={{ display: 'flex' }}>
             <PopImgShow url={commerceGoods.goodsImg || specialGoods.goodsImg} />
@@ -155,8 +154,7 @@ const RefundOrder = (props) => {
       align: 'center',
       dataIndex: 'supplierInfo',
       render: (val, row) => {
-        const goodsInfo = JSON.parse(row.orderDesc || '{}');
-        const { commerceGoods = {} } = goodsInfo;
+        const { commerceGoods = {} } = row.orderDesc;
         const { attributeObjects = [] } = commerceGoods;
         return (
           <>
@@ -207,9 +205,8 @@ const RefundOrder = (props) => {
       align: 'center',
       show: ['commerceGoods'].includes(tabKey),
       render: (val, row) => {
-        const logisticsParam = JSON.parse(val || '{}');
-        const { code, name } = logisticsParam;
-        const renderItem = Object.keys(logisticsParam).length ? (
+        const { code, name } = val;
+        const renderItem = Object.keys(val).length ? (
           <div>
             <div>已寄回</div>
             <div>
@@ -318,9 +315,7 @@ const RefundOrder = (props) => {
       logisticsParam,
       orderLogisticInfo, //发货信息对象
     } = val;
-
-    const expressInfo = JSON.parse(logisticsParam || '{}');
-    const { companyCode, code } = expressInfo;
+    const { companyCode, code } = logisticsParam;
     const { mobile } = orderLogisticInfo;
     dispatch({
       type: 'refundOrder/fetchGetExpressInfo',

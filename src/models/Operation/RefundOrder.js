@@ -31,11 +31,22 @@ export default {
       const response = yield call(fetchRefundOrderList, payload);
       if (!response) return;
       const { content } = response;
+      const { orderRefundDetailList = [], total } = content;
+      const list = orderRefundDetailList.map((item) => {
+        const { orderDesc, logisticsParam } = item;
+
+        return {
+          ...item,
+          orderDesc: JSON.parse(orderDesc || '{}'),
+          logisticsParam: JSON.parse(logisticsParam || '{}'),
+        };
+      });
+
       yield put({
         type: 'save',
         payload: {
-          list: content.orderRefundDetailList,
-          total: content.total,
+          list: list,
+          total: total,
         },
       });
     },
