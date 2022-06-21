@@ -345,7 +345,5 @@ export default connect(({ ordersList, baseData, loading }) => ({
   loadings: loading,
   ordersList,
   hubData: baseData.hubData,
-  loading:
-    loading.effects['ordersList/fetchPageListOrdersList'] ||
-    loading.effects['ordersList/fetchOrdersImport'],
+  loading: loading.effects['ordersList/fetchPageListOrdersList'],
 }))(CommerceGoods);
