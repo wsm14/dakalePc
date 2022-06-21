@@ -94,12 +94,12 @@ const OrderDetailDraw = (props) => {
       span: 2,
       render: (val, row) => checkCityName(val),
     },
-    {
-      label: '营业时间',
-      name: 'businessTime',
-      span: 2,
-      show: tabkey === 'goods',
-    },
+    // {
+    //   label: '营业时间',
+    //   name: 'businessTime',
+    //   span: 2,
+    //   show: tabkey === 'goods',
+    // },
     {
       label: '店铺类型',
       name: 'relateType',
@@ -180,16 +180,19 @@ const OrderDetailDraw = (props) => {
 
   const orderImgItem = [
     {
-      name: ['orderDesc', 'specialGoods', 'goodsImg'],
+      name: {
+        specialGoods: ['orderDesc', 'specialGoods', 'goodsImg'],
+        commerceGoods: ['orderDesc', 'commerceGoods', 'goodsImg'],
+      }[tabkey],
       type: 'upload',
     },
     {
-      name: 'orderDesc',
+      name: {
+        specialGoods: ['orderDesc', 'specialGoods'],
+        commerceGoods: ['orderDesc', 'commerceGoods'],
+      }[tabkey],
       render: (val) => {
-        const num = val.specialGoods
-          ? val.specialGoods.realPrice || 0
-          : Number(val?.sellPrice || 0) + Number(val?.sellBean || 0) / 100;
-
+        const num = Number(val?.sellPrice || 0) + Number(val?.sellBean || 0) / 100;
         return <div style={{ textAlign: 'center' }}>单价：{`￥${num}`}</div>;
       },
     },
