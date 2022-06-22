@@ -13,8 +13,17 @@ import styles from '../NewOrders/style.less';
 const OrderDetailDraw = (props) => {
   const { visible, onClose, getDetail, childRef, total, loading, dispatch } = props;
   const { detail = {}, show = false, index } = visible;
-  const { status, closeType, divisionParam = {}, orderType: tabkey, relateType } = detail;
+  const {
+    status,
+    closeType,
+    orderType: tabkey,
+    relateType,
+    divisionParam = {},
+    orderGoodsVerifications = [],
+    organizationGoodsOrderDescObject = {},
+  } = detail;
 
+  const { communityGoodsList = [] } = organizationGoodsOrderDescObject; //核销明细
   const [isShow, setIsShow] = useState(true);
   const [isShow1, setIsShow1] = useState(true);
   const [refund, setRefund] = useState(true);
@@ -39,6 +48,45 @@ const OrderDetailDraw = (props) => {
     }
   };
 
+  const couponItem = (item) => [
+    {
+      label: '券码',
+      name: 'verificationCode',
+      render: (val, row) => {
+        const names = val.substring(0, 6) + '****' + val.substring(val.length - 4, val.length);
+        return <span>{row.status !== '1' ? names : row.verificationCode}</span>;
+      },
+    },
+    // 0：未核销，1：已核销 2：已过期 3-申请退款中 4-关闭
+    {
+      label: '核销号',
+      name: 'userCouponId',
+      show: item.userCouponId,
+    },
+    {
+      label: '状态',
+      name: 'status',
+      render: (val) => VERIFICATION_STATUS[val],
+    },
+    {
+      label: '核销时间',
+      name: 'verificationTime',
+      show: item.status === '1',
+      span: 3,
+    },
+  ];
+  const writeOffDetail = [
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+    },
+    {
+      title: '核销数',
+      align: 'center',
+      dataIndex: 'goodsCount',
+      render: (val, row) => val - row?.remainCount,
+    },
+  ];
   const userFormItem = [
     {
       label: '用户昵称',
@@ -235,6 +283,34 @@ const OrderDetailDraw = (props) => {
   };
   return (
     <>
+      {/* 券码 */}
+      {(orderStatusCheck || (status === '2' && orderCloseStatusCheck)) &&
+        tabkey !== 'communityGoods' && (
+          <div style={{ fontWeight: 'bold', fontSize: '16px', lineHeight: '50px' }}>券码</div>
+        )}
+      {orderGoodsVerifications.map((item) => (
+        <DescriptionsCondition
+          labelStyle={{ width: 100 }}
+          key={item.orderGoodsVerificationId}
+          formItems={couponItem(item)}
+          initialValues={item}
+          column={3}
+        ></DescriptionsCondition>
+      ))}
+      {/* 核销明细 */}
+      {tabkey === 'communityGoods' && (
+        <div style={{ fontWeight: 'bold', fontSize: '16px', lineHeight: '50px' }}>核销明细</div>
+      )}
+      {tabkey === 'communityGoods' && (
+        <TableDataBlock
+          noCard={false}
+          pagination={false}
+          columns={writeOffDetail}
+          rowKey={(record) => `${record.communityOrganizationGoodsId}`}
+          list={communityGoodsList}
+          style={{ marginBottom: 10 }}
+        ></TableDataBlock>
+      )}
       <DrawerCondition {...modalProps}>
         <DescriptionsCondition
           title="用户信息"
