@@ -469,7 +469,7 @@ const PreferentialSet = ({
       name: ['skuInfoReq', 'costPrice'],
       type: 'number',
       precision: 2,
-      // disabled: editDisabled,
+      disabled: editDisabled && infoStatus,
       min: 0,
       max: 999999.99,
       step: '0.01',
