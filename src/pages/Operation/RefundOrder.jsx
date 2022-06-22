@@ -195,13 +195,13 @@ const RefundOrder = (props) => {
       render: (val, row) => `${val}\n(含${row.refundBean || 0}卡豆)`,
     },
     {
-      title: { specialGoods: '发货状态/退款申请时间', commerceGoods: '退款申请时间' }[tabKey],
+      title: { commerceGoods: '发货状态/退款申请时间', specialGoods: '退款申请时间' }[tabKey],
       align: 'center',
       dataIndex: 'createTime',
       render: (val, row) => {
         return {
-          specialGoods: `${row.orderLogisticInfo ? '已发货' : '未发货'}\n${val}`,
-          commerceGoods: `${val}`,
+          commerceGoods: `${row.orderLogisticInfo ? '已发货' : '未发货'}\n${val}`,
+          specialGoods: `${val}`,
         }[tabKey];
       },
     },
