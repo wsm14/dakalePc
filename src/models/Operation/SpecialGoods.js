@@ -141,7 +141,7 @@ export default {
         settlerName,
         ownerId,
         id: goodsId,
-        skuInfoReq: skuInfoResp,
+        skuInfoReq: { ...skuInfoResp, initStock: skuInfoResp.remain || 0 },
         availableAreas: availableAreas === 'all' ? availableAreas : 'city',
         cityList,
         // divisionFlag,
