@@ -3,13 +3,13 @@ import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import DrawerCondition from '@/components/DrawerCondition';
-import MessageDetail from './Deatil/MessageDetail';
+import MarketActivityDetail from './Deatil/MarketActivityDetail';
 import MarketActivityBaseForm from './Form/BaseForm';
 
 const MarketActivityDrawer = (props) => {
   const { dispatch, visible, childRef, onClose, loading } = props;
 
-  const { mode = 'info', shwo = false, detail = {} } = visible;
+  const { mode = 'info', show = false, detail = {} } = visible;
   const [form] = Form.useForm();
 
   const handleUpData = () => {
@@ -67,14 +67,14 @@ const MarketActivityDrawer = (props) => {
     },
     info: {
       title: '查看活动',
-      children: <MessageDetail initialValues={detail}></MessageDetail>,
+      children: <MarketActivityDetail initialValues={detail}></MarketActivityDetail>,
     },
   }[mode];
 
   // 弹出窗属性
   const modalProps = {
     title: `${drawerProps.title}`,
-    visible: shwo,
+    visible: show,
     width: 700,
     onClose,
     footer: drawerProps.footer,

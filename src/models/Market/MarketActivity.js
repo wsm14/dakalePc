@@ -1,9 +1,11 @@
+import moment from 'moment';
 import { notification } from 'antd';
 import {
-  fetchMarketActivityList,
   fetchMarketActivityAdd,
   fetchMarketActivityEdit,
   fetchMarketActivityDown,
+  fetchMarketActivityList,
+  fetchMarketActivityDetail,
 } from '@/services/MarketServices';
 
 export default {
@@ -36,11 +38,30 @@ export default {
         },
       });
     },
-    *fetchAreaQueryCityInfo({ payload, callback }, { call, put }) {
-      const response = yield call(fetchAreaQueryInfo, payload);
+    *fetchMarketActivityDetail({ payload, callback }, { call, put }) {
+      const { mode, ...other } = payload;
+      const response = yield call(fetchMarketActivityDetail, other);
       if (!response) return;
       const { content } = response;
-      callback(content.agentPriceList);
+      const { marketingActivityDetail: detail = {} } = content;
+      const { startDate, endDate, useRuleObject = {}, activityRuleObject = {} } = detail;
+      let obj = {};
+      if (mode === 'edit') {
+        const { useRuleType } = useRuleObject; // 使用规则
+        // 活动规则
+        const { categories = [], classifies = [], activityRuleType } = activityRuleObject;
+        obj = {
+          activeDate: [moment(startDate), moment(endDate)],
+          activityRuleObject: {
+            ...activityRuleObject,
+            activityRuleType: activityRuleType.split(','),
+            categories: categories.map((i) => i?.categoryId), // 行业规则
+            classifies: classifies.map((i) => i?.classifyNode?.split(',')), // 类目规则
+          },
+          useRuleObject: { ...useRuleObject, useRuleType: useRuleType.split(',') },
+        };
+      }
+      callback && callback({ ...detail, ...obj });
     },
     *fetchMarketActivitySet({ payload, callback }, { call }) {
       const { mode, ...other } = payload;

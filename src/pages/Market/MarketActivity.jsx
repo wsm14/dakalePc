@@ -68,7 +68,7 @@ const MarketActivity = (props) => {
     },
     {
       type: 'handle',
-      dataIndex: 'markingActivityId',
+      dataIndex: 'marketingActivityId',
       width: 150,
       tips: `1.活动【已开始】不可下架
       2.活动【已有报名商品】不可下架
@@ -79,12 +79,12 @@ const MarketActivity = (props) => {
         return [
           {
             type: 'info',
-            click: () => fetchGetDetail(val),
+            click: () => fetchGetDetail(val, 'info'),
           },
           {
             type: 'edit', // 即将开始 无报名商品
             visible: offLineGoodsNum === 0 && onLineGoodsNum === 0 && moment().isBefore(startDate),
-            click: () => fetchGetDetail(val),
+            click: () => fetchGetDetail(val, 'edit'),
           },
           {
             type: 'down', // 即将开始 无报名商品
@@ -108,21 +108,21 @@ const MarketActivity = (props) => {
   ];
 
   // 下架活动
-  const fetchMarketActivityDown = (markingActivityId) => {
+  const fetchMarketActivityDown = (marketingActivityId) => {
     dispatch({
       type: 'marketActivity/fetchMarketActivityDown',
-      payload: { markingActivityId },
+      payload: { marketingActivityId },
       callback: childRef.current.fetchGetData,
     });
   };
 
   // 详情
-  const fetchGetDetail = (markingActivityId) => {
+  const fetchGetDetail = (marketingActivityId, mode) => {
     dispatch({
       type: 'marketActivity/fetchMarketActivityDetail',
-      payload: { markingActivityId },
-      callback: (list) => {
-        setVisible({ show: true, list });
+      payload: { marketingActivityId, mode },
+      callback: (detail) => {
+        setVisible({ show: true, detail, mode });
       },
     });
   };
@@ -131,7 +131,7 @@ const MarketActivity = (props) => {
     {
       auth: 'save',
       text: '新增',
-      onClick: () => setVisible({ mode: 'add', shwo: true }),
+      onClick: () => setVisible({ mode: 'add', show: true }),
     },
   ];
 
@@ -143,7 +143,7 @@ const MarketActivity = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.markingActivityId}`}
+        rowKey={(record) => `${record.marketingActivityId}`}
         dispatchType="marketActivity/fetchGetList"
         {...marketActivity}
       ></TableDataBlock>
