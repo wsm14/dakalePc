@@ -6,7 +6,7 @@ const AddSpecification = (props) => {
   const {
     specificationTypeData = [],
     setSpecificationTypeData,
-    commissionShow = '0', // 分佣模板类型
+    disabled, // 按钮禁用
   } = props;
 
   // 添加规格项
@@ -124,30 +124,16 @@ const AddSpecification = (props) => {
                   ></Input>
                 );
               })}
-              <Button
-                disabled={commissionShow === '1'}
-                type="link"
-                onClick={() => addSpecificationValue(index)}
-              >
+              <Button disabled={disabled} type="link" onClick={() => addSpecificationValue(index)}>
                 添加规格值
               </Button>
             </div>
           </div>
         );
       })}
-      <Button
-        disabled={commissionShow === '1'}
-        type="primary"
-        ghost
-        onClick={() => addSpecificationType()}
-      >
+      <Button disabled={disabled} type="primary" ghost onClick={() => addSpecificationType()}>
         添加规格项
       </Button>
-      {commissionShow === '1' && (
-        <div style={{ display: 'inline-block', marginLeft: 5, color: '#ccc' }}>
-          手动分佣不允许多规格
-        </div>
-      )}
     </>
   );
 };

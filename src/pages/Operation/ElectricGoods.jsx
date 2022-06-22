@@ -82,12 +82,12 @@ const ElectricGoods = (props) => {
       allItem: false,
       select: ELECTRICGOODS_STATUS,
     },
-    {
-      label: '最后更新时间',
-      name: 'updateStartDate',
-      type: 'rangePicker',
-      end: 'updateEndDate',
-    },
+    // {
+    //   label: '最后更新时间',
+    //   name: 'updateStartDate',
+    //   type: 'rangePicker',
+    //   end: 'updateEndDate',
+    // },
   ];
 
   // table 表头

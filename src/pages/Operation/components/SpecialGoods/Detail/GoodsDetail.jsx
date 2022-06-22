@@ -7,6 +7,7 @@ import {
   GOODS_CLASS_TYPE,
   SPECIAL_DESC_TYPE,
   BUSINESS_SALE_TYPE,
+  SPECIAL_GOODS_TYPE,
 } from '@/common/constant';
 
 const GoodsDetail = (props) => {
@@ -29,12 +30,12 @@ const GoodsDetail = (props) => {
 
   const GoodFormItem = [
     {
-      name: ['thirdInfoResp', 'thirdType'],
+      name: ['thirdInfoReq', 'thirdType'],
       label: `商品类别`,
-      render: (val) => ({ 1: '特惠商品', 2: '自我游商品' }[val]),
+      render: (val) => SPECIAL_GOODS_TYPE[val],
     },
     {
-      name: ['thirdInfoResp', 'thirdId'],
+      name: ['thirdInfoReq', 'thirdId'],
       label: `自我游编码`,
       show: thirdType == '2',
     },

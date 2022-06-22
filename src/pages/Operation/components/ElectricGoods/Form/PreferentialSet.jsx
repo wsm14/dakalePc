@@ -299,6 +299,7 @@ const PreferentialSet = ({
       name: 'stockUnit',
       type: 'select',
       select: ELECTRICGOODS_SKU,
+      disabled: editDisabled,
     },
     {
       label: '规格设置',
@@ -307,7 +308,7 @@ const PreferentialSet = ({
       formItem: (
         <AddSpecification
           form={form}
-          commissionShow={commissionShow}
+          disabled={commissionShow == '1' || editDisabled}
           specificationTypeData={specificationTypeData}
           setSpecificationTypeData={setSpecificationTypeData}
         ></AddSpecification>
@@ -502,7 +503,6 @@ const PreferentialSet = ({
         ...item,
         children: item.children.map((citem) => ({ ...citem, children: undefined })),
       })),
-      rules: [{ required: false }],
     },
     {
       label: '发货时效',

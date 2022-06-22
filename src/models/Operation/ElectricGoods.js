@@ -72,11 +72,20 @@ export default {
       // 处理规格数据
       let attributesList = [];
       const attributesType = skuInfoReqs[0]?.attributes?.map((item) => item.name);
-      skuInfoReqs.map((item) => {
+      // 得到新的商品数据数组 - newSkuInfoReqs
+      const newSkuInfoReqs = skuInfoReqs.map((item) => {
+        const { remain = '' } = item;
+
         item.attributes.map((it) => {
           attributesList.push(it);
         });
+        // 详情、编辑回显时，库存显示剩余库存
+        return {
+          ...item,
+          initStock: remain,
+        };
       });
+      // 处理得到规格数组
       const newAttributes = attributesType?.map((item) => {
         const arr = attributesList.filter((it) => it.name == item).map((it) => it.value);
         const set = new Set(arr);
@@ -85,16 +94,17 @@ export default {
           value: [...set],
         };
       });
+      // 处理规格数据 end
 
       let oneSku = {};
       if (newAttributes.length == 0) {
-        oneSku = skuInfoReqs[0];
+        oneSku = newSkuInfoReqs[0];
       }
 
       const data = {
         ...other,
         ...oneSku,
-        skuInfoReqs,
+        newSkuInfoReqs,
         settleInfoReq,
         divisionParamInfoReq: divisionParamInfoResp,
         platformTagIds: platformTagIds.split(','),
