@@ -429,7 +429,7 @@ const PreferentialSet = ({
     {
       label: '商品类型',
       name: 'productType',
-      disabled: editDisabled,
+      // disabled: editDisabled,
       type: 'radio',
       select: GOODS_CLASS_TYPE,
       onChange: (e) => saveMreData({ productType: e.target.value }),
