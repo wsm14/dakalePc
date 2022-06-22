@@ -1,15 +1,16 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Form, Button } from 'antd';
-import DrawerCondition from '@/components/DrawerCondition';
-import FormComponents from '@/components/FormCondition';
 import { GROUP_RULE, GROUP_RULE_WIN } from '@/common/constant';
+import FormComponents from '@/components/FormCondition';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const GroupRule = (props) => {
-  const { visible, onClose, childRef, dispatch, onCloseF } = props;
+  const { visible, onClose, childRef, dispatch, loading, onCloseF } = props;
   const { show = false, togetherGroupConfigList = [] } = visible;
 
   const [form] = Form.useForm();
+
   const formItems = [
     {
       label: '成团人数',
@@ -57,8 +58,9 @@ const GroupRule = (props) => {
     title: '选择成团人数',
     visible: show,
     onClose,
+    zIndex: 1010,
     footer: (
-      <Button type="primary" onClick={handleSave}>
+      <Button type="primary" loading={loading} onClick={handleSave}>
         确认
       </Button>
     ),
@@ -71,4 +73,6 @@ const GroupRule = (props) => {
   );
 };
 
-export default connect()(GroupRule);
+export default connect(({ loading }) => ({
+  loading: loading.models.groupGoods,
+}))(GroupRule);

@@ -17,7 +17,9 @@ const { TabPane } = Tabs;
  * @param {Array} showTag 显示的类型 可选
  * ["freeReduceCoupon","platformCoupon", "reduceCoupon","specialGoods","commerceGoods"]
  * @param {Object} searchParams 默认搜索值
+ * @param {Boolean} closeSumbit 确认后是否自动关闭 默认关闭
  * @param {Boolean} hiddenSearch 隐藏搜索项目
+ * @param {Function} onSumbit 确认回调 ({ keys: [], list: [] }) => {}
  * @returns
  */
 const GoodsSelectModal = (props) => {
@@ -31,6 +33,7 @@ const GoodsSelectModal = (props) => {
     showTag = null,
     onSumbit,
     onClose,
+    closeSumbit = true,
   } = props;
 
   const [tabKey, setTabKey] = useState('reduceCoupon'); // tab类型
@@ -156,7 +159,7 @@ const GoodsSelectModal = (props) => {
       onOk={() => {
         console.log(selectItem);
         onSumbit && onSumbit(selectItem);
-        onClose();
+        closeSumbit && onClose();
       }}
       onCancel={onClose}
     >

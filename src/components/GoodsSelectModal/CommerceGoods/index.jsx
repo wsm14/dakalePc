@@ -17,6 +17,7 @@ const CommerceGoods = (props) => {
     selectType,
     selectItem,
     handleSelectItem,
+    disabled,
     loading,
   } = props;
 
@@ -105,7 +106,7 @@ const CommerceGoods = (props) => {
           selectedRowKeys: selectItem.keys,
           preserveSelectedRowKeys: true,
           getCheckboxProps: (record) => ({
-            disabled: record.name === '',
+            disabled: disabled && disabled(record),
           }),
           onChange: (selectedRowKeys, selectedRows) => {
             console.log(`selectedRowKeys:`, selectedRowKeys, 'selectedRows: ', selectedRows);
