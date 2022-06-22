@@ -29,7 +29,7 @@ const RemainModal = (props) => {
 
   const formItems = [
     {
-      label: `增加库存`,
+      label: `调整库存`,
       name: 'goodsCount',
       placeholder: `请输入调整后的库存`,
       extra: `剩余${remain}`,
