@@ -11,7 +11,7 @@ const Shipping = ({ value = '', onChange }) => {
       const num = value.replace('天内发货', '');
       setNum(Number(num));
     }
-  }, []);
+  }, [value]);
 
   const triggerChange = (changedValue) => {
     onChange?.(changedValue);
