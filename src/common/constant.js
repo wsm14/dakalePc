@@ -34,7 +34,7 @@ export const TAG_COLOR_TYPE = {
   },
   commerce: {
     universal: '#6897ff', // 电商通用券
-    goods: '#1b851e', // 指定电商券,
+    goods: '#994646', // 指定电商券,
   },
 };
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Descriptions } from 'antd';
+import QuestionTooltip from '@/components/QuestionTooltip';
 import ImagePreviewGroup from './ImagePreviewGroup';
 import VideoPreview from './VideoPreview';
 import OtherUpload from './OtherUpload';
@@ -100,6 +101,7 @@ const DescriptionsCondition = (props) => {
       const {
         show = true, // 是否显示 最高权重 默认显示
         label, // 内容的描述
+        tips = '', // 额外提示
         span = 1, // 包含列的数量 默认1
         children: rowChildren, // 额外内容在底部
       } = item;
@@ -110,7 +112,7 @@ const DescriptionsCondition = (props) => {
       return (
         <Descriptions.Item
           span={span}
-          label={label}
+          label={tips ? <QuestionTooltip title={label} content={tips} /> : label}
           key={`${props.title || ''}${label}${i}`}
           className={styles.descriptions_item}
         >

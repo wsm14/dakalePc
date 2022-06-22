@@ -9,7 +9,7 @@ import {
 } from '@/common/constant';
 import { Radio, Select } from '@/components/FormCondition/formModule';
 import FormCondition from '@/components/FormCondition';
-import SubsidyCouponsTable from './SubsidyCouponsTable';
+import SubsidyCouponsShow from './SubsidyCouponsShow';
 
 const { SHOW_CHILD } = Cascader;
 
@@ -237,7 +237,7 @@ const MarketActivityBaseForm = (props) => {
           {subsidyRule === 'coupon' && (
             <div style={{ lineHeight: '31px', marginTop: 24 }}>
               {/* 赠送平台券列表 */}
-              <SubsidyCouponsTable form={form}></SubsidyCouponsTable>
+              <SubsidyCouponsShow form={form}></SubsidyCouponsShow>
             </div>
           )}
         </>

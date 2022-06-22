@@ -1,31 +1,17 @@
-import React, { useState } from 'react';
-import { Form, Button, Space, Tag } from 'antd';
+import React from 'react';
+import { Form, Tag } from 'antd';
 import { PLATFORM_TICKET_TYPE, TAG_COLOR_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
-import GoodsSelectModal from '@/components/GoodsSelectModal';
 
 // 赠送平台券 表格
 const SubsidyCouponsTable = (props) => {
-  const { form } = props;
+  const { form, data, remove } = props;
 
   // 补贴规则
-  const subsidyList = Form.useWatch(['useRuleObject', 'subsidy', 'coupons'], form) || [];
-  const [visible, setVisible] = useState(false); // 弹窗
+  const subsidyList = data || Form.useWatch(['useRuleObject', 'subsidy', 'coupons'], form) || [];
 
-  // 选择券
-  const handleSelectCoupon = (list) => {
-    const oldData = form.getFieldValue(['useRuleObject', 'subsidy', 'coupons']) || [];
-    form.setFieldsValue({
-      useRuleObject: {
-        subsidy: {
-          coupons: [...oldData, ...list.map((i) => ({ ...i, couponId: i.goodsId }))],
-        },
-      },
-    });
-  };
-
-  const getColumns = (remove) => [
+  const getColumns = [
     {
       title: '券类型',
       align: 'center',
@@ -94,6 +80,7 @@ const SubsidyCouponsTable = (props) => {
     {
       type: 'handle',
       width: 60,
+      show: !data && remove,
       dataIndex: 'platformCouponId',
       render: (val, row, index) => {
         return [
@@ -108,48 +95,16 @@ const SubsidyCouponsTable = (props) => {
   ];
 
   return (
-    <>
-      <Form.List
-        name={['useRuleObject', 'subsidy', 'coupons']}
-        rules={[
-          {
-            validator: async (_, datas) => {
-              if (!datas || !datas.length) return Promise.reject(new Error('请添加券'));
-            },
-          },
-        ]}
-      >
-        {(fields, { add, remove }, { errors }) => (
-          <Space direction={'vertical'}>
-            <Button type="dashed" onClick={() => setVisible(true)} style={{ width: 250 }}>
-              添加
-            </Button>
-            <div style={{ color: '#00000073', whiteSpace: 'pre-line', lineHeight: 1.5715 }}>
-              1. 不支持选择券规则中带有城市规则的券{`\n`}2. 仅支持选择手动领取的券
-            </div>
-            <Form.ErrorList errors={errors} />
-            <div style={{ width: 460 }}>
-              <TableDataBlock
-                scroll={{ x: 831 }}
-                tableSize={'small'}
-                noCard={false}
-                columns={getColumns(remove)}
-                rowKey={(record) => `${record.couponId}`}
-                list={subsidyList}
-                pagination={false}
-              ></TableDataBlock>
-            </div>
-          </Space>
-        )}
-      </Form.List>
-      <GoodsSelectModal
-        visible={visible}
-        showTag={['platformCoupon']}
-        disabled={(row) => subsidyList.some((i) => i.couponId === row.goodsId)}
-        onClose={() => setVisible(false)}
-        onSumbit={({ list }) => handleSelectCoupon(list)}
-      ></GoodsSelectModal>
-    </>
+    <TableDataBlock
+      scroll={{ x: 831 }}
+      tableSize={'small'}
+      noCard={false}
+      columns={getColumns}
+      rowKey={(record) => `${record.couponId}`}
+      list={subsidyList}
+      pagination={false}
+    ></TableDataBlock>
   );
 };
+
 export default SubsidyCouponsTable;
