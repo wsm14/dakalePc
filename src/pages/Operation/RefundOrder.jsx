@@ -333,7 +333,7 @@ const RefundOrder = (props) => {
     const { companyCode, code } = logisticsParam;
     const { mobile } = orderLogisticInfo;
     dispatch({
-      type: 'refundOrder/fetchGetExpressInfo',
+      type: 'ordersList/fetchGetOrderDetail',
       payload: {
         expressCompany: companyCode,
         expressNo: code,
@@ -376,7 +376,7 @@ const RefundOrder = (props) => {
         visible={infoVisible}
         total={list.length}
         tabkey={tabKey}
-        loading={loadings.effects['refundOrder/fetchRefundRrderDetail']}
+        loading={loadings.effects['ordersList/fetchGetOrderDetail']}
         getDetail={fetchRefundDetail}
         onClose={() => {
           setinfoVisible({ show: false });

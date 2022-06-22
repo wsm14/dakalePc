@@ -121,13 +121,14 @@ export default {
       const { orderDetailList = [], total } = content;
 
       const list = orderDetailList.map((item) => {
-        const { orderDesc, settleParam, divisionParam } = item;
+        const { orderDesc, settleParam, divisionParam, deductFee } = item;
 
         return {
           ...item,
           orderDesc: JSON.parse(orderDesc || '{}'),
           settleParam: JSON.parse(settleParam || '{}'),
           divisionParam: JSON.parse(divisionParam || '{}'),
+          deductFee: JSON.parse(deductFee || '{}'),
         };
       });
 
