@@ -50,7 +50,7 @@ const ConnectedGoodsModal = (props) => {
     },
     {
       label: '所属店铺',
-      name: 'ownerId',
+      name: 'relateId',
       type: 'merchant',
       show: tabKey === 'specialGoods',
     },
