@@ -5,6 +5,7 @@ import {
   fetchUserStatus,
   fetchUserTotal,
   fetchUserChartTotal,
+  fetchSubPortBlockUser,
 } from '@/services/UserServices';
 
 export default {
@@ -83,6 +84,16 @@ export default {
         description: '用户状态修改成功',
       });
       callback();
+    },
+    // post 用户列表 - 用户分端口禁用
+    *fetchSubPortBlockUser({ payload, callback }, { call, put }) {
+      const response = yield call(fetchSubPortBlockUser, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '用户封停成功',
+      });
+      callback && callback();
     },
   },
 };

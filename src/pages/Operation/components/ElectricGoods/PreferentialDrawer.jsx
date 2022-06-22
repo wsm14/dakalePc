@@ -102,7 +102,7 @@ const PreferentialDrawer = (props) => {
               returnFlag: 1,
             },
             settleInfoReq: {
-              settlerType: 'pingtai',
+              settlerType: 'admin',
               settlerId: -1,
             },
             shippingRuleObject: {
