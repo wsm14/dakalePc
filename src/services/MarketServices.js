@@ -484,6 +484,20 @@ export function fetchMarketActivityDetail(params) {
   });
 }
 
+// get 营销活动 - 报名商品 - 电商品
+export function fetchMarketActivityOnlineGoods(params) {
+  return request('/admin/marketing/activity/admin/listActivityOnlineGoodsByPage', {
+    params,
+  });
+}
+
+// get 营销活动 - 报名商品 - 特惠商品
+export function fetchMarketActivityOfflineGoods(params) {
+  return request('/admin/marketing/activity/admin/listActivityOfflineGoodsByPage', {
+    params,
+  });
+}
+
 // post 营销活动 - 新增
 export function fetchMarketActivityAdd(data) {
   return request('/admin/marketing/activity/admin/saveMarketingActivity', {

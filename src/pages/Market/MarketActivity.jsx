@@ -165,6 +165,6 @@ const MarketActivity = (props) => {
 };
 
 export default connect(({ loading, marketActivity }) => ({
-  marketActivity,
+  marketActivity: marketActivity.list,
   loading: loading.models.marketActivity,
 }))(MarketActivity);
