@@ -31,7 +31,7 @@ const RemainModal = (props) => {
     {
       label: `增加库存`,
       name: 'goodsCount',
-      placeholder: `请输入库存增量`,
+      placeholder: `请输入调整后的库存`,
       extra: `剩余${remain}`,
       maxLength: 6,
       addRules: [

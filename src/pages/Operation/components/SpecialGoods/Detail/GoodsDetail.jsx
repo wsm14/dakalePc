@@ -15,8 +15,6 @@ const GoodsDetail = (props) => {
   const { relateType, thirdInfoResp = {}, productType, paymentModeType } = detail;
   const { thirdType } = thirdInfoResp;
 
-  console.log(detail, 'detail');
-
   const ActiveformItems = [
     {
       title: '参与活动的店铺',
