@@ -297,7 +297,7 @@ const RefundList = (props) => {
     const { list = [] } = RefundList;
     const { orderId, userId } = list[index];
     dispatch({
-      type: 'RefundList/fetchRefundRrderDetail',
+      type: 'ordersList/fetchGetOrderDetail',
       payload: {
         orderId,
         userId,
@@ -360,7 +360,7 @@ const RefundList = (props) => {
         visible={infoVisible}
         total={RefundList?.list.length}
         tabkey={tabKey}
-        loading={loadings.effects['RefundList/fetchRefundRrderDetail']}
+        loading={loadings.effects['ordersList/fetchGetOrderDetail']}
         getDetail={fetchRefundDetail}
         onClose={() => {
           setinfoVisible(false);
