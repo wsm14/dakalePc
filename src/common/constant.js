@@ -34,7 +34,7 @@ export const TAG_COLOR_TYPE = {
   },
   commerce: {
     universal: '#6897ff', // 电商通用券
-    goods: '#1b851e', // 指定电商券,
+    goods: '#994646', // 指定电商券,
   },
 };
 
@@ -1503,7 +1503,7 @@ export const FREIGHT_TYPE = {
 // 电商品 - 结算人类型
 export const SETTLE_TYPE = {
   // settle: '供应商',
-  pingtai: '平台',
+  admin: '平台',
 };
 //行业管理 - 前台类目
 export const TRADESET_SELECT = {
@@ -1545,4 +1545,12 @@ export const MARKETACTIVITY_BUY_RULE = {
 export const MARKETACTIVITY_SUBSIDY_RULE = {
   coupon: '赠送平台券',
   rate: '卡豆抵扣比例',
+};
+
+// 用户数据 - 分端口封停 - 端口类型
+export const USER_PORT_TYPE = {
+  token: '哒卡乐APP',
+  miniProgramToken: '哒小乐',
+  markToken: '哒小卡',
+  communityToken: '哒小团',
 };

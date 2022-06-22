@@ -68,7 +68,7 @@ const MarketActivity = (props) => {
     },
     {
       type: 'handle',
-      dataIndex: 'marketingActivityId',
+      dataIndex: 'id',
       width: 150,
       tips: `1.活动【已开始】不可下架
       2.活动【已有报名商品】不可下架
@@ -143,7 +143,7 @@ const MarketActivity = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.marketingActivityId}`}
+        rowKey={(record) => `${record.id}`}
         dispatchType="marketActivity/fetchGetList"
         {...marketActivity}
       ></TableDataBlock>

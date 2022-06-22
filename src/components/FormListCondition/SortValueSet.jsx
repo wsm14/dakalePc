@@ -6,7 +6,11 @@ import FormCondition from '@/components/FormCondition';
 const FormItem = Form.Item;
 
 /**
- * 视频权重设置
+ * 权重设置
+ * @param {Array} value 默认值
+ * @param {String} valueKey 输出参数key
+ * @param {Function} onSubmit 确认回调 ({ [valueKey]: weight }) => {}
+ * @param {Boolean} loading 请求loading
  */
 const SortValueSet = ({ value, valueKey = 'sortValue', onSubmit, loading }) => {
   const [form] = Form.useForm();

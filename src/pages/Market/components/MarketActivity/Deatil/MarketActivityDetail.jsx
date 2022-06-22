@@ -1,5 +1,6 @@
 import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
+import SubsidyCouponsTable from '../Form/SubsidyCouponsTable';
 
 const MarketActivityDetail = (props) => {
   const { initialValues } = props;
@@ -64,6 +65,7 @@ const MarketActivityDetail = (props) => {
     {
       label: '使用规则',
       name: 'useRuleObject',
+      tips: `1. 不支持选择券规则中带有城市规则的券\n2. 仅支持选择手动领取的券`,
       render: (val, row) => {
         const { useRuleType = '', limit = {}, subsidy = {} } = val;
         const typeArr = useRuleType.split(',');
@@ -75,11 +77,15 @@ const MarketActivityDetail = (props) => {
         }
         // 补贴规则
         if (typeArr.includes('subsidy')) {
-          const { type, rate } = subsidy;
+          const { type, rate, coupons = [] } = subsidy;
           if (type === 'coupon')
             textArr.push({
               title: '赠送平台券',
-              dom: <div>111</div>,
+              dom: (
+                <div style={{ marginTop: 10 }}>
+                  <SubsidyCouponsTable data={coupons}></SubsidyCouponsTable>
+                </div>
+              ),
             });
           if (type === 'rate') textArr.push({ dom: domShow('卡豆抵扣比例', `${rate}%`) });
         }
@@ -98,6 +104,7 @@ const MarketActivityDetail = (props) => {
     {
       label: '活动链接',
       name: 'url',
+      copy: true,
     },
   ];
 

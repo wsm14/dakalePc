@@ -36,6 +36,14 @@ export function fetchUserStatus(data) {
   });
 }
 
+// post 用户列表 - 用户分端口禁用
+export function fetchSubPortBlockUser(data) {
+  return request('/admin/userManagement/subPortBlockUser', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 家主列表
 
 // get 家主列表 - 统计数据

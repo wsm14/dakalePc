@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import DrawerCondition from '@/components/DrawerCondition';
 import MarketActivityDetail from './Deatil/MarketActivityDetail';
 import MarketActivityBaseForm from './Form/BaseForm';
@@ -33,7 +32,7 @@ const MarketActivityDrawer = (props) => {
           useRuleObject: { ...useRuleObject, useRuleType: useRuleType.toString() },
           startDate: activeDate[0].format('YYYY-MM-DD'),
           endDate: activeDate[1].format('YYYY-MM-DD'),
-          marketingActivityId: detail.marketingActivityId,
+          marketingActivityId: detail.id,
         },
         callback: () => {
           onClose();
@@ -47,11 +46,9 @@ const MarketActivityDrawer = (props) => {
   const addEditProps = {
     children: <MarketActivityBaseForm form={form} initialValues={detail}></MarketActivityBaseForm>,
     footer: (
-      <AuthConsumer auth="save" show={mode === 'add'}>
-        <Button onClick={handleUpData} type="primary" loading={loading}>
-          确定
-        </Button>
-      </AuthConsumer>
+      <Button onClick={handleUpData} type="primary" loading={loading}>
+        确定
+      </Button>
     ),
   };
 

@@ -84,7 +84,7 @@ const OpenGroupDetail = (props) => {
   return (
     <Modal {...modalProps}>
       <TableDataBlock
-        card={false}
+        noCard={false}
         columns={getColumns}
         rowKey={(record) => `${record.orderSn}`}
         list={list}
