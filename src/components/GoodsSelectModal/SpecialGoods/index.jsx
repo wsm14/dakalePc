@@ -9,8 +9,15 @@ import TableDataBlock from '@/components/TableDataBlock';
 
 // 本地生活品（特惠商品） specialGoods
 const SpecialGoods = (props) => {
-  const { visible, searchValue, selectItem, offlineGoods, selectType, handleSelectItem, loading } =
-    props;
+  const {
+    visible,
+    searchValue,
+    selectItem,
+    offlineGoods,
+    selectType,
+    handleSelectItem,
+    loading,
+  } = props;
 
   const tableRef = useRef(null);
 
@@ -99,7 +106,9 @@ const SpecialGoods = (props) => {
       cRef={tableRef}
       loading={loading}
       columns={getColumns}
-      // params={{ status: 1 }}
+      params={{
+        displayType: 'manualOrList', // 手动/列表展示
+      }}
       scroll={{ y: 400 }}
       rowSelection={{
         type: selectType,
