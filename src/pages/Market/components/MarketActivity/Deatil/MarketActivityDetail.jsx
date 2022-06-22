@@ -104,6 +104,7 @@ const MarketActivityDetail = (props) => {
     {
       label: '活动链接',
       name: 'url',
+      copy: true,
     },
   ];
 
