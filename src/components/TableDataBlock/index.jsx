@@ -6,10 +6,7 @@ import SearchCondition from '@/components/SearchCondition';
 import HandleSetBtn from './HandleSetTable';
 import utils from './utils';
 
-// 表格操作按钮
-export const HandleSetTable = HandleSetBtn;
 /**
- *
  * 搜索+表格信息回显
  * 2020年7月29日 14:48:02 Dong
  * 2021年2月5日 15:57:36 Dong fix
@@ -39,7 +36,10 @@ export const HandleSetTable = HandleSetBtn;
  * @order 排序序号是否显示
  * @tableSize 表格大小 small default middle
  * @children
- */
+ **/
+
+// 表格操作按钮
+export const HandleSetTable = HandleSetBtn;
 
 const TableBlockComponent = (props) => {
   const {
@@ -67,7 +67,6 @@ const TableBlockComponent = (props) => {
     sortConfig = null,
     order = false,
     tableSort = false,
-    rowCount,
     tableSize = 'default',
     timeParams = { time: {}, show: {} },
     children,
