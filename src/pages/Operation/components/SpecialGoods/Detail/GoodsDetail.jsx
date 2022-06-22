@@ -15,6 +15,8 @@ const GoodsDetail = (props) => {
   const { relateType, thirdInfoResp = {}, productType, paymentModeType } = detail;
   const { thirdType } = thirdInfoResp;
 
+  console.log(detail, 'detail');
+
   const ActiveformItems = [
     {
       title: '参与活动的店铺',
@@ -30,12 +32,12 @@ const GoodsDetail = (props) => {
 
   const GoodFormItem = [
     {
-      name: ['thirdInfoResp', 'thirdType'],
+      name: ['thirdInfoReq', 'thirdType'],
       label: `商品类别`,
       render: (val) => SPECIAL_GOODS_TYPE[val],
     },
     {
-      name: ['thirdInfoResp', 'thirdId'],
+      name: ['thirdInfoReq', 'thirdId'],
       label: `自我游编码`,
       show: thirdType == '2',
     },
