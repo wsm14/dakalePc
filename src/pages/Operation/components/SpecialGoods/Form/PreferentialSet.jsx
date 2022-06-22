@@ -32,6 +32,7 @@ const PreferentialSet = ({
   form,
   editActive,
   loading,
+  loadingCopy,
   selectList,
   slectCopyList,
   dispatch,
@@ -869,7 +870,7 @@ const PreferentialSet = ({
       type: 'select',
       name: 'settlerId',
       placeholder: '请输入搜索',
-      loading,
+      loading: loadingCopy,
       select: slectCopyList,
       disabled: editDisabled,
       onSearch: fetchCopyGetMre,
@@ -965,4 +966,5 @@ export default connect(({ baseData, loading, specialGoods }) => ({
   selectList: baseData.groupMreList,
   slectCopyList: baseData.groupCopyMreList,
   loading: loading.effects['baseData/fetchGetGroupMreList'],
+  loadingCopy: loading.effects['baseData/fetchGetGroupCopyMreList'],
 }))(PreferentialSet);

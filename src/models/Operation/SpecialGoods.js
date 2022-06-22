@@ -77,6 +77,8 @@ export default {
         relationOwnerInfoResps = [], //集团关联店铺
         thirdInfoResp, //商品类别
         divisionParamInfoResp = {}, //分佣设置
+        allowRefund,
+        expireRefund,
         // relateIdString: relateId,
       } = offlineDetail;
       const { settlerId, settlerType, settlerName } = settleInfoResp;
@@ -146,7 +148,8 @@ export default {
         cityList,
         // divisionFlag,
         buyDesc: buyDesc.includes(']') ? JSON.parse(buyDesc || '[]') : [],
-        // allowRefund: Number(allowRefund),
+        allowRefund: Number(allowRefund),
+        expireRefund: Number(expireRefund),
         // allowExpireRefund: Number(allowExpireRefund),
         needOrder: Number(needOrder),
         platformTagIds: platformTagIds ? platformTagIds.split(',') : [],
