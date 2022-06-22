@@ -19,6 +19,7 @@ const tabList = [
   },
 ];
 
+// 报名商品
 const EnrollGoodsModal = (props) => {
   const { visible, onClose, dispatch, configGoodsList, loading } = props;
   const { show = false, id, name } = visible;
