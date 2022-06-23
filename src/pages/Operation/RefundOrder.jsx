@@ -309,7 +309,7 @@ const RefundOrder = (props) => {
   const fetchRefundDetail = (index) => {
     const { orderId, userId } = list[index];
     dispatch({
-      type: 'refundOrder/fetchRefundRrderDetail',
+      type: 'ordersList/fetchGetOrderDetail',
       payload: {
         orderId,
         userId,
@@ -326,10 +326,10 @@ const RefundOrder = (props) => {
 
   //查看物流
   const handleGetLogistics = (val) => {
-    const { logisticsParam } = val;
+    const { logisticsParam, orderLogisticInfo } = val;
     const { companyCode, code, mobile } = logisticsParam;
     dispatch({
-      type: 'ordersList/fetchGetOrderDetail',
+      type: 'refundOrder/fetchGetExpressInfo',
       payload: {
         expressCompany: companyCode,
         expressNo: code,
