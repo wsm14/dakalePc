@@ -33,12 +33,13 @@ export default {
       const { content } = response;
       const { orderRefundDetailList = [], total } = content;
       const list = orderRefundDetailList.map((item) => {
-        const { orderDesc, logisticsParam } = item;
+        const { orderDesc, logisticsParam, deductFee } = item;
 
         return {
           ...item,
           orderDesc: JSON.parse(orderDesc || '{}'),
           logisticsParam: JSON.parse(logisticsParam || '{}'),
+          deductFee: JSON.parse(deductFee || '[]'),
         };
       });
 

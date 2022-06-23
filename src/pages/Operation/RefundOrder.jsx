@@ -191,7 +191,7 @@ const RefundOrder = (props) => {
     },
     {
       title: '申请退款金额',
-      dataIndex: 'refundTotalFee',
+      dataIndex: 'refundFee',
       render: (val, row) => `${val}\n(含${row.refundBean || 0}卡豆)`,
     },
     {
