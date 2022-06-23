@@ -51,7 +51,13 @@ const Index = (props) => {
     },
     {
       label: '优惠券',
-      name: 'businessTime',
+      name: 'deductFee',
+      render: (val = [], row) => {
+        const num = val
+          .reduce((preValue, curValue) => preValue + Number(curValue.reduceFee), 0)
+          .toFixed(2);
+        return num ? num : `￥${num}退款成功后返回券包`;
+      },
     },
   ];
 
