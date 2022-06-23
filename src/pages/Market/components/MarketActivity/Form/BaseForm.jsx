@@ -263,17 +263,11 @@ const MarketActivityBaseForm = (props) => {
   ];
 
   return (
-    <>
-      <FormCondition
-        form={form}
-        formItems={formItems}
-        initialValues={initialValues}
-      ></FormCondition>
-    </>
+    <FormCondition form={form} formItems={formItems} initialValues={initialValues}></FormCondition>
   );
 };
 
-export default connect(({ baseData, sysTradeList, loading }) => ({
+export default connect(({ baseData, sysTradeList }) => ({
   classifyList: baseData.classifyParentList,
   experLevel: baseData.experLevel,
   tradeList: sysTradeList.list.list,

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
 import { ELECTRICGOODS_STATUS } from '@/common/constant';
@@ -8,9 +8,20 @@ import TableDataBlock from '@/components/TableDataBlock';
 
 // 特惠商品
 const EnrollSpecialGoods = (props) => {
-  const { dispatch, id, offlineGoods, loading } = props;
+  const { dispatch, id, offlineGoods, tradeList, loading } = props;
 
   const childRef = useRef();
+
+  useEffect(() => {
+    fetchTradeList();
+  }, []);
+
+  // 获取行业类目
+  const fetchTradeList = () => {
+    dispatch({
+      type: 'sysTradeList/fetchGetList',
+    });
+  };
 
   // 搜索参数
   const searchItems = [
@@ -27,8 +38,9 @@ const EnrollSpecialGoods = (props) => {
     {
       label: '所属行业',
       name: 'categoryId',
-      type: 'select',
-      select: ELECTRICGOODS_STATUS,
+      type: 'cascader',
+      select: tradeList,
+      fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
     },
   ];
 
@@ -123,7 +135,8 @@ const EnrollSpecialGoods = (props) => {
   );
 };
 
-export default connect(({ marketActivity, loading }) => ({
+export default connect(({ sysTradeList, marketActivity, loading }) => ({
+  tradeList: sysTradeList.list.list,
   offlineGoods: marketActivity.offlineGoods,
   loading: loading.effects['marketActivity/fetchMarketActivityOfflineGoods'],
 }))(EnrollSpecialGoods);
