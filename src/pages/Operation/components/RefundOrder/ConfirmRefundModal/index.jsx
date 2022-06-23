@@ -43,11 +43,11 @@ const Index = (props) => {
     },
     {
       label: '应退金额',
-      name: 'refundTotalFee',
+      name: 'refundFee',
     },
     {
       label: '实退金额',
-      name: 'refundTotalFee',
+      name: 'refundFee',
     },
     {
       label: '优惠券',
