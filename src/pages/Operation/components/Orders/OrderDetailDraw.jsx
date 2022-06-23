@@ -364,7 +364,7 @@ const OrderDetailDraw = (props) => {
         {orderGoodsVerifications.map((item) => (
           <DescriptionsCondition
             labelStyle={{ width: 100 }}
-            key={item.orderGoodsVerificationId}
+            key={item}
             formItems={couponItem(item)}
             initialValues={item}
             column={3}
