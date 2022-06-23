@@ -326,12 +326,8 @@ const RefundOrder = (props) => {
 
   //查看物流
   const handleGetLogistics = (val) => {
-    const {
-      logisticsParam,
-      orderLogisticInfo, //发货信息对象
-    } = val;
-    const { companyCode, code } = logisticsParam;
-    const { mobile } = orderLogisticInfo;
+    const { logisticsParam } = val;
+    const { companyCode, code, mobile } = logisticsParam;
     dispatch({
       type: 'ordersList/fetchGetOrderDetail',
       payload: {
