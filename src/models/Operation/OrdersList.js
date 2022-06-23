@@ -129,7 +129,7 @@ export default {
           orderDesc: JSON.parse(orderDesc || '{}'),
           settleParam: JSON.parse(settleParam || '{}'),
           divisionParam: JSON.parse(divisionParam || '{}'),
-          deductFee: JSON.parse(deductFee || '{}'),
+          deductFee: JSON.parse(deductFee || '[]'),
         };
       });
 
@@ -155,7 +155,7 @@ export default {
         orderDesc: JSON.parse(orderDetail.orderDesc || '{}'),
         settleParam: JSON.parse(orderDetail.settleParam || '{}'),
         divisionParam: JSON.parse(orderDetail.divisionParam || '{}'),
-        deductFee: JSON.parse(orderDetail.deductFee || '{}'),
+        deductFee: JSON.parse(orderDetail.deductFee || '[]'),
       };
 
       callback(data);

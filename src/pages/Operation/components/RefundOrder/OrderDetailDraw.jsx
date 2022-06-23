@@ -395,7 +395,7 @@ const OrderDetailDraw = (props) => {
                 优惠合计 <DownOutlined />
               </span>
               <span>
-                {detail.deductFee
+                {detail?.deductFee
                   ? `-￥${detail.deductFee.reduce(
                       (preValue, curValue) => preValue + Number(curValue.reduceFee),
                       0,
@@ -406,7 +406,7 @@ const OrderDetailDraw = (props) => {
             {/* 优惠的券 */}
             {isShow && (
               <div>
-                {detail.deductFee &&
+                {detail?.deductFee &&
                   detail.deductFee.map((item) => {
                     return (
                       <div className={styles.detail_last_div}>
