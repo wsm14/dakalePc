@@ -294,7 +294,7 @@ const GoodsOrders = (props) => {
 
 export default connect(({ ordersList, baseData, loading }) => ({
   loadings: loading,
-  ordersList,
+  ordersList: ordersList.newList,
   hubData: baseData.hubData,
   loading: loading.models.ordersList,
 }))(GoodsOrders);

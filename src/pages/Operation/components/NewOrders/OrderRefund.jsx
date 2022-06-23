@@ -26,7 +26,7 @@ const OrderRefund = (props) => {
         payload: {
           ...detail,
           ...other,
-          refundImg: rImg.toString(),
+          refundImg: rImg.toString() || undefined,
           refundReason: select[refundReason],
         },
         callback: () => {
@@ -69,12 +69,14 @@ const OrderRefund = (props) => {
       name: 'refundDesc',
       type: 'textArea',
       maxLength: 200,
+      rules: [{ required: false }],
     },
     {
       label: `补充凭证`,
       name: 'refundImg',
       type: 'upload',
       maxFile: 1,
+      rules: [{ required: false }],
     },
   ];
 
