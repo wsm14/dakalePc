@@ -206,7 +206,6 @@ const ConnectedGoodsModal = (props) => {
             tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
           }}
           scroll={{ y: 400 }}
-          rowCount={2}
           cRef={childRef}
           loading={loading}
           searchItems={searchItems}

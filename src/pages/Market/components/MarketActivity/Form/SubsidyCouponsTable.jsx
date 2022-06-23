@@ -18,8 +18,8 @@ const SubsidyCouponsTable = (props) => {
       width: 100,
       dataIndex: 'classType',
       render: (val, row) => (
-        <Tag color={TAG_COLOR_TYPE[row.useScenesType][val]}>
-          {PLATFORM_TICKET_TYPE[row.useScenesType][val]}
+        <Tag color={row?.useScenesType ? TAG_COLOR_TYPE[row?.useScenesType][val] : ''}>
+          {row?.useScenesType ? PLATFORM_TICKET_TYPE[row?.useScenesType][val] : ''}
         </Tag>
       ),
     },
@@ -37,7 +37,6 @@ const SubsidyCouponsTable = (props) => {
     },
     {
       title: '券价值/使用门槛/券描述',
-      dataIndex: 'createTime',
       dataIndex: 'couponValue',
       render: (val, row) => (
         <div>

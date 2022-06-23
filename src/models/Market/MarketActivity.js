@@ -6,14 +6,17 @@ import {
   fetchMarketActivityDown,
   fetchMarketActivityList,
   fetchMarketActivityDetail,
+  fetchMarketActivityOnlineGoods,
+  fetchMarketActivityOfflineGoods,
 } from '@/services/MarketServices';
 
 export default {
   namespace: 'marketActivity',
 
   state: {
-    list: [],
-    total: 0,
+    list: { list: [], total: 0 },
+    onlineGoods: { list: [], total: 0 }, // 电商品
+    offlineGoods: { list: [], total: 0 }, // 特惠商品
   },
 
   reducers: {
@@ -33,8 +36,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.marketingActivityDetailList,
-          total: content.total,
+          list: { list: content.marketingActivityDetailList, total: content.total },
         },
       });
     },
@@ -56,12 +58,34 @@ export default {
             ...activityRuleObject,
             activityRuleType: activityRuleType.split(','),
             categories: categories.map((i) => i?.categoryId), // 行业规则
-            classifies: classifies.map((i) => i?.classifyNode?.split(',')), // 类目规则
+            classifies: classifies.map((i) => i?.classifyNode?.split('.')), // 类目规则
           },
           useRuleObject: { ...useRuleObject, useRuleType: useRuleType.split(',') },
         };
       }
       callback && callback({ ...detail, ...obj });
+    },
+    *fetchMarketActivityOnlineGoods({ payload }, { call, put }) {
+      const response = yield call(fetchMarketActivityOnlineGoods, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          onlineGoods: { list: content.marketingActivityDetailList, total: content.total },
+        },
+      });
+    },
+    *fetchMarketActivityOfflineGoods({ payload }, { call, put }) {
+      const response = yield call(fetchMarketActivityOfflineGoods, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          offlineGoods: { list: content.activityOfflineGoods, total: content.total },
+        },
+      });
     },
     *fetchMarketActivitySet({ payload, callback }, { call }) {
       const { mode, ...other } = payload;

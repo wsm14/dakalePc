@@ -4,12 +4,14 @@ import { connect } from 'umi';
 import { MARKETACTIVITY_STATUS } from '@/common/constant';
 import { handleCopyInfo } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
+import EnrollGoodsModal from './components/MarketActivity/EnrollGoodsModal';
 import MarketActivityDrawer from './components/MarketActivity/MarketActivityDrawer';
 
 const MarketActivity = (props) => {
   const { loading, dispatch, marketActivity } = props;
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
+  const [visibleGoods, setVisibleGoods] = useState(false);
 
   const searchItems = [
     {
@@ -75,7 +77,7 @@ const MarketActivity = (props) => {
       3.活动【即将开始】且【无报名商品】可编辑
       4.活动下架后【无上架操作】，若仍要上架需重新发布`,
       render: (val, row) => {
-        const { url, offLineGoodsNum, onLineGoodsNum, startDate } = row;
+        const { url, activityName, offLineGoodsNum, onLineGoodsNum, startDate } = row;
         return [
           {
             type: 'info',
@@ -95,7 +97,7 @@ const MarketActivity = (props) => {
           },
           {
             type: 'enrollGoods',
-            click: () => fetchGetDetail(url),
+            click: () => setVisibleGoods({ show: true, id: val, name: activityName }),
           },
           {
             type: 'copyLink',
@@ -153,11 +155,16 @@ const MarketActivity = (props) => {
         visible={visible}
         onClose={() => setVisible(false)}
       ></MarketActivityDrawer>
+      {/* 报名商品 */}
+      <EnrollGoodsModal
+        visible={visibleGoods}
+        onClose={() => setVisibleGoods(false)}
+      ></EnrollGoodsModal>
     </>
   );
 };
 
 export default connect(({ loading, marketActivity }) => ({
-  marketActivity,
+  marketActivity: marketActivity.list,
   loading: loading.models.marketActivity,
 }))(MarketActivity);
