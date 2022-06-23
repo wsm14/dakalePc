@@ -474,10 +474,9 @@ const OrderDetailDraw = (props) => {
               )} */}
               <span>
                 {detail.deductFeeObject
-                  ? `-￥${detail.deductFeeObject.reduce(
-                      (preValue, curValue) => preValue + Number(curValue.reduceFee),
-                      0,
-                    )}`
+                  ? `-￥${detail.deductFeeObject
+                      .reduce((preValue, curValue) => preValue + Number(curValue.reduceFee), 0)
+                      .toFixed(2)}`
                   : `￥0`}
               </span>
             </div>
