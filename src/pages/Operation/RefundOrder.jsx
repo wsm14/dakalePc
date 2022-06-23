@@ -200,7 +200,7 @@ const RefundOrder = (props) => {
       dataIndex: 'createTime',
       render: (val, row) => {
         return {
-          commerceGoods: `${row.orderLogisticInfo ? '已发货' : '未发货'}\n${val}`,
+          commerceGoods: `${row?.orderLogisticInfo?.logisticsCode ? '已发货' : '未发货'}\n${val}`,
           specialGoods: `${val}`,
         }[tabKey];
       },

@@ -200,7 +200,7 @@ const RefundList = (props) => {
     {
       title: '物流状态',
       dataIndex: 'orderLogisticInfo',
-      render: (val) => (val ? '已发货' : '未发货'),
+      render: (val) => (val.logisticsCode ? '已发货' : '未发货'),
     },
     {
       title: '备注',
