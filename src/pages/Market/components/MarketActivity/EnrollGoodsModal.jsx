@@ -50,10 +50,10 @@ const EnrollGoodsModal = (props) => {
         >
           {tabKey === 'specialGoods' ? (
             // 特惠
-            <EnrollSpecialGoods></EnrollSpecialGoods>
+            <EnrollSpecialGoods id={id}></EnrollSpecialGoods>
           ) : (
             // 电商
-            <EnrollCommerceGoods></EnrollCommerceGoods>
+            <EnrollCommerceGoods id={id}></EnrollCommerceGoods>
           )}
         </Card>
       </Modal>

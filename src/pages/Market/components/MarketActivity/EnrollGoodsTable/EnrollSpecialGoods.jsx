@@ -1,13 +1,14 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
+import { Tag } from 'antd';
 import { ELECTRICGOODS_STATUS } from '@/common/constant';
+import { BUSINESS_TYPE, GOODS_CLASS_TYPE, BANK_CHECK_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
-import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 
 // 特惠商品
 const EnrollSpecialGoods = (props) => {
-  const { dispatch, offlineGoods, loading } = props;
+  const { dispatch, id, offlineGoods, loading } = props;
 
   const childRef = useRef();
 
@@ -25,7 +26,7 @@ const EnrollSpecialGoods = (props) => {
 
     {
       label: '所属行业',
-      name: 'statuss',
+      name: 'categoryId',
       type: 'select',
       select: ELECTRICGOODS_STATUS,
     },
@@ -33,13 +34,19 @@ const EnrollSpecialGoods = (props) => {
 
   const getColumns = [
     {
-      title: '商品主图',
-      align: 'center',
-      dataIndex: 'goodsImg',
-      render: (val) => <PopImgShow url={val} />,
+      title: '店铺名称',
+      dataIndex: 'relateName',
+      render: (val, row) => (
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+          <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
+          <Ellipsis tooltip length={8} style={{ marginLeft: 5 }}>
+            {val}
+          </Ellipsis>
+        </div>
+      ),
     },
     {
-      title: '商品名称/ID',
+      title: '参与活动商品名称/ID',
       dataIndex: 'goodsName',
       render: (val, row) => (
         <div>
@@ -51,20 +58,37 @@ const EnrollSpecialGoods = (props) => {
       ),
     },
     {
-      title: '店铺',
+      title: '所属行业',
       align: 'center',
-      dataIndex: 'relateName',
-      render: (val, row) => (
-        <div>
-          <div style={{ marginTop: 5 }}>{row.categoryName || '--'}</div>
-          <Ellipsis length={8} tooltip>
-            {val || '--'}
-          </Ellipsis>
-        </div>
-      ),
+      dataIndex: 'relsateName',
     },
     {
-      title: '零售价',
+      title: '活动时间',
+      align: 'center',
+      dataIndex: 'priasce',
+    },
+    {
+      title: '当前售价',
+      align: 'center',
+      dataIndex: 'pricde',
+    },
+    {
+      title: '当前商家结算价',
+      align: 'center',
+      dataIndex: 'pricae',
+    },
+    {
+      title: '活动售价',
+      align: 'center',
+      dataIndex: 'prdice',
+    },
+    {
+      title: '活动结算价',
+      align: 'center',
+      dataIndex: 'prisce',
+    },
+    {
+      title: '活动库存',
       align: 'center',
       dataIndex: 'price',
     },
@@ -72,6 +96,7 @@ const EnrollSpecialGoods = (props) => {
 
   return (
     <TableDataBlock
+      order
       noCard={false}
       tableSize="small"
       scroll={{ y: 400 }}
@@ -79,7 +104,7 @@ const EnrollSpecialGoods = (props) => {
       loading={loading}
       searchItems={searchItems}
       columns={getColumns}
-      params={{ goodsTagId: 'id' }}
+      params={{ marketingActivityId: id }}
       rowKey={(row) => `${row.goodsId}`}
       dispatchType="marketActivity/fetchMarketActivityOfflineGoods"
       {...offlineGoods}

@@ -78,7 +78,7 @@ const EnrollCommerceGoods = (props) => {
       loading={loading}
       searchItems={searchItems}
       columns={getColumns}
-      params={{ goodsTagId: 'id' }}
+      params={{ marketingActivityId: 'id' }}
       rowKey={(row) => `${row.goodsId}`}
       dispatchType="marketActivity/fetchConfigGoodsList"
       {...onlineGoods}
