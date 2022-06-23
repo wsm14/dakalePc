@@ -52,7 +52,7 @@ const Index = (props) => {
     {
       label: '优惠券',
       name: 'deductFee',
-      render: (val = [], row) => {
+      render: (val) => {
         const num = val
           .reduce((preValue, curValue) => preValue + Number(curValue.reduceFee), 0)
           .toFixed(2);
