@@ -169,7 +169,7 @@ const GroupGoodsConfig = (props) => {
         visible={visible}
         closeSumbit={false}
         showTag={['commerceGoods']}
-        disabled={(row) => row.paymentModeType !== "cashMode"}
+        searchParams={{ paymentModeType: 'cashMode' }} // 纯现金支付
         onClose={() => setVisible(false)}
         onSumbit={({ keys }) => {
           const list = keys.map((item) => ({ goodsId: item }));

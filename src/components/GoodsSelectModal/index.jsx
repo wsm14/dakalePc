@@ -50,7 +50,7 @@ const GoodsSelectModal = (props) => {
         setSelectItem({ keys: newData.map((i) => i.goodsId || i), list: newData });
       }
       // 默认搜索值
-      if (Object.keys(searchParams).length) setSearchValue(searchParams);
+      if (Object.keys(searchParams).length) setSearchValue({ ...searchParams, page: 1 });
     }
   }, [visible]);
 
@@ -166,7 +166,7 @@ const GoodsSelectModal = (props) => {
       {searchItems.filter((i) => i.show).length > 0 && !hiddenSearch && (
         <SearchCondition
           searchItems={searchItems}
-          handleSearch={(val) => setSearchValue({ ...searchParams, ...val })}
+          handleSearch={(val) => setSearchValue({ ...searchParams, ...val, page: 1 })}
         ></SearchCondition>
       )}
       <Tabs destroyInactiveTabPane onChange={setTabKey} type="card" style={{ overflow: 'initial' }}>

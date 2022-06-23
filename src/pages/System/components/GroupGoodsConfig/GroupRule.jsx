@@ -58,7 +58,7 @@ const GroupRule = (props) => {
     title: '选择成团人数',
     visible: show,
     onClose,
-    zIndex: 1010,
+    zIndex: 1001,
     footer: (
       <Button type="primary" loading={loading} onClick={handleSave}>
         确认
