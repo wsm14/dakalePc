@@ -156,12 +156,12 @@ const GoodsOrders = (props) => {
     {
       title: '平台券',
       align: 'center',
-      dataIndex: 'deductFeeObject',
+      dataIndex: 'deductFee',
       render: (val) =>
         val ? (
           <>
             <div>{`${val[0]?.reduceFee || 0}元${val[0]?.deductTypeName || ''}`}</div>
-            <div>{val[0]?.platformCouponId || ''}</div>
+            <div>{val[0]?.couponCode || ''}</div>
           </>
         ) : (
           '-'
