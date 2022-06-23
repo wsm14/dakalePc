@@ -430,13 +430,7 @@ const OrderDetailDraw = (props) => {
                     type="quest"
                   ></QuestionTooltip>
                 </span>
-                <span>
-                  ￥
-                  {`${(
-                    Number(divisionParam?.commission) + Number(divisionParam?.darenBean / 100)
-                  ).toFixed(2)}`}
-                  (含{divisionParam?.beanCommission}卡豆)
-                </span>
+                <span>￥{`${divisionParam?.commission}`}</span>
               </div>
             )}
             {tabkey !== 'communityGoods' && (
