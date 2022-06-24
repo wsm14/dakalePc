@@ -140,9 +140,10 @@ const SupplyInfoFormItem = (props) => {
                 ruleTypeArr.includes('discount') && (
                   <>
                     <div>活动折扣不可高于{discountMax}折</div>
-                    {paymentModeType !== 'self' && formDiscount !== 0 && (
+                    {formDiscount !== 0 && (
                       <div>
-                        折后价：￥{formSellPrice} 折后结算价：￥{formSettlePrice}
+                        {paymentModeType !== 'self' && `折后价:￥${formSellPrice} `}
+                        折后结算价:{formSettlePrice}
                       </div>
                     )}
                   </>
