@@ -3,6 +3,7 @@ import update from 'immutability-helper';
 import { Form, Badge, InputNumber } from 'antd';
 import { ELECTRICGOODS_SELL_PRICE_TYPE } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
+import SkuListForm from '../SkuListForm';
 import './index.less';
 
 // 补充信息表单
@@ -139,103 +140,124 @@ const SupplyInfoFormItem = (props) => {
               )}
             </div>
           </div>
-          {/* 表单 */}
-          <div className="supplyInfoFormItem_form">
-            <Form.Item
-              label="活动折扣"
-              name={[index, 'discount']}
-              rules={[{ required: true, message: '请输入活动折扣' }]}
-              extra={
-                ruleTypeArr.includes('discount') && (
-                  <>
-                    <div>活动折扣不可高于{discountMax}折</div>
-                    {formDiscount !== 0 && (
-                      <div>
-                        {paymentModeType !== 'self' && `折后价:￥${formSellPrice} `}
-                        折后结算价:{formSettlePrice}
-                      </div>
-                    )}
-                  </>
-                )
-              }
-            >
-              <InputNumber
-                min={0}
-                precision={0}
-                max={discountMax}
-                addonAfter={'折'}
-                placeholder="请输入活动折扣"
-                onChange={(val) => {
-                  updateData({
-                    activitySellBean: Math.trunc((val * sellBean) / 10),
-                    activitySellPrice: countPrice(val * sellPrice),
-                    activitySettlePrice: countPrice(val * settlePrice),
-                  });
-                }}
-              ></InputNumber>
-            </Form.Item>
-            <Form.Item required label="活动售价(卡豆)" hidden={paymentModeType !== 'self'}>
+          {/* 表单 特惠商品 */}
+          {goodsType === 'specialGoods' && (
+            <div className="supplyInfoFormItem_form">
               <Form.Item
-                noStyle
-                name={[index, 'activitySellBean']}
-                rules={[
-                  { required: true, message: '请输入活动售价(卡豆)' },
-                  {
-                    validator: (_, value) => checkPrice(value, 'bean'),
-                  },
-                ]}
+                label="活动折扣"
+                name={[index, 'discount']}
+                rules={[{ required: true, message: '请输入活动折扣' }]}
+                extra={
+                  ruleTypeArr.includes('discount') && (
+                    <>
+                      <div>活动折扣不可高于{discountMax}折</div>
+                      {formDiscount !== 0 && (
+                        <div>
+                          {paymentModeType !== 'self' && `折后价:￥${formSellPrice} `}
+                          折后结算价:{formSettlePrice}
+                        </div>
+                      )}
+                    </>
+                  )
+                }
               >
                 <InputNumber
                   min={0}
-                  max={
-                    countPrice(formDiscount * sellPrice) * 100 +
-                    Math.trunc((formDiscount * sellBean) / 10)
-                  }
                   precision={0}
-                  style={{ width: 100 }}
-                  onChange={(e) => {
-                    const maxPrice =
-                      countPrice(formDiscount * sellPrice) * 100 +
-                      Math.trunc((formDiscount * sellBean) / 10);
+                  max={discountMax}
+                  addonAfter={'折'}
+                  placeholder="请输入活动折扣"
+                  onChange={(val) => {
                     updateData({
-                      activitySellPrice: (maxPrice - e) / 100,
+                      activitySellBean: Math.trunc((val * sellBean) / 10),
+                      activitySellPrice: countPrice(val * sellPrice),
+                      activitySettlePrice: countPrice(val * settlePrice),
                     });
                   }}
                 ></InputNumber>
-              </Form.Item>{' '}
-              活动零售价:{' '}
+              </Form.Item>
+              <Form.Item required label="活动售价(卡豆)" hidden={paymentModeType !== 'self'}>
+                <Form.Item
+                  noStyle
+                  name={[index, 'activitySellBean']}
+                  rules={[
+                    { required: true, message: '请输入活动售价(卡豆)' },
+                    {
+                      validator: (_, value) => checkPrice(value, 'bean'),
+                    },
+                  ]}
+                >
+                  <InputNumber
+                    min={0}
+                    max={
+                      countPrice(formDiscount * sellPrice) * 100 +
+                      Math.trunc((formDiscount * sellBean) / 10)
+                    }
+                    precision={0}
+                    style={{ width: 100 }}
+                    onChange={(e) => {
+                      const maxPrice =
+                        countPrice(formDiscount * sellPrice) * 100 +
+                        Math.trunc((formDiscount * sellBean) / 10);
+                      updateData({
+                        activitySellPrice: (maxPrice - e) / 100,
+                      });
+                    }}
+                  ></InputNumber>
+                </Form.Item>{' '}
+                活动零售价:{' '}
+                <Form.Item
+                  noStyle
+                  name={[index, 'activitySellPrice']}
+                  rules={[{ required: true, message: '请输入活动零售价' }]}
+                >
+                  <InputNumber
+                    min={0}
+                    precision={2}
+                    style={{ width: 100 }}
+                    onChange={() => {
+                      form.validateFields([[goodsType, index, 'activitySellBean']]);
+                    }}
+                  />
+                </Form.Item>
+                {/* 活动结算价 */}
+                <Form.Item noStyle hidden name={[index, 'activitySettlePrice']}>
+                  <InputNumber min={0} precision={2} style={{ width: 100 }} />
+                </Form.Item>
+              </Form.Item>
               <Form.Item
-                noStyle
-                name={[index, 'activitySellPrice']}
-                rules={[{ required: true, message: '请输入活动零售价' }]}
+                label="活动库存"
+                name={[index, 'activityTotal']}
+                rules={[{ required: true, message: '请输入活动售卖库存' }]}
               >
                 <InputNumber
                   min={0}
-                  precision={2}
-                  style={{ width: 100 }}
-                  onChange={() => {
-                    form.validateFields([[goodsType, index, 'activitySellBean']]);
-                  }}
-                />
+                  precision={0}
+                  style={{ width: 220 }}
+                  placeholder="请输入活动售卖库存"
+                ></InputNumber>
               </Form.Item>
-              {/* 活动结算价 */}
-              <Form.Item noStyle hidden name={[index, 'activitySettlePrice']}>
-                <InputNumber min={0} precision={2} style={{ width: 100 }} />
-              </Form.Item>
-            </Form.Item>
-            <Form.Item
-              label="活动库存"
-              name={[index, 'activityTotal']}
-              rules={[{ required: true, message: '请输入活动售卖库存' }]}
-            >
-              <InputNumber
-                min={0}
-                precision={0}
-                style={{ width: 220 }}
-                placeholder="请输入活动售卖库存"
-              ></InputNumber>
-            </Form.Item>
-          </div>
+            </div>
+          )}
+          {goodsType === 'commerceGoods' && (
+            <div className="supplyInfoFormItem_form">
+              <Form.List name={[index, 'skuList']}>
+                {(fields) =>
+                  fields.map((field, indexNum) => (
+                    <SkuListForm
+                      form={form}
+                      pIndex={indexNum}
+                      index={index}
+                      key={field.key}
+                      ruleTypeArr={typeArr}
+                      goodsType={goodsType}
+                      discountMax={discountMax}
+                    />
+                  ))
+                }
+              </Form.List>
+            </div>
+          )}
         </div>
       </Badge.Ribbon>
     </div>

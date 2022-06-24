@@ -17,6 +17,7 @@ const CommerceGoods = (props) => {
     selectType,
     selectItem,
     handleSelectItem,
+    rowSelection,
     disabled,
     loading,
     loadingProps,
@@ -113,6 +114,8 @@ const CommerceGoods = (props) => {
             console.log(`selectedRowKeys:`, selectedRowKeys, 'selectedRows: ', selectedRows);
             handleSelectItem(selectedRowKeys, selectedRows);
           },
+          // 外部传递 选择配置 覆盖当前配置 主要用于外部校验
+          ...(rowSelection ? rowSelection({ selectItem, setSelectItem: handleSelectItem }) : {}),
         }}
         rowKey={(row) => `${row.goodsId}`}
         dispatchType="publicModels/fetchListOnlineGoodsByPage"
