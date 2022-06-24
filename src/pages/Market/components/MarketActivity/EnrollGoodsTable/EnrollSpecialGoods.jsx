@@ -129,6 +129,7 @@ const EnrollSpecialGoods = (props) => {
           onSubmit={(number) =>
             fetchUpdateRemain({
               ownerId: row.ownerId,
+              goodsId: row.goodsId,
               marketingActivityId: id,
               goodsType: 'specialGoods',
               skuList: [
