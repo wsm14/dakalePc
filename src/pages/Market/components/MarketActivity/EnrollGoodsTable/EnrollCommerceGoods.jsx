@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
+import EditCGoodsRemainModal from '../EditCGoodsRemainModal';
 
 // 电商品
 const EnrollCommerceGoods = (props) => {
   const { dispatch, id, tableRef, onlineGoods, classifyList, loading } = props;
+
+  const [visibleEdit, setVisibleEdit] = useState(false);
 
   useEffect(() => {
     fetchGetGoodsClassify();
@@ -91,7 +94,9 @@ const EnrollCommerceGoods = (props) => {
       render: (val, row) => (
         <>
           {checkKeyMaxMin({ key: 'activityRemain', data: row.skuList })}
-          <Button type="link">查看</Button>
+          <Button type="link" onClick={() => hanldeOpenEdit(row)}>
+            修改
+          </Button>
         </>
       ),
     },
@@ -100,9 +105,15 @@ const EnrollCommerceGoods = (props) => {
   const tabPriceShow = (key, row) => (
     <>
       {checkKeyMaxMin({ key, data: row.skuList, payType: row.payType })}
-      <Button type="link">查看</Button>
+      <Button type="link" onClick={() => hanldeOpenEdit(row)}>
+        查看
+      </Button>
     </>
   );
+
+  const hanldeOpenEdit = (detail = {}) => {
+    setVisibleEdit({ show: true, detail: { marketingActivityId: id, ...detail } });
+  };
 
   /**
    * sku数据回显处理
@@ -169,6 +180,11 @@ const EnrollCommerceGoods = (props) => {
         dispatchType="marketActivity/fetchMarketActivityOnlineGoods"
         {...onlineGoods}
       ></TableDataBlock>
+      <EditCGoodsRemainModal
+        tableRef={tableRef}
+        visible={visibleEdit}
+        onClose={() => setVisibleEdit(false)}
+      ></EditCGoodsRemainModal>
     </div>
   );
 };
