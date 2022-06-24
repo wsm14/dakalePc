@@ -229,6 +229,14 @@ const OrderDetailDraw = (props) => {
     },
   ];
 
+  //退款信息
+  const refundItem = [
+    {
+      label: '退款原因',
+      name: 'refundReason',
+    },
+  ];
+
   const orderImgItem = [
     {
       name:
@@ -347,6 +355,14 @@ const OrderDetailDraw = (props) => {
           initialValues={detail}
           column={2}
         ></DescriptionsCondition>
+        {detail.refundReason && (
+          <DescriptionsCondition
+            title="退款信息"
+            labelStyle={{ width: 120 }}
+            formItems={refundItem}
+            initialValues={detail}
+          ></DescriptionsCondition>
+        )}
         <div
           style={{
             display: 'flex',
@@ -375,21 +391,25 @@ const OrderDetailDraw = (props) => {
                 优惠合计 <DownOutlined />
               </span>
               <span>
-                {detail.deductFeeObject ? `￥${detail.deductFeeObject[0].reduceFee}` : `￥0`}
+                {detail?.deductFee
+                  ? `-￥${detail.deductFee
+                      .reduce((preValue, curValue) => preValue + Number(curValue.reduceFee), 0)
+                      .toFixed(2)}`
+                  : `￥0`}
               </span>
             </div>
+            {/* 优惠的券 */}
             {isShow && (
               <div>
-                <div className={styles.detail_last_div}>
-                  <span>抵扣券</span>
-                  <span>{detail.reduceFee ? `￥${detail.reduceFee}` : 0}</span>
-                </div>
-                <div className={styles.detail_last_div}>
-                  <span>平台券</span>
-                  <span>
-                    {detail.deductFeeObject ? `￥${detail.deductFeeObject[0].reduceFee}` : `￥0`}
-                  </span>
-                </div>
+                {detail?.deductFee &&
+                  detail.deductFee.map((item) => {
+                    return (
+                      <div key={item} className={styles.detail_last_div}>
+                        <span>{item.deductTypeName}</span>
+                        <span>{`-￥${item.reduceFee}`}</span>
+                      </div>
+                    );
+                  })}
               </div>
             )}
             <div className={styles.detail_last_div} style={{ color: '#333' }}>
@@ -430,13 +450,7 @@ const OrderDetailDraw = (props) => {
                     type="quest"
                   ></QuestionTooltip>
                 </span>
-                <span>
-                  ￥
-                  {`${(
-                    Number(divisionParam?.commission) + Number(divisionParam?.darenBean / 100)
-                  ).toFixed(2)}`}
-                  (含{divisionParam?.beanCommission}卡豆)
-                </span>
+                <span>￥{`${divisionParam?.commission || 0}`}</span>
               </div>
             )}
             {tabkey !== 'communityGoods' && (

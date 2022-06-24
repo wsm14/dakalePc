@@ -132,12 +132,12 @@ const CommerceGoods = (props) => {
     {
       title: '平台券',
       align: 'center',
-      dataIndex: 'deductFeeObject',
+      dataIndex: 'deductFee',
       render: (val) =>
-        val ? (
+        Object.keys(val).length > 0 ? (
           <>
             <div>{`${val[0]?.reduceFee || 0}元${val[0]?.deductTypeName || ''}`}</div>
-            <div>{val[0]?.platformCouponId || ''}</div>
+            <div>{val[0]?.couponCode || ''}</div>
           </>
         ) : (
           '-'
@@ -343,7 +343,7 @@ const CommerceGoods = (props) => {
 
 export default connect(({ ordersList, baseData, loading }) => ({
   loadings: loading,
-  ordersList,
+  ordersList: ordersList.newList,
   hubData: baseData.hubData,
   loading: loading.effects['ordersList/fetchPageListOrdersList'],
 }))(CommerceGoods);
