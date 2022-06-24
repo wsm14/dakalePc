@@ -297,7 +297,8 @@ const OrderDetailDraw = (props) => {
       <DrawerCondition {...modalProps}>
         {/* 券码 */}
         {(orderStatusCheck || (status === '2' && orderCloseStatusCheck)) &&
-          tabkey !== 'communityGoods' && (
+          tabkey !== 'communityGoods' &&
+          orderGoodsVerificationInfoList.length > 0 && (
             <div style={{ fontWeight: 'bold', fontSize: '16px', lineHeight: '50px' }}>券码</div>
           )}
         {orderGoodsVerificationInfoList.map((item) => (
