@@ -6,6 +6,7 @@ import {
   fetchMarketActivityDown,
   fetchMarketActivityList,
   fetchMarketActivityDetail,
+  fetchMarketActivityCheckGoods,
   fetchMarketActivityOnlineGoods,
   fetchMarketActivityOfflineGoods,
 } from '@/services/MarketServices';
@@ -106,6 +107,11 @@ export default {
         message: '温馨提示',
         description: '活动下架成功',
       });
+      callback();
+    },
+    *fetchMarketActivityCheckGoods({ payload, callback }, { call }) {
+      const response = yield call(fetchMarketActivityCheckGoods, payload);
+      if (!response) return;
       callback();
     },
   },

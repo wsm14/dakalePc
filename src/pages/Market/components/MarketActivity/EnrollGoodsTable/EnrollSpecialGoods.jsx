@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
-import { ELECTRICGOODS_STATUS } from '@/common/constant';
 import { BUSINESS_TYPE, BUSINESS_SALE_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';

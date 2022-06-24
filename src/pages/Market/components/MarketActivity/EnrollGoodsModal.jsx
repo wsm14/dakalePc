@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { connect } from 'umi';
 import { Modal, Card } from 'antd';
 import ExtraButton from '@/components/ExtraButton';
 import GoodsSelectModal from '@/components/GoodsSelectModal';
+import SupplyInfoDrawer from './SupplyInfoDrawer';
 import EnrollSpecialGoods from './EnrollGoodsTable/EnrollSpecialGoods';
 import EnrollCommerceGoods from './EnrollGoodsTable/EnrollCommerceGoods';
 
@@ -18,23 +20,64 @@ const tabList = [
 
 // 报名商品
 const EnrollGoodsModal = (props) => {
-  const { visible, onClose } = props;
-  const { show = false, id, name } = visible;
+  const { visible, dispatch, onClose, loading } = props;
+  const { show = false, detail = {} } = visible;
+  const { marketingActivityId, activityName } = detail;
 
   const [tabKey, setTabKey] = useState('specialGoods');
-  const [visibleDrawer, setVisibleDrawer] = useState(false);
+  const [visibleInfo, setVisibleInfo] = useState(false); // 补充信息
+  const [visibleSelect, setVisibleSelect] = useState(false); // 选择弹窗
+
+  // 选择校验
+  const handleSelectRowCheck = ({ selectItem, setSelectItem }) => {
+    return {
+      hideSelectAll: true, // 隐藏全选
+      onChange: () => {}, // 覆盖原本选择方法
+      onSelect: (record, selected) => {
+        const { goodsId } = record;
+        const { keys = [], list = [] } = selectItem;
+        // 选中
+        if (selected) {
+          fetchMarketActivityCheckGoods(record, () =>
+            setSelectItem([...keys, goodsId], [...list, record]),
+          );
+        } else {
+          // 取消选中
+          setSelectItem(
+            keys.filter((i) => i !== goodsId),
+            list.filter((i) => i.goodsId !== goodsId),
+          );
+        }
+      },
+    };
+  };
+
+  // 校验接口
+  const fetchMarketActivityCheckGoods = (row, callback) => {
+    const { goodsId, ownerId } = row;
+    dispatch({
+      type: 'marketActivity/fetchMarketActivityCheckGoods',
+      payload: {
+        goodsId,
+        ownerId,
+        goodsType: tabKey,
+        marketingActivityId,
+      },
+      callback,
+    });
+  };
 
   const btnList = [
     {
       text: '新增',
-      onClick: () => setVisibleDrawer({ show: true, mode: 'add' }),
+      onClick: () => setVisibleSelect(true),
     },
   ];
 
   return (
     <>
       <Modal
-        title={`报名商品 - ${name}`}
+        title={`报名商品 - ${activityName}`}
         width={1150}
         destroyOnClose
         footer={null}
@@ -49,33 +92,39 @@ const EnrollGoodsModal = (props) => {
           tabBarExtraContent={<ExtraButton list={btnList}></ExtraButton>}
         >
           {tabKey === 'specialGoods' ? (
-            // 特惠
-            <EnrollSpecialGoods id={id}></EnrollSpecialGoods>
+            <EnrollSpecialGoods id={marketingActivityId}></EnrollSpecialGoods> // 特惠
           ) : (
-            // 电商
-            <EnrollCommerceGoods id={id}></EnrollCommerceGoods>
+            <EnrollCommerceGoods id={marketingActivityId}></EnrollCommerceGoods> // 电商
           )}
         </Card>
       </Modal>
       {/* 商品选择页面 */}
       <GoodsSelectModal
-        visible={visibleDrawer}
+        visible={visibleSelect}
         showTag={[tabKey]}
+        loading={loading}
+        rowSelection={handleSelectRowCheck}
+        closeSumbit={false}
         onSumbit={({ list }) => {
-          fetchConfigGoodsSet(
-            'add',
-            list.map((i) => ({
-              goodsId: i.goodsId,
-              goodsType: i.activityType,
-              ownerId: i.ownerId,
-            })),
-            () => setVisibleDrawer(false),
-          );
+          setVisibleInfo({
+            show: true,
+            detail: { [tabKey]: list.map(({ discount, ...other }) => other) },
+          });
         }}
-        onClose={() => setVisibleDrawer(false)}
+        onClose={() => setVisibleSelect(false)}
       ></GoodsSelectModal>
+      {/* 补充信息 */}
+      <SupplyInfoDrawer
+        goodsType={tabKey}
+        activeDetail={detail}
+        visible={visibleInfo}
+        marketingActivityId={marketingActivityId}
+        onClose={() => setVisibleInfo(false)}
+      ></SupplyInfoDrawer>
     </>
   );
 };
 
-export default EnrollGoodsModal;
+export default connect(({ loading }) => ({
+  loading: loading.effects['marketActivity/fetchMarketActivityCheckGoods'],
+}))(EnrollGoodsModal);

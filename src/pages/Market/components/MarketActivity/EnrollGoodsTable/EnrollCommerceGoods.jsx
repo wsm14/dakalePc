@@ -6,7 +6,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 
 // 电商品
 const EnrollCommerceGoods = (props) => {
-  const { dispatch, onlineGoods, classifyList, loading } = props;
+  const { dispatch, id, onlineGoods, classifyList, loading } = props;
 
   const childRef = useRef();
 
@@ -98,7 +98,7 @@ const EnrollCommerceGoods = (props) => {
       loading={loading}
       searchItems={searchItems}
       columns={getColumns}
-      params={{ marketingActivityId: 'id' }}
+      params={{ marketingActivityId: id }}
       rowKey={(row) => `${row.goodsId}`}
       dispatchType="marketActivity/fetchMarketActivityOnlineGoods"
       {...onlineGoods}

@@ -120,6 +120,7 @@ const SearchCondition = (props) => {
           col = true,
           required = false,
           rules: rs = [],
+          show,
           ...other
         } = item;
         // 根据类型获取不同的表单组件

@@ -19,6 +19,7 @@ const CommerceGoods = (props) => {
     handleSelectItem,
     disabled,
     loading,
+    loadingProps,
   } = props;
 
   const tableRef = useRef(null);
@@ -93,7 +94,7 @@ const CommerceGoods = (props) => {
         noCard={false}
         firstFetch={false}
         cRef={tableRef}
-        loading={loading}
+        loading={loading || loadingProps}
         columns={getColumns}
         params={{
           status: 1,
