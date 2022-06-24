@@ -1,20 +1,23 @@
 import React from 'react';
 import { connect } from 'umi';
-import { Button, Form } from 'antd';
+import { Button, Form, Modal } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import SupplyInfoFormItem from './SupplyInfoFormItem';
+
+const { confirm } = Modal;
 
 // 补充信息
 const SupplyInfoDrawer = (props) => {
   const {
+    tableRef,
     loading,
     visible,
     dispatch,
-    childRef,
     goodsType,
     activeDetail,
     marketingActivityId,
     onClose,
+    onCloseSelect,
   } = props;
 
   const { show = false, detail = {} } = visible;
@@ -32,14 +35,50 @@ const SupplyInfoDrawer = (props) => {
 
   const handleUpData = () => {
     form.validateFields().then((value) => {
-      console.log(value);
-      return;
-      dispatch({
-        type: 'marketActivity/fetchMarketActivitySet',
-        payload: {},
-        callback: () => {
-          onClose();
-          childRef.current.fetchGetData();
+      const { specialGoods = [], commerceGoods = [] } = value;
+      confirm({
+        title: '提交后商品信息不可再修改，确定提交吗?',
+        zIndex: 1002,
+        onOk() {
+          dispatch({
+            type: 'marketActivity/fetchMarketActivityGoodsSave',
+            payload: {
+              activityType: goodsType,
+              marketingActivityId,
+              commerceGoods: commerceGoods.map(({ goodsId, ownerId, ownerType, skuList }) => ({
+                goodsId,
+                ownerId,
+                ownerType,
+                skuList,
+              })),
+              specialGoods: specialGoods.map(
+                ({
+                  goodsId,
+                  ownerId,
+                  discount,
+                  ownerType,
+                  activityTotal,
+                  activitySellBean,
+                  activitySellPrice,
+                  activitySettlePrice,
+                }) => ({
+                  goodsId,
+                  ownerId,
+                  discount,
+                  ownerType,
+                  activityTotal,
+                  activitySellBean,
+                  activitySellPrice,
+                  activitySettlePrice,
+                }),
+              ),
+            },
+            callback: () => {
+              tableRef.current.fetchGetData();
+              onClose();
+              onCloseSelect();
+            },
+          });
         },
       });
     });
@@ -51,9 +90,8 @@ const SupplyInfoDrawer = (props) => {
     visible: show,
     width: 550,
     onClose,
-    zIndex: 1010,
+    zIndex: 1001,
     afterCallBack: () => {
-      console.log(detail);
       form.setFieldsValue(detail);
     },
     footer: (
@@ -67,7 +105,7 @@ const SupplyInfoDrawer = (props) => {
     <DrawerCondition {...modalProps}>
       <Form form={form}>
         <Form.List name={goodsType}>
-          {(fields, { add, remove, move }, { errors }) =>
+          {(fields) =>
             fields.map((field, index) => (
               <SupplyInfoFormItem
                 form={form}
@@ -86,5 +124,5 @@ const SupplyInfoDrawer = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['marketActivity/fetchMarketActivitySet'],
+  loading: loading.effects['marketActivity/fetchMarketActivityGoodsSave'],
 }))(SupplyInfoDrawer);

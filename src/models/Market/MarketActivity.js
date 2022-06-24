@@ -6,9 +6,11 @@ import {
   fetchMarketActivityDown,
   fetchMarketActivityList,
   fetchMarketActivityDetail,
+  fetchMarketActivityGoodsSave,
   fetchMarketActivityCheckGoods,
   fetchMarketActivityOnlineGoods,
   fetchMarketActivityOfflineGoods,
+  fetchMarketActivityGoodsEditRemain,
 } from '@/services/MarketServices';
 
 export default {
@@ -113,6 +115,23 @@ export default {
       const response = yield call(fetchMarketActivityCheckGoods, payload);
       if (!response) return;
       callback();
+    },
+    *fetchMarketActivityGoodsSave({ payload, callback }, { call }) {
+      const response = yield call(fetchMarketActivityGoodsSave, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '添加成功',
+      });
+      callback();
+    },
+    *fetchMarketActivityGoodsEditRemain({ payload }, { call }) {
+      const response = yield call(fetchMarketActivityGoodsEditRemain, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '库存修改成功',
+      });
     },
   },
 };
