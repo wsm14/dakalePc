@@ -7,7 +7,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 
 // 特惠商品
 const EnrollSpecialGoods = (props) => {
-  const { dispatch, id, offlineGoods, tradeList, loading } = props;
+  const { dispatch, id, tableRef, offlineGoods, tradeList, loading } = props;
 
   const childRef = useRef();
 
@@ -122,7 +122,7 @@ const EnrollSpecialGoods = (props) => {
       noCard={false}
       tableSize="small"
       scroll={{ y: 400 }}
-      cRef={childRef}
+      cRef={tableRef}
       loading={loading}
       searchItems={searchItems}
       columns={getColumns}

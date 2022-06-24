@@ -6,6 +6,7 @@ import {
   fetchMarketActivityDown,
   fetchMarketActivityList,
   fetchMarketActivityDetail,
+  fetchMarketActivityGoodsSave,
   fetchMarketActivityCheckGoods,
   fetchMarketActivityOnlineGoods,
   fetchMarketActivityOfflineGoods,
@@ -112,6 +113,15 @@ export default {
     *fetchMarketActivityCheckGoods({ payload, callback }, { call }) {
       const response = yield call(fetchMarketActivityCheckGoods, payload);
       if (!response) return;
+      callback();
+    },
+    *fetchMarketActivityGoodsSave({ payload, callback }, { call }) {
+      const response = yield call(fetchMarketActivityGoodsSave, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '添加成功',
+      });
       callback();
     },
   },

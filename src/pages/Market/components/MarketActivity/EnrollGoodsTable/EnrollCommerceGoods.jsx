@@ -6,7 +6,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 
 // 电商品
 const EnrollCommerceGoods = (props) => {
-  const { dispatch, id, onlineGoods, classifyList, loading } = props;
+  const { dispatch, id, tableRef, onlineGoods, classifyList, loading } = props;
 
   const childRef = useRef();
 
@@ -94,7 +94,7 @@ const EnrollCommerceGoods = (props) => {
       noCard={false}
       tableSize="small"
       scroll={{ y: 400 }}
-      cRef={childRef}
+      cRef={tableRef}
       loading={loading}
       searchItems={searchItems}
       columns={getColumns}

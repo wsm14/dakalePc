@@ -33,7 +33,7 @@ const SupplyInfoFormItem = (props) => {
 
   // 计算价格
   const countPrice = (val) => {
-    return val / 10 < 0.001 ? 0 : val / 10;
+    return Number((val / 10 < 0.001 ? 0 : val / 10).toFixed(2));
   };
 
   // 售卖价格
@@ -64,10 +64,10 @@ const SupplyInfoFormItem = (props) => {
     } else {
       editDisPrice = formSellPrice * 100 + formSellBean;
     }
-    console.log(newDisPrice, editDisPrice);
     if (newDisPrice !== editDisPrice) {
       return Promise.reject(new Error(`卡豆+现金活动售价需等于当前售价*${formDiscount}折`));
     }
+    return Promise.resolve();
   };
 
   return (

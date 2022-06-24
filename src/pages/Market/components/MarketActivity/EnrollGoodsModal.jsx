@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import { Modal, Card } from 'antd';
 import ExtraButton from '@/components/ExtraButton';
@@ -24,6 +24,7 @@ const EnrollGoodsModal = (props) => {
   const { show = false, detail = {} } = visible;
   const { marketingActivityId, activityName } = detail;
 
+  const tableRef = useRef();
   const [tabKey, setTabKey] = useState('specialGoods');
   const [visibleInfo, setVisibleInfo] = useState(false); // 补充信息
   const [visibleSelect, setVisibleSelect] = useState(false); // 选择弹窗
@@ -92,9 +93,9 @@ const EnrollGoodsModal = (props) => {
           tabBarExtraContent={<ExtraButton list={btnList}></ExtraButton>}
         >
           {tabKey === 'specialGoods' ? (
-            <EnrollSpecialGoods id={marketingActivityId}></EnrollSpecialGoods> // 特惠
+            <EnrollSpecialGoods id={marketingActivityId} tableRef={tableRef}></EnrollSpecialGoods> // 特惠
           ) : (
-            <EnrollCommerceGoods id={marketingActivityId}></EnrollCommerceGoods> // 电商
+            <EnrollCommerceGoods id={marketingActivityId} tableRef={tableRef}></EnrollCommerceGoods> // 电商
           )}
         </Card>
       </Modal>
@@ -115,11 +116,13 @@ const EnrollGoodsModal = (props) => {
       ></GoodsSelectModal>
       {/* 补充信息 */}
       <SupplyInfoDrawer
+        tableRef={tableRef}
         goodsType={tabKey}
         activeDetail={detail}
         visible={visibleInfo}
         marketingActivityId={marketingActivityId}
         onClose={() => setVisibleInfo(false)}
+        onCloseSelect={() => setVisibleSelect(false)}
       ></SupplyInfoDrawer>
     </>
   );
