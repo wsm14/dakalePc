@@ -68,12 +68,26 @@ const EnrollGoodsModal = (props) => {
     });
   };
 
+  // 修改库存
+  const fetchUpdateRemain = (values) => {
+    dispatch({
+      type: 'marketActivity/fetchMarketActivityGoodsEditRemain',
+      payload: values,
+    });
+  };
+
   const btnList = [
     {
       text: '新增',
       onClick: () => setVisibleSelect(true),
     },
   ];
+
+  const tableProps = {
+    id: marketingActivityId,
+    tableRef,
+    fetchUpdateRemain,
+  };
 
   return (
     <>
@@ -93,9 +107,9 @@ const EnrollGoodsModal = (props) => {
           tabBarExtraContent={<ExtraButton list={btnList}></ExtraButton>}
         >
           {tabKey === 'specialGoods' ? (
-            <EnrollSpecialGoods id={marketingActivityId} tableRef={tableRef}></EnrollSpecialGoods> // 特惠
+            <EnrollSpecialGoods {...tableProps}></EnrollSpecialGoods> // 特惠
           ) : (
-            <EnrollCommerceGoods id={marketingActivityId} tableRef={tableRef}></EnrollCommerceGoods> // 电商
+            <EnrollCommerceGoods {...tableProps}></EnrollCommerceGoods> // 电商
           )}
         </Card>
       </Modal>

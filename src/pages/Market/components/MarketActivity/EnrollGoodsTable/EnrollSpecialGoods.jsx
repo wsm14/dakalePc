@@ -8,7 +8,7 @@ import NumberValueSet from '@/components/FormListCondition/NumberValueSet';
 
 // 特惠商品
 const EnrollSpecialGoods = (props) => {
-  const { dispatch, id, tableRef, offlineGoods, tradeList, loading } = props;
+  const { dispatch, id, tableRef, offlineGoods, tradeList, fetchUpdateRemain, loading } = props;
 
   useEffect(() => {
     fetchTradeList();
@@ -46,6 +46,7 @@ const EnrollSpecialGoods = (props) => {
     {
       title: '店铺名称',
       dataIndex: 'relateName',
+      width: 170,
       render: (val, row) => (
         <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
           <Tag color={TAG_COLOR_TYPE[val]}>{BUSINESS_TYPE[row.relateType]}</Tag>
@@ -58,13 +59,14 @@ const EnrollSpecialGoods = (props) => {
     {
       title: '参与活动商品名称/ID',
       dataIndex: 'goodsName',
+      width: 160,
       render: (val, row) => (
-        <div>
+        <>
           <Ellipsis length={13} tooltip>
             {val}
           </Ellipsis>
-          <div style={{ marginTop: 5 }}>{row.goodsId}</div>
-        </div>
+          <div>{row.goodsId}</div>
+        </>
       ),
     },
     {
@@ -81,6 +83,7 @@ const EnrollSpecialGoods = (props) => {
     {
       title: '当前售价',
       align: 'right',
+      width: 160,
       dataIndex: 'sellPrice',
       render: (val, row) =>
         `${
@@ -93,25 +96,19 @@ const EnrollSpecialGoods = (props) => {
       title: '当前商家结算价',
       align: 'right',
       dataIndex: 'settlePrice',
+      width: 120,
     },
     {
       title: '活动售价',
       align: 'right',
       dataIndex: 'activitySellPrice',
-      render: (val, row) => (
-        <>
-          <div>
-            {
-              {
-                defaultMode: val,
-                cashMode: val,
-                self: `${val}+${row.activitySellBean}`,
-                free: '免费',
-              }[row.payType]
-            }
-          </div>
-        </>
-      ),
+      render: (val, row) =>
+        ({
+          defaultMode: val,
+          cashMode: val,
+          self: `${val}+${row.activitySellBean}`,
+          free: '免费',
+        }[row.payType]),
     },
     {
       title: '活动结算价',
@@ -121,46 +118,49 @@ const EnrollSpecialGoods = (props) => {
     {
       title: '活动库存',
       align: 'right',
+      fixed: 'right',
       dataIndex: 'activityRemain',
       render: (val, row) => (
         <NumberValueSet
           value={val}
-          valueKey="activityRemain"
+          valueKey="activityTotal"
           loading={loading}
           inputProps={{ min: 0, precision: 0 }}
-          onSubmit={(number) => fetchUpdateRemain(number)}
+          onSubmit={(number) =>
+            fetchUpdateRemain({
+              ownerId: row.ownerId,
+              marketingActivityId: id,
+              goodsType: 'specialGoods',
+              skuList: [
+                {
+                  skuId: row.skuId,
+                  ...number,
+                },
+              ],
+            })
+          }
         ></NumberValueSet>
       ),
     },
   ];
 
-  // 修改库存
-  const fetchUpdateRemain = (values) => {
-    dispatch({
-      type: 'marketActivity/fetchMarketActivityGoodsEditRemain',
-      payload: {
-        ...values,
-        marketingActivityId: id,
-        goodsType: 'specialGoods',
-      },
-    });
-  };
-
   return (
-    <TableDataBlock
-      order
-      noCard={false}
-      cRef={tableRef}
-      loading={loading}
-      tableSize="small"
-      scroll={{ y: 400 }}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(row) => `${row.goodsId}`}
-      params={{ marketingActivityId: id }}
-      dispatchType="marketActivity/fetchMarketActivityOfflineGoods"
-      {...offlineGoods}
-    ></TableDataBlock>
+    <div style={{ width: 1050 }}>
+      <TableDataBlock
+        order
+        noCard={false}
+        cRef={tableRef}
+        loading={loading}
+        tableSize="small"
+        columns={getColumns}
+        searchItems={searchItems}
+        scroll={{ x: 1250, y: 400 }}
+        rowKey={(row) => `${row.goodsId}`}
+        params={{ marketingActivityId: id }}
+        dispatchType="marketActivity/fetchMarketActivityOfflineGoods"
+        {...offlineGoods}
+      ></TableDataBlock>
+    </div>
   );
 };
 

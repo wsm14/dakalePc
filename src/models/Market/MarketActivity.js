@@ -10,6 +10,7 @@ import {
   fetchMarketActivityCheckGoods,
   fetchMarketActivityOnlineGoods,
   fetchMarketActivityOfflineGoods,
+  fetchMarketActivityGoodsEditRemain,
 } from '@/services/MarketServices';
 
 export default {
