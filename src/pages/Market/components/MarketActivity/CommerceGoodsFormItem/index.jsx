@@ -32,19 +32,7 @@ const CommerceGoodsFormItem = (props) => {
           </div>
           <div className="supplyInfoFormItem_form">
             <Form.List name={[index, 'skuList']}>
-              {
-                (fields) => <SkuTableForm list={fields}></SkuTableForm>
-                // fields.map((field, indexNum) => (
-                //   <SkuTableForm
-                //     form={form}
-                //     pIndex={indexNum}
-                //     index={index}
-                //     key={field.key}
-                //     goodsType={goodsType}
-                //     discountMax={discountMax}
-                //   />
-                // ))
-              }
+              {(fields) => <SkuTableForm list={fields}></SkuTableForm>}
             </Form.List>
           </div>
         </div>
