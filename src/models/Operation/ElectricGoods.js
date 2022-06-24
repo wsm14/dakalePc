@@ -63,7 +63,7 @@ export default {
       const {
         skuInfoResps: skuInfoReqs = [],
         settleInfoResp: settleInfoReq = {},
-        platformTagIds = '',
+        platformTagIds,
         categoryNode,
         divisionParamInfoResp,
         ...other
@@ -104,10 +104,10 @@ export default {
       const data = {
         ...other,
         ...oneSku,
-        newSkuInfoReqs,
+        skuInfoReqs: newSkuInfoReqs,
         settleInfoReq,
         divisionParamInfoReq: divisionParamInfoResp,
-        platformTagIds: platformTagIds.split(','),
+        platformTagIds: platformTagIds && platformTagIds.split(','),
         categoryNode: categoryNode.split('.'),
         customSize: skuInfoReqs.length > 0 ? newAttributes : [],
       };
