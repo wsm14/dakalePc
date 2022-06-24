@@ -2,44 +2,98 @@ import React from 'react';
 import { Form, InputNumber } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 
+const FormItemInput = ({ name, label = '', inputProps = {} }) => {
+  return (
+    <Form.Item
+      label=""
+      name={name}
+      style={{ marginBottom: 0 }}
+      rules={[{ required: true, message: `请输入${label}` }]}
+    >
+      <InputNumber
+        min={0}
+        precision={0}
+        style={{ width: 100 }}
+        placeholder="请输入"
+        {...inputProps}
+      ></InputNumber>
+    </Form.Item>
+  );
+};
+
 // sku表单
 const SkuTableForm = (props) => {
-  const { list, pIndex, form, goodsType, discountMax } = props;
-
-  // const data = form.getFieldValue(goodsType)[index] || {};
+  const { skuList, paymentModeType, pIndex, form, goodsType, discountMax } = props;
 
   // table 表头
   const getColumns = [
     {
-      title: '模版名称',
-      fixed: 'left',
-      dataIndex: 'activityName',
+      title: 'SKU码',
+      dataIndex: 'skuCode',
     },
     {
-      title: '创建时间',
-      fixed: 'left',
-      dataIndex: 'createTime',
+      title: '规格值',
+      dataIndex: 'skuAttributeResps',
+      render: (val) => val.map((i) => `${i.name}:${i.value}`).join('\n'),
     },
     {
-      title: '创建人',
-      fixed: 'left',
-      dataIndex: 'creator',
+      title: '当前售价',
+      align: 'right',
+      dataIndex: 'sellPrice',
+      render: (val, row) =>
+        ({
+          defaultMode: `￥${val}`,
+          cashMode: `￥${val}`,
+          self: `￥${val}+${row.sellBean}卡豆`,
+          free: '免费',
+        }[paymentModeType]),
+    },
+    {
+      title: '当前结算价',
+      align: 'right',
+      dataIndex: 'settlePrice',
+      render: (val, row) => `￥${val}`,
+    },
+    {
+      title: '活动折扣（折）',
+      dataIndex: 'sellBean',
       render: (val, row, rowIndex) => (
-        <Form.Item
-          label=""
+        <FormItemInput
+          label="活动折扣"
           name={[rowIndex, 'discount']}
-          style={{ marginBottom: 0 }}
-          rules={[{ required: true, message: '请输入活动折扣' }]}
-        >
-          <InputNumber
-            min={0}
-            precision={0}
-            // max={discountMax}
-            addonAfter={'折'}
-            style={{ width: 120 }}
-            placeholder="请输入活动折扣"
-          ></InputNumber>
-        </Form.Item>
+          inputProps={{ max: discountMax }}
+        ></FormItemInput>
+      ),
+    },
+    {
+      title: '活动售价（卡豆）',
+      dataIndex: 'totalSellPrice',
+      render: (val, row, rowIndex) => (
+        <FormItemInput label="活动卡豆" name={[rowIndex, 'activitySellBean']}></FormItemInput>
+      ),
+    },
+    {
+      title: '活动零售价',
+      dataIndex: 'commission',
+      render: (val, row, rowIndex) => (
+        <FormItemInput
+          label="活动零售价"
+          name={[rowIndex, 'activitySellPrice']}
+          inputProps={{ precision: 2 }}
+        ></FormItemInput>
+      ),
+    },
+    {
+      title: '活动结算价',
+      align: 'right',
+      dataIndex: 'activitySettlePrice',
+      render: (val, row) => `￥${val}`,
+    },
+    {
+      title: '活动库存',
+      dataIndex: 'skuId',
+      render: (val, row, rowIndex) => (
+        <FormItemInput label="活动折扣" name={[rowIndex, 'activityTotal']}></FormItemInput>
       ),
     },
   ];
@@ -47,12 +101,12 @@ const SkuTableForm = (props) => {
   return (
     <div style={{ marginBottom: 16 }}>
       <TableDataBlock
-        list={list}
+        list={skuList}
         noCard={false}
         tableSize="small"
         pagination={false}
         columns={getColumns}
-        rowKey={(record) => `${record.activityTemplateId}`}
+        rowKey={(record) => `${record.skuId}`}
       ></TableDataBlock>
     </div>
   );

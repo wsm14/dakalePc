@@ -11,7 +11,7 @@ const CommerceGoodsFormItem = (props) => {
 
   const data = form.getFieldValue([goodsType, index]) || {};
 
-  const { paymentModeType, relateName, goodsImg, goodsName } = data;
+  const { paymentModeType, relateName, goodsImg, goodsName, skuList } = data;
 
   return (
     <div style={{ marginBottom: 16 }}>
@@ -32,7 +32,16 @@ const CommerceGoodsFormItem = (props) => {
           </div>
           <div className="supplyInfoFormItem_form">
             <Form.List name={[index, 'skuList']}>
-              {(fields) => <SkuTableForm list={fields}></SkuTableForm>}
+              {(fields) => (
+                <SkuTableForm
+                  form={form}
+                  pIndex={index}
+                  key={fields.key}
+                  skuList={skuList}
+                  discountMax={discountMax}
+                  paymentModeType={paymentModeType}
+                ></SkuTableForm>
+              )}
             </Form.List>
           </div>
         </div>

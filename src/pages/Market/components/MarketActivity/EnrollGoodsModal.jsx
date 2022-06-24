@@ -125,9 +125,9 @@ const EnrollGoodsModal = (props) => {
           setVisibleInfo({
             show: true,
             detail: {
-              [tabKey]: list.map(({ discount, ...other }) => ({
+              [tabKey]: list.map(({ discount, skuManagerResps = [], ...other }) => ({
                 ...other,
-                skuList: [{ a: 1 }, { a: 2 }],
+                skuList: skuManagerResps,
               })),
             },
           });
