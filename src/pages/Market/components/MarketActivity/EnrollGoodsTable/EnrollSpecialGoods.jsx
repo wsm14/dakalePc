@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
 import { BUSINESS_TYPE, BUSINESS_SALE_TYPE } from '@/common/constant';
@@ -8,8 +8,6 @@ import TableDataBlock from '@/components/TableDataBlock';
 // 特惠商品
 const EnrollSpecialGoods = (props) => {
   const { dispatch, id, tableRef, offlineGoods, tradeList, loading } = props;
-
-  const childRef = useRef();
 
   useEffect(() => {
     fetchTradeList();
