@@ -124,5 +124,13 @@ export default {
       });
       callback();
     },
+    *fetchMarketActivityGoodsEditRemain({ payload }, { call }) {
+      const response = yield call(fetchMarketActivityGoodsEditRemain, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '库存修改成功',
+      });
+    },
   },
 };

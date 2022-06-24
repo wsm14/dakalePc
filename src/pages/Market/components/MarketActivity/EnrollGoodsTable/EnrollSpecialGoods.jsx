@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
-import { BUSINESS_TYPE, BUSINESS_SALE_TYPE } from '@/common/constant';
+import { BUSINESS_TYPE, BUSINESS_SALE_TYPE, TAG_COLOR_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
+import NumberValueSet from '@/components/FormListCondition/NumberValueSet';
 
 // 特惠商品
 const EnrollSpecialGoods = (props) => {
@@ -47,7 +48,7 @@ const EnrollSpecialGoods = (props) => {
       dataIndex: 'relateName',
       render: (val, row) => (
         <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-          <Tag>{BUSINESS_TYPE[row.relateType]}</Tag>
+          <Tag color={TAG_COLOR_TYPE[val]}>{BUSINESS_TYPE[row.relateType]}</Tag>
           <Ellipsis tooltip length={8} style={{ marginLeft: 5 }}>
             {val}
           </Ellipsis>
@@ -97,10 +98,20 @@ const EnrollSpecialGoods = (props) => {
       title: '活动售价',
       align: 'right',
       dataIndex: 'activitySellPrice',
-      render: (val, row) =>
-        ({ defaultMode: val, cashMode: val, self: `${val}+${row.activitySellBean}`, free: '免费' }[
-          row.payType
-        ]),
+      render: (val, row) => (
+        <>
+          <div>
+            {
+              {
+                defaultMode: val,
+                cashMode: val,
+                self: `${val}+${row.activitySellBean}`,
+                free: '免费',
+              }[row.payType]
+            }
+          </div>
+        </>
+      ),
     },
     {
       title: '活动结算价',
@@ -111,21 +122,42 @@ const EnrollSpecialGoods = (props) => {
       title: '活动库存',
       align: 'right',
       dataIndex: 'activityRemain',
+      render: (val, row) => (
+        <NumberValueSet
+          value={val}
+          valueKey="activityRemain"
+          loading={loading}
+          inputProps={{ min: 0, precision: 0 }}
+          onSubmit={(number) => fetchUpdateRemain(number)}
+        ></NumberValueSet>
+      ),
     },
   ];
+
+  // 修改库存
+  const fetchUpdateRemain = (values) => {
+    dispatch({
+      type: 'marketActivity/fetchMarketActivityGoodsEditRemain',
+      payload: {
+        ...values,
+        marketingActivityId: id,
+        goodsType: 'specialGoods',
+      },
+    });
+  };
 
   return (
     <TableDataBlock
       order
       noCard={false}
-      tableSize="small"
-      scroll={{ y: 400 }}
       cRef={tableRef}
       loading={loading}
-      searchItems={searchItems}
+      tableSize="small"
+      scroll={{ y: 400 }}
       columns={getColumns}
-      params={{ marketingActivityId: id }}
+      searchItems={searchItems}
       rowKey={(row) => `${row.goodsId}`}
+      params={{ marketingActivityId: id }}
       dispatchType="marketActivity/fetchMarketActivityOfflineGoods"
       {...offlineGoods}
     ></TableDataBlock>
@@ -135,5 +167,7 @@ const EnrollSpecialGoods = (props) => {
 export default connect(({ sysTradeList, marketActivity, loading }) => ({
   tradeList: sysTradeList.list.list,
   offlineGoods: marketActivity.offlineGoods,
-  loading: loading.effects['marketActivity/fetchMarketActivityOfflineGoods'],
+  loading:
+    loading.effects['marketActivity/fetchMarketActivityOfflineGoods'] ||
+    loading.effects['marketActivity/fetchMarketActivityGoodsEditRemain'],
 }))(EnrollSpecialGoods);

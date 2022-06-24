@@ -7,7 +7,7 @@ import PopImgShow from '@/components/PopImgShow';
 import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import GoodsSelectModal from '@/components/GoodsSelectModal';
-import SortValueSet from '@/components/FormListCondition/SortValueSet';
+import NumberValueSet from '@/components/FormListCondition/NumberValueSet';
 import GroupRule from './GroupRule';
 
 const GroupGoodsConfig = (props) => {
@@ -75,7 +75,7 @@ const GroupGoodsConfig = (props) => {
       dataIndex: 'sort',
       render: (val, row) => (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <SortValueSet
+          <NumberValueSet
             value={val}
             valueKey="sort"
             loading={loading}
@@ -86,7 +86,7 @@ const GroupGoodsConfig = (props) => {
                 togetherGroupConfigId: row.togetherGroupConfigId,
               })
             }
-          ></SortValueSet>
+          ></NumberValueSet>
         </div>
       ),
     },
