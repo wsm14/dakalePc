@@ -18,7 +18,7 @@ const tabList = [
   },
 ];
 
-// 报名商品
+// 报名商品 - 展示弹窗
 const EnrollGoodsModal = (props) => {
   const { visible, dispatch, onClose, loading } = props;
   const { show = false, detail = {} } = visible;
@@ -124,7 +124,12 @@ const EnrollGoodsModal = (props) => {
         onSumbit={({ list }) => {
           setVisibleInfo({
             show: true,
-            detail: { [tabKey]: list.map(({ discount, ...other }) => other) },
+            detail: {
+              [tabKey]: list.map(({ discount, ...other }) => ({
+                ...other,
+                skuList: [{ a: 1 }, { a: 2 }],
+              })),
+            },
           });
         }}
         onClose={() => setVisibleSelect(false)}

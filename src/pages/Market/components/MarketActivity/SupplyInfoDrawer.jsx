@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'umi';
 import { Button, Form, Modal } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
-import SupplyInfoFormItem from './SupplyInfoFormItem';
+import SpecialGoodsFormItem from './SpecialGoodsFormItem';
+import CommerceGoodsFormItem from './CommerceGoodsFormItem';
 
 const { confirm } = Modal;
 
@@ -88,7 +89,7 @@ const SupplyInfoDrawer = (props) => {
   const modalProps = {
     title: `补充信息 - ${activityName}`,
     visible: show,
-    width: 550,
+    width: { specialGoods: 550, commerceGoods: 750 }[goodsType],
     onClose,
     zIndex: 1001,
     afterCallBack: () => {
@@ -106,16 +107,33 @@ const SupplyInfoDrawer = (props) => {
       <Form form={form}>
         <Form.List name={goodsType}>
           {(fields) =>
-            fields.map((field, index) => (
-              <SupplyInfoFormItem
-                form={form}
-                index={index}
-                key={field.key}
-                ruleTypeArr={typeArr}
-                goodsType={goodsType}
-                discountMax={discountMax}
-              />
-            ))
+            fields.map(
+              (field, index) =>
+                ({
+                  specialGoods: (
+                    // 特惠商品
+                    <SpecialGoodsFormItem
+                      form={form}
+                      index={index}
+                      key={field.key}
+                      ruleTypeArr={typeArr}
+                      goodsType={goodsType}
+                      discountMax={discountMax}
+                    />
+                  ),
+                  commerceGoods: (
+                    // 电商品
+                    <CommerceGoodsFormItem
+                      form={form}
+                      index={index}
+                      key={field.key}
+                      ruleTypeArr={typeArr}
+                      goodsType={goodsType}
+                      discountMax={discountMax}
+                    />
+                  ),
+                }[goodsType]),
+            )
           }
         </Form.List>
       </Form>

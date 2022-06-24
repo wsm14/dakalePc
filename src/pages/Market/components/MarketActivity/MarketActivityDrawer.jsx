@@ -5,6 +5,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 import MarketActivityDetail from './Deatil/MarketActivityDetail';
 import MarketActivityBaseForm from './Form/BaseForm';
 
+// 查看 修改 新增活动
 const MarketActivityDrawer = (props) => {
   const { dispatch, visible, childRef, onClose, loading } = props;
 
