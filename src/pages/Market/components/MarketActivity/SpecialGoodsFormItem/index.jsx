@@ -52,18 +52,12 @@ const SpecialGoodsFormItem = (props) => {
   };
 
   // 校验价格是否相等折扣
-  const checkPrice = (val, type) => {
+  const checkPrice = (val) => {
     // 当前折扣后价格
     const newDisPrice =
       countPrice(formDiscount * sellPrice) * 100 + Math.trunc((formDiscount * sellBean) / 10);
     // 修改后折扣价格
-    let editDisPrice = 0;
-
-    if (type === 'bean') {
-      editDisPrice = formSellPrice * 100 + val;
-    } else {
-      editDisPrice = formSellPrice * 100 + formSellBean;
-    }
+    const editDisPrice = val * 100 + formSellBean;
     if (newDisPrice !== editDisPrice) {
       return Promise.reject(new Error(`卡豆+现金活动售价需等于当前售价*${formDiscount}折`));
     }
@@ -167,12 +161,7 @@ const SpecialGoodsFormItem = (props) => {
               <Form.Item
                 noStyle
                 name={[index, 'activitySellBean']}
-                rules={[
-                  { required: true, message: '请输入活动售价(卡豆)' },
-                  {
-                    validator: (_, value) => checkPrice(value, 'bean'),
-                  },
-                ]}
+                rules={[{ required: true, message: '请输入活动售价(卡豆)' }]}
               >
                 <InputNumber
                   min={0}
@@ -196,16 +185,14 @@ const SpecialGoodsFormItem = (props) => {
               <Form.Item
                 noStyle
                 name={[index, 'activitySellPrice']}
-                rules={[{ required: true, message: '请输入活动零售价' }]}
+                rules={[
+                  { required: true, message: '请输入活动零售价' },
+                  {
+                    validator: (_, value) => checkPrice(value),
+                  },
+                ]}
               >
-                <InputNumber
-                  min={0}
-                  precision={2}
-                  style={{ width: 100 }}
-                  onChange={() => {
-                    form.validateFields([[goodsType, index, 'activitySellBean']]);
-                  }}
-                />
+                <InputNumber min={0} precision={2} style={{ width: 100 }} />
               </Form.Item>
               {/* 活动结算价 */}
               <Form.Item noStyle hidden name={[index, 'activitySettlePrice']}>

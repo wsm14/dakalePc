@@ -34,10 +34,12 @@ const CommerceGoodsFormItem = (props) => {
             <Form.List name={[index, 'skuList']}>
               {(fields) => (
                 <SkuTableForm
+                  data={data}
                   form={form}
                   pIndex={index}
                   key={fields.key}
                   skuList={skuList}
+                  goodsType={goodsType}
                   discountMax={discountMax}
                   paymentModeType={paymentModeType}
                 ></SkuTableForm>
