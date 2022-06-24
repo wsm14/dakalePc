@@ -16,7 +16,9 @@ const SpecialGoods = (props) => {
     offlineGoods,
     selectType,
     handleSelectItem,
+    rowSelection,
     loading,
+    loadingProps,
   } = props;
 
   const tableRef = useRef(null);
@@ -65,6 +67,7 @@ const SpecialGoods = (props) => {
     {
       title: '价格',
       align: 'right',
+      width: 180,
       dataIndex: 'sellPrice',
       render: (val, row) => (
         <div>
@@ -104,7 +107,7 @@ const SpecialGoods = (props) => {
       noCard={false}
       firstFetch={false}
       cRef={tableRef}
-      loading={loading}
+      loading={loading || loadingProps}
       columns={getColumns}
       params={{
         displayType: 'manualOrList', // 手动/列表展示
@@ -121,6 +124,8 @@ const SpecialGoods = (props) => {
           console.log(`selectedRowKeys:`, selectedRowKeys, 'selectedRows: ', selectedRows);
           handleSelectItem(selectedRowKeys, selectedRows);
         },
+        // 外部传递 选择配置 覆盖当前配置 主要用于外部校验
+        ...(rowSelection ? rowSelection({ selectItem, setSelectItem: handleSelectItem }) : {}),
       }}
       rowKey={(row) => `${row.goodsId}`}
       dispatchType="publicModels/fetchListOfflineGoodsByPage"

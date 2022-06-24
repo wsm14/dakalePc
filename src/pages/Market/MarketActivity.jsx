@@ -81,12 +81,12 @@ const MarketActivity = (props) => {
         return [
           {
             type: 'info',
-            click: () => fetchGetDetail(val, 'info'),
+            click: () => fetchGetDetail(row, 'info'),
           },
           {
             type: 'edit', // 即将开始 无报名商品
             visible: offLineGoodsNum === 0 && onLineGoodsNum === 0 && moment().isBefore(startDate),
-            click: () => fetchGetDetail(val, 'edit'),
+            click: () => fetchGetDetail(row, 'edit'),
           },
           {
             type: 'down', // 即将开始 无报名商品
@@ -97,7 +97,7 @@ const MarketActivity = (props) => {
           },
           {
             type: 'enrollGoods',
-            click: () => setVisibleGoods({ show: true, id: val, name: activityName }),
+            click: () => fetchGetDetail(row, 'enrollGoods'),
           },
           {
             type: 'copyLink',
@@ -119,12 +119,17 @@ const MarketActivity = (props) => {
   };
 
   // 详情
-  const fetchGetDetail = (marketingActivityId, mode) => {
+  const fetchGetDetail = (row, mode) => {
+    const { marketingActivityId } = row;
     dispatch({
       type: 'marketActivity/fetchMarketActivityDetail',
       payload: { marketingActivityId, mode },
       callback: (detail) => {
-        setVisible({ show: true, detail, mode });
+        if (mode === 'enrollGoods') {
+          setVisibleGoods({ show: true, detail });
+        } else {
+          setVisible({ show: true, detail, mode });
+        }
       },
     });
   };

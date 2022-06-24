@@ -1,16 +1,26 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
-import { ELECTRICGOODS_STATUS } from '@/common/constant';
-import { BUSINESS_TYPE, GOODS_CLASS_TYPE, BANK_CHECK_STATUS } from '@/common/constant';
+import { BUSINESS_TYPE, BUSINESS_SALE_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 
 // 特惠商品
 const EnrollSpecialGoods = (props) => {
-  const { dispatch, id, offlineGoods, loading } = props;
+  const { dispatch, id, offlineGoods, tradeList, loading } = props;
 
   const childRef = useRef();
+
+  useEffect(() => {
+    fetchTradeList();
+  }, []);
+
+  // 获取行业类目
+  const fetchTradeList = () => {
+    dispatch({
+      type: 'sysTradeList/fetchGetList',
+    });
+  };
 
   // 搜索参数
   const searchItems = [
@@ -27,8 +37,9 @@ const EnrollSpecialGoods = (props) => {
     {
       label: '所属行业',
       name: 'categoryId',
-      type: 'select',
-      select: ELECTRICGOODS_STATUS,
+      type: 'cascader',
+      select: tradeList,
+      fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
     },
   ];
 
@@ -38,7 +49,7 @@ const EnrollSpecialGoods = (props) => {
       dataIndex: 'relateName',
       render: (val, row) => (
         <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-          <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
+          <Tag>{BUSINESS_TYPE[row.relateType]}</Tag>
           <Ellipsis tooltip length={8} style={{ marginLeft: 5 }}>
             {val}
           </Ellipsis>
@@ -59,38 +70,49 @@ const EnrollSpecialGoods = (props) => {
     },
     {
       title: '所属行业',
-      align: 'center',
-      dataIndex: 'relsateName',
+      dataIndex: 'categoryName',
     },
     {
       title: '活动时间',
-      align: 'center',
-      dataIndex: 'priasce',
+      align: 'right',
+      dataIndex: 'activityTimeRule',
+      render: (val, row) =>
+        ({ fixed: `${row.activityStartDate}\n~${row.activityEndDate}`, infinite: '长期' }[val]),
     },
     {
       title: '当前售价',
-      align: 'center',
-      dataIndex: 'pricde',
+      align: 'right',
+      dataIndex: 'sellPrice',
+      render: (val, row) =>
+        `${
+          { defaultMode: val, cashMode: val, self: `${val}+${row.sellBean}`, free: '免费' }[
+            row.payType
+          ]
+        }\n${BUSINESS_SALE_TYPE[row.payType]}`,
     },
     {
       title: '当前商家结算价',
-      align: 'center',
-      dataIndex: 'pricae',
+      align: 'right',
+      dataIndex: 'settlePrice',
     },
     {
       title: '活动售价',
-      align: 'center',
-      dataIndex: 'prdice',
+      align: 'right',
+      dataIndex: 'activitySellPrice',
+      render: (val, row) =>
+        ({ defaultMode: val, cashMode: val, self: `${val}+${row.activitySellBean}`, free: '免费' }[
+          row.payType
+        ]),
     },
     {
       title: '活动结算价',
-      align: 'center',
-      dataIndex: 'prisce',
+      align: 'right',
+      dataIndex: 'activitySettlePrice',
     },
     {
       title: '活动库存',
-      align: 'center',
-      dataIndex: 'price',
+      align: 'right',
+      dataIndex: 'activityRemain',
     },
   ];
 
@@ -112,7 +134,8 @@ const EnrollSpecialGoods = (props) => {
   );
 };
 
-export default connect(({ marketActivity, loading }) => ({
+export default connect(({ sysTradeList, marketActivity, loading }) => ({
+  tradeList: sysTradeList.list.list,
   offlineGoods: marketActivity.offlineGoods,
   loading: loading.effects['marketActivity/fetchMarketActivityOfflineGoods'],
 }))(EnrollSpecialGoods);

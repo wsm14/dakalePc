@@ -20,6 +20,7 @@ const { TabPane } = Tabs;
  * @param {Boolean} closeSumbit 确认后是否自动关闭 默认关闭
  * @param {Boolean} hiddenSearch 隐藏搜索项目
  * @param {Function} onSumbit 确认回调 ({ keys: [], list: [] }) => {}
+ * @param {Function} rowSelection 表格点击回调 ({ setSelectItem: Function(selectedRowKeys, selectedRows) }) => ({})
  * @returns
  */
 const GoodsSelectModal = (props) => {
@@ -34,10 +35,12 @@ const GoodsSelectModal = (props) => {
     onSumbit,
     onClose,
     closeSumbit = true,
+    rowSelection,
+    loading,
   } = props;
 
   const [tabKey, setTabKey] = useState('reduceCoupon'); // tab类型
-  const [selectItem, setSelectItem] = useState({ keys: [] }); // 当前选择项
+  const [selectItem, setSelectItem] = useState({ keys: [], list: [] }); // 当前选择项
   const [searchValue, setSearchValue] = useState({}); // 搜索值
 
   useEffect(() => {
@@ -64,16 +67,17 @@ const GoodsSelectModal = (props) => {
 
   // 点击选择
   const handleSelectItem = (newKeys = [], newlist = []) => {
+    console.log(newKeys, newlist);
     setSelectItem((old) => {
       const obj = {};
       const { list = [] } = old;
-      const allList = [...list, ...newlist];
+      const allList = [...list, ...newlist]; // 获取新老所有数据
       const checkList = allList
-        .filter((i) => i && newKeys.includes(i.goodsId))
+        .filter((i) => i && newKeys.includes(i.goodsId)) // 去除id不存在数据（取消选择数据）
         .reduce((item, next) => {
           next && obj[next.goodsId] ? '' : next && (obj[next.goodsId] = true && item.push(next));
           return item;
-        }, []);
+        }, []); // 去重
       return { keys: newKeys, list: checkList };
     });
   };
@@ -84,6 +88,8 @@ const GoodsSelectModal = (props) => {
     selectItem,
     selectType,
     searchValue,
+    rowSelection,
+    loadingProps: loading,
     handleSelectItem,
   };
 
@@ -122,7 +128,7 @@ const GoodsSelectModal = (props) => {
       name: 'id',
       type: 'merchant',
       required: true, // 有价券
-      show: ['reduceCoupon'].includes(tabKey) && !searchParams.id,
+      show: ['specialGoods', 'reduceCoupon'].includes(tabKey) && !searchParams.id,
     },
     {
       label: '商品名称',
@@ -144,7 +150,7 @@ const GoodsSelectModal = (props) => {
   return (
     <Modal
       title={`选择内容`}
-      width={900}
+      width={1085}
       visible={visible}
       afterClose={() => {
         setSelectItem({ keys: [] });
@@ -154,6 +160,7 @@ const GoodsSelectModal = (props) => {
       destroyOnClose
       okText={`确定（已选${selectItem.keys.length}项）`}
       okButtonProps={{
+        loading,
         disabled: !selectItem.keys.length,
       }}
       onOk={() => {

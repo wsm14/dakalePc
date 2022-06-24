@@ -498,6 +498,14 @@ export function fetchMarketActivityOfflineGoods(params) {
   });
 }
 
+// post 营销活动 - 报名商品 - 校验商品
+export function fetchMarketActivityCheckGoods(data) {
+  return request('/admin/marketing/activity/admin/verifyWhenSelectingGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 营销活动 - 新增
 export function fetchMarketActivityAdd(data) {
   return request('/admin/marketing/activity/admin/saveMarketingActivity', {

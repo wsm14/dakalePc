@@ -135,11 +135,11 @@ const MarketActivityBaseForm = (props) => {
           >
             <Cascader
               multiple
-              showCheckedStrategy={SHOW_CHILD}
-              options={classifyList}
-              placeholder={'请选择类目'}
               showSearch
               allowClear={false}
+              options={classifyList}
+              placeholder={'请选择类目'}
+              showCheckedStrategy={SHOW_CHILD}
               displayRender={(label) => label.join('/')}
               style={{ width: 'auto', margin: '0 4px', minWidth: '21%', maxWidth: '73%' }}
               fieldNames={{ label: 'classifyName', value: 'classifyId', children: 'childList' }}
@@ -263,17 +263,11 @@ const MarketActivityBaseForm = (props) => {
   ];
 
   return (
-    <>
-      <FormCondition
-        form={form}
-        formItems={formItems}
-        initialValues={initialValues}
-      ></FormCondition>
-    </>
+    <FormCondition form={form} formItems={formItems} initialValues={initialValues}></FormCondition>
   );
 };
 
-export default connect(({ baseData, sysTradeList, loading }) => ({
+export default connect(({ baseData, sysTradeList }) => ({
   classifyList: baseData.classifyParentList,
   experLevel: baseData.experLevel,
   tradeList: sysTradeList.list.list,
