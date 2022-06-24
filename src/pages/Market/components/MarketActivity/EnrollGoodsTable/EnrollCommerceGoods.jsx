@@ -163,7 +163,7 @@ const EnrollCommerceGoods = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        scroll={{ x: 1250, y: 400 }}
+        scroll={{ x: 1350, y: 400 }}
         rowKey={(row) => `${row.goodsId}`}
         params={{ marketingActivityId: id }}
         dispatchType="marketActivity/fetchMarketActivityOnlineGoods"

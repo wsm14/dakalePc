@@ -46,23 +46,25 @@ const EnrollSpecialGoods = (props) => {
     {
       title: '店铺名称',
       dataIndex: 'relateName',
-      width: 170,
+      width: 180,
       render: (val, row) => (
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-          <Tag color={TAG_COLOR_TYPE[val]}>{BUSINESS_TYPE[row.relateType]}</Tag>
-          <Ellipsis tooltip length={8} style={{ marginLeft: 5 }}>
+        <>
+          <div>
+            <Tag color={TAG_COLOR_TYPE[val]}>{BUSINESS_TYPE[row.relateType]}</Tag>
+          </div>
+          <Ellipsis tooltip length={10} style={{ marginLeft: 5 }}>
             {val}
           </Ellipsis>
-        </div>
+        </>
       ),
     },
     {
       title: '参与活动商品名称/ID',
       dataIndex: 'goodsName',
-      width: 160,
+      width: 180,
       render: (val, row) => (
         <>
-          <Ellipsis length={13} tooltip>
+          <Ellipsis length={10} tooltip>
             {val}
           </Ellipsis>
           <div>{row.goodsId}</div>
@@ -155,7 +157,7 @@ const EnrollSpecialGoods = (props) => {
         tableSize="small"
         columns={getColumns}
         searchItems={searchItems}
-        scroll={{ x: 1250, y: 400 }}
+        scroll={{ x: 1350, y: 400 }}
         rowKey={(row) => `${row.goodsId}`}
         params={{ marketingActivityId: id }}
         dispatchType="marketActivity/fetchMarketActivityOfflineGoods"
