@@ -450,7 +450,7 @@ const OrderDetailDraw = (props) => {
                     type="quest"
                   ></QuestionTooltip>
                 </span>
-                <span>￥{`${divisionParam?.commission}`}</span>
+                <span>￥{`${divisionParam?.commission || 0}`}</span>
               </div>
             )}
             {tabkey !== 'communityGoods' && (

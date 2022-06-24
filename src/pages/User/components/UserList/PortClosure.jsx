@@ -56,7 +56,7 @@ const PortClosure = (props) => {
   };
   return (
     <DrawerCondition {...modalProps}>
-      <FormCondition form={form} formItems={formItems}></FormCondition>
+      <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>
     </DrawerCondition>
   );
 };
