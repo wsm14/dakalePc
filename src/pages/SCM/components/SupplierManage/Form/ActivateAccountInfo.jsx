@@ -113,11 +113,6 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
       },
     },
     {
-      label: '开户名称',
-      name: 'cardName',
-      visible: bankAccount === '2',
-    },
-    {
       label: '银行卡号',
       name: { 1: 'cardNo', 2: 'cardId' }[bankAccount],
       disabled,
