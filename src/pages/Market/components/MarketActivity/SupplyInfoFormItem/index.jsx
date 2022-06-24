@@ -15,6 +15,8 @@ const SupplyInfoFormItem = (props) => {
   const formSellBean = Form.useWatch([goodsType, index, 'activitySellBean'], form) || 0;
   // 表单价格
   const formSellPrice = Form.useWatch([goodsType, index, 'activitySellPrice'], form) || 0;
+  // 表单结算价
+  const formSettlePrice = Form.useWatch([goodsType, index, 'activitySettlePrice'], form) || 0;
 
   const {
     paymentModeType,
@@ -139,7 +141,9 @@ const SupplyInfoFormItem = (props) => {
                   <>
                     <div>活动折扣不可高于{discountMax}折</div>
                     {paymentModeType !== 'self' && formDiscount !== 0 && (
-                      <div>折后价：￥{formSellPrice}</div>
+                      <div>
+                        折后价：￥{formSellPrice} 折后结算价：￥{formSettlePrice}
+                      </div>
                     )}
                   </>
                 )

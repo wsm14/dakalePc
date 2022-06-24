@@ -237,23 +237,7 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
     2: [...formItemsOwn, ...formItemsLegal, ...formOther], // 2 对私
   }[bankAccount];
 
-  return (
-    <FormCondition
-      formItems={[
-        {
-          label: '服务费比例',
-          type: 'number',
-          min: 0,
-          precision: 0,
-          name: 'commissionRatio',
-          rules: [{ required: true, message: '请输入服务费比例' }],
-        },
-        ...formItemArr,
-      ]}
-      form={form}
-      initialValues={initialValues}
-    />
-  );
+  return <FormCondition formItems={formItemArr} form={form} initialValues={initialValues} />;
 };
 
 export default connect(({ loading }) => ({
