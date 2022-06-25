@@ -10,7 +10,7 @@ import aliOssUpload from '@/utils/aliOssUpload';
 const OrderRefund = (props) => {
   const { visible = {}, onClose, getDetail, dispatch, loading } = props;
   const { show = false, detail = {} } = visible;
-  const { tabkey } = detail;
+  const { orderType } = detail;
 
   const [form] = Form.useForm();
 
@@ -49,7 +49,7 @@ const OrderRefund = (props) => {
       name: 'refundType',
       type: 'select',
       select: selectType,
-      visible: tabkey == 'commerceGoods',
+      visible: orderType == 'commerceGoods',
     },
     {
       label: '退款原因',
