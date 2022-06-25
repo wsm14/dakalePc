@@ -190,7 +190,7 @@ const VideoContentSet = (props) => {
             data={contact[0]}
             ownerType={relateType}
             onDel={() => saveCouponStorage({ contact: contact.filter((c, i) => i != 0) })}
-            onOk={(data) => saveCouponStorage({ contact: [data] })}
+            onOk={(data) => saveCouponStorage({ contact: data })}
           ></ShareCoupon>
           <ShareCoupon
             form={form}
@@ -199,7 +199,7 @@ const VideoContentSet = (props) => {
             type={contact[1]?.couponName ? 'coupon' : 'goods'}
             data={contact[1]}
             onDel={() => saveCouponStorage({ contact: contact.filter((c, i) => i != 1) })}
-            onOk={(data) => saveCouponStorage({ contact: [...contact, data] })}
+            onOk={(data) => saveCouponStorage({ contact: [...contact, ...data] })}
           ></ShareCoupon>
           <ShareCoupon
             form={form}
@@ -209,7 +209,7 @@ const VideoContentSet = (props) => {
             data={contact[2]}
             ownerType={relateType}
             onDel={() => saveCouponStorage({ contact: contact.filter((c, i) => i != 2) })}
-            onOk={(data) => saveCouponStorage({ contact: [...contact, data] })}
+            onOk={(data) => saveCouponStorage({ contact: [...contact, ...data] })}
           ></ShareCoupon>
         </>
       ),
