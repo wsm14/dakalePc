@@ -14,6 +14,7 @@ import {
   ELECTRICGOODS_SELL_STATUS,
 } from '@/common/constant';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import styles from './style.less';
 const { confirm } = Modal;
 
 const RefundList = (props) => {
@@ -153,14 +154,19 @@ const RefundList = (props) => {
     {
       title: '用户实付',
       align: 'center',
-      dataIndex: 'totalFee',
-      render: (val, row) => (
-        <div style={{ textAlign: 'center' }}>
-          <div>{`￥${val}`}</div>
-          <div>{row.beanFee ? `(${row.beanFee}卡豆` : '(' + '0卡豆'}</div>
-          <div>{(row.payFee ? `+ ￥${row.payFee}` : 0) + ')'}</div>
-        </div>
-      ),
+      dataIndex: 'payFee',
+      render: (val, record) => {
+        const cashBean = record.beanFee ? record.beanFee / 100 : 0;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <div>{`￥${Number(val) + cashBean > 0 ? (Number(val) + cashBean).toFixed(2) : 0}`}</div>
+            <div className={styles.fontColor}>
+              {record.beanFee ? `(${record.beanFee}卡豆` : '(' + '0卡豆'}
+            </div>
+            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+          </div>
+        );
+      },
     },
     {
       title: '购买数量',
@@ -172,7 +178,7 @@ const RefundList = (props) => {
     },
     {
       title: '退款金额',
-      dataIndex: 'refundTotalFee',
+      dataIndex: 'refundFee',
       align: 'center',
       render: (val, row) => `${val}\n(含${row.refundBean || 0}卡豆)`,
     },

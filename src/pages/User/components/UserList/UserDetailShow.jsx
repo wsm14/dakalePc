@@ -59,6 +59,7 @@ const UserDetailShow = (props) => {
           setPortVisible({
             show: true,
             detail: {
+              ...detail,
               userId: userIdString,
             },
           })

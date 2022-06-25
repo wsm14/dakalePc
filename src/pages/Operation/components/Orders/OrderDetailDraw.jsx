@@ -364,7 +364,7 @@ const OrderDetailDraw = (props) => {
         {orderGoodsVerifications.map((item) => (
           <DescriptionsCondition
             labelStyle={{ width: 100 }}
-            key={item.orderGoodsVerificationId}
+            key={item}
             formItems={couponItem(item)}
             initialValues={item}
             column={3}
@@ -465,17 +465,33 @@ const OrderDetailDraw = (props) => {
                 优惠合计 <DownOutlined />
               </span>
               {/* <span>{detail.reduceFee ? `￥${detail.reduceFee}` : 0}</span> */}
-              {detail.orderType === 'scan' ? (
+              {/* {detail.orderType === 'scan' ? (
                 <span>{`￥${detail.reduceFee}`}</span>
               ) : (
                 <span>
                   {detail.deductFeeObject ? `￥${detail.deductFeeObject[0].reduceFee}` : `￥0`}
                 </span>
-              )}
+              )} */}
+              <span>
+                {detail.deductFeeObject
+                  ? `-￥${detail.deductFeeObject
+                      .reduce((preValue, curValue) => preValue + Number(curValue.reduceFee), 0)
+                      .toFixed(2)}`
+                  : `￥0`}
+              </span>
             </div>
             {isShow && (
               <div>
-                <div className={styles.detail_last_div}>
+                {detail.deductFeeObject &&
+                  detail.deductFeeObject.map((item) => {
+                    return (
+                      <div key={item} className={styles.detail_last_div}>
+                        <span>{item.deductTypeName}</span>
+                        <span>{`-￥${item.reduceFee}`}</span>
+                      </div>
+                    );
+                  })}
+                {/* <div className={styles.detail_last_div}>
                   <span>抵扣券</span>
                   <span>{detail.reduceFee ? `￥${detail.reduceFee}` : 0}</span>
                 </div>
@@ -484,7 +500,7 @@ const OrderDetailDraw = (props) => {
                   <span>
                     {detail.deductFeeObject ? `￥${detail.deductFeeObject[0].reduceFee}` : `￥0`}
                   </span>
-                </div>
+                </div> */}
               </div>
             )}
             <div className={styles.detail_last_div} style={{ color: '#333' }}>

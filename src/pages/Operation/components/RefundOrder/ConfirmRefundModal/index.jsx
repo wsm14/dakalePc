@@ -43,15 +43,21 @@ const Index = (props) => {
     },
     {
       label: '应退金额',
-      name: 'refundTotalFee',
+      name: 'refundFee',
     },
     {
       label: '实退金额',
-      name: 'refundTotalFee',
+      name: 'refundFee',
     },
     {
       label: '优惠券',
-      name: 'businessTime',
+      name: 'deductFee',
+      render: (val) => {
+        const num = val
+          .reduce((preValue, curValue) => preValue + Number(curValue.reduceFee), 0)
+          .toFixed(2);
+        return num ? num : `￥${num}退款成功后返回券包`;
+      },
     },
   ];
 

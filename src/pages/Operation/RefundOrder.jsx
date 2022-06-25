@@ -191,7 +191,7 @@ const RefundOrder = (props) => {
     },
     {
       title: '申请退款金额',
-      dataIndex: 'refundTotalFee',
+      dataIndex: 'refundFee',
       render: (val, row) => `${val}\n(含${row.refundBean || 0}卡豆)`,
     },
     {
@@ -309,7 +309,7 @@ const RefundOrder = (props) => {
   const fetchRefundDetail = (index) => {
     const { orderId, userId } = list[index];
     dispatch({
-      type: 'refundOrder/fetchRefundRrderDetail',
+      type: 'ordersList/fetchGetOrderDetail',
       payload: {
         orderId,
         userId,
@@ -326,14 +326,10 @@ const RefundOrder = (props) => {
 
   //查看物流
   const handleGetLogistics = (val) => {
-    const {
-      logisticsParam,
-      orderLogisticInfo, //发货信息对象
-    } = val;
-    const { companyCode, code } = logisticsParam;
-    const { mobile } = orderLogisticInfo;
+    const { logisticsParam, orderLogisticInfo } = val;
+    const { companyCode, code, mobile } = logisticsParam;
     dispatch({
-      type: 'ordersList/fetchGetOrderDetail',
+      type: 'refundOrder/fetchGetExpressInfo',
       payload: {
         expressCompany: companyCode,
         expressNo: code,
