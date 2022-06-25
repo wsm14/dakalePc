@@ -168,7 +168,7 @@ const RefundOrder = (props) => {
         const { attributeObjects = [] } = commerceGoods;
         return (
           <>
-            <div>{attributeObjects.map((item) => `${item.value}${item.name}`)}</div>
+            <div>{attributeObjects.map((item) => item.value).join('/')}</div>
             <div>{val.supplierName}</div>
           </>
         );
