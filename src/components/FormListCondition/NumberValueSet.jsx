@@ -6,13 +6,13 @@ import FormCondition from '@/components/FormCondition';
 const FormItem = Form.Item;
 
 /**
- * 权重设置
+ * 数字设置
  * @param {Array} value 默认值
  * @param {String} valueKey 输出参数key
  * @param {Function} onSubmit 确认回调 ({ [valueKey]: weight }) => {}
  * @param {Boolean} loading 请求loading
  */
-const SortValueSet = ({ value, valueKey = 'sortValue', onSubmit, loading }) => {
+const NumberValueSet = ({ value, valueKey = 'sortValue', onSubmit, loading, inputProps = {} }) => {
   const [form] = Form.useForm();
   const [editType, setEditType] = useState(false);
 
@@ -36,7 +36,7 @@ const SortValueSet = ({ value, valueKey = 'sortValue', onSubmit, loading }) => {
     <Form initialValues={{ weight: Number(value || 0) }} form={form}>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <FormItem noStyle name={'weight'}>
-          <InputNumber disabled={!editType} />
+          <InputNumber disabled={!editType} {...inputProps} />
         </FormItem>
         <Button
           style={{ width: 32 }}
@@ -51,4 +51,4 @@ const SortValueSet = ({ value, valueKey = 'sortValue', onSubmit, loading }) => {
   );
 };
 
-export default SortValueSet;
+export default NumberValueSet;

@@ -1,15 +1,14 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
-import { BUSINESS_TYPE, BUSINESS_SALE_TYPE } from '@/common/constant';
+import { BUSINESS_TYPE, BUSINESS_SALE_TYPE, TAG_COLOR_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
+import NumberValueSet from '@/components/FormListCondition/NumberValueSet';
 
 // 特惠商品
 const EnrollSpecialGoods = (props) => {
-  const { dispatch, id, offlineGoods, tradeList, loading } = props;
-
-  const childRef = useRef();
+  const { dispatch, id, tableRef, offlineGoods, tradeList, fetchUpdateRemain, loading } = props;
 
   useEffect(() => {
     fetchTradeList();
@@ -47,25 +46,29 @@ const EnrollSpecialGoods = (props) => {
     {
       title: '店铺名称',
       dataIndex: 'relateName',
+      width: 180,
       render: (val, row) => (
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-          <Tag>{BUSINESS_TYPE[row.relateType]}</Tag>
-          <Ellipsis tooltip length={8} style={{ marginLeft: 5 }}>
+        <>
+          <div>
+            <Tag color={TAG_COLOR_TYPE[val]}>{BUSINESS_TYPE[row.relateType]}</Tag>
+          </div>
+          <Ellipsis tooltip length={10} style={{ marginLeft: 5 }}>
             {val}
           </Ellipsis>
-        </div>
+        </>
       ),
     },
     {
       title: '参与活动商品名称/ID',
       dataIndex: 'goodsName',
+      width: 180,
       render: (val, row) => (
-        <div>
-          <Ellipsis length={13} tooltip>
+        <>
+          <Ellipsis length={10} tooltip>
             {val}
           </Ellipsis>
-          <div style={{ marginTop: 5 }}>{row.goodsId}</div>
-        </div>
+          <div>{row.goodsId}</div>
+        </>
       ),
     },
     {
@@ -82,6 +85,7 @@ const EnrollSpecialGoods = (props) => {
     {
       title: '当前售价',
       align: 'right',
+      width: 160,
       dataIndex: 'sellPrice',
       render: (val, row) =>
         `${
@@ -94,15 +98,19 @@ const EnrollSpecialGoods = (props) => {
       title: '当前商家结算价',
       align: 'right',
       dataIndex: 'settlePrice',
+      width: 120,
     },
     {
       title: '活动售价',
       align: 'right',
       dataIndex: 'activitySellPrice',
       render: (val, row) =>
-        ({ defaultMode: val, cashMode: val, self: `${val}+${row.activitySellBean}`, free: '免费' }[
-          row.payType
-        ]),
+        ({
+          defaultMode: val,
+          cashMode: val,
+          self: `${val}+${row.activitySellBean}`,
+          free: '免费',
+        }[row.payType]),
     },
     {
       title: '活动结算价',
@@ -112,30 +120,57 @@ const EnrollSpecialGoods = (props) => {
     {
       title: '活动库存',
       align: 'right',
+      fixed: 'right',
       dataIndex: 'activityRemain',
+      render: (val, row) => (
+        <NumberValueSet
+          value={val}
+          valueKey="activityTotal"
+          loading={loading}
+          inputProps={{ min: 0, precision: 0 }}
+          onSubmit={(number) =>
+            fetchUpdateRemain({
+              ownerId: row.ownerId,
+              goodsId: row.goodsId,
+              marketingActivityId: id,
+              goodsType: 'specialGoods',
+              skuList: [
+                {
+                  skuId: row.skuId,
+                  ...number,
+                },
+              ],
+            })
+          }
+        ></NumberValueSet>
+      ),
     },
   ];
 
   return (
-    <TableDataBlock
-      order
-      noCard={false}
-      tableSize="small"
-      scroll={{ y: 400 }}
-      cRef={childRef}
-      loading={loading}
-      searchItems={searchItems}
-      columns={getColumns}
-      params={{ marketingActivityId: id }}
-      rowKey={(row) => `${row.goodsId}`}
-      dispatchType="marketActivity/fetchMarketActivityOfflineGoods"
-      {...offlineGoods}
-    ></TableDataBlock>
+    <div style={{ width: 1050 }}>
+      <TableDataBlock
+        order
+        noCard={false}
+        cRef={tableRef}
+        loading={loading}
+        tableSize="small"
+        columns={getColumns}
+        searchItems={searchItems}
+        scroll={{ x: 1350, y: 400 }}
+        rowKey={(row) => `${row.goodsId}`}
+        params={{ marketingActivityId: id }}
+        dispatchType="marketActivity/fetchMarketActivityOfflineGoods"
+        {...offlineGoods}
+      ></TableDataBlock>
+    </div>
   );
 };
 
 export default connect(({ sysTradeList, marketActivity, loading }) => ({
   tradeList: sysTradeList.list.list,
   offlineGoods: marketActivity.offlineGoods,
-  loading: loading.effects['marketActivity/fetchMarketActivityOfflineGoods'],
+  loading:
+    loading.effects['marketActivity/fetchMarketActivityOfflineGoods'] ||
+    loading.effects['marketActivity/fetchMarketActivityGoodsEditRemain'],
 }))(EnrollSpecialGoods);

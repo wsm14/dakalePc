@@ -7,7 +7,7 @@ import PopImgShow from '@/components/PopImgShow';
 import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import GoodsSelectModal from '@/components/GoodsSelectModal';
-import SortValueSet from '@/components/FormListCondition/SortValueSet';
+import NumberValueSet from '@/components/FormListCondition/NumberValueSet';
 
 const tabList = [
   {
@@ -105,7 +105,7 @@ const ConnectedGoodsModal = (props) => {
       dataIndex: 'tagPriority',
       show: listKey === 'show',
       render: (val, row) => (
-        <SortValueSet
+        <NumberValueSet
           value={val}
           valueKey="tagPriority"
           loading={loadingSort}
@@ -122,7 +122,7 @@ const ConnectedGoodsModal = (props) => {
               ],
             })
           }
-        ></SortValueSet>
+        ></NumberValueSet>
       ),
     },
     {

@@ -1,6 +1,7 @@
 import React from 'react';
 import update from 'immutability-helper';
 import { Form, Badge, InputNumber } from 'antd';
+import { ELECTRICGOODS_SELL_PRICE_TYPE } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
 import './index.less';
 
@@ -33,7 +34,7 @@ const SupplyInfoFormItem = (props) => {
 
   // 计算价格
   const countPrice = (val) => {
-    return val / 10 < 0.001 ? 0 : val / 10;
+    return Number((val / 10 < 0.001 ? 0 : val / 10).toFixed(2));
   };
 
   // 售卖价格
@@ -64,10 +65,10 @@ const SupplyInfoFormItem = (props) => {
     } else {
       editDisPrice = formSellPrice * 100 + formSellBean;
     }
-    console.log(newDisPrice, editDisPrice);
     if (newDisPrice !== editDisPrice) {
       return Promise.reject(new Error(`卡豆+现金活动售价需等于当前售价*${formDiscount}折`));
     }
+    return Promise.resolve();
   };
 
   return (
@@ -92,42 +93,50 @@ const SupplyInfoFormItem = (props) => {
                   }
                 </div>
               )}
-              {/* 商品价格 */}
-              <div className="goodsInfo_price">
-                <div>
+              {/* 商品价格 特惠商品 */}
+              {goodsType === 'specialGoods' && (
+                <div className="goodsInfo_price">
                   <div>
-                    售价
-                    {
-                      {
-                        defaultMode: `￥${sellPrice}`,
-                        cashMode: `￥${sellPrice}`,
-                        self: `￥${sellPrice}+${sellBean}卡豆`,
-                        free: '免费',
-                      }[paymentModeType]
-                    }
-                  </div>
-                  {ruleTypeArr.includes('discount') && (
-                    <div className="price_color">
-                      活动最高价
+                    <div>
+                      售价
                       {
                         {
-                          defaultMode: `￥${payPrice}`,
-                          cashMode: `￥${payPrice}`,
-                          self: `￥${payPrice}+${Math.trunc((sellBean * discountMax) / 10)}卡豆`,
+                          defaultMode: `￥${sellPrice}`,
+                          cashMode: `￥${sellPrice}`,
+                          self: `￥${sellPrice}+${sellBean}卡豆`,
                           free: '免费',
                         }[paymentModeType]
                       }
                     </div>
+                    {ruleTypeArr.includes('discount') && (
+                      <div className="price_color">
+                        活动最高价
+                        {
+                          {
+                            defaultMode: `￥${payPrice}`,
+                            cashMode: `￥${payPrice}`,
+                            self: `￥${payPrice}+${Math.trunc((sellBean * discountMax) / 10)}卡豆`,
+                            free: '免费',
+                          }[paymentModeType]
+                        }
+                      </div>
+                    )}
+                  </div>
+                  {/* 特惠显示结算价 */}
+                  {ruleTypeArr.includes('discount') && (
+                    <div className="goodsInfo_priceEnd">
+                      <div>结算价￥{settlePrice}</div>
+                      <div className="price_color">结算最高价￥{paySettlePrice}</div>
+                    </div>
                   )}
                 </div>
-                {/* 特惠显示结算价 */}
-                {goodsType === 'specialGoods' && ruleTypeArr.includes('discount') && (
-                  <div className="goodsInfo_priceEnd">
-                    <div>结算价￥{settlePrice}</div>
-                    <div className="price_color">结算最高价￥{paySettlePrice}</div>
-                  </div>
-                )}
-              </div>
+              )}
+              {/* 商品价格 电商品 */}
+              {goodsType === 'commerceGoods' && (
+                <div className="goodsInfo_price">
+                  <div>售价 {ELECTRICGOODS_SELL_PRICE_TYPE[paymentModeType]}</div>
+                </div>
+              )}
             </div>
           </div>
           {/* 表单 */}
