@@ -718,7 +718,7 @@ export const SPECIAL_COMMISSOM_TYPE = {
   cityBean: '市级分佣',
   districtBean: '区县分佣',
   userParentBean: '用户家主分佣',
-  darenBean: '商家家主分佣',
+  darenBean: '哒人分佣',
 };
 
 // 新手视频 - 状态 1-上架 3-下架
