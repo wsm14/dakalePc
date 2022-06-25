@@ -14,6 +14,7 @@ const ShareCoupon = (props) => {
     show = 'free',
     ownerName,
     ownerType = 'merchant',
+    newShowTag,
     type,
     onDel,
     onOk,
@@ -78,7 +79,7 @@ const ShareCoupon = (props) => {
       {/* 优惠选择 */}
       <GoodsSelectModal
         selectType={'radio'}
-        showTag={['reduceCoupon', 'specialGoods']}
+        showTag={newShowTag || ['reduceCoupon', 'specialGoods', 'commerceGoods']}
         searchParams={{ id: selectProps.merchantId, relateName: ownerName }} // id 有价券搜索 ownerName 特惠商品搜索
         visible={visibleContact}
         onSumbit={({ list }) => onOk(list)}

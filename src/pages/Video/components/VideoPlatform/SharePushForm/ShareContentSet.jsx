@@ -174,6 +174,7 @@ const ShareContentSet = (props) => {
             type={contact[0]?.couponName ? 'coupon' : 'goods'}
             data={contact[0]}
             ownerType={ownerType}
+            newShowTag={['reduceCoupon', 'specialGoods']}
             onDel={() => saveCouponStorage({ contact: contact.filter((c, i) => i != 0) })}
             onOk={(data) => saveCouponStorage({ contact: data })}
           ></ShareCoupon>
@@ -183,6 +184,7 @@ const ShareContentSet = (props) => {
             merchantIdKey="ownerId"
             type={contact[1]?.couponName ? 'coupon' : 'goods'}
             data={contact[1]}
+            newShowTag={['reduceCoupon', 'specialGoods']}
             onDel={() => saveCouponStorage({ contact: contact.filter((c, i) => i != 1) })}
             onOk={(data) => saveCouponStorage({ contact: [...contact, ...data] })}
           ></ShareCoupon>
@@ -193,6 +195,7 @@ const ShareContentSet = (props) => {
             type={contact[2]?.couponName ? 'coupon' : 'goods'}
             data={contact[2]}
             ownerType={ownerType}
+            newShowTag={['reduceCoupon', 'specialGoods']}
             onDel={() => saveCouponStorage({ contact: contact.filter((c, i) => i != 2) })}
             onOk={(data) => saveCouponStorage({ contact: [...contact, ...data] })}
           ></ShareCoupon>
