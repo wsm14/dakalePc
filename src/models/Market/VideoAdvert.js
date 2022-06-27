@@ -151,7 +151,6 @@ export default {
     *fetchVideoAdvertDetail({ payload, callback }, { call }) {
       const { type = 'info', momentType, relateId, ...cell } = payload;
       const response = yield call(fetchVideoAdvertDetail, cell);
-
       if (!response) return;
       const { content = {} } = response;
       const {
@@ -166,15 +165,32 @@ export default {
         param,
         ...other
       } = content?.momentDetail || {};
-      const editData =
-        type !== 'info'
-          ? {
-              url: JSON.parse(videoContent || '{}').url,
-              videoId: JSON.parse(videoContent || '{}').videoId,
-              free: freeOwnerCouponList[0] || {},
-              contact: [...activityGoodsList, ...ownerCouponList],
-            }
-          : {};
+
+      let editData = {};
+      if (type !== 'info') {
+        editData = {
+          url: JSON.parse(videoContent || '{}').url,
+          videoId: JSON.parse(videoContent || '{}').videoId,
+          free:
+            freeOwnerCouponList.map((item) => ({
+              ...item,
+              goodsId: item.ownerCouponIdString,
+              activityType: 'freeReduceCoupon',
+            }))[0] || {},
+          contact: [
+            ...activityGoodsList.map((item) => ({
+              ...item,
+              goodsId: item.activityGoodsId,
+            })),
+            ...ownerCouponList.map((item) => ({
+              ...item,
+              goodsId: item.ownerCouponIdString,
+              activityType: 'reduceCoupon',
+            })),
+          ],
+        };
+      }
+
       const newObj = {
         ...other,
         param: JSON.parse(param || '{}'),

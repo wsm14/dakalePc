@@ -178,36 +178,12 @@ const VideoDetail = (props) => {
       let goodsList = {};
       if (detail.relateType !== 'brand') {
         // 券数据整理
-        const newCoupon = [
-          ...contact.map((item) => ({
-            ...item,
-            promotionType: item.ownerCouponIdString
-              ? 'coupon'
-              : item.activityType === 'commerceGoods'
-              ? 'commerceGoods'
-              : 'goods',
-          })),
-          ...(free.ownerCouponIdString ? [{ ...free, promotionType: 'free' }] : []),
-        ];
-        console.log('newCoupon', newCoupon);
+        const newCoupon = [...contact, ...(free.ownerCouponIdString ? [{ ...free }] : [])];
         goodsList = {
           momentRelateList: newCoupon.map((item) => ({
-            relateId:
-              item.promotionType === 'goods' || 'commerceGoods' // 特惠  || 电商商品
-                ? item.specialGoodsId || item.activityGoodsId
-                : item[
-                    {
-                      free: 'ownerCouponIdString', // 免费
-                      coupon: 'ownerCouponIdString', // 有价
-                    }[item.promotionType]
-                  ],
-            relateType: {
-              goods: 'specialGoods',
-              coupon: 'reduceCoupon',
-              free: 'freeReduceCoupon',
-              commerceGoods: 'commerceGoods',
-            }[item.promotionType],
-            relateShardingKey: ownerId,
+            relateId: item.goodsId,
+            relateType: item.activityType,
+            relateShardingKey: item.ownerId || ownerId,
           })),
         };
       }
