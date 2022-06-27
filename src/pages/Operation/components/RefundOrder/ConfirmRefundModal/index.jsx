@@ -35,7 +35,7 @@ const Index = (props) => {
     },
     {
       label: '退款数量',
-      name: 'refundCount',
+      name: 'goodsCount',
     },
     {
       label: '退款原因',
