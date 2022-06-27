@@ -12,6 +12,7 @@ import {
   REFUND_ORDERS_EXAMINE_STATUS,
   SPECIAL_GOODS_TYPE,
   ELECTRICGOODS_SELL_STATUS,
+  REFUND_ORDERS_TYPE,
 } from '@/common/constant';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import styles from './style.less';
@@ -187,6 +188,12 @@ const RefundList = (props) => {
       align: 'center',
       dataIndex: 'createTime',
       render: (val, row) => `${val}\n${row.applicantName || ''}`,
+    },
+    {
+      title: '退款类型',
+      dataIndex: 'refundType',
+      show: ['commerceGoods'].includes(tabKey),
+      render: (val) => REFUND_ORDERS_TYPE[val],
     },
     {
       title: '退款原因',
