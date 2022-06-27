@@ -6,6 +6,7 @@ import { useUpdateEffect } from 'ahooks';
 import {
   REFUND_ORDERS_STATUS,
   BUSINESS_TYPE,
+  REFUND_ORDERS_TYPE,
   SPECIAL_GOODS_TYPE,
   ELECTRICGOODS_SELL_STATUS,
 } from '@/common/constant';
@@ -168,7 +169,7 @@ const RefundOrder = (props) => {
         const { attributeObjects = [] } = commerceGoods;
         return (
           <>
-            <div>{attributeObjects.map((item) => `${item.value}${item.name}`)}</div>
+            <div>{attributeObjects.map((item) => item.value).join('/')}</div>
             <div>{val.supplierName}</div>
           </>
         );
@@ -187,12 +188,16 @@ const RefundOrder = (props) => {
     },
     {
       title: '退款数量',
-      dataIndex: 'refundCount',
+      dataIndex: 'goodsCount',
     },
     {
       title: '申请退款金额',
       dataIndex: 'refundFee',
-      render: (val, row) => `${val}\n(含${row.refundBean || 0}卡豆)`,
+      render: (val, row) => {
+        const cashBean = row.refundBean ? row.refundBean / 100 : 0;
+        const refundPrice = Number(val) + cashBean > 0 ? (Number(val) + cashBean).toFixed(2) : 0;
+        return `￥${refundPrice}\n(含${row.refundBean || 0}卡豆)`;
+      },
     },
     {
       title: { commerceGoods: '发货状态/退款申请时间', specialGoods: '退款申请时间' }[tabKey],
@@ -204,6 +209,12 @@ const RefundOrder = (props) => {
           specialGoods: `${val}`,
         }[tabKey];
       },
+    },
+    {
+      title: '退款类型',
+      dataIndex: 'refundType',
+      show: ['commerceGoods'].includes(tabKey),
+      render: (val) => REFUND_ORDERS_TYPE[val],
     },
     {
       title: '退款原因',

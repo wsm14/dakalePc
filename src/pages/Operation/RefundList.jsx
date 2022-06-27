@@ -12,6 +12,7 @@ import {
   REFUND_ORDERS_EXAMINE_STATUS,
   SPECIAL_GOODS_TYPE,
   ELECTRICGOODS_SELL_STATUS,
+  REFUND_ORDERS_TYPE,
 } from '@/common/constant';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import styles from './style.less';
@@ -180,13 +181,22 @@ const RefundList = (props) => {
       title: '退款金额',
       dataIndex: 'refundFee',
       align: 'center',
-      render: (val, row) => `${val}\n(含${row.refundBean || 0}卡豆)`,
+      render: (val, row) => {
+        const cashBean = row.refundBean ? row.refundBean / 100 : 0;
+        const refundPrice = Number(val) + cashBean > 0 ? (Number(val) + cashBean).toFixed(2) : 0;
+        return `￥${refundPrice}\n(含${row.refundBean || 0}卡豆)`;
+      },
     },
     {
       title: '申请时间',
       align: 'center',
       dataIndex: 'createTime',
       render: (val, row) => `${val}\n${row.applicantName || ''}`,
+    },
+    {
+      title: '退款类型',
+      dataIndex: 'refundType',
+      render: (val) => REFUND_ORDERS_TYPE[val],
     },
     {
       title: '退款原因',

@@ -161,6 +161,8 @@ export const goodsDom = (item = {}, id, setSelectItem, onDel) => {
     goodsId,
   } = item;
 
+  console.log(item, activityEndDate);
+
   return (
     <div
       style={{ width: 350 }}
@@ -181,7 +183,11 @@ export const goodsDom = (item = {}, id, setSelectItem, onDel) => {
             }}
           ></div>
           <div className="share_title" style={{ lineHeight: 1.6 }}>
-            <div className="titile">{goodsName}</div>
+            <div className="titile">
+              <Ellipsis length={12} tooltip>
+                {goodsName}
+              </Ellipsis>
+            </div>
             <div className="share_tip">
               活动时间：
               {
@@ -206,11 +212,11 @@ export const goodsDom = (item = {}, id, setSelectItem, onDel) => {
                   </span>
                 )}
               </div>
-              {remain && (
+              {/* {remain.toString() && (
                 <div className="share_tip" style={{ color: '#b1b1b1' }}>
                   剩余{remain}张
                 </div>
-              )}
+              )} */}
             </div>
             {inputDom && inputDom()}
           </div>
@@ -267,7 +273,11 @@ export const commerceDom = (item = {}, id, setSelectItem, onDel) => {
             }}
           ></div>
           <div className="share_title" style={{ lineHeight: 1.8 }}>
-            <div className="titile">{goodsName}</div>
+            <div className="titile">
+              <Ellipsis length={12} tooltip>
+                {goodsName}
+              </Ellipsis>
+            </div>
             {/* <div className="share_tip">
               活动时间：
               {

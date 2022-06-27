@@ -749,6 +749,7 @@ const PreferentialSet = ({
       name: ['divisionParamInfoReq', 'provinceBean'],
       visible: commissionShow == '1' && mreList.manualDivisionsList.includes('province'),
       addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+      disabled: editDisabled && infoStatus,
       addonAfter: '卡豆',
     },
     {
@@ -756,6 +757,7 @@ const PreferentialSet = ({
       name: ['divisionParamInfoReq', 'cityBean'],
       visible: commissionShow == '1' && mreList.manualDivisionsList.includes('city'),
       addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+      disabled: editDisabled && infoStatus,
       addonAfter: '卡豆',
     },
     {
@@ -763,6 +765,7 @@ const PreferentialSet = ({
       name: ['divisionParamInfoReq', 'districtBean'],
       visible: commissionShow == '1' && mreList.manualDivisionsList.includes('district'),
       addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+      disabled: editDisabled && infoStatus,
       addonAfter: '卡豆',
     },
     {
@@ -770,6 +773,7 @@ const PreferentialSet = ({
       name: ['divisionParamInfoReq', 'userParentBean'],
       visible: commissionShow == '1' && mreList.manualDivisionsList.includes('userParent'),
       addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+      disabled: editDisabled && infoStatus,
       addonAfter: '卡豆',
     },
     {
@@ -777,6 +781,7 @@ const PreferentialSet = ({
       name: ['divisionParamInfoReq', 'darenBean'],
       visible: commissionShow == '1' && mreList.manualDivisionsList.includes('daren'),
       addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+      disabled: editDisabled && infoStatus,
       addonAfter: '卡豆',
     },
     {
@@ -894,7 +899,10 @@ const PreferentialSet = ({
       label: '选择介绍类型',
       type: 'radio',
       name: 'descType',
-      select: SPECIAL_DESC_TYPE,
+      select: {
+        imgText: '图文',
+        richText: '富文本',
+      },
       hidden: true,
     },
     // {

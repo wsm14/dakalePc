@@ -353,6 +353,9 @@ export const ORDER_CLOSE_TYPE = {
 // 退款订单状态
 export const REFUND_ORDERS_STATUS = ['退款中', '已退款', '取消退款'];
 
+// 退款管理 - 退款类型
+export const REFUND_ORDERS_TYPE = { onlyFee: '仅退款', goodsAFee: '退货退款' };
+
 //退款订单审核状态
 export const REFUND_ORDERS_EXAMINE_STATUS = ['未审核', '审核通过', '审核拒绝', '已关闭'];
 
@@ -673,8 +676,8 @@ export const SPECIAL_GOODS_TYPE = { offline: '特惠商品', selfTour: '自我�
 
 // 特惠活动 - 介绍类型
 export const SPECIAL_DESC_TYPE = {
-  imgText: '图文',
-  richText: '富文本',
+  0: '图文',
+  1: '富文本',
 };
 
 // 特惠活动 - 前端展示类型
@@ -718,7 +721,7 @@ export const SPECIAL_COMMISSOM_TYPE = {
   cityBean: '市级分佣',
   districtBean: '区县分佣',
   userParentBean: '用户家主分佣',
-  darenBean: '商家家主分佣',
+  darenBean: '哒人分佣',
 };
 
 // 新手视频 - 状态 1-上架 3-下架
@@ -1105,7 +1108,7 @@ export const PLATFORM_TICKET_SCENE = {
   // scan: '扫码',
   virtual: '虚拟品券',
   commerce: '电商品券',
-  // community: '团购',
+  community: '团购',
 };
 
 // 平台券管理 - 券类型
@@ -1125,7 +1128,10 @@ export const PLATFORM_TICKET_TYPE = {
     universal: '电商通用券',
     goods: '指定电商券',
   },
-  // community: '团购',
+  community: {
+    universal: '团购通用券',
+    // goods: '指定团购券',
+  },
 };
 
 // 平台券管理 - 使用时间

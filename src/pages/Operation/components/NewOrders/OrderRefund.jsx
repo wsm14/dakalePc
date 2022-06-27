@@ -10,14 +10,14 @@ import aliOssUpload from '@/utils/aliOssUpload';
 const OrderRefund = (props) => {
   const { visible = {}, onClose, getDetail, dispatch, loading } = props;
   const { show = false, detail = {} } = visible;
-  const { tabkey } = detail;
+  const { orderType, beanFee } = detail;
 
   const [form] = Form.useForm();
 
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
-      const { refundReason, payFee, refundImg, ...other } = values;
+      const { refundReason, payPrice, refundImg, ...other } = values;
 
       const rImg = await aliOssUpload(refundImg);
 
@@ -49,7 +49,7 @@ const OrderRefund = (props) => {
       name: 'refundType',
       type: 'select',
       select: selectType,
-      visible: tabkey == 'commerceGoods',
+      visible: orderType == 'commerceGoods',
     },
     {
       label: '退款原因',
@@ -59,10 +59,12 @@ const OrderRefund = (props) => {
     },
     {
       label: '退款金额',
-      name: 'payFee',
+      name: 'payPrice',
       type: 'number',
       addonBefore: '￥',
+      precision: 2,
       disabled: true,
+      extra: beanFee ? `包含${beanFee}卡豆` : null,
     },
     {
       label: `补充描述`,
