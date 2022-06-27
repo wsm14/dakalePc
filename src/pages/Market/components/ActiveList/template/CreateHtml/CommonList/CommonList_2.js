@@ -103,77 +103,100 @@ export default (function (list, id) {
   function showList(source, payC = 50, shareC) {
     document.getElementById(
       id,
-    ).innerHTML = `<div style="display: flex;justify-content: space-between;padding: 0 ${vw(
-      12,
-    )};flex-wrap: wrap">
+    ).innerHTML = `<div style="display: flex;justify-content: space-between;flex-wrap: wrap;padding:${vw(
+      8,
+    )} ${vw(12)};">
 ${source
   .map((item) => {
     const cellDom = `<div class="handleGoNative"  data-key="goodsId,ownerId" data-goodsId=${
       item.goodsId
     } data-ownerId=${item.ownerId} data-path="goods" data-linkType="inside" 
       style="width: ${vw(172)};border-radius: ${vw(4)};margin-bottom: ${vw(
-      12,
-    )}; background: #FFFFFF;padding:${vw(4)} ${vw(4)} ${vw(12)}">
-      <div style="width: ${vw(164)};height: ${vw(122)};border-radius: ${vw(2)};background: url(${
-      item.goodsImg
-    }) center / cover;"></div>
-      <div style="padding:${vw(12)} ${vw(4)} 0">
-      <div style="font-size: ${vw(
-        14,
-      )};color: #333333; white-space:nowrap;text-overflow: ellipsis;overflow: hidden;">${
+      8,
+    )}; background-color: #FFFFFF;overflow: hidden;">
+      <div style="height: ${vw(137)};background: url(${item.goodsImg}) center / cover;"></div>
+      <div style="padding:${vw(5)} ${vw(8)} ${
+      item.paymentModeType === 'defaultMode' ? vw(12) : vw(15)
+    }">
+      <div style="height:${vw(44)};font-size: ${vw(16)};line-height:${vw(
+      22,
+    )};color: #333333;display: -webkit-box;overflow: hidden; white-space:normal;text-overflow: clip;word-wrap:break-word;-webkit-line-clamp:2;-webkit-box-orient:vertical">${
       item.goodsName
     }</div>
-      <div style="font-size: ${vw(12)};margin-top: ${vw(
-      8,
-    )};color: #999999; display: flex; align-items: center;">
-      <img src="${item.ownerImg}" style="border-radius: 50%;width: ${vw(15)};height: ${vw(
-      15,
-    )};margin-right: ${vw(4)};background-color: #f5f5f5;"></img>
-      <div style="flex: 1;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;line-height: initial">${
-        item.ownerName
-      }</div>
-      </div>
-      <div style="margin-top: ${vw(
+      <div style="margin-top: ${vw(3)};display: flex; align-items: center;">
+      <img src="${item.relateImg}" style="width: ${vw(15)};height: ${vw(15)};margin-right: ${vw(
+      4,
+    )};border-radius: 50%;background-color: #f5f5f5;"></img>
+      <div style="font-size: ${vw(
         12,
-      )};white-space: nowrap;text-overflow: ellipsis;overflow: hidden;line-height: initial">
-      <span style="font-size: ${vw(12)}; color: #333333; margin-top: ${vw(
-      7,
-    )}">优惠价: <span style="font-size: ${vw(14)}; font-weight: bold">¥${
-      item.realPrice
-    }</span></span><span style="font-size: ${vw(12)}; color: #999999; margin-left: ${vw(
-      4,
-    )}">原价: <span style="text-decoration: line-through">¥${item.oriPrice}</span></span></div>
-      <div style="height: ${vw(16)};border-radius: ${vw(8)};margin-top: ${vw(
-      4,
-    )};display: inline-flex;align-items: center;overflow: hidden;position: relative;">
-        <div style="font-size: ${vw(10)};padding-left: ${vw(4)};padding-right: ${vw(
-      3,
-    )};height: ${vw(
+      )};flex: 1;color: #999999;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;line-height: initial">${
+      item.relateName
+    }</div></div>
+    <div style="margin-top: ${vw(12)};font-size: ${vw(
       16,
-    )};background: #ef476f;display: flex;align-items: center;color: #ffffff;;z-index: 1;width: max-content;">卡豆再省</div>
-        <div style="width: 0;height: 0;border-top: ${vw(16)} solid #ef476f;border-right:${vw(
-      2,
-    )} solid transparent;;z-index: 1"></div>
-        <div style="font-size: ${vw(12)};border-radius: 0 ${vw(50)} ${vw(50)} 0;padding-right: ${vw(
-      4,
-    )};font-weight: bold;color: #ef476f;background: #ffffff;padding-left: ${vw(
-      10,
-    )};margin-left: -${vw(10)};border: 1px solid #ef476f;height: ${vw(
-      16,
-    )};display: flex;align-items: center;max-width:max-content;">￥<div style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">${computedPrice(
-      item.realPrice,
-      payC,
-    )}</div>
+    )};font-weight: bold;color: #333333;line-height: initial;display: flex; align-items: center;">
+    ${
+      {
+        defaultMode: `¥${item.sellPrice}`,
+        cashMode: `¥${item.sellPrice}`,
+        self: `<span>
+              ¥${item.sellPrice}+${item.sellBean}
+            </span>
+            <span style="font-size: ${vw(12)}; margin-left: ${vw(2)};">卡豆</span>`,
+        free: '¥0',
+      }[item.paymentModeType]
+    }
+    </div>
+
+    <div style="display: flex; align-items: center;">
+   ${
+     item.paymentModeType === 'defaultMode'
+       ? `<div
+      style="height: ${vw(18)};
+        margin-top: ${vw(6)};
+        max-width:${vw(97)};
+        margin-right: ${vw(4)};
+        border-radius:${vw(2)};
+        display: inline-flex;align-items: center;overflow: hidden;position: relative;background-color: #FEF1F4;"
+    >
+      <div
+        style="width: ${vw(34)};
+        height: inherit;background-image: url(https://wechat-config.dakale.net/miniprogram/image/icon895.png);background-size: 100% 100%;background-repeat: no-repeat;flex-shrink: 0;"></div>
+      <div
+        style="font-size: ${vw(14)};
+        padding: 0 ${vw(4)};
+        font-weight: bold;color: #ef476f;overflow: hidden;white-space: nowrap;text-overflow: ellipsis">
+        ¥${computedPrice(item.sellPrice, payC)}
       </div>
-      </div>
-      <div style="width: ${vw(154)};height: ${vw(27)};border-radius: ${vw(13)};font-size: ${vw(
-      14,
-    )}; margin-top: ${vw(
-      16,
-    )};background: #EF476F;color: #FFFFFF;display: flex;align-items: center;justify-content: center;line-height: normal;white-space: nowrap;">
-      ${
-        shareC ? `分享赚￥${computedPrice(item.realPrice - item.merchantPrice, shareC)}` : '抢购'
-      }</div></div></div>`;
+    </div>`
+       : ''
+   }
+   ${
+     shareC
+       ? `<div
+         style="height: ${vw(18)};
+        margin-top: ${vw(6)};
+        border-radius: ${vw(2)};
+        margin-right: ${vw(4)};
+        display: inline-flex;align-items: center;overflow: hidden;position: relative;background-color: #FEF1F4;flex: 1;max-width: fit-content;"
+       >
+         <div
+           style="width: ${vw(18)};
+          background-size: ${vw(12)} ${vw(10)};
+          height: inherit;background-image: url(https://wechat-config.dakale.net/miniprogram/image/z_icon.png);background-color: #FCE2E8;background-repeat: no-repeat;background-position: center;flex-shrink: 0"
+         ></div>
+         <div
+           style="padding: 0 ${vw(4)};
+          font-size: ${vw(14)};
+          font-weight: bold;color: #ef476f;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+         >
+         ¥${computedPrice(item.sellPrice - item.settlePrice, shareC)}
+         </div>
+       </div>`
+       : ''
+   }
+  </div>
+     </div></div>`;
     if (native.getPhone() === 'wxChatWebView') {
       return wxOpenLaunchWeapp(cellDom, item.ownerId, item.goodsId);
     }

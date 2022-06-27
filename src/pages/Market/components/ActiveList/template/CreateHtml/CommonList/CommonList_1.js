@@ -169,7 +169,7 @@ ${source
       14,
     )};background: #EF476F;color: #FFFFFF;display: flex;align-items: center;justify-content: center;position: absolute;right: 0;bottom: 0;">
       ${
-        shareC ? `分享赚￥${computedPrice(item.realPrice - item.merchantPrice, shareC)}` : '抢购'
+        shareC ? `分享赚￥${computedPrice(item.sellPrice - item.settlePrice, shareC)}` : '抢购'
       }</div></div></div></div>`;
     if (native.getPhone() === 'wxChatWebView') {
       return wxOpenLaunchWeapp(cellDom, item.ownerId, item.goodsId);
