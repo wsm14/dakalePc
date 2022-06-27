@@ -8,7 +8,6 @@ import {
   fetchGetMreConfigInfo,
   fetchSpecialGoodsSelect,
   fetchCommerceGoodsSelect,
-  fetchPlatformCouponSelect,
 } from '@/services/ActiveServices';
 
 export default {
@@ -18,7 +17,6 @@ export default {
     specialGoods: { list: [], total: 0 },
     commerceGoods: { list: [], total: 0 },
     coupon: [],
-    platformCoupon: [],
   },
 
   reducers: {
@@ -84,18 +82,6 @@ export default {
         type: 'save',
         payload: {
           coupon: content.ownerCouponDTOList.map((i) => ({ ...i, ownerId })),
-        },
-      });
-    },
-    // 平台券
-    *fetchPlatformCouponSelectList({ payload }, { call, put }) {
-      const response = yield call(fetchPlatformCouponSelect, payload);
-      if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          platformCoupon: content.recordList,
         },
       });
     },

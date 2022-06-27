@@ -1,7 +1,7 @@
 import { notification } from 'antd';
 import lodash from 'lodash';
 import { fetchBackCategoryList } from '@/services/BaseServices';
-import { fetchPlatformCouponSelect } from '@/services/ActiveServices';
+import { fetchPagePlatformCoupon } from '@/services/OperationServices';
 import { fetchGetSupplierManageList, fetchSupplierBrandList } from '@/services/SCMServices';
 import { fetchMerchantList, fetchMerchantGroup } from '@/services/BusinessServices';
 import { fetchGoodsTagList } from '@/services/BaseServices';
@@ -388,7 +388,7 @@ export default {
 
     // 平台券
     *fetchPlatformCouponSelect({ payload, callback }, { call, put }) {
-      const response = yield call(fetchPlatformCouponSelect, {
+      const response = yield call(fetchPagePlatformCoupon, {
         ...payload,
         adminFlag: 1,
       });

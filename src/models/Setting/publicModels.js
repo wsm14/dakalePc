@@ -1,7 +1,7 @@
 import { notification } from 'antd';
 import oss from 'ali-oss';
 import { uuid } from '@/utils/utils';
-import { fetchPlatformCouponSelect } from '@/services/ActiveServices';
+import { fetchPagePlatformCoupon } from '@/services/OperationServices';
 import { fetchGetSupplierManageList } from '@/services/SCMServices';
 import { fetchListOnlineGoodsByPage, fetchSpecialGoodsList } from '@/services/OperationServices';
 import {
@@ -135,7 +135,7 @@ export default {
     },
     // get 获取平台券列表
     *fetchGetPlatformCouponList({ payload }, { call, put }) {
-      const response = yield call(fetchPlatformCouponSelect, {
+      const response = yield call(fetchPagePlatformCoupon, {
         ...payload,
         adminFlag: 1,
       });
