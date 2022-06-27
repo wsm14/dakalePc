@@ -275,7 +275,7 @@ const OrderDetailDraw = (props) => {
       <Button
         type="primary"
         onClick={() => {
-          const { userId, orderId, orderSn } = detail;
+          const { userId, orderId, orderSn, payFee, beanFee } = detail;
           setRefund({
             show: true,
             detail: {
@@ -283,7 +283,8 @@ const OrderDetailDraw = (props) => {
               orderId,
               orderSn,
               orderType: tabkey,
-              payFee: detail.payFee,
+              payPrice: (Number(payFee || 0) + Number(beanFee || 0) / 100).toFixed(2),
+              beanFee,
             },
           });
         }}
