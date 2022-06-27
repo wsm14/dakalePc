@@ -1,6 +1,6 @@
 let target = 'https://devgateway.dakale.net';
 // target = 'https://devgateway.dakale.net';
-target = 'https://pregateway.dakale.net';
+// target = 'https://pregateway.dakale.net';
 // target = 'https://gateway1.dakale.net';
 // target = 'http://192.168.0.188:6020'
 // target = 'http://192.168.0.103:6020';
