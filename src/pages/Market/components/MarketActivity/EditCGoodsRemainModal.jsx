@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'umi';
-import { Modal, Form } from 'antd';
+import { Modal, Form, InputNumber } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const FormItemInput = ({ name, label = '', rules = [], inputProps = {} }) => {
@@ -29,6 +29,10 @@ const EditCGoodsRemainModal = (props) => {
   const { payType, marketingActivityId, ownerId, goodsId, goodsName, skuList } = detail;
 
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    show && form.setFieldsValue({ skuList });
+  }, [show]);
 
   // 修改库存
   const fetchUpdateRemain = () => {
@@ -62,7 +66,7 @@ const EditCGoodsRemainModal = (props) => {
     {
       title: '规格值',
       dataIndex: 'relationAttributeObjects',
-      render: (val) => val.map((i) => `${i.name}:${i.value}`).join('\n'),
+      render: (val) => val?.map((i) => `${i.name}:${i.value}`).join('\n') || '',
     },
     {
       title: '活动售价（卡豆）',
@@ -78,6 +82,7 @@ const EditCGoodsRemainModal = (props) => {
     },
     {
       title: '活动库存',
+      align: 'right',
       dataIndex: 'activityRemain',
       render: (val, row, rowIndex) => (
         <FormItemInput label="活动折扣" name={[rowIndex, 'activityRemain']}></FormItemInput>
@@ -88,9 +93,8 @@ const EditCGoodsRemainModal = (props) => {
   return (
     <Modal
       title={goodsName}
-      width={900}
+      width={800}
       destroyOnClose
-      // footer={null}
       visible={show}
       zIndex={100}
       confirmLoading={loading}
@@ -99,7 +103,7 @@ const EditCGoodsRemainModal = (props) => {
       }}
       onCancel={onClose}
     >
-      <Form form={form} initialValues={skuList}>
+      <Form form={form}>
         <Form.List name={'skuList'}>
           {(fields) => (
             <TableDataBlock

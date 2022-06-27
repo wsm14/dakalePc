@@ -89,7 +89,7 @@ const SupplyInfoDrawer = (props) => {
   const modalProps = {
     title: `补充信息 - ${activityName}`,
     visible: show,
-    width: { specialGoods: 550, commerceGoods: 750 }[goodsType],
+    width: { specialGoods: 550, commerceGoods: 800 }[goodsType],
     onClose,
     zIndex: 1001,
     afterCallBack: () => {

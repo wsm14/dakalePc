@@ -39,7 +39,7 @@ const BusinessDetailShow = (props) => {
   const { headerType = 'image' } = headerContentObject;
 
   useEffect(() => {
-    fetchGetPhoneComeLocation();
+    mobile && fetchGetPhoneComeLocation();
   }, [mobile]);
 
   const statusNum = Number(status);

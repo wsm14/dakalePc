@@ -16,10 +16,10 @@ const CommerceGoodsFormItem = (props) => {
   return (
     <div style={{ marginBottom: 16 }}>
       <Badge.Ribbon text={index + 1}>
-        <div className="supplyInfoFormItem_box">
+        <div className="supplyCInfoFormItem_box">
           {/* 商家名称 */}
-          <div className="supplyInfoFormItem_head">{relateName}</div>
-          <div className="supplyInfoFormItem_goodsInfo">
+          <div className="supplyCInfoFormItem_head">{relateName}</div>
+          <div className="supplyCInfoFormItem_goodsInfo">
             {/* 商品图片 */}
             <PopImgShow width={80} url={goodsImg} />
             <div className="goodsInfo">
@@ -30,7 +30,7 @@ const CommerceGoodsFormItem = (props) => {
               </div>
             </div>
           </div>
-          <div className="supplyInfoFormItem_form">
+          <div className="supplyCInfoFormItem_form">
             <Form.List name={[index, 'skuList']}>
               {(fields) => (
                 <SkuTableForm
