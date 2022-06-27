@@ -52,7 +52,6 @@ const CouponSet = (props) => {
   }, [initialValues]);
 
   useEffect(() => {
-    console.log(grantType, 'grantType');
     if (grantType === 'manual') {
       buyRule[0].disabled = true;
       if (radioData.getLimit === 'unlimited') {
