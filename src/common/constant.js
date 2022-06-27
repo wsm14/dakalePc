@@ -1130,7 +1130,7 @@ export const PLATFORM_TICKET_TYPE = {
   },
   community: {
     universal: '团购通用券',
-    goods: '指定虚拟券',
+    goods: '指定团购券',
   },
 };
 
