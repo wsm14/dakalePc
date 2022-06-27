@@ -56,7 +56,7 @@ export default (function (list, id) {
     showList(list);
   }
 
-    function getUrlParam(shareKey) {
+  function getUrlParam(shareKey) {
     const query = window.location.search.substring(1);
     const vars = query.split('&');
     for (let i = 0; i < vars.length; i++) {
@@ -66,12 +66,12 @@ export default (function (list, id) {
       }
     }
     return '';
-  };
+  }
 
   function wxOpenLaunchWeapp(html, mid, sid) {
-    const path = `pages/perimeter/favourableDetails/index.html?merchantId=${mid}&specialActivityId=${sid}&shareUserId=${getUrlParam(
+    const path = `pages/perimeter/favourableDetails/index.html?ownerId=${mid}&goodsId=${sid}&shareUserId=${getUrlParam(
       'shareUserId',
-    )}&shareUserType=${getUrlParam('shareUserType')}`;
+    )}&shareUserType=${getUrlParam('shareUserType')}&activityType=specialGoods`;
 
     return `<div style="position: relative">
     ${html}
@@ -108,9 +108,9 @@ export default (function (list, id) {
     )};flex-wrap: wrap">
 ${source
   .map((item) => {
-    const cellDom = `<div class="handleGoNative"  data-key="specialActivityId,merchantId" data-specialActivityId=${
-      item.specialGoodsId
-    } data-merchantId=${item.ownerIdString} data-path="goods" data-linkType="inside" 
+    const cellDom = `<div class="handleGoNative"  data-key="goodsId,ownerId" data-goodsId=${
+      item.goodsId
+    } data-ownerId=${item.ownerId} data-path="goods" data-linkType="inside" 
       style="width: ${vw(172)};border-radius: ${vw(4)};margin-bottom: ${vw(
       12,
     )}; background: #FFFFFF;padding:${vw(4)} ${vw(4)} ${vw(12)}">
@@ -175,7 +175,7 @@ ${source
         shareC ? `分享赚￥${computedPrice(item.realPrice - item.merchantPrice, shareC)}` : '抢购'
       }</div></div></div>`;
     if (native.getPhone() === 'wxChatWebView') {
-      return wxOpenLaunchWeapp(cellDom, item.ownerIdString, item.specialGoodsId);
+      return wxOpenLaunchWeapp(cellDom, item.ownerId, item.goodsId);
     }
     return cellDom;
   })

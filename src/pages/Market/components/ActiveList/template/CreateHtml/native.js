@@ -132,9 +132,9 @@ const pathNative = {
     // 特惠商品详情 specialActivityId ownerId
     dakaleIOS: {
       path: 'DKLAroundDiscountGoodsDetailViewController',
-      key: { merchantId: 'ownerId' },
+      key: { goodsId: "specialActivityId" }
     },
-    dakaleAndroid: { path: 'AroundGood', key: { merchantId: 'ownerId' } },
+    dakaleAndroid: { path: 'AroundGood' },
     miniProgram: { path: '/pages/perimeter/favourableDetails/index' },
   },
   commerceGoods: {

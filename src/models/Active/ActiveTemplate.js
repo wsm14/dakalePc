@@ -6,7 +6,6 @@ import {
   fetchActiveEdit,
   fetchCouponSelect,
   fetchGetMreConfigInfo,
-  fetchSpecialGoodsSelect,
   fetchCommerceGoodsSelect,
 } from '@/services/ActiveServices';
 
@@ -14,7 +13,6 @@ export default {
   namespace: 'activeTemplate',
 
   state: {
-    specialGoods: { list: [], total: 0 },
     commerceGoods: { list: [], total: 0 },
     coupon: { list: [], total: 0 },
   },
@@ -47,17 +45,6 @@ export default {
         }
       });
     },
-    *fetchSpecialGoodsSelect({ payload }, { call, put }) {
-      const response = yield call(fetchSpecialGoodsSelect, payload);
-      if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          specialGoods: { list: content.recordList, total: content.total },
-        },
-      });
-    },
     // 电商商品
     *fetchCommerceGoodsSelect({ payload }, { call, put }) {
       const response = yield call(fetchCommerceGoodsSelect, {
@@ -83,7 +70,7 @@ export default {
         payload: {
           coupon: {
             list: content.ownerCouponDTOList.map((i) => ({ ...i, ownerId })),
-            total: content.total,
+            total: content.ownerCouponDTOList.length,
           },
         },
       });

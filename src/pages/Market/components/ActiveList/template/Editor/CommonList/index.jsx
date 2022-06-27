@@ -1,6 +1,6 @@
 import React, { useImperativeHandle, useState } from 'react';
 import { Form, Button } from 'antd';
-import GoodsSelectModal from './components/GoodsSelectModal';
+import GoodsSelectModal from '@/components/GoodsSelectModal';
 import FormList from './FormList';
 import EditorForm from '../editorForm';
 import showDomJs from './showDom';
@@ -15,6 +15,9 @@ const CommonList = (props) => {
   const { value = {}, cRef, form } = props;
 
   const [visible, setVisible] = useState(false);
+
+  // 最大选择数
+  const maxItem = 50;
 
   // 向父组件暴露方法
   useImperativeHandle(cRef, () => ({
@@ -59,7 +62,7 @@ const CommonList = (props) => {
                 <Form.ErrorList errors={errors} />
                 {fields.map((field, i) => (
                   <FormList
-                    key={field.fieldKey}
+                    key={field.key}
                     form={form}
                     fields={fields}
                     field={field}
@@ -68,8 +71,8 @@ const CommonList = (props) => {
                   ></FormList>
                 ))}
                 <Form.Item>
-                  <Button disabled={fields.length === 50} block onClick={() => setVisible(true)}>
-                    {fields.length} / {50} 选择商品
+                  <Button disabled={fields.length === maxItem} block onClick={() => setVisible(true)}>
+                    {fields.length} / {maxItem} 选择商品
                   </Button>
                 </Form.Item>
               </>
@@ -78,8 +81,12 @@ const CommonList = (props) => {
         </Form.List>
       </EditorForm>
       <GoodsSelectModal
-        form={form}
         visible={visible}
+        showTag={['specialGoods']}
+        goodsValues={form.getFieldValue('list') || []}
+        onSumbit={({ list }) => {
+          form.setFieldsValue({ list: list.slice(0, maxItem - 1) });
+        }}
         onClose={() => setVisible(false)}
       ></GoodsSelectModal>
     </div>

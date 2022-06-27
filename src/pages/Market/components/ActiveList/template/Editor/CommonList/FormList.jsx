@@ -1,6 +1,7 @@
 import React from 'react';
 import { Space } from 'antd';
 import { MinusCircleOutlined, UpSquareOutlined, DownSquareOutlined } from '@ant-design/icons';
+import { ELECTRICGOODS_SELL_PRICE_TYPE } from '@/common/constant';
 import styles from './index.less';
 
 const FormList = (props) => {
@@ -29,9 +30,21 @@ const FormList = (props) => {
             </div>
             <div className={styles.listItem_info}>
               <div>商品名称：{goodsItem.goodsName}</div>
-              <div>原价：￥{goodsItem.realPrice}</div>
               <div>
-                售价：<span className={styles.tip}>￥{goodsItem.oriPrice}</span>
+                售价：
+                {
+                  {
+                    defaultMode: `￥${goodsItem.sellPrice}`,
+                    cashMode: `￥${goodsItem.sellPrice}`,
+                    self: `￥${goodsItem.sellPrice}+${goodsItem.sellBean}卡豆`,
+                    free: '免费',
+                  }[goodsItem.paymentModeType]
+                }
+              </div>
+              {goodsItem.paymentModeType !== 'free' &&
+                `类型：${ELECTRICGOODS_SELL_PRICE_TYPE[goodsItem.paymentModeType]}`}
+              <div>
+                原价：<span className={styles.tip}>￥{goodsItem.oriPrice}</span>
               </div>
             </div>
           </>

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { connect } from 'umi';
 import { Card, Row, Col } from 'antd';
 import template1 from './Img/template1.png';
 import template2 from './Img/template2.png';
@@ -7,7 +6,7 @@ import template3 from './Img/template3.png';
 import ActiveTemplateEdit from './ActiveTemplateEdit';
 import ActiveTemplateNameSet from './ActiveTemplateNameSet';
 
-const ActiveTemplate = () => {
+const ActiveTemplate = ({ onCloseModal }) => {
   const [visible, setVisible] = useState({ show: false, info: {} });
   const [visibleName, setVisibleName] = useState({ show: false, info: { activityName: '' } });
 
@@ -41,12 +40,13 @@ const ActiveTemplate = () => {
   // 输入活动名称回调
   const handleSetActiveName = (activityName) => {
     setVisibleName(false); // 关闭输入框
+    onCloseModal(); // 关闭选择框
     setVisible({ show: true, info: { ...visibleName.info, activityName } }); // 显示模版编辑
   };
 
   return (
     <>
-      <Card>
+      <Card bordered={false} bodyStyle={{ padding: 0 }}>
         <Row gutter={[20, 28]}>
           {cardItem.map((item) => (
             <Col key={item.type}>
@@ -77,4 +77,4 @@ const ActiveTemplate = () => {
   );
 };
 
-export default connect()(ActiveTemplate);
+export default ActiveTemplate;
