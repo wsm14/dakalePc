@@ -1108,7 +1108,7 @@ export const PLATFORM_TICKET_SCENE = {
   // scan: '扫码',
   virtual: '虚拟品券',
   commerce: '电商品券',
-  // community: '团购',
+  community: '团购',
 };
 
 // 平台券管理 - 券类型
@@ -1128,7 +1128,10 @@ export const PLATFORM_TICKET_TYPE = {
     universal: '电商通用券',
     goods: '指定电商券',
   },
-  // community: '团购',
+  community: {
+    universal: '团购通用券',
+    goods: '指定虚拟券',
+  },
 };
 
 // 平台券管理 - 使用时间

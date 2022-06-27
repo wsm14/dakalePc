@@ -131,6 +131,7 @@ const CouponSet = (props) => {
                       goodsBuy: '特惠商品/优惠券可用',
                       virtual: '购买虚拟商品可用',
                       commerce: '购买电商品可用',
+                      community: '购买哒小团团购品可用',
                     }[item]
                   }
                 </div>
