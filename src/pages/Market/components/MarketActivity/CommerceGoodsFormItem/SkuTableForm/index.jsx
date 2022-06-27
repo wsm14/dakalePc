@@ -67,15 +67,18 @@ const SkuTableForm = (props) => {
   const getColumns = [
     {
       title: 'SKU码',
+      fixed: 'left',
       dataIndex: 'skuCode',
     },
     {
       title: '规格值',
+      fixed: 'left',
       dataIndex: 'skuAttributeResps',
-      render: (val) => val.map((i) => `${i.name}:${i.value}`).join('\n'),
+      render: (val) => val.map((i) => `${i.name}: ${i.value}`).join('\n'),
     },
     {
       title: '当前售价',
+      fixed: 'left',
       align: 'right',
       dataIndex: 'sellPrice',
       render: (val, row) =>
@@ -88,13 +91,16 @@ const SkuTableForm = (props) => {
     },
     {
       title: '当前结算价',
+      fixed: 'left',
       align: 'right',
       dataIndex: 'settlePrice',
       render: (val, row) => `￥${val}`,
     },
     {
-      title: `活动折扣（max ${discountMax}折）`,
+      title: `活动折扣(最高${discountMax}折)`,
       dataIndex: 'sellBean',
+      width: 160,
+      align: 'right',
       render: (val, row, rowIndex) => {
         return (
           <FormItemInput
@@ -119,8 +125,9 @@ const SkuTableForm = (props) => {
       },
     },
     {
-      title: '活动售价（卡豆）',
+      title: '活动售价(卡豆)',
       dataIndex: 'totalSellPrice',
+      align: 'right',
       show: paymentModeType == 'self',
       render: (val, row, rowIndex) => {
         const max =
@@ -148,23 +155,25 @@ const SkuTableForm = (props) => {
     },
     {
       title: '活动零售价',
-      dataIndex: 'commission',
-      render: (val, row, rowIndex) => (
-        <FormItemInput
-          label="活动零售价"
-          name={[rowIndex, 'activitySellPrice']}
-          rules={[
-            {
-              validator: (_, value) => checkPrice(value, row, rowIndex),
-            },
-          ]}
-          inputProps={{
-            precision: 2,
-            readOnly: paymentModeType !== 'self',
-            bordered: paymentModeType == 'self',
-          }}
-        ></FormItemInput>
-      ),
+      align: 'right',
+      dataIndex: 'activitySellPrice',
+      render: (val, row, rowIndex) =>
+        paymentModeType !== 'self' ? (
+          `￥${val || 0}`
+        ) : (
+          <FormItemInput
+            label="活动零售价"
+            name={[rowIndex, 'activitySellPrice']}
+            rules={[
+              {
+                validator: (_, value) => checkPrice(value, row, rowIndex),
+              },
+            ]}
+            inputProps={{
+              precision: 2,
+            }}
+          ></FormItemInput>
+        ),
     },
     {
       title: '活动结算价',
@@ -174,9 +183,10 @@ const SkuTableForm = (props) => {
     },
     {
       title: '活动库存',
+      align: 'right',
       dataIndex: 'skuId',
       render: (val, row, rowIndex) => (
-        <FormItemInput label="活动折扣" name={[rowIndex, 'activityTotal']}></FormItemInput>
+        <FormItemInput label="活动库存" name={[rowIndex, 'activityTotal']}></FormItemInput>
       ),
     },
   ];

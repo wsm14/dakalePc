@@ -43,12 +43,12 @@ const EnrollCommerceGoods = (props) => {
   const getColumns = [
     {
       title: '供应商名称',
-      align: 'center',
       dataIndex: 'relateName',
       ellipsis: true,
     },
     {
       title: '参与活动商品名称/ID',
+      width: 170,
       dataIndex: 'goodsName',
       render: (val, row) => (
         <div>
@@ -153,11 +153,11 @@ const EnrollCommerceGoods = (props) => {
     }
 
     // 显示区间
-    let num = `${minNum}~${maxNum}`;
+    let num = `￥${minNum}~${maxNum}`;
 
     // 最高最低相同只显示一个
     if (minNum === maxNum) {
-      num = minNum;
+      num = `￥${minNum}`;
     }
 
     // 显示价格
@@ -174,7 +174,7 @@ const EnrollCommerceGoods = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        scroll={{ x: 1350, y: 400 }}
+        scroll={{ x: 1750, y: 400 }}
         rowKey={(row) => `${row.goodsId}`}
         params={{ marketingActivityId: id }}
         dispatchType="marketActivity/fetchMarketActivityOnlineGoods"
