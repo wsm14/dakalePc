@@ -7,318 +7,299 @@ export default ({ styleIndex = 0, list = [] }) => {
     alignItems: 'center',
   };
 
-  return [
-    <div style={{ padding: '4px 12px 16px 12px' }}>
-      {list.map((item) => {
-        const {
-          paymentModeObject: { type, bean, cash },
-        } = item;
-        return (
-          <div
-            key={item.specialGoodsId}
-            style={{
-              padding: 8,
-              marginTop: 12,
-              borderRadius: 4,
-              ...disFlexAC,
-              width: '100%',
-              background: '#FFFFFF',
-            }}
-          >
+  const domShow2 = (item) => (
+    <div
+      key={item.goodsId}
+      style={{
+        width: 172,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 4,
+        marginBottom: 8,
+        overflow: 'hidden',
+      }}
+    >
+      <div
+        style={{
+          height: 137,
+          background: `url(${item.goodsImg}) center/cover`,
+        }}
+      ></div>
+      <div
+        style={
+          item.paymentModeType === 'defaultMode'
+            ? { padding: '5px 8px 12px' }
+            : { padding: '5px 8px 15px' }
+        }
+      >
+        <div
+          style={{
+            height: 44,
+            fontSize: 16,
+            color: '#333333',
+            lineHeight: '22px',
+            display: '-webkit-box',
+            overflow: 'hidden',
+            whiteSpace: 'normal',
+            textOverflow: 'clip',
+            wordWrap: 'break-word',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+          }}
+        >
+          {item.goodsName}
+        </div>
+        <div
+          style={{
+            marginTop: 12,
+            fontSize: 16,
+            fontWeight: 'bold',
+            color: '#333333',
+            lineHeight: 'initial',
+            ...disFlexAC,
+          }}
+        >
+          {
+            {
+              defaultMode: `¥${item.sellPrice}`,
+              cashMode: `¥${item.sellPrice}`,
+              self: (
+                <>
+                  <span>
+                    ¥{item.sellPrice}+{item.sellBean}
+                  </span>
+                  <span style={{ fontSize: 12, marginLeft: 2 }}>卡豆</span>
+                </>
+              ),
+              free: '¥0',
+            }[item.paymentModeType]
+          }
+        </div>
+        {item.paymentModeType === 'defaultMode' && (
+          <div style={disFlexAC}>
             <div
               style={{
-                width: 112,
-                height: 112,
-                marginRight: 8,
-                borderRadius: 4,
-                background: `url(${item.goodsImg}) center/cover`,
-              }}
-            ></div>
-            <div
-              style={{
-                flex: 1,
+                height: 18,
+                marginTop: 6,
+                maxWidth: 97,
+                marginRight: 4,
+                borderRadius: 2,
+                display: 'inline-flex',
+                alignItems: 'center',
                 overflow: 'hidden',
-                display: 'flex',
-                flexDirection: 'column',
-                height: 112,
-                justifyContent: 'space-between',
+                position: 'relative',
+                backgroundColor: '#FEF1F4',
               }}
             >
               <div
                 style={{
+                  width: 34,
+                  height: 'inherit',
+                  backgroundImage:
+                    'url(https://wechat-config.dakale.net/miniprogram/image/icon895.png)',
+                  backgroundSize: '100% 100%',
+                  backgroundRepeat: 'no-repeat',
+                  flexShrink: 0,
+                }}
+              ></div>
+              <div
+                style={{
                   fontSize: 14,
-                  color: '#333333',
+                  fontWeight: 'bold',
+                  color: '#ef476f',
+                  padding: '0 4px',
                   overflow: 'hidden',
                   whiteSpace: 'nowrap',
                   textOverflow: 'ellipsis',
                 }}
               >
-                {item.goodsName}
+                ￥0
               </div>
-              <div style={{ width: '100%', display: 'flex', alignItems: 'flex-end' }}>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 12, marginTop: 16, color: '#999999' }}>
-                    原价: <span style={{ textDecoration: 'line-through' }}>¥{item.oriPrice}</span>
-                  </div>
-                  {type === 'self' ? (
-                    <div style={{ lintHeight: 1 }}>
-                      <div
-                        style={{
-                          fontSize: 10,
-                          borderRadius: 2,
-                          border: '1px solid #EF476F',
-                          color: '#EF476F',
-                          padding: '2px 3px',
-                          margin: '5px 0 4px',
-                          width: 'max-content',
-                        }}
-                      >
-                        卡豆价
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 16,
-                          color: '#EF476F',
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        ¥{cash}+{bean} <span style={{ fontSize: 13 }}>卡豆</span>
-                      </div>
-                    </div>
-                  ) : (
-                    <div>
-                      <div style={{ fontSize: 12, marginTop: 7, color: '#333333' }}>
-                        优惠价:
-                        <span style={{ fontSize: 14, fontWeight: 'bold' }}>¥{item.realPrice}</span>
-                      </div>
-                      <div
-                        style={{
-                          height: 16,
-                          marginTop: 6,
-                          borderRadius: 8,
-                          border: '1px solid #ef476f',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          overflow: 'hidden',
-                          position: 'relative',
-                        }}
-                      >
-                        <div
-                          style={{
-                            ...disFlexAC,
-                            height: 'inherit',
-                            background: '#ef476f',
-                            fontSize: 10,
-                            color: '#ffffff',
-                            paddingLeft: 4,
-                            paddingRight: 3,
-                          }}
-                        >
-                          卡豆再省
-                        </div>
-                        <div
-                          style={{
-                            width: 0,
-                            height: 0,
-                            borderTop: '16px solid #ef476f',
-                            borderRight: '2px solid transparent',
-                          }}
-                        ></div>
-                        <div
-                          style={{
-                            fontSize: 12,
-                            fontWeight: 'bold',
-                            color: '#ef476f',
-                            background: '#ffffff',
-                            borderRadius: '0px 50px 50px 0px',
-                            paddingRight: 4,
-                          }}
-                        >
-                          ￥0
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <div
-                  style={{
-                    width: 52,
-                    height: 27,
-                    fontSize: 14,
-                    borderRadius: 13,
-                    ...disFlexAC,
-                    color: '#FFFFFF',
-                    background: '#EF476F',
-                    justifyContent: 'center',
-                  }}
-                >
-                  抢购
-                </div>
+            </div>
+            <div
+              style={{
+                height: 18,
+                marginTop: 6,
+                borderRadius: 2,
+                display: 'inline-flex',
+                alignItems: 'center',
+                overflow: 'hidden',
+                position: 'relative',
+                backgroundColor: '#FEF1F4',
+                marginRight: 4,
+                flex: 1,
+                maxWidth: 'fit-content',
+              }}
+            >
+              <div
+                style={{
+                  width: 18,
+                  backgroundSize: '12px 10px',
+                  height: 'inherit',
+                  backgroundImage:
+                    'url(https://wechat-config.dakale.net/miniprogram/image/z_icon.png)',
+                  backgroundColor: '#FCE2E8',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center',
+                  flexShrink: 0,
+                }}
+              ></div>
+              <div
+                style={{
+                  fontSize: 14,
+                  fontWeight: 'bold',
+                  color: '#ef476f',
+                  padding: '0 4px',
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                ￥0
               </div>
             </div>
           </div>
-        );
-      })}
-    </div>,
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        padding: '0 12px',
-        flexWrap: 'wrap',
-      }}
-    >
-      {list.map((item) => {
-        const {
-          paymentModeObject: { type, bean, cash },
-        } = item;
-        return (
+        )}
+      </div>
+    </div>
+  );
+
+  return [
+    <div key="vcgoods" style={{ padding: '12px 12px 0.1px', backgroundColor: '#FFFFFF' }}>
+      {list.map((item, i) => (
+        <div
+          key={`${item.goodsId}${i}`}
+          style={{
+            marginBottom: 12,
+            borderRadius: 4,
+            ...disFlexAC,
+            backgroundColor: '#FFFFFF',
+            position: 'relative',
+          }}
+        >
           <div
-            key={item.specialGoodsId}
             style={{
-              width: 172,
-              background: '#FFFFFF',
+              width: 112,
+              height: 112,
+              marginRight: 8,
               borderRadius: 4,
-              marginBottom: 12,
-              padding: '4px 4px 12px',
+              backgroundColor: '#D8D8D8',
+              background: `url(${item.goodsImg}) center/cover`,
             }}
-          >
+          ></div>
+          <div style={{ flex: 1, overflow: 'hidden', height: 112 }}>
             <div
               style={{
-                width: 164,
-                height: 122,
-                borderRadius: 2,
-                background: `url(${item.goodsImg}) center/cover`,
+                height: 40,
+                fontSize: 14,
+                lineHeight: '20px',
+                display: '-webkit-box',
+                color: '#333333',
+                overflow: 'hidden',
+                whiteSpace: 'normal',
+                textOverflow: 'clip',
+                wordWrap: 'break-word',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
               }}
-            ></div>
-            <div style={{ padding: '12px 4px 0' }}>
-              <div
-                style={{
-                  fontSize: 14,
-                  color: '#333333',
-                  overflow: 'hidden',
-                  whiteSpace: 'nowrap',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                {item.goodsName}
-              </div>
-              <div
-                style={{
-                  marginTop: 12,
-                  fontSize: 12,
-                  color: '#999999',
-                  lineHeight: 'initial',
-                }}
-              >
-                原价: <span style={{ textDecoration: 'line-through' }}>¥{item.oriPrice}</span>
-              </div>
-              {type === 'self' ? (
-                <div style={{ lintHeight: 1 }}>
-                  <div
-                    style={{
-                      marginTop: 6,
-                      fontSize: 10,
-                      borderRadius: 2,
-                      border: '1px solid #EF476F',
-                      color: '#EF476F',
-                      padding: '2px 3px',
-                      margin: '5px 0 4px',
-                      width: 'max-content',
-                    }}
-                  >
-                    卡豆价
-                  </div>
-                  <div
-                    style={{
-                      fontSize: 16,
-                      color: '#EF476F',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    ¥{cash}+{bean} <span style={{ fontSize: 13 }}>卡豆</span>
-                  </div>
-                </div>
-              ) : (
+            >
+              {item.goodsName}
+            </div>
+            <div style={{ width: '100%', display: 'flex', alignItems: 'flex-end', marginTop: 34 }}>
+              <div style={{ flex: 1 }}>
                 <div
                   style={{
-                    marginTop: 5,
-                    fontSize: 12,
+                    fontSize: 16,
+                    lineHeight: 1,
+                    fontWeight: 'bold',
                     color: '#333333',
-                    lineHeight: 'initial',
+                    ...disFlexAC,
                   }}
                 >
-                  <div>
-                    优惠价：
-                    <span style={{ fontSize: 14, fontWeight: 'bold' }}>¥{item.realPrice}</span>
-                  </div>
+                  {
+                    {
+                      defaultMode: `¥${item.sellPrice}`,
+                      cashMode: `¥${item.sellPrice}`,
+                      self: (
+                        <>
+                          <span>
+                            ¥{item.sellPrice}+{item.sellBean}
+                          </span>
+                          <span style={{ fontSize: 12, marginLeft: 2 }}>卡豆</span>
+                        </>
+                      ),
+                      free: '¥0',
+                    }[item.paymentModeType]
+                  }
+                </div>
+                {item.paymentModeType === 'defaultMode' && (
                   <div
                     style={{
-                      height: 16,
+                      height: 18,
                       marginTop: 4,
-                      borderRadius: 8,
-                      border: '1px solid #ef476f',
+                      borderRadius: 2,
                       display: 'inline-flex',
                       alignItems: 'center',
                       overflow: 'hidden',
                       position: 'relative',
+                      backgroundColor: '#FEF1F4',
                     }}
                   >
                     <div
                       style={{
-                        ...disFlexAC,
+                        width: 34,
                         height: 'inherit',
-                        background: '#ef476f',
-                        fontSize: 10,
-                        color: '#ffffff',
-                        paddingLeft: 4,
-                        paddingRight: 3,
-                      }}
-                    >
-                      卡豆再省
-                    </div>
-                    <div
-                      style={{
-                        width: 0,
-                        height: 0,
-                        borderTop: '16px solid #ef476f',
-                        borderRight: '2px solid transparent',
+                        backgroundImage:
+                          'url(https://wechat-config.dakale.net/miniprogram/image/icon895.png)',
+                        backgroundSize: 'contain',
                       }}
                     ></div>
                     <div
                       style={{
-                        fontSize: 12,
+                        fontSize: 14,
                         fontWeight: 'bold',
                         color: '#ef476f',
-                        background: '#ffffff',
-                        borderRadius: '0px 50px 50px 0px',
-                        paddingRight: 4,
+                        padding: '0 4px',
                       }}
                     >
                       ￥0
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
               <div
                 style={{
-                  width: 154,
-                  height: 27,
+                  minWidth: 60,
+                  height: 26,
                   fontSize: 14,
-                  marginTop: 16,
+                  padding: '0 8px',
                   borderRadius: 13,
                   ...disFlexAC,
                   color: '#FFFFFF',
                   background: '#EF476F',
                   justifyContent: 'center',
+                  position: 'absolute',
+                  right: 0,
+                  bottom: 0,
                 }}
               >
                 抢购
               </div>
             </div>
           </div>
-        );
-      })}
+        </div>
+      ))}
+    </div>,
+    <div
+      key="hcgoods"
+      style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        padding: '8px 12px',
+      }}
+    >
+      <div>{list.filter((item, i) => i % 2 == 0).map((item) => domShow2(item))}</div>
+      <div>{list.filter((item, i) => i % 2 !== 0).map((item) => domShow2(item))}</div>
     </div>,
   ][styleIndex];
 };

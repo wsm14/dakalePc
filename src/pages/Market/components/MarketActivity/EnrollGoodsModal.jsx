@@ -120,7 +120,7 @@ const EnrollGoodsModal = (props) => {
         loading={loading}
         rowSelection={handleSelectRowCheck}
         closeSumbit={false}
-        searchParams={{ isShowSkuList: 1 }}
+        searchParams={{ isShowSkuList: 1 }} // 是否搜索展示规格
         onSumbit={({ list }) => {
           setVisibleInfo({
             show: true,

@@ -117,7 +117,7 @@ ${source
       4,
     )};background: url(${item.goodsImg}) center / cover;" ></div>
     <div style="flex: 1;overflow: hidden;height: ${vw(112)};">
-    <div style="font-size: ${vw(14)};lineHeight: ${vw(
+    <div style="height: ${vw(31)};font-size: ${vw(14)};lineHeight: ${vw(
       20,
     )};display: -webkit-box;color: #333333;overflow: hidden; white-space:normal;text-overflow: clip;word-wrap:break-word;-webkit-line-clamp:2;-webkit-box-orient:vertical">${
       item.goodsName

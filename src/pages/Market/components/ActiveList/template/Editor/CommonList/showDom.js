@@ -7,6 +7,192 @@ export default ({ styleIndex = 0, list = [] }) => {
     alignItems: 'center',
   };
 
+  const domShow2 = (item) => (
+    <div
+      key={item.goodsId}
+      style={{
+        width: 172,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 4,
+        marginBottom: 8,
+        overflow: 'hidden',
+      }}
+    >
+      <div
+        style={{
+          height: 137,
+          background: `url(${item.goodsImg}) center/cover`,
+        }}
+      ></div>
+      <div
+        style={
+          item.paymentModeType === 'defaultMode'
+            ? { padding: '5px 8px 12px' }
+            : { padding: '5px 8px 15px' }
+        }
+      >
+        <div
+          style={{
+            height: 44,
+            fontSize: 16,
+            color: '#333333',
+            lineHeight: '22px',
+            display: '-webkit-box',
+            overflow: 'hidden',
+            whiteSpace: 'normal',
+            textOverflow: 'clip',
+            wordWrap: 'break-word',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+          }}
+        >
+          {item.goodsName}
+        </div>
+        <div
+          style={{
+            marginTop: 3,
+            ...disFlexAC,
+          }}
+        >
+          <img
+            style={{
+              width: 15,
+              height: 15,
+              marginRight: 4,
+              borderRadius: '50%',
+              backgroundColor: '#f5f5f5',
+            }}
+            src={item.relateImg}
+          ></img>
+          <div
+            style={{
+              flex: 1,
+              fontSize: 12,
+              color: '#999999',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              lineHeight: 'initial',
+            }}
+          >
+            {item.relateName}
+          </div>
+        </div>
+        <div
+          style={{
+            marginTop: 12,
+            fontSize: 16,
+            fontWeight: 'bold',
+            color: '#333333',
+            lineHeight: 'initial',
+            ...disFlexAC,
+          }}
+        >
+          {
+            {
+              defaultMode: `¥${item.sellPrice}`,
+              cashMode: `¥${item.sellPrice}`,
+              self: (
+                <>
+                  <span>
+                    ¥{item.sellPrice}+{item.sellBean}
+                  </span>
+                  <span style={{ fontSize: 12, marginLeft: 2 }}>卡豆</span>
+                </>
+              ),
+              free: '¥0',
+            }[item.paymentModeType]
+          }
+        </div>
+        {item.paymentModeType === 'defaultMode' && (
+          <div style={disFlexAC}>
+            <div
+              style={{
+                height: 18,
+                marginTop: 6,
+                maxWidth: 97,
+                marginRight: 4,
+                borderRadius: 2,
+                display: 'inline-flex',
+                alignItems: 'center',
+                overflow: 'hidden',
+                position: 'relative',
+                backgroundColor: '#FEF1F4',
+              }}
+            >
+              <div
+                style={{
+                  width: 34,
+                  height: 'inherit',
+                  backgroundImage:
+                    'url(https://wechat-config.dakale.net/miniprogram/image/icon895.png)',
+                  backgroundSize: '100% 100%',
+                  backgroundRepeat: 'no-repeat',
+                  flexShrink: 0,
+                }}
+              ></div>
+              <div
+                style={{
+                  fontSize: 14,
+                  fontWeight: 'bold',
+                  color: '#ef476f',
+                  padding: '0 4px',
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                ￥0
+              </div>
+            </div>
+            <div
+              style={{
+                height: 18,
+                marginTop: 6,
+                borderRadius: 2,
+                display: 'inline-flex',
+                alignItems: 'center',
+                overflow: 'hidden',
+                position: 'relative',
+                backgroundColor: '#FEF1F4',
+                marginRight: 4,
+                flex: 1,
+                maxWidth: 'fit-content',
+              }}
+            >
+              <div
+                style={{
+                  width: 18,
+                  backgroundSize: '12px 10px',
+                  height: 'inherit',
+                  backgroundImage:
+                    'url(https://wechat-config.dakale.net/miniprogram/image/z_icon.png)',
+                  backgroundColor: '#FCE2E8',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center',
+                  flexShrink: 0,
+                }}
+              ></div>
+              <div
+                style={{
+                  fontSize: 14,
+                  fontWeight: 'bold',
+                  color: '#ef476f',
+                  padding: '0 4px',
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                ￥0
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   // 设计图 750 这里 350 设计图/2
   return [
     <div key="vgoods" style={{ padding: '12px 12px 0.1px', backgroundColor: '#FFFFFF' }}>
@@ -34,6 +220,7 @@ export default ({ styleIndex = 0, list = [] }) => {
           <div style={{ flex: 1, overflow: 'hidden', height: 112 }}>
             <div
               style={{
+                height: 40,
                 fontSize: 14,
                 lineHeight: '20px',
                 display: '-webkit-box',
@@ -173,191 +360,8 @@ export default ({ styleIndex = 0, list = [] }) => {
         padding: '8px 12px',
       }}
     >
-      {list.map((item) => (
-        <div
-          key={item.goodsId}
-          style={{
-            width: 172,
-            backgroundColor: '#FFFFFF',
-            borderRadius: 4,
-            marginBottom: 8,
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            style={{
-              height: 137,
-              background: `url(${item.goodsImg}) center/cover`,
-            }}
-          ></div>
-          <div
-            style={
-              item.paymentModeType === 'defaultMode'
-                ? { padding: '5px 8px 12px' }
-                : { padding: '5px 8px 15px' }
-            }
-          >
-            <div
-              style={{
-                height: 44,
-                fontSize: 16,
-                color: '#333333',
-                lineHeight: '22px',
-                display: '-webkit-box',
-                overflow: 'hidden',
-                whiteSpace: 'normal',
-                textOverflow: 'clip',
-                wordWrap: 'break-word',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
-              }}
-            >
-              {item.goodsName}
-            </div>
-            <div
-              style={{
-                marginTop: 3,
-                ...disFlexAC,
-              }}
-            >
-              <img
-                style={{
-                  width: 15,
-                  height: 15,
-                  marginRight: 4,
-                  borderRadius: '50%',
-                  backgroundColor: '#f5f5f5',
-                }}
-                src={item.relateImg}
-              ></img>
-              <div
-                style={{
-                  flex: 1,
-                  fontSize: 12,
-                  color: '#999999',
-                  overflow: 'hidden',
-                  whiteSpace: 'nowrap',
-                  textOverflow: 'ellipsis',
-                  lineHeight: 'initial',
-                }}
-              >
-                {item.relateName}
-              </div>
-            </div>
-            <div
-              style={{
-                marginTop: 12,
-                fontSize: 16,
-                fontWeight: 'bold',
-                color: '#333333',
-                lineHeight: 'initial',
-                ...disFlexAC,
-              }}
-            >
-              {
-                {
-                  defaultMode: `¥${item.sellPrice}`,
-                  cashMode: `¥${item.sellPrice}`,
-                  self: (
-                    <>
-                      <span>
-                        ¥{item.sellPrice}+{item.sellBean}
-                      </span>
-                      <span style={{ fontSize: 12, marginLeft: 2 }}>卡豆</span>
-                    </>
-                  ),
-                  free: '¥0',
-                }[item.paymentModeType]
-              }
-            </div>
-            {item.paymentModeType === 'defaultMode' && (
-              <div style={disFlexAC}>
-                <div
-                  style={{
-                    height: 18,
-                    marginTop: 6,
-                    maxWidth: 97,
-                    marginRight: 4,
-                    borderRadius: 2,
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    overflow: 'hidden',
-                    position: 'relative',
-                    backgroundColor: '#FEF1F4',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 34,
-                      height: 'inherit',
-                      backgroundImage:
-                        'url(https://wechat-config.dakale.net/miniprogram/image/icon895.png)',
-                      backgroundSize: '100% 100%',
-                      backgroundRepeat: 'no-repeat',
-                      flexShrink: 0,
-                    }}
-                  ></div>
-                  <div
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 'bold',
-                      color: '#ef476f',
-                      padding: '0 4px',
-                      overflow: 'hidden',
-                      whiteSpace: 'nowrap',
-                      textOverflow: 'ellipsis',
-                    }}
-                  >
-                    ￥0
-                  </div>
-                </div>
-                <div
-                  style={{
-                    height: 18,
-                    marginTop: 6,
-                    borderRadius: 2,
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    overflow: 'hidden',
-                    position: 'relative',
-                    backgroundColor: '#FEF1F4',
-                    marginRight: 4,
-                    flex: 1,
-                    maxWidth: 'fit-content',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 18,
-                      backgroundSize: '12px 10px',
-                      height: 'inherit',
-                      backgroundImage:
-                        'url(https://wechat-config.dakale.net/miniprogram/image/z_icon.png)',
-                      backgroundColor: '#FCE2E8',
-                      backgroundRepeat: 'no-repeat',
-                      backgroundPosition: 'center',
-                      flexShrink: 0,
-                    }}
-                  ></div>
-                  <div
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 'bold',
-                      color: '#ef476f',
-                      padding: '0 4px',
-                      overflow: 'hidden',
-                      whiteSpace: 'nowrap',
-                      textOverflow: 'ellipsis',
-                    }}
-                  >
-                    ￥0
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      ))}
+      <div>{list.filter((item, i) => i % 2 != 0).map((item) => domShow2(item))}</div>
+      <div>{list.filter((item, i) => i % 2 == 0).map((item) => domShow2(item))}</div>
     </div>,
   ][styleIndex];
 };
