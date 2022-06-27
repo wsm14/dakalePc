@@ -201,7 +201,9 @@ const GoodsSelectModal = (props) => {
       {searchItems.filter((i) => i.show).length > 0 && !hiddenSearch && (
         <SearchCondition
           searchItems={searchItems}
-          handleSearch={(val) => setSearchValue({ ...searchParams, ...val, ownerType, page: 1 })}
+          handleSearch={(val) => {
+            setSearchValue({ ...searchParams, ...val, ownerType, page: 1 });
+          }}
         ></SearchCondition>
       )}
       <Tabs destroyInactiveTabPane onChange={setTabKey} type="card" style={{ overflow: 'initial' }}>
