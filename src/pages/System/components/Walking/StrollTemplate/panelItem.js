@@ -16,9 +16,9 @@ export default [
     children: [
       'mainBanner',
       'capsulePosition',
-      'recharge',
-      'beanSpecialArea',
-      'notify',
+      // 'recharge', // 逛逛话费充值
+      // 'beanSpecialArea', // 逛逛卡豆位
+      // 'notify', // 通知位
       'signInModule',
       'beanBalance',
     ],
@@ -32,12 +32,12 @@ export default [
     header: '商品推荐',
     type: 'list',
     children: [
-      'limitedTimeAndExplosive',
-      'limitedTime',
-      'explosive',
-      'member',
+      // 'limitedTimeAndExplosive', // 限时+爆品
+      // 'limitedTime', // 限时抢购
+      // 'explosive', // 爆品福利
+      // 'member', // 会员充值
       'selfTourResource',
-      'newProductRecommend',
+      // 'newProductRecommend', // 新品推荐
       'beanDeductionZone',
       'fieldResource',
       'timeLimitedCoupon',
