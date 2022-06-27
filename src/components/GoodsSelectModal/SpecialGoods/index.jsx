@@ -25,7 +25,7 @@ const SpecialGoods = (props) => {
 
   useEffect(() => {
     const { id, ...other } = searchValue;
-    visible && tableRef.current.fetchGetData(other);
+    visible && tableRef.current.fetchGetData({ relateId: id, ...other });
   }, [visible, searchValue]);
 
   const getColumns = [
