@@ -353,6 +353,9 @@ export const ORDER_CLOSE_TYPE = {
 // 退款订单状态
 export const REFUND_ORDERS_STATUS = ['退款中', '已退款', '取消退款'];
 
+// 退款管理 - 退款类型
+export const REFUND_ORDERS_TYPE = { onlyFee: '仅退款', goodsAFee: '退货退款' };
+
 //退款订单审核状态
 export const REFUND_ORDERS_EXAMINE_STATUS = ['未审核', '审核通过', '审核拒绝', '已关闭'];
 
