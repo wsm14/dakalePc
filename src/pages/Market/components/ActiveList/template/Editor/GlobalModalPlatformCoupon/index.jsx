@@ -1,7 +1,7 @@
 import React, { useImperativeHandle, useState } from 'react';
 import { Form, Button, Tabs } from 'antd';
 import aliOssUpload from '@/utils/aliOssUpload';
-import GoodsSelectModal from './components/GoodsSelectModal';
+import GoodsSelectModal from '@/components/GoodsSelectModal';
 import FormList from './FormList';
 import EditorForm from '../editorForm';
 import showDomJs from './showDom';
@@ -129,7 +129,7 @@ const CommonList = (props) => {
                     <Form.ErrorList errors={errors} />
                     {fields.map((field, i) => (
                       <FormList
-                        key={field.fieldKey}
+                        key={field.key}
                         form={form}
                         fields={fields}
                         field={field}
@@ -156,8 +156,12 @@ const CommonList = (props) => {
         </TabPane>
       </Tabs>
       <GoodsSelectModal
-        form={form}
         visible={visible}
+        showTag={['platformCoupon']}
+        goodsValues={form.getFieldValue('list') || []}
+        onSumbit={({ list }) => {
+          form.setFieldsValue({ list: list });
+        }}
         onClose={() => setVisible(false)}
       ></GoodsSelectModal>
     </div>

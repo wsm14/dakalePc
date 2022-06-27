@@ -13,6 +13,7 @@ const { TabPane } = Tabs;
  * 商品选择弹窗
  * @param {Function} disabled 不可选择规则 (row) => Boolean
  * @param {String} selectType 选择的类型 单选多选 默认多选 checkbox | radio
+ * @param {String} idKey 外部数据唯一键的key值
  * @param {Array} goodsValues 已选值 商品源数据
  * @param {Array} showTag 显示的类型 可选
  * ["freeReduceCoupon","platformCoupon", "reduceCoupon","specialGoods","commerceGoods"]
@@ -27,6 +28,7 @@ const GoodsSelectModal = (props) => {
   const {
     disabled,
     visible = false,
+    idKey = 'goodsId',
     goodsValues = [],
     searchParams = {},
     selectType = 'checkbox', // checkbox | radio
@@ -50,7 +52,7 @@ const GoodsSelectModal = (props) => {
       const newData = goodsValues.filter((i) => i);
       // 数据还原
       if (newData && newData.length) {
-        setSelectItem({ keys: newData.map((i) => i.goodsId || i), list: newData });
+        setSelectItem({ keys: newData.map((i) => i.goodsId || i[idKey] || i), list: newData });
       }
       // 默认搜索值
       if (Object.keys(searchParams).length) setSearchValue({ ...searchParams, page: 1 });

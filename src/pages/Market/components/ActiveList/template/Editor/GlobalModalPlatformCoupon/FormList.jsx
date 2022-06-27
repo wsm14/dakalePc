@@ -1,7 +1,7 @@
 import React from 'react';
-import { Space } from 'antd';
+import { Space, Tag } from 'antd';
 import { MinusCircleOutlined, UpSquareOutlined, DownSquareOutlined } from '@ant-design/icons';
-import { PLATFORM_TICKET_TYPE } from '@/common/constant';
+import { PLATFORM_TICKET_TYPE, TAG_COLOR_TYPE } from '@/common/constant';
 import styles from './index.less';
 
 const FormList = (props) => {
@@ -46,9 +46,9 @@ const FormList = (props) => {
             </div>
             <div className={styles.listItem_info}>
               <div>
-                <span className={styles.listItem_tag}>
+                <Tag color={TAG_COLOR_TYPE[useScenesType][classType]}>
                   {PLATFORM_TICKET_TYPE[useScenesType][classType]}
-                </span>
+                </Tag>
                 {couponName}
               </div>
               <div>
