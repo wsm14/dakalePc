@@ -16,7 +16,7 @@ export default {
   state: {
     specialGoods: { list: [], total: 0 },
     commerceGoods: { list: [], total: 0 },
-    coupon: [],
+    coupon: { list: [], total: 0 },
   },
 
   reducers: {
@@ -81,7 +81,10 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          coupon: content.ownerCouponDTOList.map((i) => ({ ...i, ownerId })),
+          coupon: {
+            list: content.ownerCouponDTOList.map((i) => ({ ...i, ownerId })),
+            total: content.total,
+          },
         },
       });
     },
