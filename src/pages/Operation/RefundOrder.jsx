@@ -193,7 +193,11 @@ const RefundOrder = (props) => {
     {
       title: '申请退款金额',
       dataIndex: 'refundFee',
-      render: (val, row) => `${val}\n(含${row.refundBean || 0}卡豆)`,
+      render: (val, row) => {
+        const cashBean = row.refundBean ? row.refundBean / 100 : 0;
+        const refundPrice = Number(val) + cashBean > 0 ? (Number(val) + cashBean).toFixed(2) : 0;
+        return `￥${refundPrice}\n(含${row.refundBean || 0}卡豆)`;
+      },
     },
     {
       title: { commerceGoods: '发货状态/退款申请时间', specialGoods: '退款申请时间' }[tabKey],
