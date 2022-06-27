@@ -132,7 +132,7 @@ const EnrollCommerceGoods = (props) => {
       if (item[key] === undefined) {
         return '';
       } else {
-        return item[key];
+        return Number(item[key]);
       }
     });
 

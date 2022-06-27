@@ -6,19 +6,15 @@ import {
   fetchActiveEdit,
   fetchCouponSelect,
   fetchGetMreConfigInfo,
-  fetchSpecialGoodsSelect,
   fetchCommerceGoodsSelect,
-  fetchPlatformCouponSelect,
 } from '@/services/ActiveServices';
 
 export default {
   namespace: 'activeTemplate',
 
   state: {
-    specialGoods: { list: [], total: 0 },
     commerceGoods: { list: [], total: 0 },
-    coupon: [],
-    platformCoupon: [],
+    coupon: { list: [], total: 0 },
   },
 
   reducers: {
@@ -49,17 +45,6 @@ export default {
         }
       });
     },
-    *fetchSpecialGoodsSelect({ payload }, { call, put }) {
-      const response = yield call(fetchSpecialGoodsSelect, payload);
-      if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          specialGoods: { list: content.recordList, total: content.total },
-        },
-      });
-    },
     // 电商商品
     *fetchCommerceGoodsSelect({ payload }, { call, put }) {
       const response = yield call(fetchCommerceGoodsSelect, {
@@ -83,19 +68,10 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          coupon: content.ownerCouponDTOList.map((i) => ({ ...i, ownerId })),
-        },
-      });
-    },
-    // 平台券
-    *fetchPlatformCouponSelectList({ payload }, { call, put }) {
-      const response = yield call(fetchPlatformCouponSelect, payload);
-      if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          platformCoupon: content.recordList,
+          coupon: {
+            list: content.ownerCouponDTOList.map((i) => ({ ...i, ownerId })),
+            total: content.ownerCouponDTOList.length,
+          },
         },
       });
     },

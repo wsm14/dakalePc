@@ -118,7 +118,7 @@ const SpecialGoods = (props) => {
         selectedRowKeys: selectItem.keys,
         preserveSelectedRowKeys: true,
         getCheckboxProps: (record) => ({
-          disabled: record.status === '0',
+          disabled: record.status === '0', // 已下架不可选
         }),
         onChange: (selectedRowKeys, selectedRows) => {
           console.log(`selectedRowKeys:`, selectedRowKeys, 'selectedRows: ', selectedRows);

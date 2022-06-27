@@ -129,23 +129,23 @@ const pathNative = {
     miniProgram: { path: '/pages/perimeter/merchantDetails/index', key: { id: 'merchantId' } },
   },
   goods: {
-    // 特惠商品详情 specialActivityId ownerId
+    // 特惠商品详情 goodsId ownerId
     dakaleIOS: {
       path: 'DKLAroundDiscountGoodsDetailViewController',
-      key: { merchantId: 'ownerId' },
+      key: { goodsId: "specialActivityId" }
     },
-    dakaleAndroid: { path: 'AroundGood', key: { merchantId: 'ownerId' } },
+    dakaleAndroid: { path: 'AroundGood' },
     miniProgram: { path: '/pages/perimeter/favourableDetails/index' },
   },
   commerceGoods: {
-    // 电商商品详情 specialActivityId ownerId 小程序要merchantId
+    // 电商商品详情  goodsId ownerId
     dakaleIOS: {
       path: 'commerceGoodsDetailPage',
+      key: { goodsId: "specialActivityId" },
     },
     dakaleAndroid: { path: 'ECGood' },
     miniProgram: {
       path: '/pages/perimeter/favourableDetails/index',
-      key: { ownerId: 'merchantId' },
     },
   },
   limited: {

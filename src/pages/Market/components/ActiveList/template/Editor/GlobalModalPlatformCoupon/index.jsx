@@ -1,7 +1,7 @@
 import React, { useImperativeHandle, useState } from 'react';
 import { Form, Button, Tabs } from 'antd';
 import aliOssUpload from '@/utils/aliOssUpload';
-import GoodsSelectModal from './components/GoodsSelectModal';
+import GoodsSelectModal from '@/components/GoodsSelectModal';
 import FormList from './FormList';
 import EditorForm from '../editorForm';
 import showDomJs from './showDom';
@@ -15,6 +15,9 @@ const CommonList = (props) => {
   const { value = {}, cRef, form } = props;
 
   const [visible, setVisible] = useState(false);
+
+  // 最大选择数
+  const maxItem = 5;
 
   // 向父组件暴露方法
   useImperativeHandle(cRef, () => ({
@@ -129,7 +132,7 @@ const CommonList = (props) => {
                     <Form.ErrorList errors={errors} />
                     {fields.map((field, i) => (
                       <FormList
-                        key={field.fieldKey}
+                        key={field.key}
                         form={form}
                         fields={fields}
                         field={field}
@@ -138,8 +141,12 @@ const CommonList = (props) => {
                       ></FormList>
                     ))}
                     <Form.Item>
-                      <Button disabled={fields.length === 5} block onClick={() => setVisible(true)}>
-                        {fields.length} / {5} 选择券
+                      <Button
+                        disabled={fields.length === maxItem}
+                        block
+                        onClick={() => setVisible(true)}
+                      >
+                        {fields.length} / {maxItem} 选择券
                       </Button>
                     </Form.Item>
                   </>
@@ -156,8 +163,12 @@ const CommonList = (props) => {
         </TabPane>
       </Tabs>
       <GoodsSelectModal
-        form={form}
         visible={visible}
+        showTag={['platformCoupon']}
+        goodsValues={form.getFieldValue('list') || []}
+        onSumbit={({ list }) => {
+          form.setFieldsValue({ list: list.slice(0, maxItem - 1) });
+        }}
         onClose={() => setVisible(false)}
       ></GoodsSelectModal>
     </div>
