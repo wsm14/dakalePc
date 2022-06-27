@@ -181,7 +181,11 @@ const RefundList = (props) => {
       title: '退款金额',
       dataIndex: 'refundFee',
       align: 'center',
-      render: (val, row) => `${val}\n(含${row.refundBean || 0}卡豆)`,
+      render: (val, row) => {
+        const cashBean = row.refundBean ? row.refundBean / 100 : 0;
+        const refundPrice = Number(val) + cashBean > 0 ? (Number(val) + cashBean).toFixed(2) : 0;
+        return `￥${refundPrice}\n(含${row.refundBean || 0}卡豆)`;
+      },
     },
     {
       title: '申请时间',
