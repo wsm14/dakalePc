@@ -4,7 +4,6 @@ import couponList1 from './CouponList';
 import merchantList1 from './MerchantList';
 import commonList1 from './CommonList/CommonList_1';
 import commonList2 from './CommonList/CommonList_2';
-import commonList3 from './CommonList/CommonList_3';
 import commerceGoods1 from './CommerceGoods/CommerceGoods_1';
 import commerceGoods2 from './CommerceGoods/CommerceGoods_2';
 import GlobalModalPlatformCoupon, { couponStyle, userGetCoupon } from './GlobalModalPlatformCoupon';
@@ -89,7 +88,7 @@ const htmlDom = {
   // 特惠商品列表
   commonList: ({ styleIndex, list }, uid) => {
     head = { ...head, request: requestJs };
-    const functionIndex = [commonList1, commonList2, commonList3][styleIndex];
+    const functionIndex = [commonList1, commonList2][styleIndex];
     return `<div id="${uid}"></div><script>;(${functionIndex})(${JSON.stringify(
       list,
     )},"${uid}")<\/script>`;

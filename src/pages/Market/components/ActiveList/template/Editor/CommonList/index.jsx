@@ -6,7 +6,6 @@ import EditorForm from '../editorForm';
 import showDomJs from './showDom';
 import list_1 from './img/list_1.png';
 import list_2 from './img/list_2.png';
-import list_3 from './img/list_3.png';
 import '../index.less';
 
 /**
@@ -32,7 +31,7 @@ const CommonList = (props) => {
       name: 'styleIndex',
       type: 'classSelect',
       required: true,
-      select: [list_1, list_2, list_3],
+      select: [list_1, list_2],
     },
   ];
 
