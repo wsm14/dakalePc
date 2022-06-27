@@ -6,6 +6,7 @@ import { useUpdateEffect } from 'ahooks';
 import {
   REFUND_ORDERS_STATUS,
   BUSINESS_TYPE,
+  REFUND_ORDERS_TYPE,
   SPECIAL_GOODS_TYPE,
   ELECTRICGOODS_SELL_STATUS,
 } from '@/common/constant';
@@ -204,6 +205,12 @@ const RefundOrder = (props) => {
           specialGoods: `${val}`,
         }[tabKey];
       },
+    },
+    {
+      title: '退款类型',
+      dataIndex: 'refundType',
+      show: ['commerceGoods'].includes(tabKey),
+      render: (val) => REFUND_ORDERS_TYPE[val],
     },
     {
       title: '退款原因',
