@@ -192,7 +192,6 @@ const RefundList = (props) => {
     {
       title: '退款类型',
       dataIndex: 'refundType',
-      show: ['commerceGoods'].includes(tabKey),
       render: (val) => REFUND_ORDERS_TYPE[val],
     },
     {
