@@ -140,7 +140,7 @@ const pathNative = {
   commerceGoods: {
     // 电商商品详情 specialActivityId ownerId 小程序要merchantId
     dakaleIOS: {
-      path: 'DKLAroundDiscountGoodsDetailViewController',
+      path: 'commerceGoodsDetailPage',
     },
     dakaleAndroid: { path: 'ECGood' },
     miniProgram: {
