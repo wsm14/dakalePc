@@ -676,8 +676,8 @@ export const SPECIAL_GOODS_TYPE = { offline: '特惠商品', selfTour: '自我�
 
 // 特惠活动 - 介绍类型
 export const SPECIAL_DESC_TYPE = {
-  imgText: '图文',
-  richText: '富文本',
+  0: '图文',
+  1: '富文本',
 };
 
 // 特惠活动 - 前端展示类型

@@ -899,7 +899,10 @@ const PreferentialSet = ({
       label: '选择介绍类型',
       type: 'radio',
       name: 'descType',
-      select: SPECIAL_DESC_TYPE,
+      select: {
+        imgText: '图文',
+        richText: '富文本',
+      },
       hidden: true,
     },
     // {
