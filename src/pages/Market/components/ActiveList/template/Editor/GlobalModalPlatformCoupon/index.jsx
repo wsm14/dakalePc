@@ -16,6 +16,9 @@ const CommonList = (props) => {
 
   const [visible, setVisible] = useState(false);
 
+  // 最大选择数
+  const maxItem = 5;
+
   // 向父组件暴露方法
   useImperativeHandle(cRef, () => ({
     getContent: () => {
@@ -138,8 +141,12 @@ const CommonList = (props) => {
                       ></FormList>
                     ))}
                     <Form.Item>
-                      <Button disabled={fields.length === 5} block onClick={() => setVisible(true)}>
-                        {fields.length} / {5} 选择券
+                      <Button
+                        disabled={fields.length === maxItem}
+                        block
+                        onClick={() => setVisible(true)}
+                      >
+                        {fields.length} / {maxItem} 选择券
                       </Button>
                     </Form.Item>
                   </>
@@ -160,7 +167,7 @@ const CommonList = (props) => {
         showTag={['platformCoupon']}
         goodsValues={form.getFieldValue('list') || []}
         onSumbit={({ list }) => {
-          form.setFieldsValue({ list: list });
+          form.setFieldsValue({ list: list.slice(0, maxItem - 1) });
         }}
         onClose={() => setVisible(false)}
       ></GoodsSelectModal>
