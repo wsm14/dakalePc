@@ -183,7 +183,7 @@ const VideoDetail = (props) => {
           momentRelateList: newCoupon.map((item) => ({
             relateId: item.goodsId,
             relateType: item.activityType,
-            relateShardingKey: item.ownerId || ownerId,
+            relateShardingKey: item.ownerIdString || ownerId,
           })),
         };
       }
