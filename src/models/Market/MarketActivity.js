@@ -75,7 +75,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          onlineGoods: { list: content.marketingActivityDetailList, total: content.total },
+          onlineGoods: { list: content.activityOnlineGoods, total: content.total },
         },
       });
     },
