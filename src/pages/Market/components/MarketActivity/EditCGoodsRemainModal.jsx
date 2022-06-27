@@ -66,7 +66,7 @@ const EditCGoodsRemainModal = (props) => {
     {
       title: '规格值',
       dataIndex: 'relationAttributeObjects',
-      render: (val) => val?.map((i) => `${i.name}:${i.value}`).join('\n') || '',
+      render: (val) => val?.map((i) => `${i.name}: ${i.value}`).join('\n') || '',
     },
     {
       title: '活动售价（卡豆）',
