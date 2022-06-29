@@ -8,16 +8,17 @@ import {
   VERIFICATION_STATUS,
 } from '@/common/constant';
 import { connect } from 'umi';
+import { Button } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import { DownOutlined } from '@ant-design/icons';
 import { checkCityName } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import QuestionTooltip from '@/components/QuestionTooltip';
-import styles from './style.less';
+import styles from '../NewOrders/style.less';
 
 const OrderDetailDraw = (props) => {
-  const { visible, onClose, getDetail, total, loading } = props;
+  const { visible, onClose, getDetail, childRef, total, loading, dispatch } = props;
   const { detail = {}, show = false, index } = visible;
   const {
     status,

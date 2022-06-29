@@ -11,7 +11,7 @@ import WinnerOrders from './components/Orders/WinnerOrders';
 
 const tabList = [
   {
-    key: 'specialGoods',
+    key: 'goods',
     tab: '特惠订单',
   },
   {
@@ -45,12 +45,12 @@ const tabList = [
 ];
 
 const OrdersList = () => {
-  const [tabkey, setTabKey] = useState('specialGoods');
+  const [tabkey, setTabKey] = useState('goods');
 
   const listProps = { tabkey };
 
   const contentList = {
-    specialGoods: <GoodsOrders {...listProps}></GoodsOrders>,
+    goods: <GoodsOrders {...listProps}></GoodsOrders>,
     commerceGoods: <CommerceGoods {...listProps}></CommerceGoods>,
     scan: <CodeOrders {...listProps}></CodeOrders>,
     rightGoods: <OtherOrders {...listProps}></OtherOrders>,

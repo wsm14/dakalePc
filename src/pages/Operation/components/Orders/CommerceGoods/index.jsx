@@ -1,13 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Avatar, Modal } from 'antd';
-import { ORDER_STATUS, ORDER_CLOSE_TYPE, ORDER_PAY_LOGO } from '@/common/constant';
+import { COMMERCE_ORDERS_STATUS, ORDER_CLOSE_TYPE, ORDER_PAY_LOGO } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
-import OrderDetailDraw from '../NewOrderDetailDraw';
+import OrderDetailDraw from '../OrderDetailDraw';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
+import excelHeder from './excelHeder';
 import OrderDrawer from './OrderDrawer';
-import LogisticsDraw from '../LogisticsDraw';
 import styles from '../style.less';
 
 const CommerceGoods = (props) => {
@@ -16,10 +16,40 @@ const CommerceGoods = (props) => {
 
   const [visible, setVisible] = useState(false);
   const [visivleSet, setVisivleSet] = useState(false);
+  const [goodsList, setGoodsList] = useState([]); // 选中的列表
   const [visibleRouting, setVisibleRouting] = useState(false);
-  const [logisticsVisible, setLogisticsVisible] = useState({ show: false, detail: {} }); //查看物流弹窗
 
   const childRef = useRef();
+
+  //详情
+  const fetchGoodsDetail = (index) => {
+    const { orderId } = list[index];
+    dispatch({
+      type: 'ordersList/fetchOrderDetail',
+      payload: { orderId },
+      callback: (detail) => {
+        setVisible({
+          index,
+          show: true,
+          detail,
+        });
+      },
+    });
+  };
+
+  //发货和查看详情
+
+  const fetchOderDrawer = (type, record) => {
+    const { orderLogistics = {}, orderId } = record;
+    setVisivleSet({
+      type,
+      show: true,
+      detail: {
+        ...orderLogistics,
+        orderId,
+      },
+    });
+  };
 
   // 搜索参数
   const searchItems = [
@@ -27,16 +57,11 @@ const CommerceGoods = (props) => {
       label: '订单号',
       name: 'orderSn',
     },
-    // {
-    //   label: '商品名称',
-    //   name: 'goodsId',
-    //   type: 'good',
-    // },
-    // {
-    //   label: '供应商',
-    //   name: 'relateOwnerId',
-    //   type: 'supplier',
-    // },
+    {
+      label: '商品',
+      name: 'goodsId',
+      type: 'good',
+    },
     {
       label: '下单人',
       name: 'userId',
@@ -46,66 +71,71 @@ const CommerceGoods = (props) => {
       label: '订单状态',
       name: 'status',
       type: 'select',
-      allItem: false,
-      select: ORDER_STATUS,
+      select: COMMERCE_ORDERS_STATUS,
+    },
+    {
+      label: '下单日期',
+      type: 'rangePicker',
+      name: 'orderTimeStart',
+      end: 'orderTimeEnd',
     },
   ];
 
   // table 表头
   const getColumns = [
     {
-      title: '商品主图',
-      dataIndex: ['orderDesc', 'commerceGoods'],
-      render: (val, row) => (
-        // <Badge.Ribbon text={ELECTRICGOODS_SELL_STATUS[row.sellType]} color="cyan" placement="start">
-        <PopImgShow url={val?.goodsImg} />
-        // </Badge.Ribbon>
-      ),
-    },
-    {
       title: '商品名称',
-      dataIndex: ['orderDesc', 'commerceGoods'],
-      render: (val, row) => (
-        <div>
-          <Ellipsis length={15} tooltip>
-            {val?.goodsName}
-          </Ellipsis>
-          <div style={{ marginTop: 5 }} className={styles.specFont}>
-            {row.orderSn}
+      dataIndex: 'goodsName',
+      render: (val, row) => {
+        const { remark = '', togetherGroupId = '' } = row;
+        let showRemark = '';
+        if (togetherGroupId) {
+          if (remark) {
+            showRemark = `${togetherGroupId}--${remark}`;
+          } else {
+            showRemark = togetherGroupId;
+          }
+        } else {
+          showRemark = remark;
+        }
+        return (
+          <div style={{ display: 'flex' }}>
+            <PopImgShow url={row.goodsImg} />
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                flex: 1,
+                marginLeft: 5,
+              }}
+            >
+              <Ellipsis length={15} tooltip>
+                {val}
+              </Ellipsis>
+              <div style={{ marginTop: 5 }} className={styles.specFont}>
+                <Ellipsis length={12} tooltip>
+                  {`备注：${showRemark}`}
+                </Ellipsis>
+              </div>
+              <div style={{ marginTop: 5 }} className={styles.specFont}>
+                订单号：{row.orderSn}
+              </div>
+            </div>
           </div>
-        </div>
-      ),
-    },
-    {
-      title: '规格/供应商',
-      dataIndex: ['orderDesc', 'commerceGoods', 'attributeObjects'],
-      render: (val, row) => (
-        <div>
-          <div>{val?.map((item) => item.value).join('/')}</div>
-          <div>{row?.supplierInfo?.supplierName}</div>
-        </div>
-      ),
+        );
+      },
     },
     {
       title: '下单人',
       align: 'center',
-      dataIndex: 'userInfo',
-      render: (val, row) => `${val.userName}\n${val.mobile}\n${val.beanCode}`,
+      dataIndex: 'userMobile',
+      render: (val, row) => `${row.userName}\n${val}\n${row.beanCode}`,
     },
     {
-      title: '单价/数量',
+      title: '数量',
       align: 'center',
-      dataIndex: ['orderDesc', 'commerceGoods'],
-      render: (val, row) => {
-        const num = Number(val?.sellPrice || 0) + Number(val?.sellBean || 0) / 100;
-
-        return (
-          <div>
-            <div>{`￥${num.toFixed(2) || 0}`}</div>
-            <div>{`×${row?.goodsCount || 0}`}</div>
-          </div>
-        );
-      },
+      dataIndex: 'goodsCount',
     },
     {
       title: '用户实付',
@@ -127,37 +157,26 @@ const CommerceGoods = (props) => {
     {
       title: '平台券',
       align: 'center',
-      dataIndex: 'deductFee',
+      dataIndex: 'deductFeeObject',
       render: (val) =>
-        Object.keys(val).length > 0 ? (
+        val ? (
           <>
             <div>{`${val[0]?.reduceFee || 0}元${val[0]?.deductTypeName || ''}`}</div>
-            <div>{val[0]?.couponCode || ''}</div>
+            <div>{val[0]?.platformCouponId || ''}</div>
           </>
         ) : (
           '-'
         ),
     },
     {
-      title: '供应商实收',
+      title: '商户实收',
       align: 'center',
-      dataIndex: 'settleParam',
+      dataIndex: 'actualCashFee',
       render: (val, record) => {
+        const actualBean = record.actualBeanFee ? record.actualBeanFee / 100 : 0;
         return (
           <div style={{ textAlign: 'center' }}>
-            <div>{`￥${val?.settlePrice || 0}`}</div>
-          </div>
-        );
-      },
-    },
-    {
-      title: '商品佣金',
-      align: 'center',
-      dataIndex: 'divisionParam',
-      render: (val, record) => {
-        return (
-          <div style={{ textAlign: 'center' }}>
-            <div>{`￥${val?.commission || 0}`}</div>
+            <div>{`￥${Number(val) + actualBean ? (Number(val) + actualBean).toFixed(2) : 0}`}</div>
           </div>
         );
       },
@@ -174,10 +193,7 @@ const CommerceGoods = (props) => {
       render: (val, row) => (
         <>
           <span style={{ display: 'inline-flex', marginBottom: 5 }}>
-            <div>
-              <div>{ORDER_STATUS[val]}</div>
-              {['2'].includes(val) && <div>{`（${ORDER_CLOSE_TYPE[row.closeType]}）`}</div>}
-            </div>
+            {['2','6'].includes(val)? <div style={{ color: '#999' }}>{ORDER_CLOSE_TYPE[row.closeType]}</div>:COMMERCE_ORDERS_STATUS[val]}
             <Avatar
               src={ORDER_PAY_LOGO[row.orderSource]}
               size="small"
@@ -189,11 +205,6 @@ const CommerceGoods = (props) => {
       ),
     },
     {
-      title: '物流状态',
-      dataIndex: 'orderLogisticInfo',
-      render: (val, row) => (row.status == '2' ? '' : val.logisticsCode ? '已发货' : '未发货'),
-    },
-    {
       type: 'handle',
       dataIndex: 'orderId',
       render: (val, record, index) => [
@@ -202,87 +213,35 @@ const CommerceGoods = (props) => {
           click: () => fetchGoodsDetail(index),
         },
         {
-          // 发货
           type: 'goodsDeliver',
-          visible: ['1'].includes(record.status) && !record?.orderLogisticInfo?.logisticsCode,
-          click: () => fetchOderDrawer(record),
+          visible: ['1'].includes(record.status),
+          click: () => fetchOderDrawer('add', record),
         },
         {
-          // 查看物流
           type: 'goodsView',
-          visible: !!record?.orderLogisticInfo?.logisticsCode,
-          click: () => handleGetLogistics(record),
+          visible: ['3', '8'].includes(record.status),
+          click: () => fetchOderDrawer('info', record),
         },
         {
-          // 分账   已付款且已发货才可以分账，分账后状态变为3（交易完成）
-          title: '分账',
+          title: record?.status === '3' ? '已分账' : '分账',
           type: 'routing',
-          pop: true,
+          pop: ['8'].includes(record.status) && true,
           popText: '确定要进行分账吗？分账后无法取消。',
-          visible: ['1'].includes(record.status) && !!record.orderLogisticInfo.logisticsCode,
-          click: () => handleOk(val),
+          visible: ['3', '8'].includes(record.status),
+          disabled: ['3'].includes(record.status),
+          click: () => handleOk(val.split(','), 'one'),
         },
       ],
     },
   ];
 
-  //查看物流
-  const handleGetLogistics = (val) => {
-    const {
-      orderLogisticInfo, //发货信息对象
-    } = val;
-
-    const { mobile, companyCode, logisticsCode } = orderLogisticInfo;
+  //  批量分账
+  const handleOk = (id, type = '') => {
     dispatch({
-      type: 'refundOrder/fetchGetExpressInfo',
+      type: 'ordersList/fetchBatchSplitAccount',
       payload: {
-        expressCompany: companyCode,
-        expressNo: logisticsCode,
-        receiveUserMobile: mobile,
-      },
-      callback: (detail) => {
-        setLogisticsVisible({
-          show: true,
-          detail: { ...detail, orderLogisticInfo },
-        });
-      },
-    });
-  };
-
-  //详情
-  const fetchGoodsDetail = (index) => {
-    const { orderId, userId } = list[index];
-    dispatch({
-      type: 'ordersList/fetchGetOrderDetail',
-      payload: { orderId, userId },
-      callback: (detail) => {
-        setVisible({
-          index,
-          show: true,
-          detail,
-        });
-      },
-    });
-  };
-
-  //发货
-  const fetchOderDrawer = (record) => {
-    const { orderId, userId } = record;
-    setVisivleSet({
-      show: true,
-      detail: {
-        userId,
-        orderId,
-      },
-    });
-  };
-
-  //  分账
-  const handleOk = (orderId) => {
-    dispatch({
-      type: 'ordersList/fetchSubLedger',
-      payload: {
-        orderId,
+        orderIdList: type === 'one' ? id : goodsList,
+        type,
       },
       callback: () => {
         childRef.current.fetchGetData();
@@ -291,9 +250,24 @@ const CommerceGoods = (props) => {
     });
   };
 
+  const extraBtn = ({ get }) => [
+    {
+      type: 'excel',
+      dispatch: 'ordersList/fetchOrdersImport',
+      data: { ...get(), orderType: tabkey },
+      exportProps: { header: excelHeder },
+    },
+    {
+      text: '批量分账',
+      auth: 'batchRouting',
+      onClick: () => setVisibleRouting(true),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
+        btnExtra={extraBtn}
         noCard={false}
         cRef={childRef}
         loading={loading}
@@ -301,7 +275,13 @@ const CommerceGoods = (props) => {
         searchItems={searchItems}
         params={{ orderType: tabkey }}
         rowKey={(record) => `${record.orderId}`}
-        dispatchType="ordersList/fetchPageListOrdersList"
+        rowSelection={{
+          // getCheckboxProps: ({ status }) => ({
+          //   disabled: ['1', '8'].includes(status),
+          // }),
+          onChange: setGoodsList,
+        }}
+        dispatchType="ordersList/fetchGetList"
         {...ordersList}
       ></TableDataBlock>
       {/* 详情 */}
@@ -310,11 +290,12 @@ const CommerceGoods = (props) => {
         visible={visible}
         total={list.length}
         tabkey={tabkey}
-        loading={loadings.effects['ordersList/fetchGetOrderDetail']}
+        loading={loadings.effects['ordersList/fetchOrderDetail']}
         onClose={() => setVisible(false)}
         getDetail={fetchGoodsDetail}
       ></OrderDetailDraw>
       {/* 发货 */}
+      {/*  查看物流*/}
       <OrderDrawer childRef={childRef} visible={visivleSet} onClose={() => setVisivleSet(false)} />
       {/* 确认分账 */}
       <Modal
@@ -325,20 +306,14 @@ const CommerceGoods = (props) => {
       >
         确定要进行分账吗？分账后无法取消。
       </Modal>
-      {/* 查看物流 */}
-      <LogisticsDraw
-        visible={logisticsVisible}
-        onClose={() => {
-          setLogisticsVisible({ show: false });
-        }}
-      ></LogisticsDraw>
     </>
   );
 };
 
 export default connect(({ ordersList, baseData, loading }) => ({
   loadings: loading,
-  ordersList: ordersList.newList,
+  ordersList,
   hubData: baseData.hubData,
-  loading: loading.effects['ordersList/fetchPageListOrdersList'],
+  loading:
+    loading.effects['ordersList/fetchGetList'] || loading.effects['ordersList/fetchOrdersImport'],
 }))(CommerceGoods);
