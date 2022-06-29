@@ -18,8 +18,8 @@ const SubsidyCouponsTable = (props) => {
       width: 100,
       dataIndex: 'classType',
       render: (val, row) => (
-        <Tag color={row?.useScenesType ? TAG_COLOR_TYPE[row?.useScenesType][val] : ''}>
-          {row?.useScenesType ? PLATFORM_TICKET_TYPE[row?.useScenesType][val] : ''}
+        <Tag color={TAG_COLOR_TYPE[row.useScenesType][val]}>
+          {PLATFORM_TICKET_TYPE[row.useScenesType][val] || '暂无此类券'}
         </Tag>
       ),
     },

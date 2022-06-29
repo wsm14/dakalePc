@@ -34,7 +34,7 @@ const PlatformCoupon = (props) => {
       dataIndex: 'classType',
       render: (val, row) => (
         <Tag color={TAG_COLOR_TYPE[row.useScenesType][val]}>
-          {PLATFORM_TICKET_TYPE[row.useScenesType][val]}
+          {PLATFORM_TICKET_TYPE[row.useScenesType][val] || '暂无此类'}
         </Tag>
       ),
     },

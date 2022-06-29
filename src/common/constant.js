@@ -38,6 +38,10 @@ export const TAG_COLOR_TYPE = {
     universal: '#6897ff', // 电商通用券
     goods: '#994646', // 指定电商券,
   },
+  community: {
+    universal: '#ffa8a8',
+    // goods: '指定团购券',
+  },
 };
 
 // 排序纬度
@@ -1113,21 +1117,24 @@ export const PLATFORM_TICKET_SCENE = {
 
 // 平台券管理 - 券类型
 export const PLATFORM_TICKET_TYPE = {
+  // 商品券
   goodsBuy: {
     universal: '商品通用券',
     category: '行业商品券',
     merchant: '店铺商品券',
     goods: '指定商品券',
   },
-  // scan: '扫码',
+  // 虚拟品券
   virtual: {
     universal: '虚拟通用券',
     goods: '指定虚拟券',
   },
+  // 电商品券
   commerce: {
     universal: '电商通用券',
     goods: '指定电商券',
   },
+  // 团购
   community: {
     universal: '团购通用券',
     // goods: '指定团购券',
