@@ -38,6 +38,12 @@ const CouponSet = (props) => {
         label: 'typeValue',
         value: 'giftTypeId',
       },
+      onChange: (v, o) => form.setFieldsValue({ giftType: o.option.type }),
+    },
+    {
+      label: '礼包类型',
+      name: 'giftType',
+      hidden: true,
     },
     {
       label: '礼包名称',
