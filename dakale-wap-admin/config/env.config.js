@@ -50,7 +50,7 @@ export default {
   // 生产环境proxy代理 不生效
   prod: {
     define: {
-      APIURL: 'https://gateway1.dakale.net',
+      APIURL: 'https://gateway.dakale.net',
     },
   },
 };
