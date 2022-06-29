@@ -1,7 +1,7 @@
 import { Badge } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
-import Ellipsis from '@/components/Ellipsis';
 import { PLATFORM_TICKET_TYPE } from '@/common/constant';
+import Ellipsis from '@/components/Ellipsis';
 
 // 权益商品样式
 export const goodsDom = (item = {}, id = '', setSelectItem, onDel) => {

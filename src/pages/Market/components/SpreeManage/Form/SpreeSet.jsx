@@ -95,13 +95,7 @@ const CouponSet = (props) => {
       type: 'formItem',
       required: true,
       formItem: (
-        <>
-          <ShareCoupon
-            type="platformGiftPackRelateList"
-            handleType={type}
-            form={form}
-          ></ShareCoupon>
-        </>
+        <ShareCoupon type="platformGiftPackRelateList" handleType={type} form={form}></ShareCoupon>
       ),
     },
     {
@@ -162,13 +156,11 @@ const CouponSet = (props) => {
     ruleType: 'unlimited',
   };
   return (
-    <>
-      <FormCondition
-        form={form}
-        formItems={formItems}
-        initialValues={{ ...formProps, ...initialValues }}
-      ></FormCondition>
-    </>
+    <FormCondition
+      form={form}
+      formItems={formItems}
+      initialValues={{ ...formProps, ...initialValues }}
+    ></FormCondition>
   );
 };
 

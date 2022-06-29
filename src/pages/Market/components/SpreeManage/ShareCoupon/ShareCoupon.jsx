@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-// import { notification } from 'antd';
 import { Form, Button } from 'antd';
 import { platformCouponsDom, couponsDom, goodsDom } from './CouponFreeDom';
-import GoodsSelectModal from './GoodsSelectModal';
+import GoodsSelectModal from '@/components/GoodsSelectModal';
 import FormList from './FormList';
-
-import './coupon.less';
 
 const ShareCoupon = (props) => {
   const { type = '', form, data = [], handleType } = props;
@@ -66,15 +63,18 @@ const ShareCoupon = (props) => {
           }}
         </Form.List>
       )}
-      {
-        //  平台券、权益商品、权益券
-        <GoodsSelectModal
-          typeGoods={type}
-          form={form}
-          visible={visible}
-          onClose={() => setVisible(false)}
-        ></GoodsSelectModal>
-      }
+      {/* 平台券、权益商品、权益券 */}
+      <GoodsSelectModal
+        showTag={['platformCoupon']}
+        visible={visible}
+        // searchParams={{ useScenesType: "community" }}
+        onSumbit={({ list }) =>
+          form.setFieldsValue({
+            [type]: (form.getFieldValue(type) || []).concat(list),
+          })
+        }
+        onClose={() => setVisible(false)}
+      ></GoodsSelectModal>
     </>
   );
 };
