@@ -49,7 +49,7 @@ const OrderRefund = (props) => {
       name: 'refundType',
       type: 'select',
       select: selectType,
-      visible: orderType == 'commerceGoods',
+      visible: ['commerceGoods', 'communityGoods'].includes(orderType),
     },
     {
       label: '退款原因',

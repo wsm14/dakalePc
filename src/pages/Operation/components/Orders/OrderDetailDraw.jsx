@@ -16,6 +16,7 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 import QuestionTooltip from '@/components/QuestionTooltip';
 import OrderRefund from './OrderRefund';
 import OrderJournal from './OrderJournal';
+import NewOrderRefund from '../NewOrders/OrderRefund';
 import styles from './style.less';
 
 const OrderDetailDraw = (props) => {
@@ -32,6 +33,7 @@ const OrderDetailDraw = (props) => {
   const [isShow, setIsShow] = useState(true);
   const [isShow1, setIsShow1] = useState(true);
   const [refund, setRefund] = useState(true);
+  const [NewRefund, setNewRefund] = useState(true);
   const [journal, setJournal] = useState(false);
 
   // 订单状态检查内容显示
@@ -308,15 +310,28 @@ const OrderDetailDraw = (props) => {
     footer: detail.status === '1' && tabkey != 'communityGoods' && (
       <Button
         type="primary"
-        onClick={() =>
-          setRefund({
-            show: true,
-            detail: {
-              userId: detail.userIdString,
-              orderSn: detail.orderSn,
-            },
-          })
-        }
+        onClick={() => {
+          const { userIdString, orderId, orderSn, payFee, beanFee } = detail;
+          tabkey == 'communityGoods'
+            ? setNewRefund({
+                show: true,
+                detail: {
+                  userId: userIdString,
+                  orderId,
+                  orderSn,
+                  orderType: tabkey,
+                  payPrice: (Number(payFee || 0) + Number(beanFee || 0) / 100).toFixed(2),
+                  beanFee,
+                },
+              })
+            : setRefund({
+                show: true,
+                detail: {
+                  userId: detail.userIdString,
+                  orderSn: detail.orderSn,
+                },
+              });
+        }}
       >
         退款
       </Button>
@@ -576,6 +591,7 @@ const OrderDetailDraw = (props) => {
           </div>
         </div>
       </DrawerCondition>
+      {/* 退款 */}
       <OrderRefund
         visible={refund}
         getDetail={() => {
@@ -584,7 +600,17 @@ const OrderDetailDraw = (props) => {
         }}
         onClose={() => setRefund(false)}
       ></OrderRefund>
+      {/* 查看 */}
       <OrderJournal visible={journal} onClose={() => setJournal(false)} />
+      {/* 新退款 */}
+      <NewOrderRefund
+        visible={NewRefund}
+        getDetail={() => {
+          childRef.current.fetchGetData();
+          getDetail(index);
+        }}
+        onClose={() => setNewRefund(false)}
+      ></NewOrderRefund>
     </>
   );
 };

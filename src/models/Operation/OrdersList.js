@@ -12,6 +12,7 @@ import {
   fetchDeliverGoods,
   fetchOrderImmediateRefund,
   fetchSubLedger,
+  fetchExportUndeliveredCommerceGoodsOrderList,
 } from '@/services/OperationServices';
 
 export default {
@@ -186,7 +187,6 @@ export default {
       });
       callback();
     },
-
     // post 订单列表 - 分账（新）
     *fetchSubLedger({ payload, callback }, { call }) {
       const response = yield call(fetchSubLedger, payload);
@@ -196,6 +196,26 @@ export default {
         description: '分账成功',
       });
       callback && callback();
+    },
+    // get 订单列表(新) - 导出（暂时）
+    *fetchExportUndeliveredCommerceGoodsOrderList({ payload, callback }, { call }) {
+      const response = yield call(fetchExportUndeliveredCommerceGoodsOrderList, payload);
+      if (!response) return;
+      const { content } = response;
+      const { orderDetailList = [] } = content;
+
+      const list = orderDetailList.map((item) => {
+        const { orderDesc, settleParam, divisionParam, deductFee } = item;
+
+        return {
+          ...item,
+          orderDesc: JSON.parse(orderDesc || '{}'),
+          settleParam: JSON.parse(settleParam || '{}'),
+          divisionParam: JSON.parse(divisionParam || '{}'),
+          deductFee: JSON.parse(deductFee || '[]'),
+        };
+      });
+      callback && callback(list);
     },
   },
 };

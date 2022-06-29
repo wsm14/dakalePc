@@ -529,6 +529,13 @@ export function fetchSubLedger(data) {
   });
 }
 
+// get 订单列表(新) - 导出（暂时）
+export function fetchExportUndeliveredCommerceGoodsOrderList(params) {
+  return request('/admin/order/order/exportUndeliveredCommerceGoodsOrderList', {
+    params,
+  });
+}
+
 // 订单列表 end
 
 //退款列表

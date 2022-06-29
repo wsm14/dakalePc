@@ -111,6 +111,20 @@ const CommunityGoods = (props) => {
       render: (val, row) => `${row.userName}\n${val}\n${row.beanCode}`,
     },
     {
+      title: '平台券',
+      align: 'center',
+      dataIndex: 'deductFee',
+      render: (val) =>
+        val && Object.keys(val).length > 0 ? (
+          <>
+            <div>{`${val[0]?.reduceFee || 0}元${val[0]?.deductTypeName || ''}`}</div>
+            <div>{val[0]?.couponCode || ''}</div>
+          </>
+        ) : (
+          '-'
+        ),
+    },
+    {
       title: '订单状态',
       align: 'center',
       dataIndex: 'status',

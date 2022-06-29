@@ -13,6 +13,7 @@ import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import OrderDrawer from './OrderDrawer';
 import LogisticsDraw from '../LogisticsDraw';
+import excelHeder from './excelHeder';
 import styles from '../style.less';
 
 const CommerceGoods = (props) => {
@@ -53,6 +54,12 @@ const CommerceGoods = (props) => {
       type: 'select',
       allItem: false,
       select: ORDER_STATUS,
+    },
+    {
+      label: '下单日期',
+      type: 'rangePicker',
+      name: 'createBeginTime',
+      end: 'createEndTime',
     },
   ];
 
@@ -296,9 +303,19 @@ const CommerceGoods = (props) => {
     });
   };
 
+  const extraBtn = ({ get }) => [
+    {
+      // 导出所有未发货的电商订单(暂时)
+      type: 'excel',
+      dispatch: 'ordersList/fetchExportUndeliveredCommerceGoodsOrderList',
+      data: { ...get() },
+      exportProps: { header: excelHeder },
+    },
+  ];
   return (
     <>
       <TableDataBlock
+        btnExtra={extraBtn}
         noCard={false}
         cRef={childRef}
         loading={loading}
@@ -345,5 +362,7 @@ export default connect(({ ordersList, baseData, loading }) => ({
   loadings: loading,
   ordersList: ordersList.newList,
   hubData: baseData.hubData,
-  loading: loading.effects['ordersList/fetchPageListOrdersList'],
+  loading:
+    loading.effects['ordersList/fetchPageListOrdersList'] ||
+    loading.effects['ordersList/fetchExportUndeliveredCommerceGoodsOrderList'],
 }))(CommerceGoods);

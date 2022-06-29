@@ -199,7 +199,7 @@ const GoodsOrders = (props) => {
         <div style={{ textAlign: 'center' }}>
           <div>{val}</div>
           <div className={styles.fontColor}>
-            已核销：
+            核销详情：
             <Button type="link" onClick={() => handleCancelList(row.orderSn)}>
               查看
             </Button>
