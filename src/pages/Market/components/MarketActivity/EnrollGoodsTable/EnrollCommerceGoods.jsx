@@ -103,7 +103,7 @@ const EnrollCommerceGoods = (props) => {
   ];
 
   const tabPriceShow = (key, row) => (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
       <div style={{ display: 'inline-block' }}>
         {checkKeyMaxMin({ key, data: row.skuList, payType: row.payType })}
       </div>
