@@ -56,5 +56,5 @@ const OrderDrawer = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['ordersList/fetchOrderDetail'],
+  loading: loading.effects['ordersList/fetchDeliverGoods'],
 }))(OrderDrawer);
