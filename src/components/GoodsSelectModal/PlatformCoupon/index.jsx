@@ -21,9 +21,13 @@ const PlatformCoupon = (props) => {
   const tableRef = useRef(null);
 
   useEffect(() => {
-    const { platformCouponId } = searchValue;
+    const { platformCouponId, goodsName, ...other } = searchValue;
     visible &&
-      tableRef.current.fetchGetData({ platformCouponId, couponName: searchValue.goodsName });
+      tableRef.current.fetchGetData({
+        platformCouponId,
+        couponName: goodsName,
+        ...other,
+      });
   }, [visible, searchValue]);
 
   const getColumns = [

@@ -1,25 +1,20 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'antd';
-import { platformCouponsDom, couponsDom, goodsDom } from './CouponFreeDom';
+import { platformCouponsDom } from './CouponFreeDom';
 import GoodsSelectModal from '@/components/GoodsSelectModal';
 import FormList from './FormList';
 
 const ShareCoupon = (props) => {
   const { type = '', form, data = [], handleType } = props;
 
+  const giftType = Form.useWatch('giftTypeId', form) || '';
   const [visible, setVisible] = useState(false); // 平台券、权益商品和权益券多选
 
   // 券
   return (
     <>
       {data.length !== 0 ? (
-        data.map((item) => {
-          return {
-            platformCoupon: platformCouponsDom(item, item?.platformCouponId),
-            rightGoods: goodsDom(item, item?.specialGoodsId),
-            rightCoupon: couponsDom(item, item?.ownerCouponIdString),
-          }[item?.tagType || 'platformCoupon'];
-        })
+        data.map((item) => platformCouponsDom(item, item?.platformCouponId))
       ) : (
         <Form.List
           name={type}
@@ -50,7 +45,7 @@ const ShareCoupon = (props) => {
                   <FormList
                     type={type}
                     handleType={handleType}
-                    key={field.fieldKey}
+                    key={field.key}
                     form={form}
                     fields={fields}
                     field={field}
@@ -67,7 +62,7 @@ const ShareCoupon = (props) => {
       <GoodsSelectModal
         showTag={['platformCoupon']}
         visible={visible}
-        // searchParams={{ useScenesType: "community" }}
+        searchParams={giftType === '1542066982778494977' ? { useScenesType: 'community' } : {}}
         onSumbit={({ list }) =>
           form.setFieldsValue({
             [type]: (form.getFieldValue(type) || []).concat(list),
