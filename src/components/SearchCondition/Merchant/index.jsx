@@ -44,7 +44,7 @@ const MerchantSelect = (props) => {
       showSearch
       optionFilterProp="children"
       dropdownMatchSelectWidth={false}
-      style={{ width: '100%', maxWidth: 230 }}
+      style={{ width: '100%' }}
       loading={loading}
       notFoundContent={
         loading ? <Spin size="small" /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />

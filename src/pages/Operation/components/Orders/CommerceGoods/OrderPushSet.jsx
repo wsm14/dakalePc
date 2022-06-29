@@ -6,31 +6,49 @@ import { checkCityName } from '@/utils/utils';
 import AddressDrawer from './AddressDrawer';
 
 const OrderPushSet = (props) => {
-  const { form, initialValues, dispatch } = props;
-  const { orderId } = initialValues;
+  const { form, initialValues, dispatch, companyList } = props;
+  const { orderId, userId } = initialValues;
 
-  const [orderLogistics, setOrderLogistics] = useState({});
+  const [orderLogistic, setOrderLogistic] = useState({});
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     !visible &&
+      orderId &&
       dispatch({
-        type: 'ordersList/fetchOrderDetail',
-        payload: { orderId },
+        type: 'ordersList/fetchGetOrderDetail',
+        payload: { orderId, userId },
         callback: (detail) => {
-          const { orderLogistics } = detail;
-          setOrderLogistics(orderLogistics);
+          const { orderLogisticInfo } = detail;
+          setOrderLogistic(orderLogisticInfo);
         },
       });
   }, [orderId, visible]);
+
   const formItems = [
     {
       label: '物流公司',
-      name: ['orderLogistics', 'logisticsCompany'],
+      name: ['orderLogistic', 'companyCode'],
+      type: 'select',
+      select: companyList,
+      fieldNames: { label: 'companyName', value: 'companyCode' },
+      onSelect: (val, option) => {
+        option &&
+          form.setFieldsValue({
+            orderLogistic: {
+              logisticsCompany: option.option.companyName,
+            },
+          });
+      },
     },
     {
       label: '物流单号',
-      name: ['orderLogistics', 'logisticsCode'],
+      name: ['orderLogistic', 'logisticsCode'],
+    },
+    {
+      label: '物流公司名称',
+      name: ['orderLogistic', 'logisticsCompany'],
+      hidden: true,
     },
     {
       label: '买家收货信息',
@@ -39,11 +57,10 @@ const OrderPushSet = (props) => {
       formItem: (
         <div style={{ marginLeft: 80, display: 'flex', alignItems: 'center' }}>
           买家收货信息：
-          {`${orderLogistics?.addressName || '--'}，${
-            orderLogistics?.mobile || '--'
-          }，${checkCityName(orderLogistics?.districtCode)}${orderLogistics?.address}，${
-            orderLogistics?.logisticsCode
-          }`}
+          {`${orderLogistic?.addressName || '--'}，${
+            orderLogistic?.mobile || '--'
+          }，${checkCityName(orderLogistic?.districtCode)}${orderLogistic?.address}
+          `}
           <Typography.Link onClick={() => handelModal()}>修改</Typography.Link>
         </div>
       ),
@@ -51,12 +68,13 @@ const OrderPushSet = (props) => {
   ];
 
   const handelModal = () => {
-    const { provinceCode, cityCode, districtCode } = orderLogistics;
+    const { provinceCode, cityCode, districtCode } = orderLogistic;
     setVisible({
       show: true,
       detail: {
-        ...orderLogistics,
+        ...orderLogistic,
         orderId,
+        userId,
         city: [provinceCode, cityCode, districtCode],
       },
     });
@@ -71,6 +89,7 @@ const OrderPushSet = (props) => {
   );
 };
 
-export default connect(({ loading }) => ({
+export default connect(({ baseData, loading }) => ({
+  companyList: baseData.companyList,
   loading: loading.effects['ordersList/fetchOrderDetail'],
 }))(OrderPushSet);

@@ -15,7 +15,7 @@ import { checkCityName } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import QuestionTooltip from '@/components/QuestionTooltip';
-import OrderRefund from './OrderRefund';
+import OrderRefund from './NewOrderRefund';
 import styles from './style.less';
 
 const OrderDetailDraw = (props) => {

@@ -13,13 +13,14 @@ const AddressDrawer = (props) => {
   //提交发货
   const handleUpAudit = () => {
     form.validateFields().then((value) => {
-      const { orderId } = detail;
+      const { orderId, userId } = detail;
       const { city, ...other } = value;
       dispatch({
-        type: 'ordersList/fetchOrderDeliverGoods',
+        type: 'ordersList/fetchDeliverGoods',
         payload: {
           orderId,
-          orderLogistics: {
+          userId,
+          orderLogistic: {
             ...other,
             provinceCode: city[0],
             cityCode: city[1],
@@ -46,7 +47,6 @@ const AddressDrawer = (props) => {
       label: '省市区',
       name: 'city',
       type: 'cascader',
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
     {
       label: '详细地址',

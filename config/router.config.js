@@ -787,12 +787,6 @@ export default [
             buttons: ['info', 'exportList', 'goodsView', 'goodsDeliver', 'routing', 'batchRouting'],
           },
           {
-            path: '/operation/ordersList',
-            name: '订单列表(新)',
-            component: './Operation/NewOrdersList',
-            buttons: ['info', 'exportList', 'goodsView', 'goodsDeliver', 'routing', 'batchRouting'],
-          },
-          {
             path: '/operation/verificationList',
             name: '核销列表',
             component: './Operation/VerificationList',
