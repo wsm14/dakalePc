@@ -103,12 +103,14 @@ const EnrollCommerceGoods = (props) => {
   ];
 
   const tabPriceShow = (key, row) => (
-    <>
-      {checkKeyMaxMin({ key, data: row.skuList, payType: row.payType })}
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div style={{ display: 'inline-block' }}>
+        {checkKeyMaxMin({ key, data: row.skuList, payType: row.payType })}
+      </div>
       <Button type="link" onClick={() => hanldeOpenEdit(row)}>
         查看
       </Button>
-    </>
+    </div>
   );
 
   const hanldeOpenEdit = (detail = {}) => {
@@ -126,8 +128,9 @@ const EnrollCommerceGoods = (props) => {
     if (!data.length) return '';
     // 遍历值
     const valueArr = data.map((item) => {
-      if (payType === 'self') {
-        return item['activitySellBean'] + item['activitySellPrice'] * 100;
+      if (payType === 'self' && !['settlePrice', 'activitySettlePrice'].includes(key)) {
+        if (key == 'sellPrice') return item['sellBean'] + item['sellPrice'] * 100;
+        else return item['activitySellBean'] + item['activitySellPrice'] * 100;
       }
       if (item[key] === undefined) {
         return '';
@@ -141,11 +144,17 @@ const EnrollCommerceGoods = (props) => {
     // 最小值
     const minNum = Math.min.apply(Math, valueArr) || 0;
 
-    if (payType === 'self') {
+    if (payType === 'self' && !['settlePrice', 'activitySettlePrice'].includes(key)) {
+      let beanKey = 'activitySellBean';
+      let priceKey = 'activitySellPrice';
+      if (key == 'sellPrice') {
+        beanKey = 'sellBean';
+        priceKey = 'sellPrice';
+      }
       const maxIndex = valueArr.indexOf(maxNum); // 最大值下标
       const minIndex = valueArr.indexOf(minNum); // 最小值下标
-      const maxText = `${data[maxIndex]['activitySellBean']}卡豆 + ￥${data[maxIndex]['activitySellPrice']}`;
-      const minText = `${data[minIndex]['activitySellBean']}卡豆 + ￥${data[minIndex]['activitySellPrice']}`;
+      const maxText = `${data[maxIndex][beanKey]}卡豆 + ￥${data[maxIndex][priceKey]}`;
+      const minText = `${data[minIndex][beanKey]}卡豆 + ￥${data[minIndex][priceKey]}`;
       if (maxIndex === minIndex) {
         return minText;
       }
