@@ -36,9 +36,9 @@ const EnrollSpecialGoods = (props) => {
     {
       label: '所属行业',
       name: 'categoryId',
-      type: 'cascader',
+      type: 'select',
       select: tradeList,
-      fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
+      fieldNames: { label: 'categoryName', value: 'categoryIdString' },
     },
   ];
 
