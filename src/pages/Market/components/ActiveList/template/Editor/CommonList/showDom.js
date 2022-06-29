@@ -360,8 +360,8 @@ export default ({ styleIndex = 0, list = [] }) => {
         padding: '8px 12px',
       }}
     >
-      <div>{list.filter((item, i) => i % 2 != 0).map((item) => domShow2(item))}</div>
       <div>{list.filter((item, i) => i % 2 == 0).map((item) => domShow2(item))}</div>
+      <div>{list.filter((item, i) => i % 2 !== 0).map((item) => domShow2(item))}</div>
     </div>,
   ][styleIndex];
 };
