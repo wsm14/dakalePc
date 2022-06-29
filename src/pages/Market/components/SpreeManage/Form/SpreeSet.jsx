@@ -38,12 +38,6 @@ const CouponSet = (props) => {
         label: 'typeValue',
         value: 'giftTypeId',
       },
-      onChange: (v, o) => form.setFieldsValue({ giftType: o.option.type }),
-    },
-    {
-      label: '礼包类型',
-      name: 'giftType',
-      hidden: true,
     },
     {
       label: '礼包名称',
@@ -100,9 +94,7 @@ const CouponSet = (props) => {
       disabled: type === 'edit',
       type: 'formItem',
       required: true,
-      formItem: (
-        <ShareCoupon type="platformGiftPackRelateList" handleType={type} form={form}></ShareCoupon>
-      ),
+      formItem: <ShareCoupon type="platformGiftPackRelateList" handleType={type}></ShareCoupon>,
     },
     {
       label: '礼包数量',

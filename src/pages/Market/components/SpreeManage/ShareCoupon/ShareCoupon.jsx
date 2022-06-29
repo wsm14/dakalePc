@@ -7,7 +7,6 @@ import FormList from './FormList';
 const ShareCoupon = (props) => {
   const { type = '', form, data = [], handleType } = props;
 
-  const giftType = Form.useWatch('giftType', form) || '';
   const [visible, setVisible] = useState(false); // 平台券、权益商品和权益券多选
 
   // 券
@@ -62,7 +61,6 @@ const ShareCoupon = (props) => {
       <GoodsSelectModal
         showTag={['platformCoupon']}
         visible={visible}
-        searchParams={giftType === 'daxiaotuan' ? { useScenesType: 'community' } : {}}
         onSumbit={({ list }) =>
           form.setFieldsValue({
             [type]: (form.getFieldValue(type) || []).concat(list),
