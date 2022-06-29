@@ -69,6 +69,12 @@ const EditCGoodsRemainModal = (props) => {
       render: (val) => val?.map((i) => `${i.name}: ${i.value}`).join('\n') || '',
     },
     {
+      title: '售价',
+      align: 'right',
+      dataIndex: 'sellPrice',
+      render: (val, row) => (payType == 'self' ? `${row.sellBean}卡豆 + ￥${val}` : `￥${val}`),
+    },
+    {
       title: '活动售价（卡豆）',
       align: 'right',
       dataIndex: 'activitySellBean',

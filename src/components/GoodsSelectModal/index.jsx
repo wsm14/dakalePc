@@ -155,10 +155,10 @@ const GoodsSelectModal = (props) => {
       label: '商品名称',
       name: 'goodsName', // 有价券 特惠商品 电商品 平台券 活动模版有价券
       show: [
-        'platformCoupon',
         'reduceCoupon',
         'specialGoods',
         'commerceGoods',
+        'platformCoupon',
         'activeReduceCoupon',
       ].includes(tabKey),
     },

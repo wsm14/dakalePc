@@ -65,12 +65,7 @@ const GoodsDetail = (props) => {
   ];
 
   return (
-    <>
-      <DescriptionsCondition
-        formItems={mreFormItems}
-        initialValues={detail}
-      ></DescriptionsCondition>
-    </>
+    <DescriptionsCondition formItems={mreFormItems} initialValues={detail}></DescriptionsCondition>
   );
 };
 

@@ -49,11 +49,7 @@ const CouponDrawer = (props) => {
         }
         if (type === 'add') {
           obj = {
-            relateId: {
-              platformCoupon: item.platformCouponId,
-              rightGoods: item.specialGoodsId,
-              rightCoupon: item.ownerCouponIdString,
-            }[relateType],
+            relateId: item.goodsId,
             relateType,
           };
         }

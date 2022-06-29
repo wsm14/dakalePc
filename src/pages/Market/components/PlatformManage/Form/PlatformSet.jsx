@@ -240,6 +240,33 @@ const CouponSet = (props) => {
       visible: radioData.effectTime === 'gain',
     },
     {
+      title: '使用规则',
+      type: 'noForm',
+      formItem: (
+        <div style={{ marginBottom: 24 }}>
+          {type === 'add' && (
+            <Button type="link" onClick={() => setVisible({ show: true, useScenesType: ticket })}>
+              选择
+            </Button>
+          )}
+          <TableDataBlock
+            noCard={false}
+            size="small"
+            columns={getColumns}
+            rowKey={(record) => `${record.ruleId}`}
+            list={ruleList}
+            total={ruleList?.length || 0}
+          ></TableDataBlock>
+        </div>
+      ),
+    },
+    {
+      label: '规则List',
+      name: 'ruleList',
+      rules: [{ required: false }],
+      hidden: true,
+    },
+    {
       label: '发放总量',
       name: 'total',
       type: 'number',
@@ -354,33 +381,6 @@ const CouponSet = (props) => {
       name: 'otherDesc',
       maxLength: 100,
       rules: [{ required: false }],
-    },
-    {
-      title: '使用规则',
-      type: 'noForm',
-      formItem: (
-        <>
-          {type === 'add' && (
-            <Button type="link" onClick={() => setVisible({ show: true, useScenesType: ticket })}>
-              选择
-            </Button>
-          )}
-          <TableDataBlock
-            noCard={false}
-            size="small"
-            columns={getColumns}
-            rowKey={(record) => `${record.ruleId}`}
-            list={ruleList}
-            total={ruleList?.length || 0}
-          ></TableDataBlock>
-        </>
-      ),
-    },
-    {
-      label: '规则List',
-      name: 'ruleList',
-      rules: [{ required: false }],
-      hidden: true,
     },
   ];
 

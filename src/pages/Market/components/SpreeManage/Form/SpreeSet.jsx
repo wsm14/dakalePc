@@ -94,15 +94,7 @@ const CouponSet = (props) => {
       disabled: type === 'edit',
       type: 'formItem',
       required: true,
-      formItem: (
-        <>
-          <ShareCoupon
-            type="platformGiftPackRelateList"
-            handleType={type}
-            form={form}
-          ></ShareCoupon>
-        </>
-      ),
+      formItem: <ShareCoupon type="platformGiftPackRelateList" handleType={type}></ShareCoupon>,
     },
     {
       label: '礼包数量',
@@ -162,13 +154,11 @@ const CouponSet = (props) => {
     ruleType: 'unlimited',
   };
   return (
-    <>
-      <FormCondition
-        form={form}
-        formItems={formItems}
-        initialValues={{ ...formProps, ...initialValues }}
-      ></FormCondition>
-    </>
+    <FormCondition
+      form={form}
+      formItems={formItems}
+      initialValues={{ ...formProps, ...initialValues }}
+    ></FormCondition>
   );
 };
 

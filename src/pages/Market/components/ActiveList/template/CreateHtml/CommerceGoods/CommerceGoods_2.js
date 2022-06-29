@@ -104,7 +104,7 @@ export default (function (list, id) {
     const domShow = (item) => {
       const cellDom = `<div class="handleGoNative"  data-key="goodsId,ownerId" data-goodsId=${
         item.goodsId
-      } data-ownerId=${item.ownerId} data-path="goods" data-linkType="inside" 
+      } data-ownerId=${item.ownerId} data-path="commerceGoods" data-linkType="inside" 
         style="height: inherit;width: ${vw(172)};border-radius: ${vw(4)};margin-bottom: ${vw(
         8,
       )}; background-color: #FFFFFF;overflow: hidden;">

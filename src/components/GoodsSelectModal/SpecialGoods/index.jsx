@@ -111,6 +111,7 @@ const SpecialGoods = (props) => {
       columns={getColumns}
       params={{
         displayType: 'manualOrList', // 手动/列表展示
+        status: 1, // 上架中
       }}
       scroll={{ y: 400 }}
       rowSelection={{
