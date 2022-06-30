@@ -132,6 +132,7 @@ const GoodsDetail = (props) => {
       <TableDataBlock
         noCard={false}
         size="small"
+        scrollY={400}
         columns={getColumns}
         pagination={false}
         rowKey={(record) => `${record.ruleId}`}

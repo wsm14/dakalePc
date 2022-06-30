@@ -141,7 +141,7 @@ const GoodsDetail = (props) => {
       dataIndex: 'goodsImg',
       render: (val, row) => (
         <div style={{ display: 'flex' }}>
-          <PopImgShow url={val} />
+          <PopImgShow url={val} width={60} />
           <div
             style={{
               display: 'flex',
@@ -247,7 +247,9 @@ const GoodsDetail = (props) => {
       ) ? (
         <TableDataBlock
           noCard={false}
+          scrollY={550}
           columns={listProps.getColumns || []}
+          tableSize={'small'}
           rowKey={(record) => `${record[listProps.id]}`}
           params={{ ruleId: ruleId }}
           dispatchType="couponRulesManage/fetchRuleDetailPage"
