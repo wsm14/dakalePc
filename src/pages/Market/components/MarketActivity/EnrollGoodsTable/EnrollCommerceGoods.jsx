@@ -153,8 +153,10 @@ const EnrollCommerceGoods = (props) => {
       }
       const maxIndex = valueArr.indexOf(maxNum); // 最大值下标
       const minIndex = valueArr.indexOf(minNum); // 最小值下标
-      const maxText = `${data[maxIndex][beanKey]}卡豆 + ￥${data[maxIndex][priceKey]}`;
-      const minText = `${data[minIndex][beanKey]}卡豆 + ￥${data[minIndex][priceKey]}`;
+      const maxObj = data[maxIndex] || {};
+      const minObj = data[maxIndex] || {};
+      const maxText = `${maxObj[beanKey] || 0}卡豆 + ￥${maxObj[priceKey] || 0}`;
+      const minText = `${minObj[beanKey] || 0}卡豆 + ￥${minObj[priceKey] || 0}`;
       if (maxIndex === minIndex) {
         return minText;
       }
