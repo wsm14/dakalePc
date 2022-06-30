@@ -8,7 +8,6 @@ const BDSet = (props) => {
   const { visible = {}, onClose, childRef, loading, dispatch } = props;
 
   const { show = '', detail = {}, darenTag = {} } = visible;
-  console.log('detail', detail);
 
   useEffect(() => {
     if (detail?.userIdentification === '') {
