@@ -144,7 +144,7 @@ const CommerceGoods = (props) => {
         Object.keys(val).length > 0 ? (
           <>
             <div>{`${val[0]?.reduceFee || 0}元${val[0]?.deductTypeName || ''}`}</div>
-            <div>{val[0]?.couponCode || ''}</div>
+            <div>{val[0]?.platformCouponId || ''}</div>
           </>
         ) : (
           '-'

@@ -113,12 +113,12 @@ const CommunityGoods = (props) => {
     {
       title: '平台券',
       align: 'center',
-      dataIndex: 'deductFee',
+      dataIndex: 'deductFeeObject',
       render: (val) =>
-        val && Object.keys(val).length > 0 ? (
+        val ? (
           <>
             <div>{`${val[0]?.reduceFee || 0}元${val[0]?.deductTypeName || ''}`}</div>
-            <div>{val[0]?.couponCode || ''}</div>
+            <div>{val[0]?.platformCouponId || ''}</div>
           </>
         ) : (
           '-'
