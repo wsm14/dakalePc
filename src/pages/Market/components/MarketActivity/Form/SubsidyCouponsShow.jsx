@@ -41,7 +41,7 @@ const SubsidyCouponsShow = (props) => {
               添加
             </Button>
             <div style={{ color: '#00000073', whiteSpace: 'pre-line', lineHeight: 1.5715 }}>
-              1. 不支持选择券规则中带有城市规则的券{`\n`}2. 仅支持选择手动领取的券
+              仅支持选择手动领取的券
             </div>
             <Form.ErrorList errors={errors} />
             <div style={{ width: 460 }}>
