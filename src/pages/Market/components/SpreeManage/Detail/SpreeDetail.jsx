@@ -5,8 +5,6 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 const GoodsDetail = (props) => {
   const { detail = {}, giftTypeList = [] } = props;
 
-  console.log('detail', detail);
-
   const mreFormItems = [
     {
       label: '礼包类型',

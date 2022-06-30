@@ -42,7 +42,7 @@ const CouponDrawer = (props) => {
 
       // 礼包数据重组
       const newGiftList = giftList.map((item, index) => {
-        const { platformGiftRelateId, tagType: relateType } = item;
+        const { platformGiftRelateId, activityType: relateType } = item;
         let obj = {};
         if (type === 'edit') {
           obj = { platformGiftRelateId }; // 修改进入返回 platformGiftRelateId
