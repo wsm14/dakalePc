@@ -141,8 +141,6 @@ const RuleModal = (props) => {
       // 端口哒小团限制选择
       if (checkDxt) {
         obj = {
-          classType: 'universal', // 券标签：商品通用券
-          useScenesType: 'goodsBuy', // 券类型：商品券
           giveType: 'manual', // 发放方式 手动领取
           increaseRule: '0', // 是否可膨胀 不可
         };

@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Radio, Form, Button, InputNumber } from 'antd';
+import { NUM_ALL, NUM_INT } from '@/common/regExp';
 import {
+  COUPON_GIVE_TYPE,
+  CONPON_RULES_TYPE,
   PLATFORM_TICKET_TYPE,
+  PLATFORM_TICKET_SCENE,
   PLATFORM_USERTIME_TYPE,
   PLATFORM_INCREASE_RULE,
-  CONPON_RULES_TYPE,
-  PLATFORM_TICKET_SCENE,
-  COUPON_GIVE_TYPE,
 } from '@/common/constant';
-import { NUM_ALL, NUM_INT } from '@/common/regExp';
 import PopImgShow from '@/components/PopImgShow';
-import TableDataBlock from '@/components/TableDataBlock';
 import FormCondition from '@/components/FormCondition';
+import TableDataBlock from '@/components/TableDataBlock';
 import RuleModal from './RuleModal';
 import typeRuleImg from './typeRule.png';
 import styles from './index.less';
@@ -22,11 +22,11 @@ const CouponSet = (props) => {
   const { form, type, ticket, setTicket, initialValues } = props;
 
   const ruleList = Form.useWatch('ruleList', form) || [];
+  const increaseRuleForm = Form.useWatch('increaseRule', form) || []; //  是否可膨胀
 
   const [radioData, setRadioData] = useState({
     effectTime: 'fixed', // 券有效期
     getLimit: 'unlimited', // 领取上限
-    increaseType: 0, //  是否可膨胀
   });
   const [visible, setVisible] = useState(false); // 选择规则的modal
   const [buyRule, setBuyRule] = useState([
@@ -46,7 +46,6 @@ const CouponSet = (props) => {
       setRadioData({
         effectTime: useTimeRule, // 券有效期
         getLimit: ruleType, // 领取上限
-        increaseType: increaseRule, //  是否可膨胀
       });
     }
   }, [initialValues]);
@@ -108,7 +107,7 @@ const CouponSet = (props) => {
       formItem: (
         <>
           <Radio.Group
-            disabled={type === 'edit' || checkDxt}
+            disabled={type === 'edit'}
             value={ticket}
             onChange={(e) => {
               setTicket(e.target.value);
@@ -144,7 +143,6 @@ const CouponSet = (props) => {
       name: 'classType',
       type: 'radio',
       select: PLATFORM_TICKET_TYPE[ticket],
-      disabled: checkDxt,
       extra: (
         <div className={styles.lookTypeRuleImg}>
           选择标签后请选择对应的规则，选择错误将影响用户使用
@@ -323,12 +321,11 @@ const CouponSet = (props) => {
       type: 'radio',
       name: 'increaseRule',
       select: PLATFORM_INCREASE_RULE,
-      onChange: (e) => saveSelectData({ increaseType: e.target.value }),
       disabled: type === 'edit' || checkDxt,
     },
     {
       type: 'formItem',
-      visible: radioData.increaseType == '1',
+      visible: increaseRuleForm == '1',
       className: styles.btn_all_2,
       // disabled: type === 'edit',
       formItem: (
