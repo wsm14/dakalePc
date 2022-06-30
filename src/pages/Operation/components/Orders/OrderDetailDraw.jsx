@@ -28,6 +28,7 @@ const OrderDetailDraw = (props) => {
     orderGoodsVerifications = [],
     organizationGoodsOrderDescObject = {},
     orderLogistics = {},
+    orderDesc = {},
   } = detail;
   const { communityGoodsList = [] } = organizationGoodsOrderDescObject; //核销明细
   const [isShow, setIsShow] = useState(true);
@@ -248,13 +249,19 @@ const OrderDetailDraw = (props) => {
     {
       label: '现金支付渠道',
       name: 'payType',
-      render: (val) => PAY_TYPE[val],
-      // show: orderStatusCheck || (status === '2' && orderCloseStatusCheck),
+      render: (val, row) =>
+        row?.orderDesc?.commerceHelpSellFlag == '1' ? '哒小团小程序-带货大厅' : PAY_TYPE[val],
     },
     {
       label: '付款编号',
       name: 'paySn',
       show: orderStatusCheck || (status === '2' && orderCloseStatusCheck),
+    },
+    {
+      label: '分享帮卖',
+      name: 'orderDesc',
+      render: (val) => '111',
+      show: orderDesc?.commerceHelpSellFlag == '1',
     },
     {
       label: '有效期',
@@ -307,7 +314,7 @@ const OrderDetailDraw = (props) => {
       total,
       onChange: (size) => getDetail(size),
     },
-    footer: detail.status === '1' && tabkey != 'communityGoods' && (
+    footer: detail.status === '1' && (
       <Button
         type="primary"
         onClick={() => {
@@ -463,7 +470,6 @@ const OrderDetailDraw = (props) => {
         >
           {tabkey !== 'communityGoods' && (
             <div>
-              x
               <DescriptionsCondition
                 formItems={orderImgItem}
                 initialValues={detail}

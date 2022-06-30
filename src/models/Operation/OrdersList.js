@@ -159,6 +159,7 @@ export default {
         deductFee: JSON.parse(orderDetail.deductFee || '[]'),
       };
 
+      console.log(11, data);
       callback(data);
       yield put({
         type: 'save',
