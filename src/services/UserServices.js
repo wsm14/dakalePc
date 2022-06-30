@@ -28,17 +28,17 @@ export function fetchUserChartTotal(params) {
   });
 }
 
-// post 用户列表 - 用户启用禁用
-export function fetchUserStatus(data) {
-  return request('/admin/userManagement/updateUserStatus', {
+// post 用户列表 - 用户分端口禁用
+export function fetchSubPortBlockUser(data) {
+  return request('/admin/userManagement/subPortBlockUser', {
     method: 'POST',
     data,
   });
 }
 
-// post 用户列表 - 用户分端口禁用
-export function fetchSubPortBlockUser(data) {
-  return request('/admin/userManagement/subPortBlockUser', {
+// post 用户列表 - 用户分端口解封
+export function fetchSubPortUnsealUser(data) {
+  return request('/admin/userManagement/subPortUnsealUser', {
     method: 'POST',
     data,
   });
