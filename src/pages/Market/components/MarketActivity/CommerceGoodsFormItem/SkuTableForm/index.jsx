@@ -34,8 +34,9 @@ const SkuTableForm = (props) => {
   // 更新数据
   const updateData = (val, index) => {
     const listData = form.getFieldValue(goodsType) || [];
-    const skuData = update(skuList, {
-      $splice: [[index, 1, { ...(skuList[index] || {}), ...val }]],
+    const dataSkuList = form.getFieldValue([goodsType, pIndex, 'skuList']) || [];
+    const skuData = update(dataSkuList, {
+      $splice: [[index, 1, { ...(dataSkuList[index] || {}), ...val }]],
     });
     form.setFieldsValue({
       [goodsType]: update(listData, {
