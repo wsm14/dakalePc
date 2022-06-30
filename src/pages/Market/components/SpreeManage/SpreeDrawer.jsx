@@ -23,8 +23,6 @@ const CouponDrawer = (props) => {
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
-      // console.log('values', values);
-      // return;
       const {
         giftTypeId,
         buyFlagType,
@@ -38,7 +36,6 @@ const CouponDrawer = (props) => {
         platformGiftPackRelateList: giftList = [],
         ...other
       } = values;
-      console.log('123', giftList);
 
       // 礼包数据重组
       const newGiftList = giftList.map((item, index) => {
