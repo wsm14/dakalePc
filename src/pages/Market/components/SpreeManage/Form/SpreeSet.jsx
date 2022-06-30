@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-import { connect } from 'umi';
 import { COUPON_BUY_RULE } from '@/common/constant';
 import { NUM_ALL, NUM_INT } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
 import ShareCoupon from '../ShareCoupon/ShareCoupon';
 
-const CouponSet = (props) => {
+const SpreeSet = (props) => {
   const { form, type, initialValues, giftTypeList } = props;
 
   const [radioData, setRadioData] = useState({
@@ -94,7 +93,9 @@ const CouponSet = (props) => {
       disabled: type === 'edit',
       type: 'formItem',
       required: true,
-      formItem: <ShareCoupon type="platformGiftPackRelateList" handleType={type}></ShareCoupon>,
+      formItem: (
+        <ShareCoupon type="platformGiftPackRelateList" handleType={type} form={form}></ShareCoupon>
+      ),
     },
     {
       label: '礼包数量',
@@ -162,4 +163,4 @@ const CouponSet = (props) => {
   );
 };
 
-export default connect(({}) => ({}))(CouponSet);
+export default SpreeSet;
