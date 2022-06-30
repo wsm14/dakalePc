@@ -65,7 +65,7 @@ const MarketActivityDetail = (props) => {
     {
       label: '使用规则',
       name: 'useRuleObject',
-      tips: `1. 不支持选择券规则中带有城市规则的券\n2. 仅支持选择手动领取的券`,
+      tips: `仅支持选择手动领取的券`,
       render: (val, row) => {
         const { useRuleType = '', limit = {}, subsidy = {} } = val;
         const typeArr = useRuleType.split(',');
