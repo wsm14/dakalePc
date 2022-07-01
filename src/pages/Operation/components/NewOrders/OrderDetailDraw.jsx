@@ -8,7 +8,7 @@ import {
   VERIFICATION_STATUS,
 } from '@/common/constant';
 import { connect } from 'umi';
-import { Button } from 'antd';
+import { Button, Typography } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import { DownOutlined } from '@ant-design/icons';
 import { checkCityName } from '@/utils/utils';
@@ -28,6 +28,7 @@ const OrderDetailDraw = (props) => {
     orderGoodsVerificationInfoList = [],
     organizationGoodsOrderDescObject = {},
     relateType = 'merchant',
+    orderDesc = {},
   } = detail;
 
   const { communityGoodsList = [] } = organizationGoodsOrderDescObject; //核销明细
@@ -209,7 +210,8 @@ const OrderDetailDraw = (props) => {
     {
       label: '交易来源',
       name: 'orderSource',
-      render: (val) => USER_SOURCE[val],
+      render: (val, row) =>
+        row?.orderDesc?.commerceHelpSellFlag == '1' ? '哒小团小程序-带货大厅' : USER_SOURCE[val],
     },
     {
       label: '现金支付渠道',
@@ -219,7 +221,15 @@ const OrderDetailDraw = (props) => {
     {
       label: '付款编号',
       name: 'paySn',
+      span: 2,
       show: orderStatusCheck || (status === '2' && orderCloseStatusCheck),
+    },
+    {
+      label: '分享帮卖',
+      name: 'orderDesc',
+      render: (val) => '111',
+      span: 2,
+      show: orderDesc?.commerceHelpSellFlag == '1',
     },
     {
       label: '取消原因',
@@ -365,14 +375,21 @@ const OrderDetailDraw = (props) => {
             initialValues={detail}
           ></DescriptionsCondition>
         )}
+        <Typography.Title
+          level={5}
+          style={{
+            borderTop: '1px solid #999',
+            marginTop: '30px',
+            paddingTop: 30,
+          }}
+        >
+          订单明细
+        </Typography.Title>
         <div
           style={{
             display: 'flex',
             justifyContent: 'space-around',
             alignItems: 'flex-start',
-            borderTop: '1px solid #999',
-            margin: '30px 0',
-            paddingTop: 30,
           }}
         >
           {tabkey !== 'communityGoods' && (
@@ -483,6 +500,24 @@ const OrderDetailDraw = (props) => {
                   : ORDER_STATUS[detail.status]}
               </span>
             </div>
+          </div>
+        </div>
+        <Typography.Title
+          level={5}
+          style={{
+            paddingTop: 30,
+          }}
+        >
+          分佣明细
+        </Typography.Title>
+        <div style={{ paddingLeft: 524 }}>
+          <div className={styles.detail_last_div} style={{ color: '#333' }}>
+            <span>分佣支出金额</span>
+            <span>{detail.totalFee ? `￥${detail.totalFee}` : 0}</span>
+          </div>
+          <div className={styles.detail_last_div} style={{ color: '#333' }}>
+            <span>分佣团长</span>
+            <span style={{ whiteSpace: 'pre-line' }}>{`${12}\n${12}\n${12}`}</span>
           </div>
         </div>
       </DrawerCondition>
