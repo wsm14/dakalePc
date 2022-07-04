@@ -14,10 +14,10 @@ const tabList = [
     key: 'goods',
     tab: '特惠订单',
   },
-  {
-    key: 'commerceGoods',
-    tab: '电商订单',
-  },
+  // {
+  //   key: 'commerceGoods',
+  //   tab: '电商订单',
+  // },
   {
     key: 'scan',
     tab: '扫码支付订单',
@@ -51,7 +51,7 @@ const OrdersList = () => {
 
   const contentList = {
     goods: <GoodsOrders {...listProps}></GoodsOrders>,
-    commerceGoods: <CommerceGoods {...listProps}></CommerceGoods>,
+    // commerceGoods: <CommerceGoods {...listProps}></CommerceGoods>,
     scan: <CodeOrders {...listProps}></CodeOrders>,
     rightGoods: <OtherOrders {...listProps}></OtherOrders>,
     rightCoupon: <OtherOrders {...listProps}></OtherOrders>,

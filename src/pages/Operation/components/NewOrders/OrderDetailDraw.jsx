@@ -8,7 +8,7 @@ import {
   VERIFICATION_STATUS,
 } from '@/common/constant';
 import { connect } from 'umi';
-import { Button, Typography } from 'antd';
+import { Button } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import { DownOutlined } from '@ant-design/icons';
 import { checkCityName } from '@/utils/utils';
@@ -226,8 +226,8 @@ const OrderDetailDraw = (props) => {
     },
     {
       label: '分享帮卖',
-      name: 'orderDesc',
-      render: (val) => '111',
+      name: 'shareUserInfo',
+      render: (val) => `${val?.userName}，${val?.mobile}，${val?.beanCode}`,
       span: 2,
       show: orderDesc?.commerceHelpSellFlag == '1',
     },
@@ -375,16 +375,6 @@ const OrderDetailDraw = (props) => {
             initialValues={detail}
           ></DescriptionsCondition>
         )}
-        <Typography.Title
-          level={5}
-          style={{
-            borderTop: '1px solid #999',
-            marginTop: '30px',
-            paddingTop: 30,
-          }}
-        >
-          订单明细
-        </Typography.Title>
         <div
           style={{
             display: 'flex',
@@ -500,24 +490,6 @@ const OrderDetailDraw = (props) => {
                   : ORDER_STATUS[detail.status]}
               </span>
             </div>
-          </div>
-        </div>
-        <Typography.Title
-          level={5}
-          style={{
-            paddingTop: 30,
-          }}
-        >
-          分佣明细
-        </Typography.Title>
-        <div style={{ paddingLeft: 524 }}>
-          <div className={styles.detail_last_div} style={{ color: '#333' }}>
-            <span>分佣支出金额</span>
-            <span>{detail.totalFee ? `￥${detail.totalFee}` : 0}</span>
-          </div>
-          <div className={styles.detail_last_div} style={{ color: '#333' }}>
-            <span>分佣团长</span>
-            <span style={{ whiteSpace: 'pre-line' }}>{`${12}\n${12}\n${12}`}</span>
           </div>
         </div>
       </DrawerCondition>
