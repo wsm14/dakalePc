@@ -64,12 +64,12 @@ const GoodsOrders = (props) => {
       name: 'merchantId',
       type: 'merchant',
     },
-    {
-      label: '订单属性',
-      type: 'select',
-      name: 'orderType',
-      select: ORDER_ORDERTYPE,
-    },
+    // {
+    //   label: '订单属性',
+    //   type: 'select',
+    //   name: 'orderType',
+    //   select: ORDER_ORDERTYPE,
+    // },
     {
       label: '状态',
       name: 'status',
@@ -279,7 +279,7 @@ const GoodsOrders = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ goodsOrScanFlag: tabkey }}
+        params={{ goodsOrScanFlag: tabkey, orderType: 'reduceCoupon' }}
         rowKey={(record) => `${record.orderId}`}
         dispatchType="ordersList/fetchGetList"
         {...ordersList}
