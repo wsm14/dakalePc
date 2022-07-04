@@ -12,7 +12,7 @@ import WinnerOrders from './components/Orders/WinnerOrders';
 const tabList = [
   {
     key: 'goods',
-    tab: '特惠订单',
+    tab: '有价券订单',
   },
   // {
   //   key: 'commerceGoods',
