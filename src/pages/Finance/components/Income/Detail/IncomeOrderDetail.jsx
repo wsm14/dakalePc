@@ -221,6 +221,11 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
             </div>
           </>
         )}
+        {detail.helpSellCommission != '' && (
+          <div className={styles.detail_item_class}>
+            帮卖团长分佣：{`￥${detail.helpSellCommission || 0}`}
+          </div>
+        )}
         <div className={styles.detail_item_formula}>
           {type === 'kolGoods' ||
           type === 'reduceCoupon' ||
