@@ -21,15 +21,19 @@ const SupplierActivate = (props) => {
   // 提交数据
   const fetchUpData = () => {
     form.validateFields().then(async (values) => {
-      const { city, activeBeginDate = [], additionalVoucher, ...other } = values;
+      const { city, activeBeginDate = [], additionalVoucher, legalPerson, ...other } = values;
       const imgUrl = await aliOssUpload(additionalVoucher);
+      let obj = {};
+      if (bankAccount == 2) obj = { cardName: legalPerson };
       dispatch({
         type: 'supplierManage/fetchSupplierActivateAccount',
         payload: {
           ...other,
+          ...obj,
           memberId,
           bankAccount,
           bondBean: 0,
+          legalPerson,
           additionalVoucher: imgUrl.toString(),
           provCode: city[0].includes('00') ? city[0] : '00' + city[0],
           areaCode: city[1] || undefined,
