@@ -295,9 +295,7 @@ const RefundList = (props) => {
         tableSize="small"
         columns={columns(record.status)}
         list={record?.orderDesc?.communityGoodsList || []}
-        rowKey={(record) =>
-          `${record.communityOrganizationGoodsId}${Math.ceil(Math.random() * 1000) + 1}`
-        }
+        rowKey={(record) => record.communityOrganizationGoodsId}
       ></TableDataBlock>
     );
   };

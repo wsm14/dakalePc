@@ -13,8 +13,11 @@ import TableDataBlock from '@/components/TableDataBlock';
 import { DownOutlined } from '@ant-design/icons';
 import { checkCityName } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
+import PopImgShow from '@/components/PopImgShow';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import QuestionTooltip from '@/components/QuestionTooltip';
+import communityImg from '@public/community.png';
+
 import styles from '../NewOrders/style.less';
 
 const OrderDetailDraw = (props) => {
@@ -31,11 +34,10 @@ const OrderDetailDraw = (props) => {
     orderDesc = {},
   } = detail;
 
-  const { communityGoodsList = [] } = organizationGoodsOrderDescObject; //核销明细
+  const { communityGoodsList = [], commerceGoods = {} } = orderDesc; //核销明细
   const [isShow, setIsShow] = useState(true);
   const [isShow1, setIsShow1] = useState(true);
   const [refund, setRefund] = useState(true);
-
   // 订单状态检查内容显示
   /* 订单状态0-待支付；1-已支付待核销；2-订单关闭 3-交易完成 4-已确认，5-预支付 6-退款中 */
   /* closeType :  unpaidExpiredCancel: '待付款超时自动关闭',
@@ -95,6 +97,76 @@ const OrderDetailDraw = (props) => {
       render: (val, row) => val - row?.remainCount,
     },
   ];
+
+  const goodsDetail = [
+    {
+      title: '商品图片',
+      dataIndex: 'goodsImg',
+      render: (val) => <PopImgShow url={val || communityImg}></PopImgShow>,
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+    },
+    {
+      title: '规格',
+      dataIndex: 'specificationData',
+      show: tabkey === 'communityGoods',
+      render: (val) => {
+        const { specificationMap = {} } = val;
+        const arrKeys = Object.keys(specificationMap);
+        return arrKeys.map(
+          (item, index) =>
+            item !== '' && (
+              <span>{`${item}/${specificationMap[item]}${
+                index + 1 < arrKeys.length ? '，' : ''
+              }`}</span>
+            ),
+        );
+      },
+    },
+    {
+      title: '规格',
+      align: 'center',
+      dataIndex: 'attributeObjects',
+      show: tabkey === 'commerceGoods',
+      render: (val = []) => {
+        return (
+          <>
+            <div>{val.map((item) => item.value).join('/')}</div>
+          </>
+        );
+      },
+    },
+    {
+      title: '单价',
+      align: 'center',
+      dataIndex: 'goodsPrice',
+      show: tabkey === 'communityGoods',
+    },
+    {
+      title: '单价',
+      align: 'center',
+      dataIndex: 'sellPrice',
+      show: tabkey === 'commerceGoods',
+      render: (val, row) => {
+        const cashBean = row.sellBean ? row.sellBean / 100 : 0;
+        const refundPrice = Number(val) + cashBean > 0 ? (Number(val) + cashBean).toFixed(2) : 0;
+        return `￥${refundPrice}`;
+      },
+    },
+    {
+      title: '购买数量',
+      align: 'center',
+      dataIndex: 'goodsCount',
+    },
+    {
+      title: '核销数量',
+      align: 'center',
+      dataIndex: 'goodsCount',
+      show: tabkey === 'commerceGoods',
+    },
+  ];
   const userFormItem = [
     {
       label: '用户昵称',
@@ -122,6 +194,33 @@ const OrderDetailDraw = (props) => {
           </div>
         );
       },
+    },
+  ];
+  //团长信息
+  const relateOwnerInfo = [
+    {
+      label: '团长昵称 ',
+      name: 'orderDesc',
+      render: (val) => val?.relateOwnerName,
+    },
+    // {
+    //   label: '团长豆号',
+    //   name: 'orderDesc',
+    //   render: (val) => val?.relateOwnerName,
+    // },
+    {
+      label: '团长联系电话',
+      name: 'orderDesc',
+      render: (val) => val?.relateOwnerMobile,
+    },
+    {
+      label: '自提点',
+      name: 'orderDesc',
+      span: 2,
+      render: (val) =>
+        `${val?.liftingContentPerson || '--'}，${val?.liftingMobile || '--'}，${
+          val?.liftingAddress || '--'
+        }，${val?.liftingName || '--'}`,
     },
   ];
   //店铺信息
@@ -322,8 +421,22 @@ const OrderDetailDraw = (props) => {
             column={3}
           ></DescriptionsCondition>
         ))}
+        {/* 商品信息 */}
+        {(tabkey === 'communityGoods' || tabkey === 'commerceGoods') && (
+          <div style={{ fontWeight: 'bold', fontSize: '16px', lineHeight: '50px' }}>商品信息</div>
+        )}
+        {(tabkey === 'communityGoods' || tabkey === 'commerceGoods') && (
+          <TableDataBlock
+            noCard={false}
+            pagination={false}
+            columns={goodsDetail}
+            rowKey={(record) => `${record.communityOrganizationGoodsId}`}
+            list={tabkey === 'communityGoods' ? communityGoodsList : [commerceGoods]}
+            style={{ marginBottom: 10 }}
+          ></TableDataBlock>
+        )}
         {/* 核销明细 */}
-        {tabkey === 'communityGoods' && (
+        {/* {tabkey === 'communityGoods' && (
           <div style={{ fontWeight: 'bold', fontSize: '16px', lineHeight: '50px' }}>核销明细</div>
         )}
         {tabkey === 'communityGoods' && (
@@ -335,7 +448,7 @@ const OrderDetailDraw = (props) => {
             list={communityGoodsList}
             style={{ marginBottom: 10 }}
           ></TableDataBlock>
-        )}
+        )} */}
         <DescriptionsCondition
           title="用户信息"
           labelStyle={{ width: 120 }}
@@ -343,6 +456,15 @@ const OrderDetailDraw = (props) => {
           initialValues={detail}
           column={2}
         ></DescriptionsCondition>
+        {tabkey === 'communityGoods' && (
+          <DescriptionsCondition
+            title="团长信息"
+            labelStyle={{ width: 120 }}
+            formItems={relateOwnerInfo}
+            column={2}
+            initialValues={detail}
+          ></DescriptionsCondition>
+        )}
         {tabkey !== 'communityGoods' && tabkey !== 'commerceGoods' && (
           <DescriptionsCondition
             title="商家信息"
