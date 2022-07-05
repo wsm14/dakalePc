@@ -110,8 +110,8 @@ const SpecialGoods = (props) => {
       loading={loading || loadingProps}
       columns={getColumns}
       params={{
-        displayType: 'manualOrList', // 手动/列表展示
         status: 1, // 上架中
+        displayType: 'manualOrList,manual', // 手动/列表展示
       }}
       scroll={{ y: 400 }}
       rowSelection={{
