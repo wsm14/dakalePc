@@ -380,6 +380,9 @@ const OrderDetailDraw = (props) => {
             display: 'flex',
             justifyContent: 'space-around',
             alignItems: 'flex-start',
+            borderTop: '1px solid #999',
+            margin: '30px 0',
+            paddingTop: 30,
           }}
         >
           {tabkey !== 'communityGoods' && (
