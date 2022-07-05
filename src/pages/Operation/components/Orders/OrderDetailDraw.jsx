@@ -28,7 +28,6 @@ const OrderDetailDraw = (props) => {
     orderGoodsVerifications = [],
     organizationGoodsOrderDescObject = {},
     orderLogistics = {},
-    orderDesc = {},
   } = detail;
   const { communityGoodsList = [] } = organizationGoodsOrderDescObject; //核销明细
   const [isShow, setIsShow] = useState(true);
@@ -249,19 +248,12 @@ const OrderDetailDraw = (props) => {
     {
       label: '现金支付渠道',
       name: 'payType',
-      render: (val, row) =>
-        row?.orderDesc?.commerceHelpSellFlag == '1' ? '哒小团小程序-带货大厅' : PAY_TYPE[val],
+      render: (val, row) => PAY_TYPE[val],
     },
     {
       label: '付款编号',
       name: 'paySn',
       show: orderStatusCheck || (status === '2' && orderCloseStatusCheck),
-    },
-    {
-      label: '分享帮卖',
-      name: 'orderDesc',
-      render: (val) => '111',
-      show: orderDesc?.commerceHelpSellFlag == '1',
     },
     {
       label: '有效期',

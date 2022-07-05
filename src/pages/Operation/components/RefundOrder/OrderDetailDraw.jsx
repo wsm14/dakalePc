@@ -28,6 +28,7 @@ const OrderDetailDraw = (props) => {
     divisionParam = {},
     orderGoodsVerificationInfoList = [],
     organizationGoodsOrderDescObject = {},
+    orderDesc = {},
   } = detail;
 
   const { communityGoodsList = [] } = organizationGoodsOrderDescObject; //核销明细
@@ -212,7 +213,8 @@ const OrderDetailDraw = (props) => {
     {
       label: '交易来源',
       name: 'orderSource',
-      render: (val) => USER_SOURCE[val],
+      render: (val, row) =>
+        row?.orderDesc?.commerceHelpSellFlag == '1' ? '哒小团小程序-带货大厅' : USER_SOURCE[val],
     },
     {
       label: '现金支付渠道',
@@ -223,6 +225,13 @@ const OrderDetailDraw = (props) => {
       label: '付款编号',
       name: 'paySn',
       show: orderStatusCheck || (status === '2' && orderCloseStatusCheck),
+    },
+    {
+      label: '分享帮卖',
+      name: 'shareUserInfo',
+      render: (val) => `${val?.userName}，${val?.mobile}，${val?.beanCode}`,
+      span: 2,
+      show: orderDesc?.commerceHelpSellFlag == '1',
     },
     {
       label: '取消原因',
