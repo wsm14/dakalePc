@@ -47,6 +47,11 @@ const RefundList = (props) => {
         type: 'user',
       },
       {
+        label: '团长',
+        name: 'ownerId',
+        type: 'user',
+      },
+      {
         label: '退款类型',
         name: 'refundType',
         type: 'select',
@@ -93,12 +98,13 @@ const RefundList = (props) => {
     },
     {
       title: '团购信息标题 跟团号',
-      dataIndex: ['orderDesc', 'title'],
+      dataIndex: 'orderDesc',
       render: (val) => (
         <>
           <Ellipsis length={10} tooltip>
-            {`${val}`}
+            {`${val?.title}`}
           </Ellipsis>
+          <div>{val?.organizationNumber}</div>
         </>
       ),
     },
@@ -121,7 +127,7 @@ const RefundList = (props) => {
       render: (val, row) => {
         const cashBean = row.refundBean ? row.refundBean / 100 : 0;
         const refundPrice = Number(val) + cashBean > 0 ? (Number(val) + cashBean).toFixed(2) : 0;
-        return `￥${refundPrice}\n(含${row.refundBean || 0}卡豆)`;
+        return `￥${refundPrice}\n(${row.refundBean || 0}卡豆+￥${val})`;
       },
     },
     {
@@ -142,7 +148,7 @@ const RefundList = (props) => {
       render: (val, row) => {
         const cashBean = row.refundBean ? row.refundBean / 100 : 0;
         const refundPrice = Number(val) + cashBean > 0 ? (Number(val) + cashBean).toFixed(2) : 0;
-        return `￥${refundPrice}\n(含${row.refundBean || 0}卡豆)`;
+        return `￥${refundPrice}\n(${row.refundBean || 0}卡豆+￥${val})`;
       },
     },
     {
