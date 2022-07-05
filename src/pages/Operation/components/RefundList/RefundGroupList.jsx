@@ -169,8 +169,9 @@ const RefundList = (props) => {
     {
       title: '审核状态',
       dataIndex: 'auditStatus',
-      show: ['1'].includes(tabKey),
-      render: (val) => REFUND_ORDERS_EXAMINE_STATUS[val],
+      render: (val) => {
+        return ['1'].includes(tabKey) ? REFUND_ORDERS_EXAMINE_STATUS[val] : '待团长审核';
+      },
     },
     {
       title: '审核时间',
