@@ -131,7 +131,7 @@ const CommunityGoods = (props) => {
       render: (val, row) => ORDERS_STATUS[val],
     },
     {
-      title: '用户实收',
+      title: '用户实付',
       align: 'center',
       dataIndex: 'payFee',
       render: (val, record) => {
