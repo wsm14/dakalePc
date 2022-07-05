@@ -122,7 +122,7 @@ const RefundGroupOrderList = (props) => {
     {
       title: '退款类型',
       dataIndex: 'refundType',
-      show: ['commerceGoods'].includes(tabKey),
+      show: ['commerceGoods', 'communityGoods'].includes(tabKey),
       render: (val) => REFUND_ORDERS_TYPE[val],
     },
     {
@@ -139,7 +139,7 @@ const RefundGroupOrderList = (props) => {
       title: '寄回状态/寄回单号',
       dataIndex: 'logisticsParam',
       align: 'center',
-      show: ['commerceGoods'].includes(tabKey),
+      show: ['commerceGoods', 'communityGoods'].includes(tabKey),
       render: (val, row) => {
         const { code, name } = val;
         const renderItem = Object.keys(val).length ? (
@@ -167,6 +167,16 @@ const RefundGroupOrderList = (props) => {
       title: '退款状态',
       dataIndex: 'status',
       render: (val) => ['退款中/待退款', '已退款', '取消退款'][val],
+    },
+    {
+      title: '实际退款金额',
+      dataIndex: 'refundFee',
+      align: 'center',
+      render: (val, row) => {
+        const cashBean = row.refundBean ? row.refundBean / 100 : 0;
+        const refundPrice = Number(val) + cashBean > 0 ? (Number(val) + cashBean).toFixed(2) : 0;
+        return `￥${refundPrice}\n(含${row.refundBean || 0}卡豆)`;
+      },
     },
     {
       title: '备注',

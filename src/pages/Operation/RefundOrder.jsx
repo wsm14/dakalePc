@@ -17,8 +17,8 @@ const tabList = [
     tab: '团购订单',
   },
 ];
-const RefundOrder = (props) => {
-  const [tabKey, setTabKey] = useState('commerceGoods');
+const RefundOrder = () => {
+  const [tabKey, setTabKey] = useState('specialGoods');
 
   const listProps = { tabKey: tabKey };
 
