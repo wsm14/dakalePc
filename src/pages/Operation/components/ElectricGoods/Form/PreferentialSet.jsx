@@ -261,7 +261,6 @@ const PreferentialSet = ({
     {
       label: '商品名称',
       name: 'goodsName',
-      type: 'textArea',
       maxLength: 80,
     },
     {
