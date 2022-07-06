@@ -306,35 +306,37 @@ const OrderDetailDraw = (props) => {
       total,
       onChange: (size) => getDetail(size),
     },
-    footer: detail.status === '1' && (
-      <Button
-        type="primary"
-        onClick={() => {
-          const { userIdString, orderId, orderSn, payFee, beanFee } = detail;
-          tabkey == 'communityGoods'
-            ? setNewRefund({
-                show: true,
-                detail: {
-                  userId: userIdString,
-                  orderId,
-                  orderSn,
-                  orderType: tabkey,
-                  payPrice: (Number(payFee || 0) + Number(beanFee || 0) / 100).toFixed(2),
-                  beanFee,
-                },
-              })
-            : setRefund({
-                show: true,
-                detail: {
-                  userId: detail.userIdString,
-                  orderSn: detail.orderSn,
-                },
-              });
-        }}
-      >
-        退款
-      </Button>
-    ),
+    footer:
+      detail.status === '1' ||
+      (['1', '3'].includes(detail.status) && tabkey == 'communityGoods') ? (
+        <Button
+          type="primary"
+          onClick={() => {
+            const { userIdString, orderId, orderSn, payFee, beanFee } = detail;
+            tabkey == 'communityGoods'
+              ? setNewRefund({
+                  show: true,
+                  detail: {
+                    userId: userIdString,
+                    orderId,
+                    orderSn,
+                    orderType: tabkey,
+                    payPrice: (Number(payFee || 0) + Number(beanFee || 0) / 100).toFixed(2),
+                    beanFee,
+                  },
+                })
+              : setRefund({
+                  show: true,
+                  detail: {
+                    userId: detail.userIdString,
+                    orderSn: detail.orderSn,
+                  },
+                });
+          }}
+        >
+          退款
+        </Button>
+      ) : null,
   };
   return (
     <>
