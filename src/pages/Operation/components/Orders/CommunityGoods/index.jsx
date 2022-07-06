@@ -111,6 +111,12 @@ const CommunityGoods = (props) => {
       render: (val, row) => `${row.userName}\n${val}\n${row.beanCode}`,
     },
     {
+      title: '订单金额',
+      align: 'center',
+      dataIndex: 'totalFee',
+      render: (val) => `￥${val}`,
+    },
+    {
       title: '平台券',
       align: 'center',
       dataIndex: 'deductFeeObject',
@@ -138,7 +144,7 @@ const CommunityGoods = (props) => {
         const cashBean = record.beanFee ? record.beanFee / 100 : 0;
         return (
           <div style={{ textAlign: 'center' }}>
-            <div>{`￥${record.totalFee}`}</div>
+            <div>{`￥${val}`}</div>
             <div className={styles.fontColor}>
               {record.beanFee ? `(${record.beanFee}卡豆` : '(' + '0卡豆'}
             </div>
@@ -252,6 +258,7 @@ const CommunityGoods = (props) => {
         searchItems={searchItems}
         params={{ orderType: tabkey }}
         rowKey={(record) => `${record.orderId}`}
+        scroll={{ x: 1900, y: 600 }}
         dispatchType="ordersList/fetchGetList"
         expandable={{
           expandedRowKeys: rowKey,
