@@ -164,7 +164,7 @@ const OrderDetailDraw = (props) => {
       title: '核销数量',
       align: 'center',
       dataIndex: 'goodsCount',
-      show: tabkey === 'commerceGoods',
+      show: ['commerceGoods', 'communityGoods'].includes(tabkey),
     },
   ];
   const userFormItem = [
