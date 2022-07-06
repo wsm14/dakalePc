@@ -258,6 +258,7 @@ const CommunityGoods = (props) => {
         searchItems={searchItems}
         params={{ orderType: tabkey }}
         rowKey={(record) => `${record.orderId}`}
+        scroll={{ x: 1900, y: 600 }}
         dispatchType="ordersList/fetchGetList"
         expandable={{
           expandedRowKeys: rowKey,
