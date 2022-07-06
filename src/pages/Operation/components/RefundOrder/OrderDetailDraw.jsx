@@ -302,7 +302,7 @@ const OrderDetailDraw = (props) => {
       label: '团购信息标题',
       name: 'organizationGoodsOrderDescObject',
       show: tabkey === 'communityGoods',
-      render: (val) => val?.title,
+      render: (val) => orderDesc.title,
     },
     {
       label: '订单类型',
