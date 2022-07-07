@@ -144,6 +144,7 @@ const PreferentialDrawer = (props) => {
     visible: show,
     onClose,
     destroyOnClose: true,
+    bodyStyle: { paddingBottom: 10 },
     closeCallBack: () => {
       setCommissionShow(false);
     },

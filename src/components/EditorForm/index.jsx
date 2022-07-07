@@ -4,7 +4,7 @@ import { Modal } from 'antd';
 import PropTypes from 'prop-types';
 import imageCompress from '@/utils/imageCompress';
 import aliOssUpload from '@/utils/aliOssUpload';
-import styles from './style.less';
+import './style.less';
 
 let editor = '';
 
@@ -127,6 +127,7 @@ const EditorForm = ({
     editor.config.zIndex = 100; // 配置编辑区域的 z-index
     editor.config.height = 550; // 设置编辑区域高度为 500px
     editor.config.uploadImgMaxLength = 20; // 上传图片数量
+    editor.config.placeholder = ''; // 不想使用 placeholder ，赋值为空字符串即可
     editor.config.pasteFilterStyle = true; // 过滤掉复制文本的样式
     editor.config.pasteTextHandle = customhandle['pasteText']; // 赋值粘贴文本a标签替换
     editor.config.customUploadImg = customhandle['uploadImg']; // 自定义图片上传
@@ -143,9 +144,9 @@ const EditorForm = ({
   }, []);
 
   return (
-    <div className={`${styles.editor} ${editClass}`}>
+    <div className={`editor ${editClass}`}>
       {/* 编辑区域 */}
-      <div ref={refEdit} className={`${styles.content} ${contentClass} ${maxTextError}`} />
+      <div ref={refEdit} className={`content ${contentClass} ${maxTextError}`} />
       {/* 数值统计 */}
       {maxLength != 0 && (
         <div style={{ textAlign: 'right' }}>
