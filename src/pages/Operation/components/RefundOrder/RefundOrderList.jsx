@@ -192,7 +192,7 @@ const RefundOrderList = (props) => {
     },
     {
       title: '退款数量',
-      dataIndex: 'goodsCount',
+      dataIndex: 'refundCount',
     },
     {
       title: '申请退款金额',
