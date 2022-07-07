@@ -16,7 +16,6 @@ import GiveUserCoupon from './components/PlatformManage/Give/GiveUserCoupon';
 
 const PlatformManage = (props) => {
   const { platformCouponList, loading, dispatch } = props;
-  const { list } = platformCouponList;
 
   const childRef = useRef();
   // 操作弹窗{ type: info 详情 show 显示隐藏 detail 详情 }

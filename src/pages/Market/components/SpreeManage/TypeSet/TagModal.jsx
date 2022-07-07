@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'umi';
 import { Input, Tooltip, Modal, Row, Col, Button } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, CheckOutlined } from '@ant-design/icons';
 import './index.less';
 
 const TagModal = (props) => {
@@ -16,16 +16,6 @@ const TagModal = (props) => {
   useEffect(() => {
     if (show) {
       handleGetTags();
-      // setTags([
-      //   {
-      //     giftTypeId: '1476433649157206018',
-      //     typeName: '一星升二星礼包',
-      //   },
-      //   {
-      //     giftTypeId: '1476433305564016642',
-      //     typeName: '新人礼包',
-      //   },
-      // ]);
     }
   }, [show]);
 
@@ -69,30 +59,19 @@ const TagModal = (props) => {
     setInputValue(e.target.value);
   };
 
-  // 回车时新增标签
-  const handleInputConfirm = () => {
-    console.log(inputValue);
+  // 新增/编辑 标签
+  const handleInputConfirm = (mode) => {
+    const val = inputValue.replace(/\s*/g, '');
     setInputVisible(false);
-    if (inputValue === '') return;
-    // console.log(inputValue, tags, 'handleInputConfirm');
-    // if (tags.some((item) => item.typeName === inputValue)) {
-    //   setInputValue('');
-    //   return;
-    // }
-    handleSetTags({ typeName: inputValue }, 'add');
-    setInputValue('');
-  };
-
-  // 回车修改时
-  const handleEditInputConfirm = () => {
     setEditInputId('');
-    if (inputValue === '') return;
-    // if (tags.some((item) => item.typeName === inputValue)) {
-    //   setInputValue('');
-    //   return;
-    // }
-    handleSetTags({ typeName: inputValue, giftTypeId: editInputId }, 'edit');
     setInputValue('');
+    if (val === '') return;
+
+    const payload = {
+      add: { typeName: inputValue },
+      edit: { typeName: inputValue, giftTypeId: editInputId },
+    };
+    handleSetTags(payload[mode], mode);
   };
 
   const modalProps = {
@@ -120,8 +99,12 @@ const TagModal = (props) => {
                     className="tag-input"
                     value={inputValue}
                     onChange={handleInputChange}
-                    onBlur={() => (setInputVisible(false), setEditInputId(''), setInputValue(''))}
-                    onPressEnter={handleEditInputConfirm}
+                    addonAfter={
+                      <CheckOutlined
+                        style={{ fontSize: 16 }}
+                        onClick={() => handleInputConfirm('edit')}
+                      />
+                    }
                   />
                 </div>
               ) : (
@@ -160,8 +143,12 @@ const TagModal = (props) => {
                 className="tag-input"
                 value={inputValue}
                 onChange={handleInputChange}
-                onBlur={() => (setInputVisible(false), setEditInputId(''), setInputValue(''))}
-                onPressEnter={handleInputConfirm}
+                addonAfter={
+                  <CheckOutlined
+                    style={{ fontSize: 16 }}
+                    onClick={() => handleInputConfirm('add')}
+                  />
+                }
               />
             ) : (
               <Button

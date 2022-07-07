@@ -7,6 +7,12 @@ import {
   fetchOrderDeliverGoods,
   fetchOrdersListActionLog,
   fetchBatchSplitAccount,
+  fetchPageListOrdersList,
+  fetchGetOrderDetail,
+  fetchDeliverGoods,
+  fetchOrderImmediateRefund,
+  fetchSubLedger,
+  fetchExportUndeliveredCommerceGoodsOrderList,
 } from '@/services/OperationServices';
 
 export default {
@@ -16,6 +22,7 @@ export default {
     list: [],
     total: 0,
     orderDetail: {},
+    newList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -107,6 +114,109 @@ export default {
         });
       }
       callback && callback();
+    },
+    // get 订单列表 - 列表(新)
+    *fetchPageListOrdersList({ payload }, { call, put }) {
+      const response = yield call(fetchPageListOrdersList, payload);
+      if (!response) return;
+      const { content } = response;
+      const { orderDetailList = [], total } = content;
+
+      const list = orderDetailList.map((item) => {
+        const { orderDesc, settleParam, divisionParam, deductFee } = item;
+
+        return {
+          ...item,
+          orderDesc: JSON.parse(orderDesc || '{}'),
+          settleParam: JSON.parse(settleParam || '{}'),
+          divisionParam: JSON.parse(divisionParam || '{}'),
+          deductFee: JSON.parse(deductFee || '[]'),
+        };
+      });
+
+      console.log('list: ', list);
+      yield put({
+        type: 'save',
+        payload: {
+          newList: {
+            list,
+            total,
+          },
+        },
+      });
+    },
+    // get 订单列表 - 详情（新）
+    *fetchGetOrderDetail({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetOrderDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      const { orderDetail = {} } = content;
+      const data = {
+        ...orderDetail,
+        orderDesc: JSON.parse(orderDetail.orderDesc || '{}'),
+        settleParam: JSON.parse(orderDetail.settleParam || '{}'),
+        divisionParam: JSON.parse(orderDetail.divisionParam || '{}'),
+        deductFee: JSON.parse(orderDetail.deductFee || '[]'),
+      };
+
+      console.log(11, data);
+      callback(data);
+      yield put({
+        type: 'save',
+        payload: {
+          orderDetail: data,
+        },
+      });
+    },
+    // post 电商订单-发货(新)
+    *fetchDeliverGoods({ payload, callback }, { call }) {
+      const response = yield call(fetchDeliverGoods, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '保存成功',
+      });
+      callback();
+    },
+    // post 订单列表 - 手动退款（新）
+    *fetchOrderImmediateRefund({ payload, callback }, { call }) {
+      const response = yield call(fetchOrderImmediateRefund, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '退款提交成功',
+      });
+      callback();
+    },
+    // post 订单列表 - 分账（新）
+    *fetchSubLedger({ payload, callback }, { call }) {
+      const response = yield call(fetchSubLedger, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '分账成功',
+      });
+      callback && callback();
+    },
+    // get 订单列表(新) - 导出（暂时）
+    *fetchExportUndeliveredCommerceGoodsOrderList({ payload, callback }, { call }) {
+      const response = yield call(fetchExportUndeliveredCommerceGoodsOrderList, payload);
+      if (!response) return;
+      const { content } = response;
+      const { orderDetailList = [] } = content;
+
+      const list = orderDetailList.map((item) => {
+        const { orderDesc, settleParam, divisionParam, deductFee } = item;
+
+        return {
+          ...item,
+          orderDesc: JSON.parse(orderDesc || '{}'),
+          settleParam: JSON.parse(settleParam || '{}'),
+          divisionParam: JSON.parse(divisionParam || '{}'),
+          deductFee: JSON.parse(deductFee || '[]'),
+        };
+      });
+      callback && callback(list);
     },
   },
 };

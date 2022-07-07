@@ -170,6 +170,16 @@ const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
       name: 'needOrder',
     },
     {
+      label: '随时退',
+      type: 'switch',
+      name: 'suishi',
+    },
+    {
+      label: '过期退',
+      type: 'switch',
+      name: 'guoqi',
+    },
+    {
       label: '购买须知',
       name: 'buyDesc',
       type: 'formItem',

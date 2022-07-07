@@ -1,31 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Space, InputNumber } from 'antd';
-import { UpSquareOutlined, DownSquareOutlined, DeleteOutlined } from '@ant-design/icons';
-import { goodsDom, commerceDom } from './CouponFreeDom';
+import { Space } from 'antd';
+import { UpSquareOutlined, DownSquareOutlined } from '@ant-design/icons';
+import { goodsDom, commerceDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
 import styles from './index.less';
 
 const FormList = (props) => {
-  const { type, form, fields, field, remove, move } = props;
-  const [nameIndex, setNameIndex] = useState(Number);
+  const { type, form, field, remove, move } = props;
+  const [goodsItem, setGoodsItem] = useState({});
 
   useEffect(() => {
-    setNameIndex(field.name + 1);
+    setGoodsItem(form.getFieldValue(type)[field.name]);
   }, [field]);
-
-  const inputDom = () => {
-    return (
-      <InputNumber
-        size="small"
-        value={nameIndex}
-        onChange={(val) => setNameIndex(val)}
-        onPressEnter={() => move(field.name, nameIndex - 1)}
-        precision={0}
-        min={1}
-        max={fields.length}
-        style={{ width: 60 }}
-      ></InputNumber>
-    );
-  };
 
   return (
     <Space key={field.key} className={styles.ifame_carouseal} align="baseline">
@@ -41,15 +26,16 @@ const FormList = (props) => {
           }}
         />
       </div>
-
-      {(() => {
-        const goodsItem = form.getFieldValue(type)[field.name];
-        return {
-          specialGoods: goodsDom({ ...goodsItem, inputDom }, goodsItem?.activityGoodsId), // 特惠，自我游
-          commerceGoods: commerceDom({ ...goodsItem, inputDom }, goodsItem?.activityGoodsId), // 电商品
-        }[goodsItem.activityType];
-      })()}
-      <DeleteOutlined onClick={() => remove(field.name)} />
+      {
+        {
+          specialGoods: goodsDom({ ...goodsItem }, goodsItem?.goodsId, '', () =>
+            remove(field.name),
+          ), // 特惠，自我游
+          commerceGoods: commerceDom({ ...goodsItem }, goodsItem?.goodsId, '', () =>
+            remove(field.name),
+          ), // 电商品
+        }[goodsItem.activityType]
+      }
     </Space>
   );
 };

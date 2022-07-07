@@ -1,32 +1,21 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import { Card } from 'antd';
-import ExtraButton from '@/components/ExtraButton';
-import { groupGoods } from '@/components/VideoSelectBindContent/CouponFreeDom';
-import GroupGoodModal from './GroupGoods/GroupGoodModal';
-import TableDataBlock from '@/components/TableDataBlock';
+import { GROUP_RULE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
-import WeightSet from './GroupGoods/WeightSet';
-import { GROUP_RULE } from '@/common/constant';
+import ExtraButton from '@/components/ExtraButton';
+import TableDataBlock from '@/components/TableDataBlock';
+import GoodsSelectModal from '@/components/GoodsSelectModal';
+import NumberValueSet from '@/components/FormListCondition/NumberValueSet';
+import GroupRule from './GroupRule';
 
 const GroupGoodsConfig = (props) => {
   const { groupGoods, dispatch, loading } = props;
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false); // 新增商品
+  const [visibleRule, setVisibleRule] = useState(false); // 拼团规则
 
   const childRef = useRef();
-
-  // 编辑权重
-  const fetchNewShareNoAudit = (values, back) => {
-    dispatch({
-      type: 'groupGoods/fetchUpdateSort',
-      payload: values,
-      callback: () => {
-        back();
-        childRef.current.fetchGetData();
-      },
-    });
-  };
 
   const getColumns = [
     {
@@ -86,7 +75,18 @@ const GroupGoodsConfig = (props) => {
       dataIndex: 'sort',
       render: (val, row) => (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <WeightSet detail={row} onSubmit={fetchNewShareNoAudit}></WeightSet>
+          <NumberValueSet
+            value={val}
+            valueKey="sort"
+            loading={loading}
+            onSubmit={(sort) =>
+              fetchUpdateSort({
+                ...sort,
+                flag: 'updateWeight',
+                togetherGroupConfigId: row.togetherGroupConfigId,
+              })
+            }
+          ></NumberValueSet>
         </div>
       ),
     },
@@ -94,11 +94,10 @@ const GroupGoodsConfig = (props) => {
       title: '成团人数',
       align: 'center',
       dataIndex: 'togetherGroupRuleObject',
-      render: (val,row) =>{
-        const {togetherGroupRuleObject={}}=row
-        return GROUP_RULE[togetherGroupRuleObject.totalUserNum]
-    
-      } 
+      render: (val, row) => {
+        const { togetherGroupRuleObject = {} } = row;
+        return GROUP_RULE[togetherGroupRuleObject.totalUserNum];
+      },
     },
     {
       title: '状态',
@@ -106,7 +105,6 @@ const GroupGoodsConfig = (props) => {
       dataIndex: 'status',
       render: (val) => ['下架', '上架'][val],
     },
-
     {
       type: 'handle',
       dataIndex: 'togetherGroupConfigId',
@@ -124,6 +122,17 @@ const GroupGoodsConfig = (props) => {
     },
   ];
 
+  // 编辑权重
+  const fetchUpdateSort = (values) => {
+    dispatch({
+      type: 'groupGoods/fetchUpdateSort',
+      payload: values,
+      callback: () => {
+        childRef.current.fetchGetData();
+      },
+    });
+  };
+
   const handleDel = (togetherGroupConfigId) => {
     dispatch({
       type: 'groupGoods/fetchDeleteConfigGoods',
@@ -138,7 +147,7 @@ const GroupGoodsConfig = (props) => {
     {
       text: '新增',
       auth: 'groupGoodsConfigAdd',
-      onClick: () => setVisible({ show: true }),
+      onClick: () => setVisible(true),
     },
   ];
 
@@ -154,12 +163,28 @@ const GroupGoodsConfig = (props) => {
           dispatchType="groupGoods/fetchGetList"
           {...groupGoods}
         ></TableDataBlock>
-        <GroupGoodModal
-          childRef={childRef}
-          visible={visible}
-          onClose={() => setVisible(false)}
-        ></GroupGoodModal>
       </Card>
+      {/* 商品选择弹窗 */}
+      <GoodsSelectModal
+        visible={visible}
+        closeSumbit={false}
+        showTag={['commerceGoods']}
+        searchParams={{ paymentModeType: 'cashMode' }} // 纯现金支付
+        onClose={() => setVisible(false)}
+        onSumbit={({ keys }) => {
+          const list = keys.map((item) => ({ goodsId: item }));
+          setVisibleRule({ show: true, togetherGroupConfigList: list });
+        }}
+      ></GoodsSelectModal>
+      {/* 拼团规则设置 */}
+      <GroupRule
+        visible={visibleRule}
+        childRef={childRef}
+        onCloseF={() => setVisible(false)}
+        onClose={() => {
+          setVisibleRule(false);
+        }}
+      ></GroupRule>
     </>
   );
 };

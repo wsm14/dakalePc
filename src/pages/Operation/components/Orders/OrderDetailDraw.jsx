@@ -16,6 +16,7 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 import QuestionTooltip from '@/components/QuestionTooltip';
 import OrderRefund from './OrderRefund';
 import OrderJournal from './OrderJournal';
+import NewOrderRefund from '../NewOrders/OrderRefund';
 import styles from './style.less';
 
 const OrderDetailDraw = (props) => {
@@ -32,6 +33,7 @@ const OrderDetailDraw = (props) => {
   const [isShow, setIsShow] = useState(true);
   const [isShow1, setIsShow1] = useState(true);
   const [refund, setRefund] = useState(true);
+  const [NewRefund, setNewRefund] = useState(true);
   const [journal, setJournal] = useState(false);
 
   // 订单状态检查内容显示
@@ -171,6 +173,30 @@ const OrderDetailDraw = (props) => {
     //   name: 'groupName',
     // },
   ];
+  //供应商信息
+  const supplierItem = [
+    {
+      label: '供应商名称 ',
+      name: 'merchantName',
+      span: 2,
+    },
+    {
+      label: '供应商ID',
+      name: 'merchantMobile',
+    },
+    {
+      label: '供应商地址',
+      name: 'merchantProvince',
+      span: 3,
+      render: (val, row) => checkCityName(row.merchantDistrict),
+    },
+    {
+      label: '供应商类型',
+      name: 'address',
+      render: () => '单店',
+      span: 3,
+    },
+  ];
   //团长信息
   const relateOwnerInfo = [
     {
@@ -222,8 +248,7 @@ const OrderDetailDraw = (props) => {
     {
       label: '现金支付渠道',
       name: 'payType',
-      render: (val) => PAY_TYPE[val],
-      // show: orderStatusCheck || (status === '2' && orderCloseStatusCheck),
+      render: (val, row) => PAY_TYPE[val],
     },
     {
       label: '付款编号',
@@ -281,22 +306,37 @@ const OrderDetailDraw = (props) => {
       total,
       onChange: (size) => getDetail(size),
     },
-    footer: detail.status === '1' && tabkey != 'communityGoods' && (
-      <Button
-        type="primary"
-        onClick={() =>
-          setRefund({
-            show: true,
-            detail: {
-              userId: detail.userIdString,
-              orderSn: detail.orderSn,
-            },
-          })
-        }
-      >
-        退款
-      </Button>
-    ),
+    footer:
+      detail.status === '1' ||
+      (['1', '3'].includes(detail.status) && tabkey == 'communityGoods') ? (
+        <Button
+          type="primary"
+          onClick={() => {
+            const { userIdString, orderId, orderSn, payFee, beanFee } = detail;
+            tabkey == 'communityGoods'
+              ? setNewRefund({
+                  show: true,
+                  detail: {
+                    userId: userIdString,
+                    orderId,
+                    orderSn,
+                    orderType: tabkey,
+                    payPrice: (Number(payFee || 0) + Number(beanFee || 0) / 100).toFixed(2),
+                    beanFee,
+                  },
+                })
+              : setRefund({
+                  show: true,
+                  detail: {
+                    userId: detail.userIdString,
+                    orderSn: detail.orderSn,
+                  },
+                });
+          }}
+        >
+          退款
+        </Button>
+      ) : null,
   };
   return (
     <>
@@ -332,6 +372,7 @@ const OrderDetailDraw = (props) => {
             <span className={styles.orderDetail_span}>{ORDERS_STATUS[status]}</span>
           </div>
         </div>
+        {/* 券码 */}
         {(orderStatusCheck || (status === '2' && orderCloseStatusCheck)) &&
           tabkey !== 'communityGoods' && (
             <div style={{ fontWeight: 'bold', fontSize: '16px', lineHeight: '50px' }}>券码</div>
@@ -339,12 +380,13 @@ const OrderDetailDraw = (props) => {
         {orderGoodsVerifications.map((item) => (
           <DescriptionsCondition
             labelStyle={{ width: 100 }}
-            key={item.orderGoodsVerificationId}
+            key={item}
             formItems={couponItem(item)}
             initialValues={item}
             column={3}
           ></DescriptionsCondition>
         ))}
+        {/* 核销明细 */}
         {tabkey === 'communityGoods' && (
           <div style={{ fontWeight: 'bold', fontSize: '16px', lineHeight: '50px' }}>核销明细</div>
         )}
@@ -366,12 +408,21 @@ const OrderDetailDraw = (props) => {
           initialValues={detail}
           column={2}
         ></DescriptionsCondition>
-        {tabkey !== 'communityGoods' && (
+        {tabkey !== 'communityGoods' && tabkey !== 'commerceGoods' && (
           <DescriptionsCondition
             title="商家信息"
             labelStyle={{ width: 120 }}
             formItems={merchartItem}
             column={2}
+            initialValues={detail}
+          ></DescriptionsCondition>
+        )}
+        {tabkey === 'commerceGoods' && (
+          <DescriptionsCondition
+            title="供应商信息"
+            labelStyle={{ width: 120 }}
+            formItems={supplierItem}
+            column={3}
             initialValues={detail}
           ></DescriptionsCondition>
         )}
@@ -413,7 +464,6 @@ const OrderDetailDraw = (props) => {
         >
           {tabkey !== 'communityGoods' && (
             <div>
-              x
               <DescriptionsCondition
                 formItems={orderImgItem}
                 initialValues={detail}
@@ -430,17 +480,33 @@ const OrderDetailDraw = (props) => {
                 优惠合计 <DownOutlined />
               </span>
               {/* <span>{detail.reduceFee ? `￥${detail.reduceFee}` : 0}</span> */}
-              {detail.orderType === 'scan' ? (
+              {/* {detail.orderType === 'scan' ? (
                 <span>{`￥${detail.reduceFee}`}</span>
               ) : (
                 <span>
                   {detail.deductFeeObject ? `￥${detail.deductFeeObject[0].reduceFee}` : `￥0`}
                 </span>
-              )}
+              )} */}
+              <span>
+                {detail.deductFeeObject
+                  ? `-￥${detail.deductFeeObject
+                      .reduce((preValue, curValue) => preValue + Number(curValue.reduceFee), 0)
+                      .toFixed(2)}`
+                  : `￥0`}
+              </span>
             </div>
             {isShow && (
               <div>
-                <div className={styles.detail_last_div}>
+                {detail.deductFeeObject &&
+                  detail.deductFeeObject.map((item) => {
+                    return (
+                      <div key={item} className={styles.detail_last_div}>
+                        <span>{item.deductTypeName}</span>
+                        <span>{`-￥${item.reduceFee}`}</span>
+                      </div>
+                    );
+                  })}
+                {/* <div className={styles.detail_last_div}>
                   <span>抵扣券</span>
                   <span>{detail.reduceFee ? `￥${detail.reduceFee}` : 0}</span>
                 </div>
@@ -449,7 +515,7 @@ const OrderDetailDraw = (props) => {
                   <span>
                     {detail.deductFeeObject ? `￥${detail.deductFeeObject[0].reduceFee}` : `￥0`}
                   </span>
-                </div>
+                </div> */}
               </div>
             )}
             <div className={styles.detail_last_div} style={{ color: '#333' }}>
@@ -525,6 +591,7 @@ const OrderDetailDraw = (props) => {
           </div>
         </div>
       </DrawerCondition>
+      {/* 退款 */}
       <OrderRefund
         visible={refund}
         getDetail={() => {
@@ -533,7 +600,17 @@ const OrderDetailDraw = (props) => {
         }}
         onClose={() => setRefund(false)}
       ></OrderRefund>
+      {/* 查看 */}
       <OrderJournal visible={journal} onClose={() => setJournal(false)} />
+      {/* 新退款 */}
+      <NewOrderRefund
+        visible={NewRefund}
+        getDetail={() => {
+          childRef.current.fetchGetData();
+          getDetail(index);
+        }}
+        onClose={() => setNewRefund(false)}
+      ></NewOrderRefund>
     </>
   );
 };

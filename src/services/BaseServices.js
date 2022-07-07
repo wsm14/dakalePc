@@ -23,13 +23,38 @@ export function fetchPeasShareEdit(data) {
   });
 }
 
-// get 行业设置 - 列表
+// get 行业设置 - 后台类目列表
 export function fetchTradeList(params) {
   return request('/admin/systemIndustry/listCategory', {
     params,
   });
 }
+// get 行业设置 - 后台类目详情
+export function fetchTradeDetail(params) {
+  return request('/admin/systemIndustry/getCategory', {
+    params,
+  });
+}
+// get 行业设置 - 前台类目列表
+export function fetchFrontTradeList(params) {
+  return request('/admin/categoryFront/listCategoryFront', {
+    params,
+  });
+}
 
+// post 行业设置 - 前台类目排序列表
+export function fetchFrontSortList(data) {
+  return request('/admin/categoryFront/sortCategoryFront', {
+    method: 'POST',
+    data,
+  });
+}
+// get 行业设置 - 前台类目详情
+export function fetchFrontTradeDetail(params) {
+  return request('/admin/categoryFront/getCategoryFront', {
+    params,
+  });
+}
 // get 行业设置 - 基础设施列表
 export function fetchTradeBaseList(params) {
   return request('/admin/systemIndustry/getInfrastructure', {
@@ -90,9 +115,16 @@ export function fetchTradePlatformSet(data) {
   });
 }
 
-// post 行业设置 - 新增类目
+// post 行业设置 - 新增后台类目
 export function fetchTradeAdd(data) {
   return request('/admin/systemIndustry/saveCategory', {
+    method: 'POST',
+    data,
+  });
+}
+// post 行业设置 - 新增前台类目
+export function fetchFrontTradeAdd(data) {
+  return request('/admin/categoryFront/saveCategoryFront', {
     method: 'POST',
     data,
   });
@@ -105,10 +137,24 @@ export function fetchTradeSet(data) {
     data,
   });
 }
+// post 行业设置 - 删除 修改类目
+export function fetchFrontTradeSet(data) {
+  return request('/admin/categoryFront/updateCategoryFront', {
+    method: 'POST',
+    data,
+  });
+}
 
-// post 行业设置 - 小程序是否可见
+// post 行业设置 - 后台类目小程序是否可见
 export function fetchTradeWeChat(data) {
   return request('/admin/systemIndustry/setCategoryIsWeChat', {
+    method: 'POST',
+    data,
+  });
+}
+// post 行业设置 - 前台类目小程序是否可见
+export function fetchFrontTradeWeChat(data) {
+  return request('/admin/categoryFront/setCategoryFrontIsWeChat', {
     method: 'POST',
     data,
   });
@@ -133,6 +179,68 @@ export function fetchPassWordEdit(data) {
   return request('/admin/admin/account/updatePassword', {
     method: 'POST',
     data,
+  });
+}
+
+//商品类目设置
+
+// get 商品类目设置 - 后台类目列表
+export function fetchBackCategoryList(params) {
+  return request('/admin/classify/listClassify', {
+    params,
+  });
+}
+
+// post 商品类目设置 - 后台类目新增
+export function fetchBackCategoryAdd(data) {
+  return request('/admin/classify/saveClassify', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 商品类目设置 - 后台类目修改
+export function fetchBackCategoryEdit(data) {
+  return request('/admin/classify/updateClassify', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 商品类目设置 - 后台类目详情
+export function fetchBackCategoryDetail(params) {
+  return request('/admin/classify/getClassify', {
+    params,
+  });
+}
+
+// get 商品类目设置 - 前台类目列表
+export function fetchFrontCategoryList(params) {
+  return request('/admin/classifyFront/listClassifyFront', {
+    params,
+  });
+}
+
+// post 商品类目设置 - 前台类目新增
+export function fetchFrontCategoryAdd(data) {
+  return request('/admin/classifyFront/saveClassifyFront', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 商品类目设置 - 前台类目修改
+export function fetchFrontCategoryEdit(data) {
+  return request('/admin/classifyFront/updateClassifyFront', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 商品类目设置 - 前台类目详情
+export function fetchFrontCategoryDetail(params) {
+  return request('/admin/classifyFront/getClassifyFront', {
+    params,
   });
 }
 
@@ -365,3 +473,77 @@ export function fetchSceneUpdate(data) {
     data,
   });
 }
+
+//商品标签start
+
+//商品标签列表
+export function fetchGoodsTagList(params) {
+  return request('/admin/goodsTag/listConfigGoodsTag', {
+    params,
+  });
+}
+
+//运营后台-新增商品标签
+export function fetchGoodsTagAdd(data) {
+  return request('/admin/goodsTag/saveConfigGoodsTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+//编辑
+export function fetchGoodsTagUpdate(data) {
+  return request('/admin/goodsTag/updateConfigGoodsTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+//运营后台-商品标签排序
+export function fetchGoodsTagSort(data) {
+  return request('/admin/goodsTag/sortConfigGoodsTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 运营后台-启用/禁用商品标签
+export function fetchGoodsTagSwitchStatus(data) {
+  return request('/admin/goodsTag/enableConfigGoodsTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 商品标签 - 关联商品列表
+export function fetchConfigGoodsList(params) {
+  return request('/admin/goodsTag/pageListConfigGoodsTagRelatedGoods', {
+    params,
+  });
+}
+
+// 商品标签 - 关联商品列表 - 新增
+export function fetchConfigGoodsAdd(data) {
+  return request('/admin/goodsTag/batchSaveConfigGoodsTagRelatedGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 商品标签 - 关联商品列表 - 移除
+export function fetchConfigGoodsDel(data) {
+  return request('/admin/goodsTag/batchRemoveConfigGoodsTagRelatedGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 商品标签 - 权重设置 - 展示标签
+export function fetchTagSortSet(data) {
+  return request('/admin/goodsTag/batchUpdateConfigGoodsTagPriorityRelatedGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 商品标签 end

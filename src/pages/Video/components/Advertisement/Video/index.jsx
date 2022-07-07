@@ -180,6 +180,10 @@ const ShareManage = (props) => {
             click: () => fetchVideoAdvertDetail(index, 'info'),
           },
           {
+            type: 'information', // 数据
+            click: () => fetchVideoAdvertDetail(index, 'information'),
+          },
+          {
             type: 'edit', // 编辑
             click: () => fetchVideoAdvertDetail(index, 'edit'),
           },
@@ -265,7 +269,10 @@ const ShareManage = (props) => {
   const fetchVideoAdvertDetail = (index, type) => {
     const { platformMomentId, relateId } = list[index];
     dispatch({
-      type: 'videoAdvert/fetchVideoAdvertDetail',
+      type:
+        type == 'information'
+          ? 'videoAdvert/fetchNewShareStatisticsList'
+          : 'videoAdvert/fetchVideoAdvertDetail',
       payload: {
         relateId,
         platformMomentId,

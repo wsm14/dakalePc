@@ -32,7 +32,6 @@ const HolidayConfig = (props) => {
       dataIndex: 'updater',
     },
     {
-      title: '操作',
       type: 'handle',
       dataIndex: 'configFestivalId',
       render: (val, row) => [

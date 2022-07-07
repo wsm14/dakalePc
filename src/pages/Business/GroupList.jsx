@@ -191,7 +191,6 @@ const tableList = (props) => {
     <>
       <TableDataBlock
         order
-        
         cRef={childRef}
         loading={loading}
         btnExtra={extraBtn}

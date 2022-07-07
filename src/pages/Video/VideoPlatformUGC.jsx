@@ -154,6 +154,10 @@ const VideoPlatformUGC = (props) => {
             click: () => fetchShareDetail(index, 'info', 'ugc'),
           },
           {
+            type: 'information', // 数据
+            click: () => fetchShareDetail(index, 'information', 'ugc'),
+          },
+          {
             type: 'down', // 下架
             pop: false,
             visible: status == 1 || status == 2,
@@ -233,7 +237,10 @@ const VideoPlatformUGC = (props) => {
   const fetchShareDetail = (index, type, momentType) => {
     const { momentId, ownerId } = list[index];
     dispatch({
-      type: 'videoPlatform/fetchNewShareDetail',
+      type:
+        type == 'information'
+          ? 'videoPlatform/fetchNewShareStatisticsList'
+          : 'videoPlatform/fetchNewShareDetail',
       payload: {
         momentId,
         ownerId,

@@ -7,7 +7,7 @@ import TableDataBlock from '@/components/TableDataBlock';
  * 打赏明细
  */
 const RewardSet = ({ list, visible, onClose, loading }) => {
-  const { sumRewardBean, ...ohter } = list;
+  const { sumRewardBean, ...other } = list;
 
   const { show = false, detail = {} } = visible;
 
@@ -74,7 +74,7 @@ const RewardSet = ({ list, visible, onClose, loading }) => {
           params={{ momentId }}
           rowKey={(record) => record.userRewardRecordId}
           dispatchType="videoPlatform/fetchUGCVideoRewardInfo"
-          {...ohter}
+          {...other}
         ></TableDataBlock>
       </Modal>
     </>

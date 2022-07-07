@@ -1,34 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
-import { Radio, Form, Row, Col, Select, Button, Cascader, InputNumber } from 'antd';
+import { Radio, Form, Button, InputNumber } from 'antd';
+import { NUM_ALL, NUM_INT } from '@/common/regExp';
 import {
+  COUPON_GIVE_TYPE,
+  CONPON_RULES_TYPE,
   PLATFORM_TICKET_TYPE,
+  PLATFORM_TICKET_SCENE,
   PLATFORM_USERTIME_TYPE,
   PLATFORM_INCREASE_RULE,
-  CONPON_RULES_TYPE,
-  PLATFORM_TICKET_SCENE,
-  COUPON_GIVE_TYPE,
 } from '@/common/constant';
-import { NUM_ALL, NUM_INT } from '@/common/regExp';
 import PopImgShow from '@/components/PopImgShow';
-import TableDataBlock from '@/components/TableDataBlock';
 import FormCondition from '@/components/FormCondition';
+import TableDataBlock from '@/components/TableDataBlock';
 import RuleModal from './RuleModal';
 import typeRuleImg from './typeRule.png';
 import styles from './index.less';
 
-const { Option } = Select;
-
 const CouponSet = (props) => {
   const { form, type, ticket, setTicket, initialValues } = props;
+
+  const ruleList = Form.useWatch('ruleList', form) || [];
+  const increaseRuleForm = Form.useWatch('increaseRule', form) || []; //  是否可膨胀
 
   const [radioData, setRadioData] = useState({
     effectTime: 'fixed', // 券有效期
     getLimit: 'unlimited', // 领取上限
-    increaseType: 0, //  是否可膨胀
   });
-  const [ruleList, setRuleList] = useState([]); // 暂存所选规则
   const [visible, setVisible] = useState(false); // 选择规则的modal
   const [buyRule, setBuyRule] = useState([
     { name: '不限', value: 'unlimited', disabled: false },
@@ -37,22 +36,21 @@ const CouponSet = (props) => {
   ]);
   const [grantType, setGrantType] = useState(); //发放方式
 
-  const { useScenesType, useTimeRule, ruleType, increaseRule, ruleList: ruleLists } = initialValues;
+  const { useScenesType, useTimeRule, ruleType, increaseRule } = initialValues;
+
+  const checkDxt = ruleList.some((i) => i.wxDxt);
 
   useEffect(() => {
     if (initialValues.platformCouponId) {
       setTicket(useScenesType);
-      setRuleList(ruleLists);
       setRadioData({
         effectTime: useTimeRule, // 券有效期
         getLimit: ruleType, // 领取上限
-        increaseType: increaseRule, //  是否可膨胀
       });
     }
   }, [initialValues]);
 
   useEffect(() => {
-    console.log(grantType, 'grantType');
     if (grantType === 'manual') {
       buyRule[0].disabled = true;
       if (radioData.getLimit === 'unlimited') {
@@ -93,7 +91,6 @@ const CouponSet = (props) => {
   // 删除所选规则
   const handleDelect = (ruleId) => {
     const newList = ruleList.filter((item) => item.ruleId !== ruleId);
-    setRuleList(newList);
     form.setFieldsValue({
       ruleList: newList,
     });
@@ -131,6 +128,7 @@ const CouponSet = (props) => {
                       goodsBuy: '特惠商品/优惠券可用',
                       virtual: '购买虚拟商品可用',
                       commerce: '购买电商品可用',
+                      community: '购买哒小团团购品可用',
                     }[item]
                   }
                 </div>
@@ -240,6 +238,33 @@ const CouponSet = (props) => {
       visible: radioData.effectTime === 'gain',
     },
     {
+      title: '使用规则',
+      type: 'noForm',
+      formItem: (
+        <div style={{ marginBottom: 24 }}>
+          {type === 'add' && (
+            <Button type="link" onClick={() => setVisible({ show: true, useScenesType: ticket })}>
+              选择
+            </Button>
+          )}
+          <TableDataBlock
+            noCard={false}
+            size="small"
+            columns={getColumns}
+            rowKey={(record) => `${record.ruleId}`}
+            list={ruleList}
+            total={ruleList?.length || 0}
+          ></TableDataBlock>
+        </div>
+      ),
+    },
+    {
+      label: '规则List',
+      name: 'ruleList',
+      rules: [{ required: false }],
+      hidden: true,
+    },
+    {
       label: '发放总量',
       name: 'total',
       type: 'number',
@@ -256,7 +281,7 @@ const CouponSet = (props) => {
       onChange: (e) => {
         setGrantType(e.target.value);
       },
-      disabled: type === 'edit',
+      disabled: type === 'edit' || checkDxt,
       extra: {
         manual:
           '支持在资源位中投放，并会在商品详情页自动展示手动发放的券，用户通过手动领取后获得该券',
@@ -296,12 +321,11 @@ const CouponSet = (props) => {
       type: 'radio',
       name: 'increaseRule',
       select: PLATFORM_INCREASE_RULE,
-      onChange: (e) => saveSelectData({ increaseType: e.target.value }),
-      disabled: type === 'edit',
+      disabled: type === 'edit' || checkDxt,
     },
     {
       type: 'formItem',
-      visible: radioData.increaseType == '1',
+      visible: increaseRuleForm == '1',
       className: styles.btn_all_2,
       // disabled: type === 'edit',
       formItem: (
@@ -355,33 +379,6 @@ const CouponSet = (props) => {
       maxLength: 100,
       rules: [{ required: false }],
     },
-    {
-      title: '使用规则',
-      type: 'noForm',
-      formItem: (
-        <>
-          {type === 'add' && (
-            <Button type="link" onClick={() => setVisible({ show: true, useScenesType: ticket })}>
-              选择
-            </Button>
-          )}
-          <TableDataBlock
-            noCard={false}
-            size="small"
-            columns={getColumns}
-            rowKey={(record) => `${record.ruleId}`}
-            list={ruleList}
-            total={ruleList?.length || 0}
-          ></TableDataBlock>
-        </>
-      ),
-    },
-    {
-      label: '规则List',
-      name: 'ruleList',
-      rules: [{ required: false }],
-      hidden: true,
-    },
   ];
 
   const formProps = {
@@ -390,6 +387,7 @@ const CouponSet = (props) => {
     useTimeRule: 'fixed',
     ruleType: 'unlimited',
     increaseRule: '0',
+    giveType: 'manual',
   };
   return (
     <>
@@ -401,7 +399,6 @@ const CouponSet = (props) => {
       <RuleModal
         form={form}
         ruleList={ruleList}
-        setRuleList={setRuleList}
         visible={visible}
         onClose={() => setVisible(false)}
       ></RuleModal>

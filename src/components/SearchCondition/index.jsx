@@ -95,68 +95,67 @@ const SearchCondition = (props) => {
     handleSearch({ ...values, ...formObj });
   };
 
-  const len = formItems.length;
+  const len = formItems.filter(({ show = true }) => show).length;
 
   // 不同屏幕大小显示个数
   let count = 4;
   if (screens.xxl) {
-    count = 4;
+    count = 3;
   } else if (screens.xl) {
     count = 2;
+  } else if (screens.lg) {
+    count = 4;
   }
 
   const getFields = () => {
     const children = [];
-    formItems.forEach((item, i) => {
-      const {
-        type = 'input',
-        name,
-        handle,
-        label,
-        col = true,
-        show = true,
-        required = false,
-        rules: rs = [],
-        ...other
-      } = item;
-      // 根据类型获取不同的表单组件
-      const SearchItem = Searchor[type];
+    formItems
+      .filter(({ show = true }) => show)
+      .forEach((item, i) => {
+        const {
+          type = 'input',
+          name,
+          handle,
+          label,
+          col = true,
+          required = false,
+          rules: rs = [],
+          show,
+          ...other
+        } = item;
+        // 根据类型获取不同的表单组件
+        const SearchItem = Searchor[type];
 
-      // 规则 默认必填
-      const rules = [{ required, message: `请确认${label}` }, ...rs];
+        // 规则 默认必填
+        const rules = [{ required, message: `请确认${label}` }, ...rs];
 
-      const colcount = expand ? len : count;
-      const block = show ? (
-        <FormItem label={label} style={{ paddingBottom: 8 }} name={name} rules={rules}>
-          <SearchItem
-            type={type}
-            label={label}
-            name={name}
-            {...other}
-            {...(handle && handle(form || ownForm))}
-          ></SearchItem>
-        </FormItem>
-      ) : null;
-
-      if (col) {
-        // 排版填充
-        children.push(
-          <Col
-            lg={show === false ? 0 : i < colcount ? (componentSize !== 'default' ? 8 : 12) : 0}
-            xl={show === false ? 0 : i < colcount ? 12 : 0}
-            xxl={show === false ? 0 : i < colcount ? (componentSize !== 'default' ? 8 : 6) : 0}
-            key={i}
-          >
-            {block}
-          </Col>,
+        const colcount = expand ? len : count;
+        const block = (
+          <FormItem label={label} style={{ paddingBottom: 8 }} name={name} rules={rules}>
+            <SearchItem
+              type={type}
+              label={label}
+              name={name}
+              {...other}
+              {...(handle && handle(form || ownForm))}
+            ></SearchItem>
+          </FormItem>
         );
-      } else
-        children.push(
-          <Col span={show === false ? 0 : 12} key={i}>
-            {block}
-          </Col>,
-        );
-    });
+
+        if (col) {
+          // 排版填充
+          children.push(
+            <Col span={i < colcount ? 24 / count : 0} key={i}>
+              {block}
+            </Col>,
+          );
+        } else
+          children.push(
+            <Col span={24 / count} key={i}>
+              {block}
+            </Col>,
+          );
+      });
     children.push(
       expand && (
         <Col flex={1} key="searchkey">
@@ -178,13 +177,13 @@ const SearchCondition = (props) => {
         <ExtraButton
           list={typeof btnExtra == 'function' ? btnExtra({ get: getData }) : btnExtra}
         ></ExtraButton>
+        {len > (componentSize !== 'default' ? 6 : count) ? (
+          <a style={{ fontSize: 12 }} onClick={() => setExpand(!expand)}>
+            {expand ? '收起' : '展开'}
+            {expand ? <UpOutlined /> : <DownOutlined />}
+          </a>
+        ) : null}
       </Space>
-      {len > (componentSize !== 'default' ? 6 : count) ? (
-        <a style={{ marginLeft: 8, fontSize: 12 }} onClick={() => setExpand(!expand)}>
-          {expand ? '收起' : '展开'}
-          {expand ? <UpOutlined /> : <DownOutlined />}
-        </a>
-      ) : null}
     </div>
   );
 

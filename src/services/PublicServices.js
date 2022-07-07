@@ -37,13 +37,6 @@ export function fetchGetEquityCouponSelect(params) {
   });
 }
 
-// get 平台券列表
-export function fetchPlatformCouponSelect(params) {
-  return request('/admin/platform/coupon/pagePlatformCoupon', {
-    params,
-  });
-}
-
 // get 店铺选择有价券列表
 export function fetchGetBuyCouponSelect(params) {
   return request('/admin/coupon/listOwnerCouponNeedBuy', {
@@ -323,6 +316,13 @@ export function fetchGlobalListPartner(params) {
 //资源位内容配置-  分页列表
 export function fetchPageResourceTemplateContent(params) {
   return request('/admin/resourceTemplateContent/pageResourceTemplateContent', {
+    params,
+  });
+}
+
+//查询快递公司列表
+export function fetchListExpressCompany(params) {
+  return request('/common/express/listExpressCompany', {
     params,
   });
 }

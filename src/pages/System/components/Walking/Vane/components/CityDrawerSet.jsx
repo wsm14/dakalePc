@@ -14,11 +14,11 @@ const CityDrawerSet = (props) => {
   //保存
   const handleSave = () => {
     form.validateFields().then((values) => {
-      const { areaCode, defaultTags = [], tags = [], ...ohter } = values;
+      const { areaCode, defaultTags = [], tags = [], ...other } = values;
       dispatch({
         type: 'walkingManage/fetchGetWindVaneManagementAdd',
         payload: {
-          ...ohter,
+          ...other,
           userOs: tabKey,
           version: version,
           areaCode: areaCode && areaCode[1],

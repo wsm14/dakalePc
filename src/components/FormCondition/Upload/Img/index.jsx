@@ -5,7 +5,7 @@ import { useDrag, useDrop } from 'react-dnd';
 import DragAndDropHOC from '@/components/DndDragContext/DragAndDropHOC';
 import update from 'immutability-helper';
 import imageCompress from '@/utils/imageCompress';
-import ImgCutView from '@/components/ImgCut';
+// import ImgCutView from '@/components/ImgCut';
 import './index.less';
 
 // 图片拖动
@@ -135,11 +135,13 @@ const UploadBlock = (props) => {
     maxSize,
     onChange = undefined,
     onRemove,
-    isCut,
+    isCut = false,
     drop = true,
-    imgRatio,
+    // imgRatio,
     disabled,
     multiple = true,
+    listType = 'picture-card',
+    children,
   } = props;
 
   const fileKeyName = Array.isArray(name)
@@ -261,17 +263,17 @@ const UploadBlock = (props) => {
           : // dklFileStatus  === out 的值 不允许上传
             fileList.filter((file) => file.dklFileStatus !== 'out');
         if ((!value.file.status || value.file.status === 'done') && newFileList.length) {
-          const fileExtr = value.file.name.replace(/.+\./, '.').toLowerCase();
+          // const fileExtr = value.file.name.replace(/.+\./, '.').toLowerCase();
           // 是否传入时裁剪 git不允许裁剪
-          if ((imgRatio || isCut) && fileExtr !== '.gif') {
-            imageCompress(value.file.originFileObj || value.file).then(({ blob }) => {
-              blob.uid = value.file.uid;
-              blob.name = value.file.name;
-              handlePreview(blob);
-              return;
-            });
-            return;
-          }
+          // if ((imgRatio || isCut) && fileExtr !== '.gif') {
+          //   imageCompress(value.file.originFileObj || value.file).then(({ blob }) => {
+          //     blob.uid = value.file.uid;
+          //     blob.name = value.file.name;
+          //     handlePreview(blob);
+          //     return;
+          //   });
+          //   return;
+          // }
           setFileLists(newFileList.slice(0, maxFile || 999));
           form && form.setFieldsValue(checkArrKeyVal(name, newFileList, maxFile, 'fileList'));
           if (onChange) onChange(value);
@@ -291,7 +293,7 @@ const UploadBlock = (props) => {
           disabled={disabled}
           // 允许选择时裁剪的时候不允许多选
           multiple={isCut ? false : multiple}
-          listType="picture-card"
+          listType={listType}
           fileList={fileLists}
           beforeUpload={(file) => beforeUpload(file)}
           maxCount={maxFile}
@@ -309,20 +311,25 @@ const UploadBlock = (props) => {
             );
           }}
         >
-          {fileLists && fileLists.length < (maxFile || 999) && uploadButton}
+          {fileLists && fileLists.length < (maxFile || 999) && (children || uploadButton)}
         </Upload>
       </DragAndDropHOC>
       <Modal
         destroyOnClose
-        title={previewTitle.fileType === '.gif' || isCut === false ? '查看图片' : '编辑图片'}
+        title={'查看图片'}
+        // title={previewTitle.fileType === '.gif' || isCut === false ? '查看图片' : '编辑图片'}
         width={950}
         visible={previewVisible}
-        maskClosable={previewTitle.fileType === '.gif' || isCut === false}
+        maskClosable
+        // maskClosable={previewTitle.fileType === '.gif' || isCut === false}
         onCancel={() => setPreviewVisible(false)}
         footer={null}
         zIndex={100000}
       >
-        {previewTitle.fileType === '.gif' || isCut === false ? (
+        <div style={{ textAlign: 'center' }}>
+          <img src={previewImage} alt="" srcset="" style={{ width: '100%' }} />
+        </div>
+        {/* {previewTitle.fileType === '.gif' || isCut === false ? (
           <div style={{ textAlign: 'center' }}>
             <img src={previewImage} alt="" srcset="" style={{ width: '100%' }} />
           </div>
@@ -333,7 +340,7 @@ const UploadBlock = (props) => {
             imgRatio={imgRatio}
             onClose={() => setPreviewVisible(false)}
           />
-        )}
+        )} */}
       </Modal>
     </>
   );

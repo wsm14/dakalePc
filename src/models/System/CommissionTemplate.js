@@ -44,6 +44,7 @@ export default {
         manualDivisionObjects = [],
         divisionTemplateType,
         categoryId,
+        classifyId,
       } = content.divisionTemplate;
       //差价分佣
       let diffObj = {};
@@ -55,6 +56,8 @@ export default {
       callback({
         ...content.divisionTemplate,
         categoryIds: [categoryId],
+        classifyIds: [classifyId],
+        classifyId,
         differenceDivisionObjects: diffObj,
         manualDivisionObjects: manArr,
       });

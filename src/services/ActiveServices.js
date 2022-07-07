@@ -7,13 +7,6 @@ export async function fetchGetOss(params) {
   });
 }
 
-// get 获取特惠商品选择列表
-export async function fetchSpecialGoodsSelect(params) {
-  return request('/admin/specialGoodsManagement/listSpecialGoodsForActivityTemp', {
-    params,
-  });
-}
-
 // get 获取电商商品选择列表
 export function fetchCommerceGoodsSelect(params) {
   return request('/admin/specialGoodsManagement/listSpecialGoodsManagement', {
@@ -24,13 +17,6 @@ export function fetchCommerceGoodsSelect(params) {
 // get 获取优惠券选择列表
 export async function fetchCouponSelect(params) {
   return request('/admin/coupon/listCouponForActivityTemp', {
-    params,
-  });
-}
-
-// get 获取平台券选择列表
-export function fetchPlatformCouponSelect(params) {
-  return request('/admin/platform/coupon/pagePlatformCoupon', {
     params,
   });
 }

@@ -10,7 +10,6 @@ import {
   fetchRuleDetailPage,
   fetchRuleDetail,
 } from '@/services/OperationServices';
-import moment from 'moment';
 
 export default {
   namespace: 'couponRulesManage',

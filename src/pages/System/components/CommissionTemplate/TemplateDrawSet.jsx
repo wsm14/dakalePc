@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import { SERVICE_TYPE, DIVISION_TEMPLATE_TYPE, COMMISSION_TYPE } from '@/common/constant';
+import { SERVICE_TYPE, DIVISION_TEMPLATE_TYPE, COMMISSION_TYPE_COPY } from '@/common/constant';
 import { NUM_ALL } from '@/common/regExp';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const TemplateDrawSet = (props) => {
-  const { visible, onClose, tabKey, tradeList, dispatch, cRef } = props;
+  const { visible, onClose, tabKey, tradeList, CategoryList, dispatch, cRef } = props;
+  console.log(CategoryList);
   const { show = false, type = 'add', detail = {} } = visible;
   detail.serviceType = tabKey;
-
+  console.log(detail, 'detail');
   const [commissType, setCommissType] = useState(false);
   const { divisionTemplateId } = detail;
 
@@ -70,6 +71,16 @@ const TemplateDrawSet = (props) => {
 
   const formItems = [
     {
+      label: '关联类目',
+      name: 'classifyIds',
+      type: 'select',
+      mode: 'multiple',
+      select: CategoryList,
+      disabled: type === 'edit',
+      fieldNames: { label: 'classifyName', value: 'classifyId' },
+      visible: tabKey === 'commerceGoods',
+    },
+    {
       label: '关联行业',
       name: 'categoryIds',
       type: 'select',
@@ -77,6 +88,7 @@ const TemplateDrawSet = (props) => {
       select: tradeList,
       disabled: type === 'edit',
       fieldNames: { label: 'categoryName', value: 'categoryIdString' },
+      visible: tabKey !== 'commerceGoods',
     },
     {
       label: '类别',
@@ -131,7 +143,7 @@ const TemplateDrawSet = (props) => {
       label: '店铺家主分佣比例', // 手动分佣需要展示
       name: ['differenceDivisionObjects', 'merchantParent'],
       addonAfter: '%',
-      visible: commissType === 'difference',
+      visible: commissType === 'difference' && tabKey !== 'commerceGoods',
       addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
       onChange: (e) => handleChange(),
     },
@@ -154,7 +166,7 @@ const TemplateDrawSet = (props) => {
     {
       type: 'checkbox',
       name: 'manualDivisionObjects',
-      select: COMMISSION_TYPE,
+      select: COMMISSION_TYPE_COPY[tabKey],
       visible: commissType === 'manual',
       wrapperCol: { offset: 6 },
     },

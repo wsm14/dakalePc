@@ -53,7 +53,10 @@ export default {
         promotionList: [
           ...freeOwnerCouponList.map((item) => ({ ...item, type: 'free' })),
           ...ownerCouponList.map((item) => ({ ...item, type: 'valuable' })),
-          ...activityGoodsList.map((item) => ({ ...item, type: 'special' })),
+          ...activityGoodsList.map((item) => ({
+            ...item,
+            type: item.goodsType ? 'special' : 'commerce',
+          })),
         ],
         videoContent: JSON.parse(videoContent || '{}'),
         area:

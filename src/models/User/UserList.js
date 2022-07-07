@@ -2,9 +2,10 @@ import { notification } from 'antd';
 import {
   fetchUserList,
   fetchUserDetail,
-  fetchUserStatus,
   fetchUserTotal,
   fetchUserChartTotal,
+  fetchSubPortBlockUser,
+  fetchSubPortUnsealUser,
 } from '@/services/UserServices';
 
 export default {
@@ -75,14 +76,25 @@ export default {
         },
       });
     },
-    *fetchUserStatus({ payload, callback }, { call, put }) {
-      const response = yield call(fetchUserStatus, payload);
+    // post 用户列表 - 用户分端口禁用
+    *fetchSubPortBlockUser({ payload, callback }, { call, put }) {
+      const response = yield call(fetchSubPortBlockUser, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '用户状态修改成功',
+        description: '用户封停成功',
       });
-      callback();
+      callback && callback();
+    },
+    // post 用户列表 - 用户分端口解封
+    *fetchSubPortUnsealUser({ payload, callback }, { call, put }) {
+      const response = yield call(fetchSubPortUnsealUser, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '用户解封成功',
+      });
+      callback && callback();
     },
   },
 };

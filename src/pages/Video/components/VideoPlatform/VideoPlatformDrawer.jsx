@@ -72,20 +72,9 @@ const VideoPlatformDrawer = (props) => {
                     near: area,
                   }[areaType],
                   momentRelateList: newCoupon.map((item) => ({
-                    relateId:
-                      item[
-                        {
-                          goods: 'specialGoodsId', // 特惠
-                          free: 'ownerCouponIdString', // 免费
-                          coupon: 'ownerCouponIdString', // 有价
-                        }[item.promotionType]
-                      ],
-                    relateType: {
-                      goods: 'specialGoods',
-                      coupon: 'reduceCoupon',
-                      free: 'freeReduceCoupon',
-                    }[item.promotionType],
-                    relateShardingKey: ownerId,
+                    relateId: item.goodsId,
+                    relateType: item.activityType,
+                    relateShardingKey: item.ownerId || ownerId,
                   })),
                   age: age === 'age' ? ageData.toString() : age,
                   publishTime: publishTime && publishTime.format('YYYY-MM-DD HH:mm:00'),

@@ -16,14 +16,20 @@ export function fetchGiveGoods(data) {
 
 // get 周边特惠 - 列表
 export function fetchSpecialGoodsList(params) {
-  return request('/admin/specialGoodsManagement/listSpecialGoodsManagement', {
+  return request('/admin/offline/goods/admin/listOfflineGoodsByPage', {
     params,
   });
 }
 
 // get 周边特惠 - 详情
 export function fetchSpecialGoodsDetail(params) {
-  return request('/admin/specialGoodsManagement/getSpecialGoods', {
+  return request('/admin/offline/goods/admin/getGoodsForUpdate', {
+    params,
+  });
+}
+// get 周边特惠 - 分享图详情
+export function fetchSpecialGoodsShareDetail(params) {
+  return request('/admin/offline/goods/admin/getOfflineShareInfo', {
     params,
   });
 }
@@ -44,7 +50,15 @@ export function fetchSpecialGoodsQrCode(params) {
 
 // post 周边特惠 - 下架
 export function fetchSpecialGoodsStatus(data) {
-  return request('/admin/specialGoodsManagement/offShelfSpecialGoods', {
+  return request('/admin/offline/goods/admin/offShelfOffline', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 周边特惠 - 删除
+export function fetchSpecialGoodsDelete(data) {
+  return request('/admin/offline/goods/admin/deleteOffline', {
     method: 'POST',
     data,
   });
@@ -52,7 +66,7 @@ export function fetchSpecialGoodsStatus(data) {
 
 // post 周边特惠 - 分享图修改
 export function fetchSpecialGoodsShareEdit(data) {
-  return request('/admin/specialGoodsManagement/updateActivityGoodsNotAudit', {
+  return request('/admin/offline/goods/admin/updateOfflineShareInfo', {
     method: 'POST',
     data,
   });
@@ -60,7 +74,7 @@ export function fetchSpecialGoodsShareEdit(data) {
 
 // post 周边特惠 - 编辑
 export function fetchSpecialGoodsEdit(data) {
-  return request('/admin/specialGoodsManagement/updateSpecialGoods', {
+  return request('/admin/offline/goods/admin/updateOfflineGoods', {
     method: 'POST',
     data,
   });
@@ -68,7 +82,7 @@ export function fetchSpecialGoodsEdit(data) {
 
 // post 周边特惠 - 新增
 export function fetchSpecialGoodsSave(data) {
-  return request('/admin/specialGoodsManagement/saveSpecialGoods', {
+  return request('/admin/offline/goods/admin/saveOfflineGoods', {
     method: 'POST',
     data,
   });
@@ -106,7 +120,7 @@ export function fetchSpecialToTop(data) {
 
 // 特惠增加库存
 export function fetchSpecialGoodsAddRemain(data) {
-  return request('/admin/specialGoodsManagement/addGoodsRemain', {
+  return request('/admin/stock/admin/addStock', {
     method: 'POST',
     data,
   });
@@ -423,54 +437,6 @@ export function fetchUGCVideoRewardInfo(params) {
 
 // 平台视频 end
 
-// 种草管理
-
-// get 种草管理 - 列表
-export function fetchExpertRemdList(params) {
-  return request('/admin/kolMoments/listKolMomentsManagement', {
-    params,
-  });
-}
-
-// get 种草管理 - 统计举报数量
-export function fetchExpertCountReport(params) {
-  return request('/admin/userReport/countPendingUserReport', {
-    params,
-  });
-}
-
-// get 种草管理 - 详情
-export function fetchExpertRemdDetail(params) {
-  return request('/admin/kolMoments/kolMomentsDetail', {
-    params,
-  });
-}
-
-// post 种草管理 - 上下架
-export function fetchExpertRemdStatus(data) {
-  return request('/admin/kolMoments/kolMomentsDropOff', {
-    method: 'POST',
-    data,
-  });
-}
-
-// get 种草管理 - 举报列表
-export function fetchExpertReportList(params) {
-  return request('/admin/userReport/listUserReport', {
-    params,
-  });
-}
-
-// post 种草管理 - 举报列表 - 处理举报
-export function fetchExpertProcessReport(data) {
-  return request('/admin/userReport/processUserReport', {
-    method: 'POST',
-    data,
-  });
-}
-
-// 种草管理 end
-
 // 订单列表
 
 // get 订单列表 - 列表
@@ -525,7 +491,94 @@ export function fetchOrdersListActionLog(params) {
   });
 }
 
+// get 订单列表 - 列表(新)
+export function fetchPageListOrdersList(params) {
+  return request('/admin/order/order/pageListOrder', {
+    params,
+  });
+}
+
+// get 订单列表 - 详情（新）
+export function fetchGetOrderDetail(params) {
+  return request('/admin/order/order/getOrderForAdmin', {
+    params,
+  });
+}
+
+// post 电商订单-发货(新)
+export function fetchDeliverGoods(data) {
+  return request('/admin/order/order/deliverGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 订单列表 - 手动退款（新）
+export function fetchOrderImmediateRefund(data) {
+  return request('/admin/order/order/orderImmediateRefund', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 订单列表 - 分账(新)
+export function fetchSubLedger(data) {
+  return request('/admin/order/order/subLedger', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 订单列表(新) - 导出（暂时）
+export function fetchExportUndeliveredCommerceGoodsOrderList(params) {
+  return request('/admin/order/order/exportUndeliveredCommerceGoodsOrderList', {
+    params,
+  });
+}
+
 // 订单列表 end
+
+//退款列表
+
+//退款列表 -list
+export function fetchRefundPageOrderList(params) {
+  return request('/admin/order/refund/apply/pageListOrderRefundApply', {
+    params,
+  });
+}
+
+// post 退款列表 - 同意
+export function fetchRefundApply(data) {
+  return request('/admin/order/refund/apply/batchConsent', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 退款列表 - 拒绝
+export function fetchRefundRefuse(data) {
+  return request('/admin/order/refund/apply/refuse', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 退款列表 - 备注
+export function fetchRefundRemark(data) {
+  return request('/admin/order/refund/apply/remarkOrderRefundApply', {
+    method: 'POST',
+    data,
+  });
+}
+
+//退款列表/退款管理  -- 详情
+export function fetchRefundRrderDetail(params) {
+  return request('/admin/order/order/getOrderForAdmin', {
+    params,
+  });
+}
+
+//退款列表 --end
 
 // 核销列表
 export function fetchVerificationList(params) {
@@ -538,7 +591,29 @@ export function fetchVerificationList(params) {
 
 // get 退款管理 - 列表
 export function fetchRefundOrderList(params) {
-  return request('/admin/orderManagement/listRefundOrder', {
+  return request('/admin/order/refund/pageListOrderRefund', {
+    params,
+  });
+}
+// post 退款管理 - 立即退款
+export function fetchRefundPayBack(data) {
+  return request('/admin/order/refund/immediateRefund', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 退款管理 - 备注
+export function fetchRefundOrderRemark(data) {
+  return request('/admin/order/refund/remarkOrderRefund', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 退款管理 - 查询快递物流信息
+export function fetchGetExpressInfo(params) {
+  return request('/common/express/getExpressInfo', {
     params,
   });
 }
@@ -678,49 +753,6 @@ export function fetchTagEdit(data) {
 }
 
 //店铺标签end
-
-//商品标签start
-
-//商品标签列表
-export function fetchGoodsTagList(params) {
-  return request('/admin/goodsTag/listConfigGoodsTag', {
-    params,
-  });
-}
-
-//运营后台-新增商品标签
-export function fetchGoodsTagAdd(data) {
-  return request('/admin/goodsTag/saveConfigGoodsTag', {
-    method: 'POST',
-    data,
-  });
-}
-
-//编辑
-export function fetchGoodsTagUpdate(data) {
-  return request('/admin/goodsTag/updateConfigGoodsTag', {
-    method: 'POST',
-    data,
-  });
-}
-
-//运营后台-商品标签排序
-export function fetchGoodsTagSort(data) {
-  return request('/admin/goodsTag/sortConfigGoodsTag', {
-    method: 'POST',
-    data,
-  });
-}
-
-// 运营后台-启用/禁用商品标签
-export function fetchGoodsTagSwitchStatus(data) {
-  return request('/admin/goodsTag/enableConfigGoodsTag', {
-    method: 'POST',
-    data,
-  });
-}
-
-// 分类列表 end
 
 // 优惠券管理
 
@@ -1088,3 +1120,75 @@ export function fetchRuleDetailPage(params) {
 }
 
 // 券规则管理 end
+
+// 电商品
+
+// get 电商品 - 列表
+export function fetchListOnlineGoodsByPage(params) {
+  return request('/admin/online/goods/admin/listOnlineGoodsByPage', {
+    params,
+  });
+}
+
+// post 电商品 - 新增
+export function fetchSaveOnlineGoods(data) {
+  return request('/admin/online/goods/admin/saveOnlineGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 电商品 - 详情
+export function fetchGetGoodsForUpdate(params) {
+  return request('/admin/online/goods/admin/getGoodsForUpdate', {
+    params,
+  });
+}
+
+// post 电商品 - 修改
+export function fetchUpdateOnlineGoods(data) {
+  return request('/admin/online/goods/admin/updateOnlineGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 电商品 - 下架
+export function fetchOffShelfOffline(data) {
+  return request('/admin/online/goods/admin/offShelfOffline', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 电商品 - 修改库存
+export function fetchAddStock(data) {
+  return request('/admin/stock/admin/addStock', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 电商品 - sku列表
+export function fetchListSkuStockByServiceId(params) {
+  return request('/admin/sku/admin/listSkuStockByServiceId', {
+    params,
+  });
+}
+
+// get 电商品 - 获取分享配置详情
+export function fetchGetOnlineShareInfo(params) {
+  return request('/admin/online/goods/admin/getOnlineShareInfo', {
+    params,
+  });
+}
+
+// post 电商品 - 分享配置修改
+export function fetchUpdateOnlineShareInfo(data) {
+  return request('/admin/online/goods/admin/updateOnlineShareInfo', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 电商品 end

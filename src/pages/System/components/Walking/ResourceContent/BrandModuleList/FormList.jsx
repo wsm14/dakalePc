@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import update from 'immutability-helper';
-import { Space, Form, InputNumber, Input, Radio, Card, Button } from 'antd';
+import { Space, Form, Card, Button } from 'antd';
 import { UpSquareOutlined, DownSquareOutlined, DeleteOutlined } from '@ant-design/icons';
 import aliOssUpload from '@/utils/aliOssUpload';
-import { MinusCircleOutlined } from '@ant-design/icons';
 import Upload from '@/components/FormCondition/Upload/Img';
-import Video from '@/components/FormCondition/Upload/Video';
-import FormCondition from '@/components/FormCondition';
+import GoodsSelectModal from '@/components/GoodsSelectModal';
+import { goodsDom, commerceDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
 import styles from './index.less';
-
-import GoodsSelectModal from './GoodsSelectModal';
-import { goodsDom, commerceDom } from '../ShareCoupon/CouponFreeDom';
 
 const FormList = (props) => {
   const { name, form, field, remove, move, initialValues } = props;
@@ -89,26 +85,6 @@ const FormList = (props) => {
               <>
                 <Form.ErrorList errors={errors} />
                 {fields2.map((field2) => {
-                  // const [nameIndex, setNameIndex] = useState(Number);
-                  // useEffect(() => {
-                  //   setNameIndex(field2.name + 1);
-                  // }, [field2]);
-
-                  // const inputDom = () => {
-                  //   return (
-                  //     <InputNumber
-                  //       size="small"
-                  //       value={nameIndex}
-                  //       onChange={(val) => setNameIndex(val)}
-                  //       onPressEnter={() => move(field2.name, nameIndex - 1)}
-                  //       precision={0}
-                  //       min={1}
-                  //       max={fields2.length}
-                  //       style={{ width: 60 }}
-                  //     ></InputNumber>
-                  //   );
-                  // };
-
                   return (
                     <div key={field2.key}>
                       <Space key={field2.key} className={styles.ifame_carouseal} align="baseline">
@@ -126,11 +102,12 @@ const FormList = (props) => {
                         </div>
 
                         {(() => {
-                          const item =
-                            form.getFieldValue(name)[field.name]['activityGoodsList'][field2.name];
+                          const item = form.getFieldValue(name)[field.name]['activityGoodsList'][
+                            field2.name
+                          ];
                           return {
-                            specialGoods: goodsDom({ ...item }, item?.activityGoodsId), // 特惠，自我游
-                            commerceGoods: commerceDom({ ...item }, item?.activityGoodsId), // 电商品
+                            specialGoods: goodsDom({ ...item }, item?.goodsId), // 特惠，自我游
+                            commerceGoods: commerceDom({ ...item }, item?.goodsId), // 电商品
                           }[item.activityType];
                         })()}
                         <DeleteOutlined onClick={() => remove(field2.name)} />
@@ -143,12 +120,19 @@ const FormList = (props) => {
           }}
         </Form.List>
       </Card>
+      {/*       const RGObj = form.getFieldValue('brandModuleList') || {};
+              indexNum={field.name}
+      const list = RGObj[indexNum]?.activityGoodsList || []; */}
+      {console.log(form.getFieldValue(name))}
       <GoodsSelectModal
-        typeGoods="subRewardList"
-        form={form}
+        showTag={['specialGoods', 'commerceGoods']}
+        goodsValues={
+          form.getFieldValue(name)
+            ? form.getFieldValue(name)[field.name]?.activityGoodsList || []
+            : []
+        }
         visible={visible}
-        indexNum={field.name}
-        onSumbit={(list) => {
+        onSumbit={({ list }) => {
           // 获取数据数组
           const dataList = form.getFieldValue(name);
           // 更新数据数组

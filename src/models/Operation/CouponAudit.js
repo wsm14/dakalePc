@@ -1,4 +1,3 @@
-import { notification } from 'antd';
 import { fetchCouponAuditList, fetchCouponAuditDetail } from '@/services/OperationServices';
 
 export default {
@@ -40,7 +39,6 @@ export default {
 
       const { couponDesc = '', serviceDivisionDTO = {}, reduceObject = {} } = ownerCouponInfo;
       const { divisionTemplateType, ...templateOther } = serviceDivisionDTO;
-
       callback({
         ...ownerCouponInfo,
         ...auditDetail,

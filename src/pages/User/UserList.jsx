@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Card } from 'antd';
 import { checkCityName } from '@/utils/utils';
-import { ACCOUNT_STATUS, REAL_NAME_STATUS, USER_SOURCE } from '@/common/constant';
+import { ACCOUNT_STATUS, REAL_NAME_STATUS, USER_SOURCE, USER_PORT_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import SearchCard from './components/UserList/Search/SearchCard';
 import UserDetailShow from './components/UserList/UserDetailShow';
@@ -64,11 +64,6 @@ const UserListComponent = (props) => {
       dataIndex: 'userIdString',
     },
     {
-      title: '豆号',
-      fixed: 'left',
-      dataIndex: 'beanCode',
-    },
-    {
       title: '注册手机号',
       dataIndex: 'mobile',
       render: (val) => val || '小程序用户',
@@ -96,12 +91,6 @@ const UserListComponent = (props) => {
       render: (val) => checkCityName(val) || '--',
     },
     {
-      title: '常驻地',
-      align: 'center',
-      dataIndex: 'residentAddress',
-      render: (val) => val || '-',
-    },
-    {
       title: '注册时间',
       align: 'center',
       dataIndex: 'createTime',
@@ -109,19 +98,9 @@ const UserListComponent = (props) => {
     {
       title: '账户状态',
       align: 'center',
-      dataIndex: 'status',
-      render: (val, row) => (
-        <>
-          <div>{ACCOUNT_STATUS[val]}</div>
-          {val == '2' ? <div>{`注销时间：${row.cancellationTime || ''}`}</div> : null}
-        </>
-      ),
-    },
-    {
-      title: '用户来源',
-      align: 'center',
-      dataIndex: 'userSource',
-      render: (val) => USER_SOURCE[val],
+      dataIndex: 'ports',
+      render: (val) =>
+        val.length == 0 ? '正常' : `${val.map((item) => USER_PORT_TYPE[item]).join()}已封停`,
     },
     {
       type: 'handle',
@@ -154,7 +133,7 @@ const UserListComponent = (props) => {
     dispatch({
       type: 'userList/fetchUserDetail',
       payload: { userId },
-      callback: (detail) => setVisible({ shwo: true, index, detail }),
+      callback: (detail) => setVisible({ show: true, index, detail }),
     });
   };
 
@@ -168,7 +147,6 @@ const UserListComponent = (props) => {
       {/* 用户chart统计 */}
       {/* <UserTotalSpread></UserTotalSpread> */}
       <TableDataBlock
-        
         cRef={childRef}
         loading={loading}
         columns={getColumns}

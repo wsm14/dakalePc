@@ -1,9 +1,12 @@
 import React from 'react';
-import { Descriptions } from 'antd';
+import { Descriptions, Typography } from 'antd';
+import QuestionTooltip from '@/components/QuestionTooltip';
 import ImagePreviewGroup from './ImagePreviewGroup';
 import VideoPreview from './VideoPreview';
 import OtherUpload from './OtherUpload';
 import styles from './index.less';
+
+const { Paragraph } = Typography;
 
 /**
  *
@@ -74,6 +77,7 @@ const DescriptionsCondition = (props) => {
       type = 'text', // 显示类型 text upload 默认text
       fieldNames, // 参数别名 最高权重
       render, // 生成复杂数据的渲染函数，参数分别为当前行的值，当前行数据
+      copy = false, // 是否允许复制 text number textArea 可复制
       initialValue: rowValue, // 显示参数
       children: rowChildren, // 额外内容在底部
     } = rowItem;
@@ -85,13 +89,22 @@ const DescriptionsCondition = (props) => {
     const detailVal = getRowVale(rowValue, valueKey);
 
     // 返回处理结果 存在render 情况下优先返回，否则走类型判断
-    const resultsDom = render
-      ? render(detailVal, initialValues)
-      : detailVal === ''
-      ? ''
-      : checkData(type, detailVal);
-
-    return resultsDom;
+    if (render) {
+      return render(detailVal, initialValues);
+    } else if (detailVal === '') {
+      return '';
+    } else {
+      if (['text', 'number', 'textArea'].includes(type) && copy) {
+        return (
+          detailVal && (
+            <Paragraph copyable style={{ marginBottom: 0 }}>
+              {detailVal}
+            </Paragraph>
+          )
+        );
+      }
+      return checkData(type, detailVal);
+    }
   };
 
   // 遍历表单
@@ -100,6 +113,7 @@ const DescriptionsCondition = (props) => {
       const {
         show = true, // 是否显示 最高权重 默认显示
         label, // 内容的描述
+        tips = '', // 额外提示
         span = 1, // 包含列的数量 默认1
         children: rowChildren, // 额外内容在底部
       } = item;
@@ -110,8 +124,8 @@ const DescriptionsCondition = (props) => {
       return (
         <Descriptions.Item
           span={span}
-          label={label}
-          key={`${label}${i}`}
+          label={tips ? <QuestionTooltip title={label} content={tips} /> : label}
+          key={`${props.title || ''}${label}${i}`}
           className={styles.descriptions_item}
         >
           {/* 显示数据内容 默认值不存在 则显示为'--'*/}

@@ -17,7 +17,7 @@ const ModuleDrawer = (props) => {
   // 显示对应的模块编辑内容
   const handleShowEditor = (cell) => {
     const { dataList } = moduleData;
-    const { editForm, defaultImg, icon, defaultData = {}, ...ohter } = cell;
+    const { editForm, defaultImg, icon, defaultData = {}, ...other } = cell;
     const dataIndex = dataList.findIndex((i) => i.moduleName === cell.moduleName);
     const data = dataList.filter((i) => i.moduleName === cell.moduleName)[0] || {};
 
@@ -28,7 +28,7 @@ const ModuleDrawer = (props) => {
       type: 'showEditor',
       payload: {
         ...defaultData,
-        ...ohter,
+        ...other,
         timestame: cell?.timestame || new Date().getTime(), // 需要编辑的组件id
         index: dataIndex != -1 ? dataIndex : dataList.length,
         ...data, // 数据回显

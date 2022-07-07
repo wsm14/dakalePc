@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'umi';
-import { TAB_INDEX_TYPE } from '@/common/constant';
 import { getCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
-import CityDrawerSet from './components/CityDrawerSet';
 import SelfDrawer from './components/SelfDrawer';
+import CityDrawerSet from './components/CityDrawerSet';
+
 const TabTable = (props) => {
   const { dispatch, loading, cityList, tabKey, version, fetchTable } = props;
   const [visible, setVisible] = useState(false);

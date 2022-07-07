@@ -5,8 +5,6 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 const GoodsDetail = (props) => {
   const { detail = {}, giftTypeList = [] } = props;
 
-  console.log('detail', detail);
-
   const mreFormItems = [
     {
       label: '礼包类型',
@@ -65,12 +63,7 @@ const GoodsDetail = (props) => {
   ];
 
   return (
-    <>
-      <DescriptionsCondition
-        formItems={mreFormItems}
-        initialValues={detail}
-      ></DescriptionsCondition>
-    </>
+    <DescriptionsCondition formItems={mreFormItems} initialValues={detail}></DescriptionsCondition>
   );
 };
 

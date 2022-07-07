@@ -2,10 +2,10 @@ import React, { useRef, useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { ACTIVITY_STATUS } from '@/common/constant';
+import { checkCityName } from '@/utils/utils';
 import CITYJSON from '@/common/cityJson';
 import TableDataBlock from '@/components/TableDataBlock';
 import AddNewActivitySet from './components/AddNewActivity/AddNewActivitySet';
-import { checkCityName, getCityName } from '@/utils/utils';
 
 // 拉新活动
 const AddNewActivity = (props) => {
@@ -163,7 +163,6 @@ const AddNewActivity = (props) => {
   return (
     <>
       <TableDataBlock
-        
         pagination={false}
         cRef={childRef}
         loading={loading}

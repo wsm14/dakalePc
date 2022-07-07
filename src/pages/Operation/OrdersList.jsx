@@ -12,8 +12,12 @@ import WinnerOrders from './components/Orders/WinnerOrders';
 const tabList = [
   {
     key: 'goods',
-    tab: '商品订单',
+    tab: '有价券订单',
   },
+  // {
+  //   key: 'commerceGoods',
+  //   tab: '电商订单',
+  // },
   {
     key: 'scan',
     tab: '扫码支付订单',
@@ -29,10 +33,6 @@ const tabList = [
   {
     key: 'virtualProduct',
     tab: '虚拟商品',
-  },
-  {
-    key: 'commerceGoods',
-    tab: '电商订单',
   },
   {
     key: 'communityGoods',
@@ -51,11 +51,11 @@ const OrdersList = () => {
 
   const contentList = {
     goods: <GoodsOrders {...listProps}></GoodsOrders>,
+    // commerceGoods: <CommerceGoods {...listProps}></CommerceGoods>,
     scan: <CodeOrders {...listProps}></CodeOrders>,
     rightGoods: <OtherOrders {...listProps}></OtherOrders>,
     rightCoupon: <OtherOrders {...listProps}></OtherOrders>,
     virtualProduct: <VirtualOrders {...listProps}></VirtualOrders>,
-    commerceGoods: <CommerceGoods {...listProps}></CommerceGoods>,
     communityGoods: <CommunityGoods {...listProps}></CommunityGoods>,
     winnerOrders: <WinnerOrders></WinnerOrders>,
   };

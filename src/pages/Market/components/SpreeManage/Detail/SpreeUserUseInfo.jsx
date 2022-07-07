@@ -10,8 +10,6 @@ const SpreeUserUseInfo = (props) => {
   const { show = false, detail = {} } = visible;
   const { platformGiftId, userId } = detail;
 
-  console.log('getUseInfoList', getUseInfoList);
-
   // table 表头
   const getColumns = [
     {

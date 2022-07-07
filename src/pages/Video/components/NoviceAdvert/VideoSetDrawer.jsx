@@ -25,7 +25,7 @@ const ShareDrawer = (props) => {
   const handleVideoPush = () => {
     form.validateFields().then((values) => {
       const { frontImage, videoId, videoUrl, categoryNode, title } = dataStorage;
-      const { areaType, area, rewardStartTime: time, friendShareImg, ...ohter } = values;
+      const { areaType, area, rewardStartTime: time, friendShareImg, ...other } = values;
       const {
         free: { ownerCouponIdString: couponIds },
         contact = {},
@@ -46,7 +46,7 @@ const ShareDrawer = (props) => {
                     contentType: 'video',
                     beanFlag: '1', // 是否打赏 0 1
                     ...dataStorage,
-                    ...ohter,
+                    ...other,
                     areaType,
                     friendShareImg: res.toString(),
                     videoUrl: undefined,

@@ -196,6 +196,12 @@ export default [
             component: './Market/OpenGroupList',
             buttons: ['info', 'immediateGroup'],
           },
+          {
+            path: '/market/marketActivity',
+            name: '营销活动',
+            component: './Market/MarketActivity',
+            buttons: ['save', 'info', 'edit', 'down', 'enrollGoods', 'copyLink'],
+          },
         ],
       },
       {
@@ -218,6 +224,7 @@ export default [
               'commerceSet',
               'portraitEdit',
               'peasDetail',
+              'information',
             ],
           },
           {
@@ -236,6 +243,7 @@ export default [
               'shareImg',
               'commerceSet',
               'portraitEdit',
+              'information',
             ],
           },
           {
@@ -261,6 +269,7 @@ export default [
               'down',
               'rewardPeo',
               'peasDetail',
+              'information',
             ],
           },
           {
@@ -538,7 +547,15 @@ export default [
             path: '/base/tradeset',
             name: '行业管理',
             component: './Base/TradeList',
-            buttons: ['baseTrade', 'tradeAdd', 'del', 'edit', 'tradeSecondAdd', 'isWechat'],
+            buttons: [
+              'baseTrade',
+              'tradeAdd',
+              'del',
+              'edit',
+              'tradeSecondAdd',
+              'isWechat',
+              'isDelete',
+            ],
           },
           {
             path: '/base/brand',
@@ -557,7 +574,7 @@ export default [
             path: '/base/goodsTag',
             name: '商品标签',
             component: './Base/GoodsTag',
-            buttons: ['save', 'edit'],
+            buttons: ['save', 'edit', 'connectedGoods'],
           },
           {
             path: '/base/bankSet',
@@ -570,6 +587,12 @@ export default [
             name: '卡豆分享',
             component: './Base/PeasShare',
             buttons: ['save', 'del', 'edit'],
+          },
+          {
+            path: '/base/category',
+            name: '商品类目管理 ',
+            component: './Base/GoodsCategory',
+            buttons: ['tradeAdd', 'del', 'edit', 'tradeSecondAdd', 'isDelete'],
           },
         ],
       },
@@ -752,9 +775,21 @@ export default [
         name: '商品/订单管理',
         routes: [
           {
+            path: '/operation/electricGoods',
+            name: '电商品',
+            component: './Operation/ElectricGoods',
+            buttons: ['save', 'info', 'down', 'edit', 'again', 'changeRemain', 'shareImg'],
+          },
+          {
             path: '/operation/orders',
             name: '订单列表',
             component: './Operation/OrdersList',
+            buttons: ['info', 'exportList', 'goodsView', 'goodsDeliver', 'routing', 'batchRouting'],
+          },
+          {
+            path: '/operation/ordersList',
+            name: '订单列表(新)',
+            component: './Operation/NewOrdersList',
             buttons: ['info', 'exportList', 'goodsView', 'goodsDeliver', 'routing', 'batchRouting'],
           },
           {
@@ -767,7 +802,13 @@ export default [
             path: '/operation/refund',
             name: '退款管理',
             component: './Operation/RefundOrder',
-            buttons: ['info'],
+            buttons: ['info', 'remark', 'payBack'],
+          },
+          {
+            path: '/operation/refundList',
+            name: '退款列表',
+            component: './Operation/RefundList',
+            buttons: ['info', 'remark', 'agree', 'refuse'],
           },
           {
             path: '/operation/coupon',
@@ -797,6 +838,7 @@ export default [
               'edit',
               'down',
               'info',
+              'del',
               'diary',
               'again',
               'recommendStatus',
@@ -833,7 +875,31 @@ export default [
           },
         ],
       },
-
+      // 供应链管理 SCM
+      {
+        path: '/SCM',
+        name: '供应链管理',
+        routes: [
+          {
+            path: '/SCM/supplierAuth',
+            name: '供应链审核',
+            component: './SCM/SupplierAuth',
+            buttons: ['info', 'check'],
+          },
+          {
+            path: '/SCM/supplierManage',
+            name: '供应商列表',
+            component: './SCM/SupplierManage',
+            buttons: ['save', 'info', 'edit', 'activate', 'status', 'brand'],
+          },
+          {
+            path: '/SCM/supplierSettlement',
+            name: '结算明细',
+            component: './SCM/SupplierSettlement',
+            buttons: ['save', 'info', 'edit'],
+          },
+        ],
+      },
       {
         name: '修改密码',
         path: '/password',

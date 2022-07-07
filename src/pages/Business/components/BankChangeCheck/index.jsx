@@ -133,6 +133,17 @@ const SpecialGoodCheckDetail = (props) => {
       text: '审核通过',
       show: type === 'check',
     },
+    {
+      auth: 'check',
+      onClick: () =>
+        setVisibleRefuse({
+          show: true,
+          ownerBankBindingInfoRecordId,
+        }),
+      danger: true,
+      text: '审核驳回',
+      show: type === 'check',
+    },
   ];
   // 弹出窗属性
   const modalProps = {
@@ -140,24 +151,7 @@ const SpecialGoodCheckDetail = (props) => {
     visible: show,
     loading,
     onClose,
-    footer: (
-      <ExtraButton list={btnList}>
-        {type === 'check' && (
-          <Button
-            style={{ marginLeft: 8 }}
-            danger
-            onClick={() =>
-              setVisibleRefuse({
-                show: true,
-                ownerBankBindingInfoRecordId,
-              })
-            }
-          >
-            审核驳回
-          </Button>
-        )}
-      </ExtraButton>
-    ),
+    footer: <ExtraButton list={btnList}></ExtraButton>,
   };
   return (
     <>

@@ -9,14 +9,14 @@ import {
   SPECIAL_RECOMMEND_TYPE,
   SPECIAL_RECOMMEND_DELSTATUS,
 } from '@/common/constant';
+import { checkCityName } from '@/utils/utils';
 import Ellipsis from '@/components/Ellipsis';
 import QuestionTooltip from '@/components/QuestionTooltip';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import ExtraButton from '@/components/ExtraButton';
-import GoodResourceSet from './components/GoodResourceSet';
-import WeightSet from './components/WeightSet';
-import { checkCityName } from '@/utils/utils';
+import GoodResourceSet from './components/SpecialGoodsResource/GoodResourceSet';
+import WeightSet from './components/SpecialGoodsResource/WeightSet';
 
 const SpecialGoodsResource = (props) => {
   const { loadings, loading, hubData, dispatch, specialGoodsResource } = props;

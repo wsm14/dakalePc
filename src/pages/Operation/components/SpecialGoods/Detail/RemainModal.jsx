@@ -13,9 +13,11 @@ const RemainModal = (props) => {
       dispatch({
         type: 'specialGoods/fetchSpecialGoodsAddRemain',
         payload: {
-          id,
-          ownerId,
-          ...values,
+          stockUpdateReqs: {
+            stockId: id,
+            ownerId,
+            ...values,
+          },
         },
         callback: () => {
           onClose();
@@ -27,9 +29,9 @@ const RemainModal = (props) => {
 
   const formItems = [
     {
-      label: `增加库存`,
-      name: 'remainIncrement',
-      placeholder: `请输入库存增量`,
+      label: `调整库存`,
+      name: 'goodsCount',
+      placeholder: `请输入调整后的库存`,
       extra: `剩余${remain}`,
       maxLength: 6,
       addRules: [

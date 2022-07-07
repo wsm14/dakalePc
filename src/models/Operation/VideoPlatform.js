@@ -280,14 +280,6 @@ export default {
     *fetchNewShareDetail({ payload, callback }, { call }) {
       const { type = 'info', momentType, ...cell } = payload;
       const response = yield call(fetchNewShareDetail, cell);
-      // 查询视频统计信息
-      let content2 = {};
-      if (type === 'info') {
-        const response2 = yield call(fetchNewShareStatisticsList, { momentType, ...cell });
-        if (!response2) return;
-        const { content } = response2;
-        content2 = content;
-      }
       if (!response) return;
       const { content } = response;
       // console.log(content, 'content');
@@ -302,16 +294,29 @@ export default {
         // addressContentList = [], // 定位
         ugcAddressObject, // UGC定位
         videoContent,
-        ...ohter
+        ...other
       } = content.momentDetail;
       const editData =
         type !== 'info'
           ? {
               videoUrl: JSON.parse(videoContent || '{}').url,
               videoId: JSON.parse(videoContent || '{}').videoId,
-              categoryNode: [ohter.topCategoryIdString, ohter.categoryIdString],
-              free: freeOwnerCouponList[0] || {},
-              contact: [...activityGoodsList, ...ownerCouponList],
+              categoryNode: [other.topCategoryIdString, other.categoryIdString],
+              free: freeOwnerCouponList[0]
+                ? { ...freeOwnerCouponList[0], goodsId: freeOwnerCouponList[0].ownerCouponIdString }
+                : {},
+              contact: [
+                ...activityGoodsList.map((i) => ({
+                  ...i,
+                  goodsId: i.activityGoodsId,
+                  ownerId: i.ownerIdString,
+                })),
+                ...ownerCouponList.map((i) => ({
+                  ...i,
+                  goodsId: i.ownerCouponIdString,
+                  ownerId: i.ownerIdString,
+                })),
+              ],
               age: age !== '0-100' ? 'age' : age,
               ageData: age !== '0-100' ? age.split(',') : [],
               taste: tagsId ? 'tag' : 'all',
@@ -331,8 +336,7 @@ export default {
             }
           : {};
       const newObj = {
-        ...ohter,
-        ...content2,
+        ...other,
         age,
         area,
         areaType,
@@ -352,6 +356,16 @@ export default {
         ...editData,
       };
       callback(newObj);
+    },
+    // 查询视频统计信息
+    *fetchNewShareStatisticsList({ payload, callback }, { call }) {
+      const { type = 'info', momentType, ...cell } = payload;
+
+      const response = yield call(fetchNewShareStatisticsList, { momentType, ...cell });
+      if (!response) return;
+      const { content } = response;
+
+      callback(content);
     },
   },
 };

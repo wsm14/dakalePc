@@ -18,6 +18,7 @@ const ExtraButton = ({ list = [], children }) => {
     className = 'dkl_green_btn',
     onClick,
     count = 0, // 计数
+    danger = false,
     style = {},
     loading,
     type, // excel
@@ -38,11 +39,12 @@ const ExtraButton = ({ list = [], children }) => {
         );
       default:
         return (
-          <AuthConsumer auth={auth} show={show} key={auth}>
+          <AuthConsumer auth={auth} show={show} key={`${auth}${text}`}>
             <Badge count={count}>
               <Button
                 type={typeBtn}
-                className={className}
+                danger={danger}
+                className={typeBtn || danger ? '' : className}
                 disabled={disabled}
                 onClick={onClick}
                 style={style}
@@ -55,6 +57,8 @@ const ExtraButton = ({ list = [], children }) => {
         );
     }
   };
+
+  if (!list.length) return null;
 
   return (
     <Space>

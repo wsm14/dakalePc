@@ -144,6 +144,9 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
             ? '平台佣金=商品佣金-区县分佣-省公司分佣-地市级分佣-用户家主分佣-店铺家主分佣-哒人带货分佣-豆长团队分佣'
             : '平台佣金=店铺服务费-区县分佣-市级分佣-省公司分佣-用户家主分佣-店铺家主分佣'}
         </span>
+        <div style={{ fontSize: 12, color: '#3E9DFE' }}>
+          注：sprint20版本电商品结算给平台，店铺实收是没有分出去的，实际为0；用户实付=商品佣金
+        </div>
       </div>
       <div className={styles.income_order_detail}>
         {/* 过期不可退订单 */}
@@ -217,6 +220,11 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
               {detail.teamProfitProportion})
             </div>
           </>
+        )}
+        {detail.helpSellCommission != '' && (
+          <div className={styles.detail_item_class}>
+            帮卖团长分佣：{`￥${detail.helpSellCommission || 0}`}
+          </div>
         )}
         <div className={styles.detail_item_formula}>
           {type === 'kolGoods' ||

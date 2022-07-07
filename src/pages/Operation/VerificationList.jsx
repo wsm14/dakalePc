@@ -10,7 +10,11 @@ import coupon from '@public/coupon.png';
 import styles from './style.less';
 
 const VerificationList = (props) => {
-  const { verificationList, loading } = props;
+  const { verificationList, loading, location } = props;
+
+  const {
+    query: { orderSn = '' },
+  } = location;
 
   const childRef = useRef();
   const [merchantId, setMerchantId] = useState();
@@ -185,13 +189,13 @@ const VerificationList = (props) => {
 
   return (
     <TableDataBlock
-      
       btnExtra={extraBtn}
       resetSearch={() => setMerchantId()}
       cRef={childRef}
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}
+      params={{ orderSn }}
       rowKey={(record) => `${record.verificationCode}`}
       dispatchType="verificationList/fetchVerificationList"
       {...verificationList}

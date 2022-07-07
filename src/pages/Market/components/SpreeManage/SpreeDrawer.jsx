@@ -23,8 +23,6 @@ const CouponDrawer = (props) => {
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
-      // console.log('values', values);
-      // return;
       const {
         giftTypeId,
         buyFlagType,
@@ -38,22 +36,17 @@ const CouponDrawer = (props) => {
         platformGiftPackRelateList: giftList = [],
         ...other
       } = values;
-      console.log('123', giftList);
 
       // 礼包数据重组
       const newGiftList = giftList.map((item, index) => {
-        const { platformGiftRelateId, tagType: relateType } = item;
+        const { platformGiftRelateId, activityType: relateType } = item;
         let obj = {};
         if (type === 'edit') {
           obj = { platformGiftRelateId }; // 修改进入返回 platformGiftRelateId
         }
         if (type === 'add') {
           obj = {
-            relateId: {
-              platformCoupon: item.platformCouponId,
-              rightGoods: item.specialGoodsId,
-              rightCoupon: item.ownerCouponIdString,
-            }[relateType],
+            relateId: item.goodsId,
             relateType,
           };
         }

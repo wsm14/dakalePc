@@ -1,10 +1,11 @@
 import { notification } from 'antd';
-import oss from 'ali-oss';
 import lodash from 'lodash';
-import { uuid } from '@/utils/utils';
+import { fetchBackCategoryList } from '@/services/BaseServices';
+import { fetchPagePlatformCoupon } from '@/services/OperationServices';
+import { fetchGetSupplierManageList, fetchSupplierBrandList } from '@/services/SCMServices';
 import { fetchMerchantList, fetchMerchantGroup } from '@/services/BusinessServices';
+import { fetchGoodsTagList } from '@/services/BaseServices';
 import {
-  fetchGetOss,
   fetchGetMreTag,
   fetchImportExcel,
   fetchGetTasteTag,
@@ -36,7 +37,6 @@ import {
   fetchListUserByIds,
   fetchGetPlatformEquitySelect,
   fetchGetEquityCouponSelect,
-  fetchPlatformCouponSelect,
   fetchListHitting,
   fetchPagePreferentialActivity,
   fetchListConfigGoodsTag,
@@ -44,6 +44,7 @@ import {
   fetchGlobalListPartner,
   fetchListHittingMain,
   fetchPageResourceTemplateContent,
+  fetchListExpressCompany,
 } from '@/services/PublicServices';
 
 export default {
@@ -66,6 +67,7 @@ export default {
     ruleBean: 0,
     experLevel: {},
     groupMreList: [],
+    groupCopyMreList: [],
     skuMerchantList: { list: [], total: 0 },
     CouponListSearch: [],
     goodsList: [],
@@ -78,6 +80,11 @@ export default {
     allCouponList: { list: [], total: 0 },
     configGoodsTagList: [],
     resourceList: [],
+    sipploerList: [],
+    classifyParentList: [],
+    brandList: [],
+    tagsPlatform: [],
+    companyList: [],
   },
 
   reducers: {
@@ -97,6 +104,7 @@ export default {
       return {
         ...state,
         groupMreList: [],
+        groupCopyMreList: [],
       };
     },
     clearPlatformEquity(state) {
@@ -114,36 +122,6 @@ export default {
   },
 
   effects: {
-    /**
-     * @param {Object} payload
-     * file 文件
-     * folderName 文件夹名称 materials 营销物料
-     * fileType 文件类型 zip image html ...
-     * extension 文件后缀名称
-     * @param {Function} callback 回调函数 发挥文件url
-     * @returns url
-     */
-    *fetchGetOssUploadFile({ payload, callback }, { call }) {
-      const response = yield call(fetchGetOss, {
-        uploadType: 'resource',
-        fileType: payload.fileType,
-      });
-      if (!response) return;
-      const { folder, host, securityToken: stsToken } = response.content;
-      const client = new oss({ region: 'oss-cn-hangzhou', stsToken, ...response.content });
-      let _fileRath = `${folder}/${payload.folderName}/${uuid()}${payload.extension}`;
-      client.put(_fileRath, payload.file).then((res) => {
-        const { status, statusCode } = res.res;
-        if (status === 200 && statusCode === 200) {
-          callback(host + _fileRath);
-        } else {
-          notification.info({
-            message: '温馨提示',
-            description: '上传失败',
-          });
-        }
-      });
-    },
     *fetchGetSubsidyRoleBean({ payload }, { call, put }) {
       const response = yield call(fetchGetSubsidyRoleBean, payload);
       if (!response) return;
@@ -410,7 +388,7 @@ export default {
 
     // 平台券
     *fetchPlatformCouponSelect({ payload, callback }, { call, put }) {
-      const response = yield call(fetchPlatformCouponSelect, {
+      const response = yield call(fetchPagePlatformCoupon, {
         ...payload,
         adminFlag: 1,
       });
@@ -525,7 +503,42 @@ export default {
       );
       if (!response) return;
       const { content } = response;
-      const listData = content.recordList.map((item) => ({
+      const { recordList = [] } = content;
+      const listData = recordList.map((item) => ({
+        name: `${item.merchantName || item.groupName} ${item.account || ''}`,
+        otherData: item.address,
+        value: item.userMerchantIdString || item.merchantGroupIdString,
+        commissionRatio: item.commissionRatio,
+        topCategoryName: [item.topCategoryName, item.categoryName],
+        topCategoryId: [item.topCategoryIdString, item.categoryIdString],
+        districtCode: item.districtCode,
+        businessStatus: item.businessStatus || '1',
+        status: item.status || '1',
+      }));
+      console.log(listData, 'listData');
+      yield put({
+        type: 'save',
+        payload: {
+          groupMreList: listData,
+        },
+      });
+      callback && callback(listData);
+    },
+    //请求店铺列表复制
+    *fetchGetGroupCopyMreList({ payload, callback }, { put, call }) {
+      const { type = 'merchant', name, ...other } = payload;
+      const newPayload = {
+        merchant: { merchantName: name }, // 单店
+        group: { groupName: name }, // 集团
+      }[type];
+      const response = yield call(
+        { merchant: fetchMerchantList, group: fetchMerchantGroup }[type],
+        { limit: 50, page: 1, bankStatus: 3, ...newPayload, ...other },
+      );
+      if (!response) return;
+      const { content } = response;
+      const { recordList = [] } = content;
+      const listData = recordList.map((item) => ({
         name: `${item.merchantName || item.groupName} ${item.account || ''}`,
         otherData: item.address,
         value: item.userMerchantIdString || item.merchantGroupIdString,
@@ -539,7 +552,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          groupMreList: listData,
+          groupCopyMreList: listData,
         },
       });
       callback && callback(listData);
@@ -572,7 +585,8 @@ export default {
       const response = yield call(fetchSkuDetailMerchantList, payload);
       if (!response) return;
       const { content } = response;
-      callback(content.merchantList);
+      const { merchantList = [] } = content;
+      callback(merchantList);
     },
     *fetchAuditMerchantList({ payload, callback }, { call }) {
       const response = yield call(fetchAuditMerchantList, payload);
@@ -739,6 +753,93 @@ export default {
             name: item.name,
             value: item.resourceTemplateContentId,
           })),
+        },
+      });
+    },
+    // 供应商列表搜索
+    *fetchSearchSupplierManage({ payload, callback }, { put, call }) {
+      const response = yield call(fetchGetSupplierManageList, {
+        ...payload,
+        status: 1,
+        accountStatus: 1,
+        limit: 50,
+        page: 1,
+      });
+      if (!response) return;
+      const { content } = response;
+      const newList = content.supplierDetailList.map((item) => ({
+        name: `${item.name} ${item.supplierId}`,
+        value: item.supplierId,
+        option: item,
+      }));
+      yield put({
+        type: 'save',
+        payload: {
+          sipploerList: newList,
+        },
+      });
+      callback && callback(newList);
+    },
+    // 类目管理（电商）-后台类目-根列表
+    *fetchParentListClassify({ payload }, { call, put }) {
+      const response = yield call(fetchBackCategoryList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          classifyParentList: content.childList,
+        },
+      });
+    },
+    // get 供应商管理 - 品牌 - 列表
+    *fetchSupplierBrandList({ payload }, { call, put }) {
+      const response = yield call(fetchSupplierBrandList, {
+        ...payload,
+        status: 1,
+        limit: 100,
+        page: 1,
+      });
+      if (!response) return;
+      const { content } = response;
+      const newList = content.supplierBrandDetailList.map((item) => ({
+        name: item.brandName,
+        value: item.supplierBrandId,
+        option: item,
+      }));
+      yield put({
+        type: 'save',
+        payload: {
+          brandList: newList,
+        },
+      });
+    },
+    //获取平台商品标签
+    *fetchGoodsTagList({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGoodsTagList, {
+        ...payload,
+        status: '1',
+        tagType: 'platform',
+      });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          tagsPlatform: content.configGoodsTagDTOS,
+        },
+      });
+      // callback && callback(content.configGoodsTagDTOS);
+    },
+    //查询快递公司列表
+    *fetchListExpressCompany({ payload, callback }, { call, put }) {
+      const response = yield call(fetchListExpressCompany, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          companyList: content.companyList,
         },
       });
     },

@@ -1,3 +1,7 @@
+.share_Coupon_box + .share_Coupon_box {
+  margin-top: 10px;
+}
+
 .share_Coupon {
   display: flex;
   align-items: center;
@@ -20,7 +24,33 @@
     font-size: 12px;
     background-color: rgb(226, 226, 226);
   }
+  .pCoupon_share_left {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 78px;
+    height: 100%;
+    padding: 0 9px 0 0;
+    font-size: 12px;
+    border-right: 1px dashed #ccc;
+    .pCoupon_share_left_top {
+      display: flex;
+      align-items: flex-end;
+      .pCoupon_price {
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 20px;
+      }
+    }
+    .pCoupon_share_left_bottom {
+      line-height: 12px;
+    }
+  }
   .titile {
+    display: inline-flex;
+    align-items: center;
     width: 100%;
     padding-right: 40px;
     overflow: hidden;
@@ -42,8 +72,8 @@
     }
   }
   .share_del_icon {
+    margin: 10px;
     cursor: pointer;
-    margin:10px
   }
 }
 

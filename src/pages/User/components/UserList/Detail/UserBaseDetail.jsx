@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tag } from 'antd';
-import { ACCOUNT_STATUS } from '@/common/constant';
+import { ACCOUNT_STATUS, USER_SOURCE, USER_PORT_TYPE } from '@/common/constant';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const UserBaseDetail = (props) => {
@@ -17,7 +17,6 @@ const UserBaseDetail = (props) => {
     // { label: '身份证号', name: 'cardNumber', render: (val) => val || '无' },
     { label: '生日', name: 'birthday', render: (val) => val || '--' },
     { label: '家主手机号', name: 'parentUserMobile', render: (val) => val || '无' },
-    { label: '常驻地', name: 'residentAddress', render: (val) => val || '--' },
     {
       label: '注册地',
       name: 'provinceName',
@@ -30,7 +29,13 @@ const UserBaseDetail = (props) => {
     { label: '最后登录日期', name: 'lastLoginTime' },
     { label: '最后行为时间', name: 'finalActTime' },
     { label: '最后下单时间', name: 'lastOrderTime' },
-    { label: '账号状态', name: 'status', render: (val) => ACCOUNT_STATUS[val] },
+    {
+      label: '账号状态',
+      name: 'ports',
+      render: (val) =>
+        val.length == 0 ? '正常' : `已封停${val.map((item) => USER_PORT_TYPE[item]).join()}`,
+    },
+    { label: '用户来源', name: 'userSource', render: (val) => USER_SOURCE[val] },
     {
       label: '兴趣标签',
       name: 'tag',

@@ -121,13 +121,12 @@ const FranchiseApplication = (props) => {
   return (
     <>
       <TableDataBlock
+        order
         cardProps={{
           tabList: tabList,
           activeTabKey: tabKey,
           onTabChange: setTabKey,
         }}
-        order
-        
         cRef={childRef}
         loading={loading}
         columns={getColumns}

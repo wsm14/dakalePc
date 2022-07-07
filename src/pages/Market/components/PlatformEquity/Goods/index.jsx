@@ -345,8 +345,7 @@ const PlatformEquityGoods = (props) => {
 
   return (
     <>
-      <TableDataBlock
-        
+      {/* <TableDataBlock
         btnExtra={btnList}
         noCard={false}
         cRef={childRef}
@@ -357,7 +356,7 @@ const PlatformEquityGoods = (props) => {
         rowKey={(record) => `${record.specialGoodsId}`}
         dispatchType="specialGoods/fetchGetList"
         {...specialGoods}
-      ></TableDataBlock>
+      ></TableDataBlock> */}
       {/* 新增 编辑 详情*/}
       <PlatformEquityDrawer
         childRef={childRef}

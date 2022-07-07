@@ -13,6 +13,10 @@ const tabList = [
   { key: 'beanDeductionZone', tab: '卡豆抵扣专区' },
   { key: 'fieldResource', tab: '田字资源位' },
   { key: 'userParticipation', tab: '拼好货' },
+  { key: 'fuliHexagonalLattice', tab: '福利-六宫格' },
+  { key: 'fuliEarnGoldCoins', tab: '福利-赚金币' },
+  { key: 'fuliInvitationActivities', tab: '福利-邀请活动' },
+  { key: 'fuliLifeService', tab: '福利-生活服务' },
 ];
 
 const VaneManage = (props) => {
@@ -131,7 +135,17 @@ const VaneManage = (props) => {
     },
   ];
   const cardBtnFlag = () => {
-    if (['windVane', 'beanEducation', 'sixPalaceLattice'].includes(tabKey)) {
+    if (
+      [
+        'windVane',
+        'beanEducation',
+        'sixPalaceLattice',
+        'fuliHexagonalLattice',
+        'fuliEarnGoldCoins',
+        'fuliInvitationActivities',
+        'fuliLifeService',
+      ].includes(tabKey)
+    ) {
       return cardBtnList;
     } else if (['beanDeductionZone'].includes(tabKey) && list.list.length < 3) {
       return cardBtnList;

@@ -27,35 +27,19 @@ const ShareDrawer = (props) => {
       let goodsList = {};
       if (dataStorage.relateType !== 'brand') {
         // 自选商品数据整理
-        const newCoupon = [
-          ...contact,
-          ...(free.ownerCouponIdString ? [{ ...free, promotionType: 'free' }] : []),
-        ];
+        const newCoupon = [...contact, ...(free.ownerCouponIdString ? [{ ...free }] : [])];
         goodsList = {
           momentRelateList: newCoupon.map((item) => ({
-            relateId:
-              item[
-                {
-                  goods: 'specialGoodsId', // 特惠
-                  free: 'ownerCouponIdString', // 免费
-                  coupon: 'ownerCouponIdString', // 有价
-                  commerceGoods: 'specialGoodsId', // 电商商品
-                }[item.promotionType]
-              ],
-            relateType: {
-              goods: 'specialGoods',
-              coupon: 'reduceCoupon',
-              free: 'freeReduceCoupon',
-              commerceGoods: 'commerceGoods',
-            }[item.promotionType],
-            relateShardingKey: relateId,
+            relateId: item.goodsId,
+            relateType: item.activityType,
+            relateShardingKey: item.ownerId || relateId,
           })),
         };
       } else {
         // 品牌行业信息
         goodsList = { topCategoryId: categoryId[0], categoryId: categoryId[1] };
       }
-      console.log(dataStorage, values);
+      // console.log(dataStorage, values);
       uploadLive({
         data: frontImage, // 上传封面
         callback: (imgs) => {

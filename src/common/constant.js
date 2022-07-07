@@ -14,6 +14,36 @@ export const AMAP_KEY = 'b71a4bfb0ccc175459fdadf06cb0b1b7';
 // 高德地图js key
 export const AMAP_JS_KEY = 'ebb2511fda31f6cbf5c5c9a5d7e84e39';
 
+// 全局tag 颜色
+export const TAG_COLOR_TYPE = {
+  single: 'orange', // 单品
+  package: 'magenta', // 套餐
+  commerceGoods: 'cyan', // 电商商品
+  specialGoods: 'gold', // 特惠商品
+  freeReduceCoupon: 'green', // 免费券
+  group: 'purple', // 集团
+  merchant: 'volcano', // 单店
+  goodsBuy: {
+    universal: '#87d068', // 商品通用券
+    category: '#2db7f5', // 行业商品券
+    merchant: '#108ee9', // 店铺商品券
+    goods: '#f50', // 指定商品券
+  },
+  // scan: '扫码',
+  virtual: {
+    universal: '#a85bad', // 虚拟通用券
+    goods: '#bfa4c1', // 指定虚拟券
+  },
+  commerce: {
+    universal: '#6897ff', // 电商通用券
+    goods: '#994646', // 指定电商券,
+  },
+  community: {
+    universal: '#ffa8a8',
+    // goods: '指定团购券',
+  },
+};
+
 // 排序纬度
 export const EXPERT_SORT_TYPE = {
   beanReward: '卡豆打赏额',
@@ -115,6 +145,14 @@ export const BUSINESS_STATUS = ['禁用', '启用'];
 // 店铺 类型
 export const BUSINESS_TYPE = { merchant: '单店', group: '集团' };
 
+//售卖价格类型
+export const BUSINESS_SALE_TYPE = {
+  defaultMode: '现金（可用卡豆抵扣）',
+  cashMode: '现金（不可用卡豆抵扣）',
+  self: '卡豆+现金',
+  free: '免费',
+};
+
 // 店铺 审核状态 '待审核', '审核中', '审核驳回', '审核通过'
 export const BUSINESS_STATUS_AUDIT = ['待审核', '审核中', '审核驳回', '审核通过'];
 
@@ -186,7 +224,7 @@ export const SHARE_STATUS = [
   '即将发布',
 ];
 
-//核销状态 0：未核销，1：已核销 2：已过期 3-申请退款中 4-关闭
+// 核销状态 0：未核销，1：已核销 2：已过期 3-申请退款中 4-关闭
 export const VERIFICATION_STATUS = ['未核销', '已核销', '已过期', '申请退款中', '关闭'];
 
 // 种草状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
@@ -246,7 +284,7 @@ export const NEWUSER_STATUS_TYPE = ['即将开始', '上架中', '已结束'];
 
 // 周边特惠 - 上架状态 0-已下架 1-活动中 2-即将开始 3-审核中 4-未通过
 // export const SPECIAL_STATUS = ['已下架', '活动中', '即将开始', '审核中', '未通过'];
-export const SPECIAL_STATUS = ['已下架', '活动中'];
+export const SPECIAL_STATUS = ['已下架', '上架中'];
 
 // 店铺标签状态
 export const MRE_TAG_STATUS = ['停用', '启用'];
@@ -264,6 +302,18 @@ export const COMPANY_PROV_STATUS = ['正常', '冻结', '解约'];
 export const ORDERS_STATUS = [
   '待支付',
   '待核销',
+  '订单关闭',
+  '交易完成',
+  '已确认',
+  '预支付',
+  '退款中',
+  '已过期',
+];
+
+// 订单状态
+export const ORDER_STATUS = [
+  '待支付',
+  '已支付',
   '订单关闭',
   '交易完成',
   '已确认',
@@ -306,6 +356,12 @@ export const ORDER_CLOSE_TYPE = {
 
 // 退款订单状态
 export const REFUND_ORDERS_STATUS = ['退款中', '已退款', '取消退款'];
+
+// 退款管理 - 退款类型
+export const REFUND_ORDERS_TYPE = { onlyFee: '仅退款', goodsAFee: '退货退款' };
+
+//退款订单审核状态
+export const REFUND_ORDERS_EXAMINE_STATUS = ['未审核', '审核通过', '审核拒绝', '已关闭'];
 
 // 哒人带货 订单状态
 export const EXPRET_DISTRIBUTION_STATUS = ['待分佣', '已分佣', false, false, '已退款'];
@@ -572,15 +628,17 @@ export const ADD_AND_MINUS = { add: '收入', minus: '支出' };
 
 // specialGoods-特惠商品 reduceCoupon-优惠券
 export const ORDER_TYPE_PROPS = {
-  specialGoods: '特惠商品',
-  reduceCoupon: '优惠券',
   scan: '扫码',
+  topUp: '充值订单',
+  specialGoods: '特惠商品',
+  reduceCoupon: '有价券',
+  communityGoods: '团购商品',
+  virtualProduct: '虚拟商品',
   rightGoods: '权益商品',
   rightCoupon: '权益券',
-  virtualProduct: '虚拟商品',
-  communityGoods: '团购商品',
   commerceGoods: '电商商品',
-  communityGoods: '团购商品',
+  platformGift: '平台礼包订单',
+  weeklyCard: '卡豆周卡订单',
 };
 
 export const ORDER_ORDERTYPE = {
@@ -617,8 +675,58 @@ export const SPECIAL_RECOMMEND_TYPE = {
 // 特惠活动 - 是否删除
 export const SPECIAL_RECOMMEND_DELSTATUS = ['已删除', '未删除'];
 
+// 特惠活动 - 商品类别
+export const SPECIAL_GOODS_TYPE = { offline: '特惠商品', selfTour: '自我游商品' };
+
 // 特惠活动 - 介绍类型
-export const SPECIAL_DESC_TYPE = ['图文介绍', '富文本'];
+export const SPECIAL_DESC_TYPE = {
+  0: '图文',
+  1: '富文本',
+};
+
+// 特惠活动 - 前端展示类型
+export const SPECIAL_SHOW_TYPE = {
+  defaultMode: {
+    manualOrList: '手动/列表展示',
+    manual: '仅手动展示',
+    notDisplay: '不展示',
+  },
+  self: {
+    manualOrList: '手动/列表展示',
+    manual: '仅手动展示',
+    notDisplay: '不展示',
+  },
+  cashMode: {
+    manualOrList: '手动/列表展示',
+    manual: '仅手动展示',
+    notDisplay: '不展示',
+  },
+  free: {
+    manual: '仅手动展示',
+    notDisplay: '不展示',
+  },
+};
+
+//特惠活动 - 展示范围
+export const SPECIAL_AREA_TYPE = {
+  all: '全国',
+  city: '按市选择',
+};
+//特惠活动 - 结算人类型
+export const SPECIAL_BALANCE_TYPE = {
+  merchant: '店铺',
+  group: '集团',
+  admin: '平台',
+};
+
+//特惠活动 - 分佣比例
+export const SPECIAL_COMMISSOM_TYPE = {
+  provinceBean: '省代分佣',
+  cityBean: '市级分佣',
+  districtBean: '区县分佣',
+  userParentBean: '用户家主分佣',
+  darenBean: '哒人分佣',
+};
 
 // 新手视频 - 状态 1-上架 3-下架
 export const VIDEO_NOVICE_STATUS = [false, '上架中', false, '已下架'];
@@ -652,10 +760,25 @@ export const CHECK_STATUS = ['审核通过', '审核驳回', '商家已确认', 
 // 银行卡变更审核结果
 export const BANK_CHECK_STATUS = ['审核驳回', '审核通过'];
 
+// 供应商状态
+export const SUPPLIER_STATUS = ['禁用', '启用'];
+
+// 供应商账户状态 搜索用
+export const SUPPLIER_ACCOUNT_STATUS = ['未激活', '已激活'];
+
+// 供应商账户状态
+export const SUPPLIER_ACCOUNT_STATUS_SHOW = ['未激活', '审核中', '激活失败', '已激活'];
+
+// 供应商审核状态
+export const SUPPLIER_AUTH_STATUS = ['审核拒绝', '审核通过'];
+
+// 供应商类型
+export const SUPPLIER_AUTH_TYPE = ['', '对公', '对私'];
+
 // 标签类型
 export const TAG_TYPE = {
   platform: '平台商品标签',
-  merchant: '店铺商品标签',
+  show: '展示标签',
 };
 
 // 集合页配置集合页状态
@@ -684,8 +807,8 @@ export const SUBMIT_TYPE_VIDEO = {
 export const SERVICE_TYPE = {
   specialGoods: '特惠商品 ',
   reduceCoupon: '优惠券',
-  rightGoods: '权益商品',
-  rightCoupon: '权益券',
+  // rightGoods: '权益商品',
+  // rightCoupon: '权益券',
   commerceGoods: '电商品',
 };
 
@@ -714,6 +837,42 @@ export const COMMISSION_TYPE = {
   district: '区县分佣',
   userParent: '用户家主分佣',
   merchantParent: '商家家主分佣',
+  daren: '哒人分佣',
+};
+export const COMMISSION_TYPE_COPY = {
+  specialGoods: {
+    province: '省代分佣',
+    city: '地级市分佣',
+    district: '区县分佣',
+    userParent: '用户家主分佣',
+    merchantParent: '商家家主分佣',
+    daren: '哒人分佣',
+  },
+  reduceCoupon: {
+    province: '省代分佣',
+    city: '地级市分佣',
+    district: '区县分佣',
+    userParent: '用户家主分佣',
+    merchantParent: '商家家主分佣',
+    daren: '哒人分佣',
+  },
+  commerceGoods: {
+    province: '省代分佣',
+    city: '地级市分佣',
+    district: '区县分佣',
+    userParent: '用户家主分佣',
+    // merchantParent: '商家家主分佣',
+    daren: '哒人分佣',
+  },
+};
+
+// 电商品分佣模板
+export const ELECTRIC_GOODS_COMMISSION = {
+  province: '省代分佣',
+  city: '地级市分佣',
+  district: '区县分佣',
+  userParent: '用户家主分佣',
+  // merchantParent: '商家家主分佣',
   daren: '哒人分佣',
 };
 
@@ -953,27 +1112,33 @@ export const PLATFORM_TICKET_SCENE = {
   // scan: '扫码',
   virtual: '虚拟品券',
   commerce: '电商品券',
-  // community: '团购',
+  community: '团购',
 };
 
 // 平台券管理 - 券类型
 export const PLATFORM_TICKET_TYPE = {
+  // 商品券
   goodsBuy: {
     universal: '商品通用券',
     category: '行业商品券',
     merchant: '店铺商品券',
     goods: '指定商品券',
   },
-  // scan: '扫码',
+  // 虚拟品券
   virtual: {
     universal: '虚拟通用券',
     goods: '指定虚拟券',
   },
+  // 电商品券
   commerce: {
     universal: '电商通用券',
     goods: '指定电商券',
   },
-  // community: '团购',
+  // 团购
+  community: {
+    universal: '团购通用券',
+    // goods: '指定团购券',
+  },
 };
 
 // 平台券管理 - 使用时间
@@ -1281,4 +1446,126 @@ export const GROUP_RULE_WIN = {
   3: '1',
   6: '2',
   10: '3',
+};
+
+// 电商品 - 商品状态
+export const ELECTRICGOODS_STATUS = ['已下架', '上架中'];
+
+// 电商品 - 售卖类型
+export const ELECTRICGOODS_SELL_STATUS = {
+  single: '零售',
+  batch: '批采',
+};
+
+// 电商品 - 库存单位
+export const ELECTRICGOODS_SKU = {
+  件: '件',
+  只: '只',
+  瓶: '瓶',
+  袋: '袋',
+  包: '包',
+  箱: '箱',
+  盒: '盒',
+  条: '条',
+  听: '听',
+  杯: '杯',
+  提: '提',
+  捆: '捆',
+  码: '码',
+  把: '把',
+  本: '本',
+  台: '台',
+  块: '块',
+  对: '对',
+  套: '套',
+  双: '双',
+  克: '克',
+  钱: '钱',
+  两: '两',
+  斤: '斤',
+  公斤: '公斤',
+  吨: '吨',
+  千克: '千克',
+};
+
+// 电商品 - 售卖价格类型
+export const ELECTRICGOODS_SELL_PRICE_TYPE = {
+  defaultMode: '现金（可用卡豆抵扣）',
+  cashMode: '现金（不可用卡豆抵扣）',
+  self: '卡豆+现金',
+  free: '免费',
+};
+
+// 电商品 - 前端展示类型(不免费)
+export const FRONT_SHOW_TYPE = {
+  manualOrList: '手动/列表展示',
+  manual: '仅手动展示',
+  notDisplay: '不展示',
+};
+
+// 电商品 - 前端展示类型(免费)
+export const FRONT_SHOW_TYPE_FREE = {
+  manual: '仅手动展示',
+  notDisplay: '不展示',
+};
+
+// 电商品 - 运费类型
+export const FREIGHT_TYPE = {
+  free: '免邮',
+  // manual: '全国统一价',
+};
+
+// 电商品 - 结算人类型
+export const SETTLE_TYPE = {
+  // settle: '供应商',
+  admin: '平台',
+};
+//行业管理 - 前台类目
+export const TRADESET_SELECT = {
+  behind: '按后台类目',
+  h5: 'H5地址',
+};
+
+export const ASTRICT_BUY = {
+  unlimited: '不限',
+  personLimit: '每人限制',
+  // dayLimit: '每天限制',
+  // weekLimit: '每周限制',
+  // monthLimit: '每月限制',
+};
+
+// 营销活动 - 活动状态
+export const MARKETACTIVITY_STATUS = ['进行中', '已下架'];
+
+// 营销活动 - 活动规则
+export const MARKETACTIVITY_RULE = {
+  discount: '优惠规则',
+  categories: '行业规则',
+  classifies: '类目规则',
+};
+
+// 营销活动 - 使用规则
+export const MARKETACTIVITY_USER_RULE = {
+  limit: '限购规则',
+  subsidy: '补贴规则',
+};
+
+// 营销活动 - 限购规则
+export const MARKETACTIVITY_BUY_RULE = {
+  unlimited: '不限',
+  personLimit: '每人限制',
+};
+
+// 营销活动 - 补贴规则
+export const MARKETACTIVITY_SUBSIDY_RULE = {
+  coupon: '赠送平台券',
+  rate: '卡豆抵扣比例',
+};
+
+// 用户数据 - 分端口封停 - 端口类型
+export const USER_PORT_TYPE = {
+  token: '哒卡乐APP',
+  miniProgramToken: '哒小乐',
+  markToken: '哒小卡',
+  communityToken: '哒小团',
 };

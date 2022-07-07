@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { notification } from 'antd';
 import {
   fetchCouponList,
@@ -11,7 +12,6 @@ import {
   fetchCouponManageShareEdit, // 分享配置
   fetchListFreeReduceCouponReceiveVerificationRecord, // 领取核销记录
 } from '@/services/OperationServices';
-import moment from 'moment';
 
 export default {
   namespace: 'couponManage',

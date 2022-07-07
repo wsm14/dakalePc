@@ -9,13 +9,13 @@ import ImportDataModal from './ImportDataModal';
 
 const MessagePushSet = (props) => {
   const { initialValues = {}, form, experLevel, dispatch, userType = '' } = props;
-  const { linkType, link = '', pushObjectIds, ...ohter } = initialValues;
+  const { linkType, link = '', pushObjectIds, ...other } = initialValues;
   const [pushObj, setPushObj] = useState('all');
   const [visiblePort, setVisiblePort] = useState(false);
   const [visibleSelect, setVisibleSelect] = useState(false); // 选择用户弹窗
   const [userList, setUserList] = useState({ keys: [], list: [], resultList: [] }); // 选择后回显的数据
   const newDetail = {
-    ...ohter,
+    ...other,
     jumpUrl: link,
     jumpUrlType: linkType,
   };
