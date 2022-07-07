@@ -29,6 +29,7 @@ const { TabPane } = Tabs;
  * @param {Boolean} closeSumbit 确认后是否自动关闭 默认关闭
  * @param {Boolean} hiddenSearch 隐藏搜索项目
  * @param {Function} onSumbit 确认回调 ({ keys: [], list: [] }) => {}
+ * @param {Function} onClose 关闭事件
  * @param {Function} rowSelection 表格点击回调 ({ setSelectItem: Function(selectedRowKeys, selectedRows) }) => ({})
  * @returns
  */

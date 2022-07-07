@@ -1,6 +1,11 @@
 import React from 'react';
 import { connect } from 'umi';
-import { CONPON_RULES_TYPE, PLATFORM_APPLY_PORT_TYPE, GOODS_CLASS_TYPE } from '@/common/constant';
+import {
+  TAG_COLOR_TYPE,
+  GOODS_CLASS_TYPE,
+  CONPON_RULES_TYPE,
+  ELECTRICGOODS_SELL_PRICE_TYPE,
+} from '@/common/constant';
 import { Tag } from 'antd';
 import { getCityName, checkCityName } from '@/utils/utils';
 import Ellipsis from '@/components/Ellipsis';
@@ -9,7 +14,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const GoodsDetail = (props) => {
-  const { ruleId, detail = {}, dispath, ruleDetailListObj = {} } = props;
+  const { ruleId, detail = {}, ruleDetailListObj = {} } = props;
   const { subRuleType, ruleType } = detail;
 
   const formItems = [
@@ -136,54 +141,63 @@ const GoodsDetail = (props) => {
   // 特惠商品/电商品 表头
   const specialGoodsColumns = [
     {
+      title: '类型',
+      dataIndex: 'productType',
+      width: 60,
+      align: 'center',
+      show: ['specialGoods'].includes(subRuleType),
+      render: (val) => <Tag color={TAG_COLOR_TYPE[val]}>{GOODS_CLASS_TYPE[val]}</Tag>,
+    },
+    {
       title: '商品信息',
-      fixed: 'center',
       dataIndex: 'goodsImg',
       render: (val, row) => (
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <PopImgShow url={val} width={60} />
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              flex: 1,
-              marginLeft: 5,
-            }}
-          >
-            <div style={{ display: 'flex' }}>
-              <Tag color={row.goodsType === 'single' ? 'orange' : 'magenta'}>
-                {GOODS_CLASS_TYPE[row.goodsType]}
-              </Tag>
-              <Ellipsis length={10} tooltip>
-                {row.goodsName}
-              </Ellipsis>
-            </div>
-            <div style={{ marginTop: 5 }}>{row[listProps.id]}</div>
+          <div style={{ marginLeft: 5 }}>
+            <Ellipsis length={10} tooltip>
+              {row.goodsName}
+            </Ellipsis>
+            <div>{row.goodsId}</div>
           </div>
         </div>
       ),
     },
     {
       title: '售价',
-      fixed: 'center',
-      dataIndex: 'oriPrice',
+      dataIndex: 'sellPrice',
+      align: 'right',
       show: ['specialGoods'].includes(subRuleType),
-      render: (val, row) => {
-        return <div>￥{Number(row.realPrice).toFixed(2)}</div>;
-      },
+      render: (val, row) => (
+        <div>
+          <div>
+            {
+              {
+                defaultMode: `¥${val}`,
+                cashMode: `¥${val}`,
+                self: `¥${val}+${row.sellBean}卡豆`,
+                free: '免费',
+              }[row.paymentModeType]
+            }
+          </div>
+          <div
+            style={{
+              textDecoration: 'line-through',
+              color: '#9e9e9e',
+            }}
+          >
+            ¥{row.oriPrice}
+          </div>
+          {row.paymentModeType !== 'free' && ELECTRICGOODS_SELL_PRICE_TYPE[row.paymentModeType]}
+        </div>
+      ),
     },
     {
       title: '售价',
-      dataIndex: 'paymentModeObject',
+      dataIndex: 'sellPriceRange',
+      align: 'right',
       show: ['commerceGoods'].includes(subRuleType),
-      render: (val = {}, row) => (
-        <div>
-          {val.type === 'self'
-            ? `${val.bean || 0} 卡豆 + ${val.cash || 0} 元`
-            : `${row.realPrice || 0} 元`}
-        </div>
-      ),
+      render: (val, row) => `${val}\n${ELECTRICGOODS_SELL_PRICE_TYPE[row.paymentModeType]}`,
     },
   ];
 
@@ -223,7 +237,7 @@ const GoodsDetail = (props) => {
     },
     specialGoods: {
       getColumns: specialGoodsColumns,
-      id: 'specialGoodsId',
+      id: 'goodsId',
     },
     reduceCoupon: {
       getColumns: ownerCouponColumns,
@@ -231,16 +245,15 @@ const GoodsDetail = (props) => {
     },
     commerceGoods: {
       getColumns: specialGoodsColumns,
-      id: 'specialGoodsId',
+      id: 'goodsId',
     },
   }[subRuleType];
 
   return (
     <>
       <DescriptionsCondition
-        formItems={[...formItems, ...itemsProps]}
         initialValues={detail}
-        // initialValues={{ ...detail, ...ruleDetailListObj }}
+        formItems={[...formItems, ...itemsProps]}
       ></DescriptionsCondition>
       {['merchant', 'group', 'specialGoods', 'reduceCoupon', 'commerceGoods'].includes(
         subRuleType,
@@ -251,7 +264,7 @@ const GoodsDetail = (props) => {
           columns={listProps.getColumns || []}
           tableSize={'small'}
           rowKey={(record) => `${record[listProps.id]}`}
-          params={{ ruleId: ruleId }}
+          params={{ ruleId }}
           dispatchType="couponRulesManage/fetchRuleDetailPage"
           list={ruleDetailListObj.ruleConditionsList}
           total={ruleDetailListObj.total}

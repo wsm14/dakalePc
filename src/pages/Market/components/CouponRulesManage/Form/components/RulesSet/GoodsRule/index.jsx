@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Input, Tag } from 'antd';
+import {
+  TAG_COLOR_TYPE,
+  GOODS_CLASS_TYPE,
+  CONPON_RULES_GOODS_TYPE,
+  ELECTRICGOODS_SELL_PRICE_TYPE,
+} from '@/common/constant';
+import { Radio } from '@/components/FormCondition/formModule';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import { GOODS_CLASS_TYPE, CONPON_RULES_GOODS_TYPE } from '@/common/constant';
-import GoodsRuleModal from './GoodsRuleModal';
+import GoodsSelectModal from '@/components/GoodsSelectModal';
 
 const FormItem = Form.Item;
 
@@ -13,8 +19,10 @@ const FormItem = Form.Item;
  * @param {String} ruleShowApi 选择的规则类型
  */
 const index = ({ form, ruleShowApi }) => {
+  const subRuleType = Form.useWatch('subRuleType', form); // 商品类型监听
+
   const [visible, setVisible] = useState(false); // 选择店铺Modal
-  const [shopData, setShopData] = useState({ subRuleType: 'specialGoods', list: [] }); // 暂存数据
+  const [shopData, setShopData] = useState([]); // 暂存数据
 
   useEffect(() => {
     form.setFieldsValue({ ruleConditions: [] });
@@ -23,57 +31,68 @@ const index = ({ form, ruleShowApi }) => {
   // 特惠商品/电商品 表头
   const specialGoodsColumns = [
     {
+      title: '类型',
+      dataIndex: 'productType',
+      width: 60,
+      align: 'center',
+      show: ['specialGoods'].includes(subRuleType),
+      render: (val) => <Tag color={TAG_COLOR_TYPE[val]}>{GOODS_CLASS_TYPE[val]}</Tag>,
+    },
+    {
       title: '商品信息',
-      fixed: 'left',
       dataIndex: 'goodsImg',
       render: (val, row) => (
-        <div style={{ display: 'flex' }}>
-          <PopImgShow url={val} />
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              flex: 1,
-              marginLeft: 5,
-            }}
-          >
-            <div style={{ display: 'flex' }}>
-              <Tag color={row.goodsType === 'single' ? 'orange' : 'magenta'}>
-                {GOODS_CLASS_TYPE[row.goodsType]}
-              </Tag>
-              <Ellipsis length={10} tooltip>
-                {row.goodsName}
-              </Ellipsis>
-            </div>
-            <div style={{ marginTop: 5 }}>{row[listProps.id]}</div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <PopImgShow url={val} width={60} />
+          <div style={{ marginLeft: 5 }}>
+            <Ellipsis length={10} tooltip>
+              {row.goodsName}
+            </Ellipsis>
+            <div>{row.goodsId}</div>
           </div>
         </div>
       ),
     },
     {
       title: '售价',
-      dataIndex: 'oriPrice',
-      show: ['specialGoods'].includes(shopData.subRuleType),
-      render: (val, row) => {
-        return <div>￥{Number(row.realPrice).toFixed(2)}</div>;
-      },
-    },
-    {
-      title: '售价',
-      dataIndex: 'paymentModeObject',
-      show: ['commerceGoods'].includes(shopData.subRuleType),
-      render: (val = {}, row) => (
+      dataIndex: 'sellPrice',
+      align: 'right',
+      show: ['specialGoods'].includes(subRuleType),
+      render: (val, row) => (
         <div>
-          {val.type === 'self'
-            ? `${val.bean || 0} 卡豆 + ${val.cash || 0} 元`
-            : `${row.realPrice || 0} 元`}
+          <div>
+            {
+              {
+                defaultMode: `¥${val}`,
+                cashMode: `¥${val}`,
+                self: `¥${val}+${row.sellBean}卡豆`,
+                free: '免费',
+              }[row.paymentModeType]
+            }
+          </div>
+          <div
+            style={{
+              textDecoration: 'line-through',
+              color: '#9e9e9e',
+            }}
+          >
+            ¥{row.oriPrice}
+          </div>
+          {row.paymentModeType !== 'free' && ELECTRICGOODS_SELL_PRICE_TYPE[row.paymentModeType]}
         </div>
       ),
     },
     {
+      title: '售价',
+      dataIndex: 'sellPriceRange',
+      align: 'right',
+      show: ['commerceGoods'].includes(subRuleType),
+      render: (val, row) => `${val}\n${ELECTRICGOODS_SELL_PRICE_TYPE[row.paymentModeType]}`,
+    },
+    {
       type: 'handle',
-      dataIndex: 'specialGoodsId',
+      dataIndex: 'goodsId',
+      width: 60,
       render: (val) => [
         {
           type: 'del',
@@ -91,14 +110,14 @@ const index = ({ form, ruleShowApi }) => {
       fixed: 'left',
       dataIndex: 'couponName',
       render: (val, row) => (
-        <div>
+        <>
           <div>
             <Ellipsis length={10} tooltip>
               {val}
             </Ellipsis>
           </div>
-          <div style={{ display: 'flex', marginTop: 5 }}>{`ID:${row.ownerCouponIdString}`}</div>
-        </div>
+          <div style={{ display: 'flex' }}>{`ID:${row.ownerCouponIdString}`}</div>
+        </>
       ),
     },
     {
@@ -120,68 +139,85 @@ const index = ({ form, ruleShowApi }) => {
     },
   ];
 
-  const handleDelect = (id) => {
-    const newList = shopData.list.filter((item) => item[listProps.id] !== id);
-    setShopData({ ...shopData, list: newList });
+  // 商品类型选择充值类型处理
+  const handleTypeSelectCheck = (e) => {
+    const typeVal = e.target.value;
+    if (['phoneBill', 'member'].includes(typeVal)) {
+      form.setFieldsValue({
+        remark: `已选${CONPON_RULES_GOODS_TYPE[typeVal]}`,
+        ruleConditions: [{ condition: 'all' }],
+      });
+    } else {
+      setShopData([]);
+      form.setFieldsValue({ ruleConditions: [{ condition: [] }] });
+    }
+  };
 
+  // 表格删除商品
+  const handleDelect = (id) => {
+    const newList = shopData.filter((item) => item.goodsId !== id);
+    setShopData(newList);
+    formGoodsData(newList);
+  };
+
+  // 商品处理完成form赋值
+  const formGoodsData = (list) => {
+    setShopData(list);
     form.setFieldsValue({
-      remark: ['phoneBill', 'member'].includes(shopData.subRuleType)
-        ? `已选${CONPON_RULES_GOODS_TYPE[shopData.subRuleType]}`
-        : `已选${newList.length}个${CONPON_RULES_GOODS_TYPE[shopData.subRuleType]}`,
-      ruleConditions: newList.map((item) => ({
-        condition: item[listProps.id],
-      })),
+      remark: `已选${list.length}个${CONPON_RULES_GOODS_TYPE[subRuleType]}`,
+      ruleConditions: list.map((item) => ({ condition: item.goodsId })),
     });
   };
 
-  const listProps = {
-    specialGoods: {
-      getColumns: specialGoodsColumns,
-      id: 'specialGoodsId',
-    },
-    reduceCoupon: {
-      getColumns: ownerCouponColumns,
-      id: 'ownerCouponIdString',
-    },
-    commerceGoods: {
-      getColumns: specialGoodsColumns,
-      id: 'specialGoodsId',
-    },
-  }[shopData.subRuleType];
+  const listColumns = {
+    specialGoods: specialGoodsColumns,
+    reduceCoupon: ownerCouponColumns,
+    commerceGoods: specialGoodsColumns,
+  }[subRuleType];
 
   return (
     <>
-      <FormItem label="指定商品" required>
-        <Button type="link" onClick={() => setVisible(true)}>
-          选择
-        </Button>
-        {shopData.list.length > 0
-          ? `（已选${shopData.list.length}个${CONPON_RULES_GOODS_TYPE[shopData.subRuleType]}）`
-          : ['phoneBill', 'member'].includes(shopData.subRuleType)
-          ? `（已选${CONPON_RULES_GOODS_TYPE[shopData.subRuleType]}）`
-          : ''}
+      <FormItem
+        label="商品类型"
+        name="subRuleType"
+        extra={
+          ['phoneBill', 'member'].includes(subRuleType) &&
+          `选择所有${CONPON_RULES_GOODS_TYPE[subRuleType]}商品参与`
+        }
+      >
+        <Radio select={CONPON_RULES_GOODS_TYPE} onChange={handleTypeSelectCheck}></Radio>
       </FormItem>
-      {['phoneBill', 'member'].includes(shopData.subRuleType) ? null : (
+      {/* 商品显示 */}
+      {['specialGoods', 'reduceCoupon', 'commerceGoods'].includes(subRuleType) && (
+        <FormItem label="指定商品" required>
+          <Button type="link" onClick={() => setVisible(true)}>
+            选择
+          </Button>
+          {shopData.length > 0
+            ? `（已选${shopData.length}个${CONPON_RULES_GOODS_TYPE[subRuleType]}）`
+            : ''}
+        </FormItem>
+      )}
+      {/* 商品显示 */}
+      {['specialGoods', 'reduceCoupon', 'commerceGoods'].includes(subRuleType) && (
         <TableDataBlock
           noCard={false}
-          columns={listProps.getColumns}
-          rowKey={(record) => `${record[listProps.id]}`}
-          list={shopData.list}
-          total={shopData.list.length}
+          list={shopData}
+          tableSize={'small'}
+          total={shopData.length}
+          columns={listColumns}
+          rowKey={(record) => `${record.goodsId}`}
         ></TableDataBlock>
       )}
       {/* 选择指定商品 */}
-      <GoodsRuleModal
-        form={form}
-        shopData={shopData}
-        setShopData={setShopData}
+      <GoodsSelectModal
         visible={visible}
+        showTag={[subRuleType]}
+        goodsValues={shopData}
+        onSumbit={({ list }) => formGoodsData(list)}
         onClose={() => setVisible(false)}
-      ></GoodsRuleModal>
+      ></GoodsSelectModal>
       <FormItem label="ruleConditions" hidden name="ruleConditions">
-        <Input />
-      </FormItem>
-      <FormItem label="subRuleType" hidden name="subRuleType">
         <Input />
       </FormItem>
       <FormItem label="remark" hidden name="remark">
