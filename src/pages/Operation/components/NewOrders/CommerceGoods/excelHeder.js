@@ -72,6 +72,11 @@ export default [
     dataIndex: 'createTime',
   },
   {
+    title: '备注',
+    dataIndex: 'orderDesc',
+    render: (val) => val?.remark || '-',
+  },
+  {
     title: '发货时间',
     dataIndex: 'orderLogistics',
     render: (val) => val?.deliveryTime || '-',

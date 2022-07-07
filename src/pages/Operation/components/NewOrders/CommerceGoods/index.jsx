@@ -201,6 +201,12 @@ const CommerceGoods = (props) => {
       ),
     },
     {
+      title: '备注',
+      align: 'center',
+      dataIndex: 'orderDesc',
+      render: (val) => val?.remark || '-',
+    },
+    {
       title: '物流状态',
       dataIndex: 'orderLogisticInfo',
       render: (val, row) => (row.status == '2' ? '' : val.logisticsCode ? '已发货' : '未发货'),
