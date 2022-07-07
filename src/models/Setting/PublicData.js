@@ -761,7 +761,7 @@ export default {
       const response = yield call(fetchGetSupplierManageList, {
         ...payload,
         status: 1,
-        accountStatus: 1,
+        // accountStatus: 1,
         limit: 50,
         page: 1,
       });
