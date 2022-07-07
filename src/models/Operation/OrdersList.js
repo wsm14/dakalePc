@@ -13,6 +13,7 @@ import {
   fetchOrderImmediateRefund,
   fetchSubLedger,
   fetchExportUndeliveredCommerceGoodsOrderList,
+  fetchGetUserAfterSalesFee,
 } from '@/services/OperationServices';
 
 export default {
@@ -217,6 +218,15 @@ export default {
         };
       });
       callback && callback(list);
+    },
+    // get 订单列表(新) - 获取退款详细信息
+    *fetchGetUserAfterSalesFee({ payload, callback }, { call }) {
+      const response = yield call(fetchGetUserAfterSalesFee, payload);
+      if (!response) return;
+      const { content } = response;
+      const { afterSalesFeeResp = {} } = content;
+
+      callback && callback(afterSalesFeeResp);
     },
   },
 };

@@ -10,7 +10,7 @@ import aliOssUpload from '@/utils/aliOssUpload';
 const OrderRefund = (props) => {
   const { visible = {}, onClose, getDetail, dispatch, loading } = props;
   const { show = false, detail = {} } = visible;
-  const { orderType, beanFee } = detail;
+  const { orderType, refundBean } = detail;
 
   const [form] = Form.useForm();
 
@@ -59,12 +59,12 @@ const OrderRefund = (props) => {
     },
     {
       label: '退款金额',
-      name: 'payPrice',
+      name: 'refundTotalFee',
       type: 'number',
       addonBefore: '￥',
       precision: 2,
       disabled: true,
-      extra: beanFee ? `包含${beanFee}卡豆` : null,
+      extra: refundBean ? `包含${refundBean}卡豆` : null,
     },
     {
       label: `补充描述`,
@@ -101,5 +101,5 @@ const OrderRefund = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['ordersList/fetchOrderRefundOwn'],
+  loading: loading.effects['ordersList/fetchOrderImmediateRefund'],
 }))(OrderRefund);
