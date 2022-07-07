@@ -536,6 +536,13 @@ export function fetchExportUndeliveredCommerceGoodsOrderList(params) {
   });
 }
 
+// get 订单列表(新) - 获取退款详细信息
+export function fetchGetUserAfterSalesFee(params) {
+  return request('/admin/order/refund/apply/getUserAfterSalesFee', {
+    params,
+  });
+}
+
 // 订单列表 end
 
 //退款列表

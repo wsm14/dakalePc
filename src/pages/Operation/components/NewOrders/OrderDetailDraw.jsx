@@ -19,7 +19,8 @@ import OrderRefund from './OrderRefund';
 import styles from './style.less';
 
 const OrderDetailDraw = (props) => {
-  const { visible, onClose, getDetail, childRef, total, tabkey, loading, dispatch } = props;
+  const { visible, onClose, getDetail, childRef, total, tabkey, loading, loadings, dispatch } =
+    props;
   const { detail = {}, show = false, index } = visible;
   const {
     status,
@@ -270,6 +271,23 @@ const OrderDetailDraw = (props) => {
     },
   ];
 
+  // 获取退款信息
+  const handleGetRefundInfo = () => {
+    const { userId, orderSn } = detail;
+    dispatch({
+      type: 'ordersList/fetchGetUserAfterSalesFee',
+      payload: {
+        orderSn,
+        userId,
+      },
+      callback: (detail) =>
+        setRefund({
+          show: true,
+          detail,
+        }),
+    });
+  };
+
   const modalProps = {
     title: '订单详情',
     visible: show,
@@ -284,20 +302,8 @@ const OrderDetailDraw = (props) => {
     footer: detail.status === '1' && tabkey != 'communityGoods' && (
       <Button
         type="primary"
-        onClick={() => {
-          const { userId, orderId, orderSn, payFee, beanFee } = detail;
-          setRefund({
-            show: true,
-            detail: {
-              userId,
-              orderId,
-              orderSn,
-              orderType: tabkey,
-              payPrice: (Number(payFee || 0) + Number(beanFee || 0) / 100).toFixed(2),
-              beanFee,
-            },
-          });
-        }}
+        onClick={handleGetRefundInfo}
+        loading={loadings.effects['ordersList/fetchGetUserAfterSalesFee']}
       >
         退款
       </Button>
@@ -509,4 +515,7 @@ const OrderDetailDraw = (props) => {
   );
 };
 
-export default connect()(OrderDetailDraw);
+export default connect(({ loading }) => ({
+  loading: loading.effects['ordersList/fetchGetOrderDetail'],
+  loadings: loading,
+}))(OrderDetailDraw);
