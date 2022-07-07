@@ -40,11 +40,10 @@ const PreferentialDrawer = (props) => {
       },
     });
   };
-
   // 确认提交数据 - add 新增 /  edit 修改所有数据 / again 重新发布
   const handleUpData = () => {
     form.validateFields().then((values) => {
-      const { goodsId } = detail;
+      const { goodsId, ownerId } = detail;
       const {
         goodsBriefImg,
         goodsDescImg,
@@ -90,7 +89,7 @@ const PreferentialDrawer = (props) => {
             ...other,
             richText: content, // 富文本内容
             ownerType: 'admin',
-            ownerId: '-1',
+            ownerId: ownerId || '-1',
             platformTagIds: platformTagIds.toString(),
             // displayFilterTags: displayFilterTags.toString(),
             relationOwnerIds: relationOwnerIds,
