@@ -384,7 +384,7 @@ const PreferentialSet = ({
           onClick={() => {
             setVisible(true);
           }}
-          // disabled={commonDisabled}
+          disabled={editDisabled}
         >
           选择店铺
         </Button>
@@ -397,7 +397,7 @@ const PreferentialSet = ({
         <MreSelectShow
           key="MreTable"
           form={form}
-          // disabled={commonDisabled}
+          disabled={editDisabled}
           rowKey="merchantId"
           columns={getColumns}
           {...mreList}
