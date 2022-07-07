@@ -174,59 +174,59 @@ const ShareDetail = (props) => {
   ];
 
   const formItemsData = [
-    {
-      label: '浏览量',
-      name: 'onlookersNum',
-    },
+    // {
+    //   label: '浏览量',
+    //   name: 'onlookersNum',
+    // },
     {
       label: '完播量',
       name: 'viewNum',
     },
-    {
-      label: '完播率',
-      // name: '',
-      render: (val, row) =>
-        row.onlookersNum === 0 ? '0' : `${((row.viewNum / row.onlookersNum) * 100).toFixed(2)}%`,
-    },
-    {
-      label: (
-        <QuestionTooltip
-          type="quest"
-          title="收藏数"
-          content="视频收藏数为仿真数据+真实数据"
-        ></QuestionTooltip>
-      ),
-      name: 'collectionSimulationNum',
-      render: (val, row) => `${val}+${row.collectionRealNum}`,
-    },
-    {
-      label: (
-        <QuestionTooltip
-          type="quest"
-          title="分享数"
-          content="视频分享数为仿真数据+真实数据"
-        ></QuestionTooltip>
-      ),
-      name: 'shareSimulationNum',
-      render: (val, row) => `${val}+${row.shareRealNum}`,
-    },
-    {
-      label: (
-        <QuestionTooltip
-          type="quest"
-          title="打赏卡豆数"
-          content="视频打赏数为仿真打赏卡豆数+真实打赏卡豆数"
-        ></QuestionTooltip>
-      ),
-      name: 'ugcSimulationNum',
-      show: tabKey !== '0' && tabKey !== '1',
-      render: (val, row) => `${val}+${row.ugcRewardRealNum}`,
-    },
-    {
-      label: '打赏人次',
-      name: 'ugcRewardPerson',
-      show: tabKey !== '0' && tabKey !== '1',
-    },
+    // {
+    //   label: '完播率',
+    //   // name: '',
+    //   render: (val, row) =>
+    //     row.onlookersNum === 0 ? '0' : `${((row.viewNum / row.onlookersNum) * 100).toFixed(2)}%`,
+    // },
+    // {
+    //   label: (
+    //     <QuestionTooltip
+    //       type="quest"
+    //       title="收藏数"
+    //       content="视频收藏数为仿真数据+真实数据"
+    //     ></QuestionTooltip>
+    //   ),
+    //   name: 'collectionSimulationNum',
+    //   render: (val, row) => `${val}+${row.collectionRealNum}`,
+    // },
+    // {
+    //   label: (
+    //     <QuestionTooltip
+    //       type="quest"
+    //       title="分享数"
+    //       content="视频分享数为仿真数据+真实数据"
+    //     ></QuestionTooltip>
+    //   ),
+    //   name: 'shareSimulationNum',
+    //   render: (val, row) => `${val}+${row.shareRealNum}`,
+    // },
+    // {
+    //   label: (
+    //     <QuestionTooltip
+    //       type="quest"
+    //       title="打赏卡豆数"
+    //       content="视频打赏数为仿真打赏卡豆数+真实打赏卡豆数"
+    //     ></QuestionTooltip>
+    //   ),
+    //   name: 'ugcSimulationNum',
+    //   show: tabKey !== '0' && tabKey !== '1',
+    //   render: (val, row) => `${val}+${row.ugcRewardRealNum}`,
+    // },
+    // {
+    //   label: '打赏人次',
+    //   name: 'ugcRewardPerson',
+    //   show: tabKey !== '0' && tabKey !== '1',
+    // },
     {
       label: '累计打赏卡豆数',
       name: 'rewardBeanSum',
