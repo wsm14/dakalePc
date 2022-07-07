@@ -204,7 +204,11 @@ const CommerceGoods = (props) => {
       title: '备注',
       align: 'center',
       dataIndex: 'orderDesc',
-      render: (val) => val?.remark || '-',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val?.remark || '-'}
+        </Ellipsis>
+      ),
     },
     {
       title: '物流状态',
