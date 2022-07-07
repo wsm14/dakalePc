@@ -14,7 +14,7 @@ import { checkCityName } from '@/utils/utils';
 
 const RegularDetail = (props) => {
   const { detail } = props;
-  const { productType, divisionParamInfoReq = {} } = detail;
+  const { productType, divisionParamInfoReq = {}, descType } = detail;
   const commissonList = Object.keys(divisionParamInfoReq);
   const RegularItems = [
     {
@@ -190,11 +190,41 @@ const RegularDetail = (props) => {
 
   const GoodDecItem = [
     {
+      label: '介绍类型',
+      name: 'descType',
+      render: (val) => {
+        return {
+          imgText: '图文',
+          richText: '富文本',
+        }[val];
+      },
+    },
+    {
       label: `${GOODS_CLASS_TYPE[productType]}介绍`,
       name: 'richText',
+      show: descType === 'richText',
       render: (val) => <div dangerouslySetInnerHTML={{ __html: val }}></div>,
     },
+    {
+      label: `${GOODS_CLASS_TYPE[productType]}介绍`,
+      name: 'goodsDesc',
+      show: descType === 'imgText',
+      type: 'textArea',
+    },
+    {
+      label: `${GOODS_CLASS_TYPE[productType]}介绍图片`,
+      name: 'goodsDescImg',
+      show: descType === 'imgText',
+      type: 'upload',
+    },
   ];
+  // const GoodDecItem = [
+  //   {
+  //     label: `${GOODS_CLASS_TYPE[productType]}介绍`,
+  //     name: 'richText',
+  //     render: (val) => <div dangerouslySetInnerHTML={{ __html: val }}></div>,
+  //   },
+  // ];
 
   return (
     <>

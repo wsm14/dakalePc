@@ -108,6 +108,9 @@ const PreferentialSet = ({
       //发布城市
       setAreaType(initialValues.availableAreas);
 
+      //图文介绍类型
+      setGoodsDescType(initialValues.descType);
+
       saveMreData({
         type: initialValues.relateType,
         settlerType: initialValues.settlerType,
@@ -885,17 +888,18 @@ const PreferentialSet = ({
       },
     },
 
+    // {
+    //   title: `设置${goodsTypeName}介绍`,
+    //   type: 'noForm',
+    //   formItem: (
+    //     <EditorForm
+    //       content={initialValues.richText}
+    //       editCallback={(val) => setContent(val)}
+    //     ></EditorForm>
+    //   ),
+    // },
     {
       title: `设置${goodsTypeName}介绍`,
-      type: 'noForm',
-      formItem: (
-        <EditorForm
-          content={initialValues.richText}
-          editCallback={(val) => setContent(val)}
-        ></EditorForm>
-      ),
-    },
-    {
       label: '选择介绍类型',
       type: 'radio',
       name: 'descType',
@@ -903,32 +907,24 @@ const PreferentialSet = ({
         imgText: '图文',
         richText: '富文本',
       },
-      hidden: true,
+      onChange: (e) => setGoodsDescType(e.target.value),
     },
-    // {
-    //   title: `设置${goodsTypeName}介绍`,
-    //   label: '选择介绍类型',
-    //   type: 'radio',
-    //   name: 'descType',
-    //   select: SPECIAL_DESC_TYPE,
-    //   onChange: (e) => setGoodsDescType(e.target.value),
-    // },
-    // {
-    //   label: `${goodsTypeName}介绍`,
-    //   type: 'textArea',
-    //   name: 'goodsDesc',
-    //   hidden: goodsDescType !== 'imgText',
-    //   rules: [{ required: false }],
-    //   maxLength: 200,
-    // },
-    // {
-    //   label: `${goodsTypeName}图片`,
-    //   name: 'goodsDescImg',
-    //   type: 'upload',
-    //   maxFile: 20,
-    //   hidden: goodsDescType !== 'imgText',
-    //   rules: [{ required: false }],
-    // },
+    {
+      label: `${goodsTypeName}介绍`,
+      type: 'textArea',
+      name: 'goodsDesc',
+      hidden: goodsDescType !== 'imgText',
+      rules: [{ required: false }],
+      maxLength: 200,
+    },
+    {
+      label: `${goodsTypeName}图片`,
+      name: 'goodsDescImg',
+      type: 'upload',
+      maxFile: 20,
+      hidden: goodsDescType !== 'imgText',
+      rules: [{ required: false }],
+    },
     {
       type: 'noForm',
       visible: goodsDescType === 'richText',
