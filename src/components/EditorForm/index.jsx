@@ -118,20 +118,21 @@ const EditorForm = ({
   };
 
   const editorCreate = () => {
-    const elemtb = refTool.current;
     const elem = refEdit.current;
-    editor = new Editor(elemtb, elem);
+    editor = new Editor(elem);
     editor.config.excludeMenus = TEXT_SET_TOOL; // 剔除菜单
     editor.config.uploadImgMaxSize = maxImgSize * 1024 * 1024; // 图片大小限制
     editor.config.pasteIgnoreImg = true; // 忽略粘贴内容中的图片
     editor.config.showLinkImg = false; // 隐藏“网络图片”tab
     editor.config.zIndex = 100; // 配置编辑区域的 z-index
+    editor.config.height = 550; // 设置编辑区域高度为 500px
     editor.config.uploadImgMaxLength = 20; // 上传图片数量
     editor.config.pasteFilterStyle = true; // 过滤掉复制文本的样式
     editor.config.pasteTextHandle = customhandle['pasteText']; // 赋值粘贴文本a标签替换
     editor.config.customUploadImg = customhandle['uploadImg']; // 自定义图片上传
     editor.config.customAlert = customhandle['alert']; // 自定义提示
     editor.config.onchange = customhandle['change']; // 富文本内容修改回调
+    editor.config.showFullScreen = true; // 配置全屏功能按钮是否展示
     editor.create(); // 初始化
     editor.txt.html(content); // 初始化富文本内容
     maxLength !== 0 && content && editor.change(); // 统计一次数值
@@ -143,9 +144,6 @@ const EditorForm = ({
 
   return (
     <div className={`${styles.editor} ${editClass}`}>
-      {/* 菜单区域 */}
-      <div ref={refTool} className={styles.toolbar} />
-      <div className={styles.padd} />
       {/* 编辑区域 */}
       <div ref={refEdit} className={`${styles.content} ${contentClass} ${maxTextError}`} />
       {/* 数值统计 */}
