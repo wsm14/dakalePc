@@ -71,10 +71,15 @@ const AddNewActivity = (props) => {
       ellipsis: true,
     },
     {
+      title: '邀请人数',
+      align: 'right',
+      dataIndex: 'activityBeginTimes',
+    },
+    {
       title: '活动时间',
-      align: 'center',
+      align: 'right',
       dataIndex: 'activityBeginTime',
-      render: (val, row) => (val ? `${val}~${row?.activityEndTime}` : '--'),
+      render: (val, row) => (val ? `${val}\n~${row?.activityEndTime}` : '--'),
     },
     {
       title: '活动城市',
@@ -82,6 +87,16 @@ const AddNewActivity = (props) => {
       dataIndex: 'cityCode',
       ellipsis: true,
       render: (val) => checkCityName(val),
+    },
+    {
+      title: '奖品类型',
+      align: 'center',
+      dataIndex: 'statdsus',
+    },
+    {
+      title: '奖品名称/ID',
+      align: 'center',
+      dataIndex: 'stadssdtus',
     },
     {
       title: '活动状态',
@@ -106,14 +121,12 @@ const AddNewActivity = (props) => {
       dataIndex: 'configFissionTemplateId',
       render: (val, record, index) => [
         {
-          // 下架
-          type: 'down',
+          type: 'down', // 下架
           visible: changeTime(record) !== 2,
           click: () => fetchMarketActivityCancel({ configFissionTemplateId: val }),
         },
         {
-          // 编辑
-          type: 'edit',
+          type: 'edit', // 编辑
           click: () => fetchAddNewDetail(index),
         },
       ],

@@ -1,24 +1,13 @@
 import React, { useState } from 'react';
-// import { notification } from 'antd';
 import { Form, Button } from 'antd';
-import { couponsDom, goodsDom } from './CouponFreeDom';
+import { commerceDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
 import BuyContactModal from './BuyContactModal';
 import GoodsSelectModal from './GoodsSelectModal';
 import FormList from './FormList';
-
 import './coupon.less';
 
 const ShareCoupon = (props) => {
-  const {
-    data,
-    // merchantIdKey = 'merchantIdStr',
-    // show = 'free',
-    // ownerType = 'merchant',
-    type,
-    onDel,
-    onOk,
-    form,
-  } = props;
+  const { data, type, onDel, onOk, form } = props;
 
   const [visibleContact, setVisibleContact] = useState(false); // 奖品权益商品选择
   const [visible, setVisible] = useState(false); // 特惠和权益商品多选
@@ -32,7 +21,7 @@ const ShareCoupon = (props) => {
   return (
     <>
       {type === 'goodsRight' && goodsName ? (
-        goodsDom(data, '', '', onDel)
+        commerceDom(data, '', '', onDel)
       ) : type === 'goodsRight' ? (
         <div
           className="share_Coupon share_add"
@@ -43,26 +32,14 @@ const ShareCoupon = (props) => {
           +
         </div>
       ) : (
-        <Form.List
-          name={type}
-          // rules={[
-          //   {
-          //     validator: async (_, names) => {
-          //       if (!names || names.length < 1) {
-          //         return Promise.reject(new Error('请至少选择1个商品'));
-          //       }
-          //     },
-          //   },
-          // ]}
-        >
+        <Form.List name={type}>
           {(fields, { remove, move }, { errors }) => {
-            // console.log(fields);
             return (
               <>
-                {fields.map((field, i) => (
+                {fields.map((field) => (
                   <FormList
                     type={type}
-                    key={field.fieldKey}
+                    key={field.key}
                     form={form}
                     fields={fields}
                     field={field}
