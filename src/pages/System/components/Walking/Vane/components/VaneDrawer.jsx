@@ -121,6 +121,13 @@ const VaneDrawer = (props) => {
       maxLength: 6,
     },
     {
+      label: '显示类型',
+      name: 'aaaa',
+      type: 'select',
+      select: [1, 2, 3],
+      visible: tabKey == 'fuliEarnGoldCoins',
+    },
+    {
       label: '显示图标',
       type: 'upload',
       name: 'image',
@@ -131,7 +138,10 @@ const VaneDrawer = (props) => {
         sixPalaceLattice: '请上传226*176尺寸png、jpeg格式图片',
         beanDeductionZone: '请上传202*250尺寸png、jpeg格式图片',
         fieldResource: '请上传298*208尺寸png、jpeg格式图片',
-        userParticipation:''
+        userParticipation: '',
+        fuliEarnGoldCoins: '',
+        fuliInvitationActivities: '',
+        fuliLifeService: '',
       }[tabKey],
       imgRatio: {
         windVane: VANE_ICON,
@@ -139,7 +149,10 @@ const VaneDrawer = (props) => {
         sixPalaceLattice: VANE_SIX_ICON,
         beanDeductionZone: VANE_BEANDEDUCTION_ICON,
         fieldResource: VANE_FIELD_ICON,
-        userParticipation:''
+        userParticipation: '',
+        fuliEarnGoldCoins: '',
+        fuliInvitationActivities: '',
+        fuliLifeService: '',
       }[tabKey],
     },
     {

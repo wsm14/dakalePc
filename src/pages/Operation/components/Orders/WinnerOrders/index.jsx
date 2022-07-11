@@ -7,7 +7,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import GameSignDrawer from './GameSignDrawer';
 import excelProps from './ExcelProps';
 
-const WinnerOrders = ({ gameSignList, loading, dispatch }) => {
+const WinnerOrders = ({ gameSignList, loading, dispatch, tabkey }) => {
   const tableRef = useRef();
 
   // 设置 发货 详情（查看物流）

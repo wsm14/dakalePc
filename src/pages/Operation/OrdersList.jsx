@@ -5,11 +5,21 @@ import CodeOrders from './components/Orders/CodeOrders';
 import GoodsOrders from './components/Orders/GoodsOrders';
 import OtherOrders from './components/Orders/OtherOrders';
 import VirtualOrders from './components/Orders/VirtualOrders';
-import CommerceGoods from './components/Orders/CommerceGoods';
+// import CommerceGoods from './components/Orders/CommerceGoods';
 import CommunityGoods from './components/Orders/CommunityGoods';
 import WinnerOrders from './components/Orders/WinnerOrders';
+import SpecialGoods from './components/NewOrders/GoodsOrders';
+import CommerceGoods from './components/NewOrders/CommerceGoods';
 
 const tabList = [
+  {
+    key: 'specialGoods',
+    tab: '特惠订单',
+  },
+  {
+    key: 'commerceGoods',
+    tab: '电商订单',
+  },
   {
     key: 'goods',
     tab: '有价券订单',
@@ -40,16 +50,18 @@ const tabList = [
   },
   {
     key: 'winnerOrders',
-    tab: '中奖订单',
+    tab: '中奖商品',
   },
 ];
 
 const OrdersList = () => {
-  const [tabkey, setTabKey] = useState('goods');
+  const [tabkey, setTabKey] = useState('specialGoods');
 
   const listProps = { tabkey };
 
   const contentList = {
+    specialGoods: <SpecialGoods {...listProps}></SpecialGoods>,
+    commerceGoods: <CommerceGoods {...listProps}></CommerceGoods>,
     goods: <GoodsOrders {...listProps}></GoodsOrders>,
     // commerceGoods: <CommerceGoods {...listProps}></CommerceGoods>,
     scan: <CodeOrders {...listProps}></CodeOrders>,
@@ -57,7 +69,7 @@ const OrdersList = () => {
     rightCoupon: <OtherOrders {...listProps}></OtherOrders>,
     virtualProduct: <VirtualOrders {...listProps}></VirtualOrders>,
     communityGoods: <CommunityGoods {...listProps}></CommunityGoods>,
-    winnerOrders: <WinnerOrders></WinnerOrders>,
+    winnerOrders: <WinnerOrders {...listProps}></WinnerOrders>,
   };
 
   return (
