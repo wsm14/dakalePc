@@ -641,17 +641,6 @@ const PreferentialSet = ({
         return tooLate;
       },
       onCalendarChange: (val) => saveMreData({ disabledDate: val }),
-      addRules: [
-        {
-          validator: (rule, time) => {
-            const dates = form.getFieldValue('activityStartDate');
-            if (dates && time && time[1] < dates[1]) {
-              return Promise.reject('有效期结束时间必须大于活动时间');
-            }
-            return Promise.resolve();
-          },
-        },
-      ],
     },
     {
       label: '领取后生效天数',
