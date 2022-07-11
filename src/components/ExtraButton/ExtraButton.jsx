@@ -33,6 +33,7 @@ const ExtraButton = ({ list = [], children }) => {
           <ExcelButton
             dispatchType={dispatch}
             dispatchData={data}
+            disabled={disabled}
             key={auth}
             exportProps={exportProps}
           ></ExcelButton>

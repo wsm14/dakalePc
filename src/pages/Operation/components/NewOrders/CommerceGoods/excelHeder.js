@@ -87,6 +87,11 @@ export default [
     render: (val) => ORDER_STATUS[val],
   },
   {
+    title: '物流状态',
+    dataIndex: 'orderLogisticInfo',
+    render: (val, row) => (row.status == '2' ? '' : val.logisticsCode ? '已发货' : '未发货'),
+  },
+  {
     title: '收货信息',
     dataIndex: 'orderLogisticInfo',
     render: (val) =>

@@ -313,15 +313,23 @@ const CommerceGoods = (props) => {
     });
   };
 
-  const extraBtn = ({ get }) => [
-    {
-      // 导出所有未发货的电商订单(暂时)
-      type: 'excel',
-      dispatch: 'ordersList/fetchExportUndeliveredCommerceGoodsOrderList',
-      data: { ...get() },
-      exportProps: { header: excelHeder },
-    },
-  ];
+  const extraBtn = ({ get }) => {
+    const { createBeginTime = '' } = get();
+    let btnStates = false;
+    if (createBeginTime == '') {
+      btnStates = true;
+    }
+    return [
+      {
+        // 导出所有未发货的电商订单(暂时)
+        type: 'excel',
+        disabled: btnStates,
+        dispatch: 'ordersList/fetchPageListOrdersList',
+        data: { orderType: 'commerceGoods', page: 1, limit: 1000, ...get() },
+        exportProps: { header: excelHeder },
+      },
+    ];
+  };
   return (
     <>
       <TableDataBlock
