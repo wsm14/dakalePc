@@ -5,17 +5,16 @@ import { ACTIVITY_STATUS } from '@/common/constant';
 import { checkCityName } from '@/utils/utils';
 import CITYJSON from '@/common/cityJson';
 import TableDataBlock from '@/components/TableDataBlock';
+import ModalDataList from './components/AddNewActivity/HelpModalDataList';
 import AddNewActivitySet from './components/AddNewActivity/AddNewActivitySet';
 
 // 拉新活动
 const AddNewActivity = (props) => {
   const { addNewList, loading, dispatch } = props;
 
-  // console.log('addNewList', addNewList);
-
   const childRef = useRef();
   const [visible, setVisible] = useState(false); // 新增+编辑
-  // const [state, setstate] = useState(0);
+  const [visibleData, setVisibleData] = useState(false); // 数据表格
 
   const changeTime = (row) => {
     let { activityBeginTime, activityEndTime } = row;
@@ -132,7 +131,7 @@ const AddNewActivity = (props) => {
         {
           type: 'data', // 数据
           visible: changeTime(row) > 0,
-          click: () => fetchAddNewDetail(index),
+          click: () => setVisibleData({ show: true, row }),
         },
       ],
     },
@@ -197,12 +196,14 @@ const AddNewActivity = (props) => {
         childRef={childRef}
         onClose={() => setVisible(false)}
       ></AddNewActivitySet>
+      {/* 数据表格 */}
+      <ModalDataList visible={visibleData} onClose={() => setVisibleData(false)}></ModalDataList>
     </>
   );
 };
 
 export default connect(({ addNewActivity, loading }) => ({
-  addNewList: addNewActivity,
+  addNewList: addNewActivity.list,
   loading:
     loading.effects['addNewActivity/fetchGetList'] ||
     loading.effects['addNewActivity/fetchMarketAddNewActivityDetail'],

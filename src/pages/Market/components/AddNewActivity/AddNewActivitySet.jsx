@@ -257,7 +257,7 @@ const AddNewActivitySet = (props) => {
     title: `新增活动`,
     visible: show,
     onClose,
-    width: 800,
+    width: 750,
     afterCallBack: () => {
       setColor(detail.backgroundColor);
       setSelectGoodsData(goodsRightInfo);

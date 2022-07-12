@@ -13,8 +13,8 @@ export default {
   namespace: 'addNewActivity',
 
   state: {
-    list: [],
-    // radioType: { user: {}, merchant: {}, weChat: {} },
+    list: { list: [] },
+    dataList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -27,6 +27,18 @@ export default {
   },
 
   effects: {
+    // 获取裂变模板-列表
+    *fetchGetList({ payload }, { call, put }) {
+      const response = yield call(fetchMarketAddNewActivity, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          list: { list: content.configFissionTemplateDTOS },
+        },
+      });
+    },
     // 裂变拉新活动编辑
     *fetchMarketAddNewActivityEdit({ payload, callback }, { call }) {
       const response = yield call(fetchMarketAddNewActivityEdit, payload);
@@ -57,25 +69,16 @@ export default {
       });
       callback();
     },
-    // 获取裂变模板-列表
-    *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchMarketAddNewActivity, payload);
-      if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          list: content.configFissionTemplateDTOS,
-        },
-      });
-    },
     // 裂变拉新活动详情
     *fetchMarketAddNewActivityDetail({ payload, callback }, { call }) {
       const response = yield call(fetchMarketAddNewActivityDetail, payload);
       if (!response) return;
       const { content } = response;
-      const { prizeRightGoodsIds, rightGoodsIds, specialGoodsIds } =
-        content.configFissionTemplateDTO;
+      const {
+        prizeRightGoodsIds,
+        rightGoodsIds,
+        specialGoodsIds,
+      } = content.configFissionTemplateDTO;
       let prizeRightGoodsDetail = {};
       if (prizeRightGoodsIds) {
         prizeRightGoodsDetail = yield call(fetchSpecialGoodsDetail, {
@@ -96,14 +99,23 @@ export default {
         });
       }
 
-      // console.log('1', prizeRightGoodsDetail?.content?.specialGoodsInfo);
-      // console.log('2', rightGoodsDetail.content.activityGoodsDTOS);
-      // console.log('3', specialGoodsDetail.content.activityGoodsDTOS);
       callback({
         ...content.configFissionTemplateDTO,
         goodsRightInfo: prizeRightGoodsDetail?.content?.specialGoodsInfo || {},
         specialGoods: specialGoodsDetail?.content?.activityGoodsDTOS || [],
         rightGoods: rightGoodsDetail?.content?.activityGoodsDTOS || [],
+      });
+    },
+    // 裂变拉新数据列表
+    *fetchMarketAddNewActivityDataList({ payload }, { call, put }) {
+      const response = yield call(fetchMarketAddNewActivityDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          dataList: { list: content.configFissionTemplateDTOS },
+        },
       });
     },
   },
