@@ -106,9 +106,11 @@ export default (function (list, id) {
     )}; background-color: #FFFFFF">
 ${source
   .map((item, index) => {
-    const cellDom = `<div class="handleGoNative"  data-key="goodsId,ownerId" data-goodsId=${
+    const cellDom = `<div class="handleGoNative"  data-key="goodsId,ownerId,activityType" data-goodsId=${
       item.goodsId
-    } data-ownerId=${item.ownerId} data-path="commerceGoods" data-linkType="inside" style="margin-bottom: ${
+    } data-ownerId=${
+      item.ownerId
+    } data-activityType="commerceGoods" data-path="commerceGoods" data-linkType="inside" style="margin-bottom: ${
       source.length - 1 === index ? 0 : vw(12)
     };border-radius: ${vw(
       4,
