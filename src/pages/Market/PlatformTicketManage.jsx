@@ -4,9 +4,10 @@ import moment from 'moment';
 import { Tag } from 'antd';
 import {
   COUPON_STATUS,
+  TAG_COLOR_TYPE,
+  COUPON_GIVE_TYPE,
   PLATFORM_TICKET_TYPE,
   PLATFORM_TICKET_SCENE,
-  COUPON_GIVE_TYPE,
 } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -69,15 +70,15 @@ const PlatformManage = (props) => {
     {
       title: '券类型/名称/编号',
       fixed: 'left',
-      dataIndex: 'couponName',
+      dataIndex: 'useScenesType',
       render: (val, row) => (
         <div>
           <div style={{ display: 'flex', marginTop: 5 }}>
-            <Tag style={{ borderRadius: 11 }} color="#87d068">{`${
-              PLATFORM_TICKET_TYPE[row.useScenesType][row.classType]
+            <Tag style={{ borderRadius: 11 }} color={TAG_COLOR_TYPE[val][row.classType]}>{`${
+              PLATFORM_TICKET_TYPE[val][row.classType]
             }`}</Tag>
             <Ellipsis length={10} tooltip>
-              {val}
+              {row.couponName}
             </Ellipsis>
           </div>
           <div style={{ color: '#ccc' }}>{row.platformCouponId}</div>

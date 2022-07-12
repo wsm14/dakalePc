@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Form, Button } from 'antd';
@@ -13,14 +13,19 @@ import styles from './style.less';
 const AddNewActivitySet = (props) => {
   const { dispatch, childRef, visible, onClose, loading } = props;
   const { show = false, type, detail = { rightGoods: [], prizeType: 'bean' } } = visible;
-  const { configFissionTemplateId, goodsRightInfo } = detail;
+  const { configFissionTemplateId, goodsRightInfo = {} } = detail;
 
   const [form] = Form.useForm();
   const prizeTypes = Form.useWatch('prizeType', form) || 'bean'; // 奖品类型
+  const availableAreas = Form.useWatch('availableAreas', form) || 'all'; // 活动城市类型
 
   const [color, setColor] = useState(''); //  背景色状态
+  const [selectGoodsData, setSelectGoodsData] = useState({}); // 商品信息
   const [displayColorPicker, setDisplayColorPicker] = useState(false); //  背景色选择面板状态
-  const [couponData, setCouponData] = useState({}); // 奖品权益商品的信息
+
+  useEffect(() => {
+    setSelectGoodsData({});
+  }, [prizeTypes]);
 
   // 新增活动
   const fetchAddNewActivityAdd = () => {
@@ -55,7 +60,7 @@ const AddNewActivitySet = (props) => {
           backgroundColor: color,
           prizeBean: Number(prizeBean) || undefined,
           issuedQuantity: Number(issuedQuantity) || undefined,
-          prizeRightGoodsIds: couponData?.specialGoodsId || undefined,
+          prizeRightGoodsIds: selectGoodsData?.specialGoodsId || undefined,
           activityBeginTime: moment(time[0]).format('YYYY-MM-DD HH:mm'),
           activityEndTime: moment(time[1]).format('YYYY-MM-DD HH:mm'),
           mainImg: mImg.toString(),
@@ -78,9 +83,16 @@ const AddNewActivitySet = (props) => {
   const formItems = [
     {
       label: '活动城市',
+      name: 'availableAreas',
+      type: 'radio',
+      select: { all: '全国', city: '指定城市' },
+    },
+    {
+      label: '活动城市',
       name: 'cityCode',
       type: 'select',
       disabled: type === 'edit',
+      visible: availableAreas === 'city',
       select: CITYJSON.filter((item) => item.level === '2'),
       fieldNames: { label: 'name', value: 'id' },
     },
@@ -212,14 +224,14 @@ const AddNewActivitySet = (props) => {
       visible: prizeTypes === 'bean',
     },
     {
-      label: '电商品',
+      label: '商品',
       required: true,
       type: 'formItem',
-      visible: prizeTypes === 'commerceGoods',
+      visible: ['commerceGoods', 'platformCoupon'].includes(prizeTypes),
       addRules: [
         {
           validator: () => {
-            if (!couponData.specialGoodsId) {
+            if (!selectGoodsData.specialGoodsId) {
               return Promise.reject(`请选择商品`);
             }
             return Promise.resolve();
@@ -228,11 +240,10 @@ const AddNewActivitySet = (props) => {
       ],
       formItem: (
         <ShareCoupon
-          type="goodsRight"
-          data={couponData}
-          form={form}
-          onDel={() => setCouponData({})}
-          onOk={(free) => setCouponData(free)}
+          type={prizeTypes}
+          data={selectGoodsData}
+          onDel={() => setSelectGoodsData({})}
+          onOk={(data) => setSelectGoodsData(data)}
         ></ShareCoupon>
       ),
     },
@@ -249,10 +260,10 @@ const AddNewActivitySet = (props) => {
     width: 800,
     afterCallBack: () => {
       setColor(detail.backgroundColor);
-      setCouponData(goodsRightInfo);
+      setSelectGoodsData(goodsRightInfo);
     },
     closeCallBack: () => {
-      setCouponData({});
+      setSelectGoodsData({});
       form.resetFields();
     },
     footer: (

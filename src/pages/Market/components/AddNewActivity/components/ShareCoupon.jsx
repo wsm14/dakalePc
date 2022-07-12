@@ -1,80 +1,38 @@
 import React, { useState } from 'react';
-import { Form, Button } from 'antd';
-import { commerceDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
-import BuyContactModal from './BuyContactModal';
-import GoodsSelectModal from './GoodsSelectModal';
-import FormList from './FormList';
-import './coupon.less';
+import { commerceDom, platformCouponsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
+import GoodsSelectModal from '@/components/GoodsSelectModal';
+import './index.less';
 
 const ShareCoupon = (props) => {
-  const { data, type, onDel, onOk, form } = props;
+  const { data, type, onDel, onOk } = props;
 
-  const [visibleContact, setVisibleContact] = useState(false); // 奖品权益商品选择
-  const [visible, setVisible] = useState(false); // 特惠和权益商品多选
+  const [visible, setVisible] = useState(false); // 特惠和权益商品选择
 
-  const {
-    // 商品
-    goodsName,
-  } = data || {};
+  const { goodsId } = data || {};
 
-  // 券
+  const showDom =
+    type == 'commerceGoods'
+      ? commerceDom(data, '', '', onDel)
+      : platformCouponsDom(data, '', '', onDel);
+
   return (
     <>
-      {type === 'goodsRight' && goodsName ? (
-        commerceDom(data, '', '', onDel)
-      ) : type === 'goodsRight' ? (
-        <div
-          className="share_Coupon share_add"
-          onClick={() => {
-            setVisibleContact(true);
-          }}
-        >
+      {goodsId ? (
+        showDom
+      ) : (
+        <div className="share_Coupon share_add" onClick={() => setVisible(true)}>
           +
         </div>
-      ) : (
-        <Form.List name={type}>
-          {(fields, { remove, move }, { errors }) => {
-            return (
-              <>
-                {fields.map((field) => (
-                  <FormList
-                    type={type}
-                    key={field.key}
-                    form={form}
-                    fields={fields}
-                    field={field}
-                    remove={remove}
-                    move={move}
-                  ></FormList>
-                ))}
-                <Form.ErrorList errors={errors} />
-                <Form.Item>
-                  <Button disabled={fields.length === 50} block onClick={() => setVisible(true)}>
-                    {fields.length} / {50} 选择商品
-                  </Button>
-                </Form.Item>
-              </>
-            );
-          }}
-        </Form.List>
       )}
-      {type === 'goodsRight' ? (
-        //  奖品权益商品选择
-        <BuyContactModal
-          typeGoods={type}
-          visible={visibleContact}
-          onOk={onOk}
-          onClose={() => setVisibleContact(false)}
-        ></BuyContactModal>
-      ) : (
-        //  特惠商品、权益商品
-        <GoodsSelectModal
-          typeGoods={type}
-          form={form}
-          visible={visible}
-          onClose={() => setVisible(false)}
-        ></GoodsSelectModal>
-      )}
+      <GoodsSelectModal
+        showTag={[type]}
+        visible={visible}
+        goodsValues={[data]}
+        selectType="radio"
+        searchParams={{ useScenesType: 'goodsBuy,virtual,commerce' }}
+        onSumbit={({ list }) => onOk(list[0])}
+        onClose={() => setVisible(false)}
+      ></GoodsSelectModal>
     </>
   );
 };

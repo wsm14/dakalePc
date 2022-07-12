@@ -27,19 +27,19 @@ export const TAG_COLOR_TYPE = {
     universal: '#87d068', // 商品通用券
     category: '#2db7f5', // 行业商品券
     merchant: '#108ee9', // 店铺商品券
-    goods: '#f50', // 指定商品券
+    goods: '#fd9c6d', // 指定商品券
   },
   // scan: '扫码',
   virtual: {
-    universal: '#a85bad', // 虚拟通用券
-    goods: '#bfa4c1', // 指定虚拟券
+    universal: '#ca61d1', // 虚拟通用券
+    goods: '#841c8b', // 指定虚拟券
   },
   commerce: {
     universal: '#6897ff', // 电商通用券
     goods: '#994646', // 指定电商券,
   },
   community: {
-    universal: '#ffa8a8',
+    universal: '#df4040',
     // goods: '指定团购券',
   },
 };

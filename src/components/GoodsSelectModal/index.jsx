@@ -59,10 +59,17 @@ const GoodsSelectModal = (props) => {
     if (visible) {
       const showTab = tabPaneList.filter((i) => (showTag || allTag).includes(i.key));
       showTab.length && setTabKey(showTab[0].key);
-      const newData = goodsValues.filter((i) => i);
+      const newData = goodsValues.filter((i) => {
+        if (typeof i === 'object') {
+          return !JSON.stringify(i) === '{}';
+        } else return i;
+      });
       // 数据还原
       if (newData && newData.length) {
-        setSelectItem({ keys: newData.map((i) => i.goodsId || i[idKey] || i), list: newData });
+        setSelectItem({
+          keys: newData.map((i) => i.goodsId || i[idKey] || i),
+          list: newData,
+        });
       }
       // 默认搜索值
       if (Object.keys(searchParams).length) setSearchValue({ ...searchParams, page: 1 });
