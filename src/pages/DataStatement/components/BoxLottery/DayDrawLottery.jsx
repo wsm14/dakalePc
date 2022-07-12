@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from 'antd';
-import { connect } from 'umi';
-import GameBean from './GameBean';
-import DayDrawOther from './DayDrawOther';
+import GameBean from './components/GameBean';
+import DayDrawOther from './components/DayDrawOther';
 
 const tabList = [
   {
@@ -25,11 +24,16 @@ const DayDrawLottery = ({ tabkey }) => {
   }, [tabkey]);
   const contentList = {
     0: <GameBean {...listProps}></GameBean>,
-    1:  <DayDrawOther {...listProps}></DayDrawOther>,
+    1: <DayDrawOther {...listProps}></DayDrawOther>,
   };
   return (
     <>
-      <Card tabList={tabList} activeTabKey={twoTabkey} onTabChange={(key) => setTwoTabKey(key)}>
+      <Card
+        bordered={false}
+        tabList={tabList}
+        activeTabKey={twoTabkey}
+        onTabChange={(key) => setTwoTabKey(key)}
+      >
         {contentList[twoTabkey]}
       </Card>
     </>

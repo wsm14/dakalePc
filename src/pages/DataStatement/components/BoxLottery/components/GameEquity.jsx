@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { connect } from 'umi';
-import { GAME_SIGN_STATUS, GAME_FREE_STATUS, GAME_SIGN_PACKAGE_TYPE } from '@/common/constant';
+import { GAME_SIGN_PACKAGE_TYPE } from '@/common/constant';
 import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
-import excelProps from './components/GameSign/ExcelPropsEquity';
+import excelProps from './GameSign/ExcelPropsEquity';
 
 const GameSign = ({ gameEquityList, loading, tabkey, twoTabkey }) => {
   const twoType = {
@@ -107,22 +107,20 @@ const GameSign = ({ gameEquityList, loading, tabkey, twoTabkey }) => {
   ];
 
   return (
-    <>
-      <TableDataBlock
-        order
-        firstFetch={false}
-        noCard={false}
-        btnExtra={btnList}
-        cRef={tableRef}
-        loading={loading}
-        columns={getColumns}
-        searchItems={searchItems}
-        rowKey={(record) => `${record.gameRecordId}`}
-        params={{ gameName: twoType[tabkey] }}
-        dispatchType="boxLottery/fetchListUserPackageManagementBean"
-        {...gameEquityList}
-      ></TableDataBlock>
-    </>
+    <TableDataBlock
+      order
+      firstFetch={false}
+      noCard={false}
+      btnExtra={btnList}
+      cRef={tableRef}
+      loading={loading}
+      columns={getColumns}
+      searchItems={searchItems}
+      rowKey={(record) => `${record.gameRecordId}`}
+      params={{ gameName: twoType[tabkey] }}
+      dispatchType="boxLottery/fetchListUserPackageManagementBean"
+      {...gameEquityList}
+    ></TableDataBlock>
   );
 };
 export default connect(({ boxLottery, loading }) => ({

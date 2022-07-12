@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Card } from 'antd';
 import BoxLotteryBean from './components/BoxLottery/BoxLotteryBean';
 import GameType from './components/BoxLottery/GameType';
+import HelpFreeList from './components/BoxLottery/HelpFreeList';
 import DayDrawLottery from './components/BoxLottery/DayDrawLottery';
 
 const tabList = [
@@ -33,6 +34,10 @@ const tabList = [
     key: 'gameFarm',
     tab: '卡豆农场',
   },
+  {
+    key: 'helpFree',
+    tab: '助力免单',
+  },
 ];
 const BoxLottery = () => {
   const [tabkey, setTabKey] = useState('boxLotteryBean');
@@ -47,14 +52,18 @@ const BoxLottery = () => {
     dailyLuckDraw: <DayDrawLottery {...listProps}></DayDrawLottery>,
     gameGather: <GameType {...listProps}></GameType>,
     gameFarm: <GameType {...listProps}></GameType>,
+    helpFree: <HelpFreeList {...listProps}></HelpFreeList>,
   };
 
   return (
-    <>
-      <Card tabList={tabList} activeTabKey={tabkey} onTabChange={(key) => setTabKey(key)}>
-        {contentList[tabkey]}
-      </Card>
-    </>
+    <Card
+      tabList={tabList}
+      bodyStyle={{ padding: 0, paddingTop: 1 }}
+      activeTabKey={tabkey}
+      onTabChange={(key) => setTabKey(key)}
+    >
+      {contentList[tabkey]}
+    </Card>
   );
 };
 export default BoxLottery;

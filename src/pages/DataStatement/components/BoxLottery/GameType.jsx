@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from 'antd';
 import { connect } from 'umi';
-import GameBean from './GameBean';
-import GameEquity from './GameEquity';
+import GameBean from './components/GameBean';
+import GameEquity from './components/GameEquity';
 
 const tabList = [
   {
@@ -28,11 +28,14 @@ const GameType = ({ tabkey }) => {
     1: tabkey !== 'mark' && <GameEquity {...listProps}></GameEquity>,
   };
   return (
-    <>
-      <Card tabList={tabList} activeTabKey={twoTabkey} onTabChange={(key) => setTwoTabKey(key)}>
-        {contentList[twoTabkey]}
-      </Card>
-    </>
+    <Card
+      tabList={tabList}
+      bordered={false}
+      activeTabKey={twoTabkey}
+      onTabChange={(key) => setTwoTabKey(key)}
+    >
+      {contentList[twoTabkey]}
+    </Card>
   );
 };
 export default connect(({ boxLottery, loading }) => ({
