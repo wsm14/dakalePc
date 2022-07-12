@@ -126,6 +126,7 @@ const VaneDrawer = (props) => {
       type: 'select',
       select: [1, 2, 3],
       visible: tabKey == 'fuliEarnGoldCoins',
+      show: tabKey == 'fuliEarnGoldCoins',
     },
     {
       label: '显示图标',
