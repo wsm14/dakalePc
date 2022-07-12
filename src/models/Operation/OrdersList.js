@@ -117,7 +117,7 @@ export default {
       callback && callback();
     },
     // get 订单列表 - 列表(新)
-    *fetchPageListOrdersList({ payload }, { call, put }) {
+    *fetchPageListOrdersList({ payload, callback }, { call, put }) {
       const response = yield call(fetchPageListOrdersList, payload);
       if (!response) return;
       const { content } = response;
@@ -145,6 +145,7 @@ export default {
           },
         },
       });
+      callback && callback(list);
     },
     // get 订单列表 - 详情（新）
     *fetchGetOrderDetail({ payload, callback }, { call, put }) {

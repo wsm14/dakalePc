@@ -16,6 +16,7 @@ import exportExcel from '@/utils/exportExcel';
  */
 const ExcelButton = (props) => {
   const {
+    disabled,
     auth = 'exportList',
     dispatchType = 'baseData/fetchImportExcel',
     dispatchData,
@@ -40,6 +41,7 @@ const ExcelButton = (props) => {
       <Tooltip placement="top" title={'导出excel'}>
         <Button
           type="primary"
+          disabled={disabled}
           className="dkl_green_btn"
           icon={<FileExcelOutlined />}
           onClick={() => fetchGetExcel()}
