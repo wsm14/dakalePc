@@ -171,7 +171,10 @@ const UserListComponent = (props) => {
         onClose={() => setVisible(false)}
       ></UserDetailShow>
       {/* 券包详情 */}
-      <VoucherPackage visible={visibleCoupon}></VoucherPackage>
+      <VoucherPackage
+        visible={visibleCoupon}
+        onClose={() => setVisibleCoupon(false)}
+      ></VoucherPackage>
     </>
   );
 };

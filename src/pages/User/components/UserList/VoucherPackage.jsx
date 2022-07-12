@@ -5,7 +5,7 @@ import { PLATFORM_TICKET_SCENE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 
 function VoucherPackage(props) {
-  const { loading, visible, onClose } = props;
+  const { loading, visible, onClose, couponList } = props;
   const { show = false, detail = {} } = visible;
 
   // 搜索参数
@@ -84,14 +84,16 @@ function VoucherPackage(props) {
         searchItems={searchItems}
         loading={loading}
         columns={getColumns}
-        // rowKey={(record) => `${record.blindBoxHelpId}`}
-        // dispatchType="assistanceList/fetchAssistanceDetail"
-        {...{ list: [] }}
+        params={{ aa: 'aa' }}
+        rowKey={(record) => `${record.blindBoxHelpId}`}
+        dispatchType="userList/fetchCouponInfoGetList"
+        {...couponList}
       ></TableDataBlock>
     </Modal>
   );
 }
 
-export default connect(({ loading }) => ({
+export default connect(({ loading, userList }) => ({
+  couponList: userList.couponList,
   loading: loading.models.redEnvelopes,
 }))(VoucherPackage);
