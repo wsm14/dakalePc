@@ -119,14 +119,19 @@ const AddNewActivity = (props) => {
     {
       type: 'handle',
       dataIndex: 'configFissionTemplateId',
-      render: (val, record, index) => [
+      render: (val, row, index) => [
         {
           type: 'down', // 下架
-          visible: changeTime(record) !== 2,
+          visible: changeTime(row) !== 2,
           click: () => fetchMarketActivityCancel({ configFissionTemplateId: val }),
         },
         {
           type: 'edit', // 编辑
+          click: () => fetchAddNewDetail(index),
+        },
+        {
+          type: 'data', // 数据
+          visible: changeTime(row) > 0,
           click: () => fetchAddNewDetail(index),
         },
       ],

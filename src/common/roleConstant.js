@@ -53,6 +53,7 @@ export const ROLE_BUTTON_TYPE = {
   changeRemain: '调整库存',
 
   del: '删除',
+  data: '数据',
   down: '下架',
   diary: '日志',
   direct: '平台直充',

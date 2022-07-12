@@ -178,6 +178,7 @@ export default [
               'eye',
               'edit',
               'down',
+              'data',
               'couponAdd',
               'destoryDetail',
               'orderDetail',
