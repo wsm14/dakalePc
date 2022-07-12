@@ -9,7 +9,7 @@ const BulkEditing = (props) => {
   const [formTable] = Form.useForm();
 
   const [visible, setVisible] = useState(false);
-  const [data, setData] = useState(null); // 暂存数据
+  const [data, setData] = useState(undefined); // 暂存数据
 
   const oldList = form.getFieldValue('skuInfoReqs');
 
@@ -28,7 +28,7 @@ const BulkEditing = (props) => {
     } else {
       newList = oldList.map((item) => ({
         ...item,
-        [editKey]: data,
+        [editKey]: data || undefined,
       }));
     }
 
@@ -38,6 +38,7 @@ const BulkEditing = (props) => {
     formTable.setFieldsValue({
       batchLadderObjects: undefined,
     });
+    setData(undefined);
     setVisible(false);
   };
 
