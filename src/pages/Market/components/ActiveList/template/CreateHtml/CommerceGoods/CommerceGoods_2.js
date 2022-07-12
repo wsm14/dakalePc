@@ -102,9 +102,11 @@ export default (function (list, id) {
   // 默认50%
   function showList(source, payC = 50, shareC) {
     const domShow = (item) => {
-      const cellDom = `<div class="handleGoNative"  data-key="goodsId,ownerId" data-goodsId=${
+      const cellDom = `<div class="handleGoNative"  data-key="goodsId,ownerId,activityType" data-goodsId=${
         item.goodsId
-      } data-ownerId=${item.ownerId} data-path="commerceGoods" data-linkType="inside" 
+      } data-ownerId=${
+        item.ownerId
+      } data-activityType="commerceGoods" data-path="commerceGoods" data-linkType="inside" 
         style="height: inherit;width: ${vw(172)};border-radius: ${vw(4)};margin-bottom: ${vw(
         8,
       )}; background-color: #FFFFFF;overflow: hidden;">
