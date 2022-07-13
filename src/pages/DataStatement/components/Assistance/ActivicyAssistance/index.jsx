@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
-import BlindboxAssistanceModal from './ActivicyAssistanceModal';
+import ActivicyAssistanceModal from './ActivicyAssistanceModal';
 
 function ActivicyAssistance(props) {
   const { list, loading } = props;
@@ -120,11 +120,11 @@ function ActivicyAssistance(props) {
         {...list}
       ></TableDataBlock>
       {/* 助力详情 */}
-      <BlindboxAssistanceModal
+      <ActivicyAssistanceModal
         params={info}
         visible={visible}
         onCancel={() => setVisible(false)}
-      ></BlindboxAssistanceModal>
+      ></ActivicyAssistanceModal>
     </>
   );
 }
