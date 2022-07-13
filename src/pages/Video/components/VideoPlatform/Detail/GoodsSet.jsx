@@ -25,6 +25,7 @@ const ShareContentSet = (props) => {
       type: 'formItem',
       formItem: (
         <ShareCoupon
+          ownerType={detail.ownerType}
           type="coupon"
           merchantIdKey="ownerId"
           show="free"
