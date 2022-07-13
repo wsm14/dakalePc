@@ -30,6 +30,7 @@ const ShareContentSet = (props) => {
           show="free"
           data={free}
           form={form}
+          ownerType={detail.ownerType}
           onDel={() => saveCouponStorage({ free: {} })}
           onOk={(free) => saveCouponStorage({ free })}
         ></ShareCoupon>

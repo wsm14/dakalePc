@@ -395,7 +395,7 @@ const ShareDetail = (props) => {
           commerce: (
             <GoodsSet
               form={form}
-              detail={{ ownerId, ownerName }}
+              detail={{ ownerId, ownerName, ownerType }}
               couponData={couponData}
               setCouponData={setCouponData}
             ></GoodsSet>
