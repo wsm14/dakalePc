@@ -117,7 +117,7 @@ const SearchCondition = (props) => {
           name,
           handle,
           label,
-          col = true,
+          span,
           required = false,
           rules: rs = [],
           show,
@@ -142,16 +142,16 @@ const SearchCondition = (props) => {
           </FormItem>
         );
 
-        if (col) {
+        if (span) {
           // 排版填充
           children.push(
-            <Col span={i < colcount ? 24 / count : 0} key={i}>
+            <Col span={span} key={i}>
               {block}
             </Col>,
           );
         } else
           children.push(
-            <Col span={24 / count} key={i}>
+            <Col span={i < colcount ? 24 / count : 0} key={i}>
               {block}
             </Col>,
           );

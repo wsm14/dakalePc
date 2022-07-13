@@ -1,7 +1,7 @@
-import { fetchAssistanceList, fetchAssistanceDetail } from '@/services/ActiveServices';
+import { fetchAssistanceList, fetchAssistanceDetail } from '@/services/DataStatementServices';
 
 export default {
-  namespace: 'assistanceList',
+  namespace: 'blindboxAssistance',
 
   state: {
     list: {
@@ -41,7 +41,6 @@ export default {
       const response = yield call(fetchAssistanceDetail, payload);
       if (!response) return;
       const { content } = response;
-      console.log(content, 'content');
       yield put({
         type: 'save',
         payload: {

@@ -12,28 +12,17 @@ import {
   fetchListUserPackageManagementBean,
   fetchListUserPackageManagementBeanExport,
   fetchAllPrizeRecordExport,
-} from '@/services/ActiveServices';
+} from '@/services/DataStatementServices';
 
 export default {
   namespace: 'boxLottery',
 
   state: {
-    beanBoxList: {
-      list: [],
-      total: 0,
-    },
-    prizeList: {
-      list: [],
-      total: 0,
-    },
-    gameSignList: {
-      list: [],
-      total: 0,
-    },
-    gameEquityList: {
-      list: [],
-      total: 0,
-    },
+    beanBoxList: { list: [], total: 0 },
+    prizeList: { list: [], total: 0 },
+    gameSignList: { list: [], total: 0 },
+    gameEquityList: { list: [], total: 0 },
+    helpFreeList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -74,7 +63,7 @@ export default {
         },
       });
     },
-    *fetchAllPrizeRecordExport({payload, callback},{call}){
+    *fetchAllPrizeRecordExport({ payload, callback }, { call }) {
       const response = yield call(fetchAllPrizeRecordExport, payload);
       if (!response) return;
       const { content } = response;
@@ -84,7 +73,6 @@ export default {
       const response = yield call(fetchBoxLotteryExport, payload);
       if (!response) return;
       const { content } = response;
-      console.log(callback);
       if (callback) callback(content.userBlindBoxRewardDTOS);
     },
     *fetchBoxPushDetail({ payload, callback }, { call }) {
@@ -126,6 +114,21 @@ export default {
         type: 'save',
         payload: {
           gameEquityList: {
+            list: content.recordList,
+            total: content.total,
+          },
+        },
+      });
+    },
+    // get 盲盒中奖记录 - 助力免单 - 列表
+    *fetchHelpFreeList({ payload }, { call, put }) {
+      const response = yield call(fetchListUserPackageManagementBean, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          helpFreeList: {
             list: content.recordList,
             total: content.total,
           },

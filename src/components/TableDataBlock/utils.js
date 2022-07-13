@@ -30,7 +30,7 @@ const tablePropsHandle = {
         render,
         ...tablePropsHandle.tableComponents(type, render),
         ...(ellipsis ? tableRenderEllipsis(ellipsis, render) : {}),
-        title: tips ? <QuestionTooltip title={title || '操作'} content={tips} /> : title,
+        title: tips ? <QuestionTooltip title={title || '操作'} content={tips} /> : title || '操作',
         ...other,
       }));
 

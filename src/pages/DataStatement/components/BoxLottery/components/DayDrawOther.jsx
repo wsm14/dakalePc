@@ -1,11 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'umi';
-import { BOXLOTTERY_STATUS, BOXLOTTERY_TYPE } from '@/common/constant';
 import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
-import ExcelPropsOther from './components/BoxLotteryBean/ExcelPropsOther';
+import ExcelPropsOther from './BoxLotteryBean/ExcelPropsOther';
 
-const DayDrawOther = ({ prizeList, loading, dispatch, tabkey }) => {
+const DayDrawOther = ({ prizeList, loading, tabkey }) => {
   const tableRef = useRef();
 
   const searchItems = [
@@ -18,30 +17,6 @@ const DayDrawOther = ({ prizeList, loading, dispatch, tabkey }) => {
       name: 'userId',
       type: 'user',
     },
-    // {
-    //   label: '抽奖场次',
-    //   type: 'select',
-    //   name: 'sceneType',
-    //   select: BOXLOTTERY_TYPE,
-    // },
-
-    // {
-    //   label: '抽奖结果',
-    //   name: 'prizeName',
-    // },
-    // {
-    //   label: '抽奖时间',
-    //   type: 'rangePicker',
-    //   name: 'luckDrawStartTime',
-    //   end: 'luckDrawEndTime',
-    // },
-    // {
-    //   label: '用户所属地区',
-    //   name: 'city',
-    //   type: 'cascader',
-    //   changeOnSelect: true,
-    //   valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-    // },
   ];
 
   const getColumns = [
@@ -71,11 +46,6 @@ const DayDrawOther = ({ prizeList, loading, dispatch, tabkey }) => {
       title: '抽奖时间',
       dataIndex: 'luckDrawTime',
     },
-    // {
-    //   title: '抽奖场次',
-    //   dataIndex: 'sceneType',
-    //   render: (val) => (val ? BOXLOTTERY_TYPE[val] : '--'),
-    // },
     {
       title: '消耗卡豆数',
       dataIndex: 'needBeanNums',
@@ -101,21 +71,19 @@ const DayDrawOther = ({ prizeList, loading, dispatch, tabkey }) => {
   ];
 
   return (
-    <>
-      <TableDataBlock
-        order
-        noCard={false}
-        btnExtra={btnList}
-        cRef={tableRef}
-        loading={loading}
-        columns={getColumns}
-        searchItems={searchItems}
-        rowKey={(record) => `${record.prizeRecordId}`}
-        params={{ belongChannel: tabkey }}
-        dispatchType="boxLottery/fetchGetLuckDrawRecord"
-        {...prizeList}
-      ></TableDataBlock>
-    </>
+    <TableDataBlock
+      order
+      noCard={false}
+      btnExtra={btnList}
+      cRef={tableRef}
+      loading={loading}
+      columns={getColumns}
+      searchItems={searchItems}
+      rowKey={(record) => `${record.prizeRecordId}`}
+      params={{ belongChannel: tabkey }}
+      dispatchType="boxLottery/fetchGetLuckDrawRecord"
+      {...prizeList}
+    ></TableDataBlock>
   );
 };
 export default connect(({ boxLottery, loading }) => ({

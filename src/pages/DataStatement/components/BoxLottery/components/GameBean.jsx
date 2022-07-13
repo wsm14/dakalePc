@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'umi';
-import { GAME_SIGN_STATUS, GAME_FREE_STATUS, GAME_SIGN_PACKAGE_TYPE } from '@/common/constant';
+import { GAME_FREE_STATUS, GAME_SIGN_PACKAGE_TYPE } from '@/common/constant';
 import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
-import GameSignDrawer from './components/GameSign/GameSignDrawer';
-import excelProps from './components/GameSign/ExcelProps';
+import excelProps from './GameSign/ExcelProps';
+import GameSignDrawer from './GameSign/GameSignDrawer';
 
-const GameSign = ({ gameSignList, loading, dispatch, tabkey }) => {
+const GameSign = ({ gameSignList, loading, tabkey }) => {
   const tableRef = useRef();
 
   useEffect(() => {
@@ -32,12 +32,6 @@ const GameSign = ({ gameSignList, loading, dispatch, tabkey }) => {
       name: 'status',
       select: GAME_FREE_STATUS,
     },
-    // {
-    //   label: '奖品类型',
-    //   type: 'select',
-    //   name: 'packageType',
-    //   select: GAME_SIGN_PACKAGE_TYPE,
-    // },
     {
       label: '中奖结果',
       name: 'packageName',
@@ -94,61 +88,7 @@ const GameSign = ({ gameSignList, loading, dispatch, tabkey }) => {
       title: '中奖结果',
       dataIndex: 'packageName',
     },
-    // {
-    //   title: '发放状态',
-    //   dataIndex: 'status',
-    //   render: (val, row) => GAME_FREE_STATUS[val],
-    // },
-    // {
-    //   type: 'handle',
-    //   dataIndex: 'userPackageId',
-    //   render: (val, row) => [
-    //     {
-    //       type: 'goodsDeliver',
-    //       visible: row.status === '1',
-    //       click: () => fetchBoxDeatil(val, row, 'add'),
-    //     },
-    //     {
-    //       type: 'goodsView',
-    //       visible: row.status === '2',
-    //       click: () => fetchBoxDeatil(val, row, 'info'),
-    //     },
-    //   ],
-    // },
   ];
-
-  // 获取详情 type：info 查看
-  const fetchBoxDeatil = (id, row, type) => {
-    const { userAddressObject = {}, userId } = row;
-    let userAddressContent = {};
-    if (userAddressObject) {
-      // const contentObj = JSON.parse(row.contentParam);
-      userAddressContent = `${userAddressObject?.addressName || '-'},${
-        userAddressObject?.mobile || '-'
-      },${checkCityName(userAddressObject?.districtCode) || '-'}${
-        userAddressObject?.address || '-'
-      }`;
-    }
-
-    if (type === 'add') {
-      setVisible({
-        type: 'add',
-        show: true,
-        detail: { userPackageId: id, userId, userAddressObject: userAddressContent },
-      });
-    } else {
-      dispatch({
-        type: 'boxLottery/fetchGetUserPackageByIdDetail',
-        payload: { userPackageId: id },
-        callback: (detail) =>
-          setVisible({
-            type,
-            show: true,
-            detail: { ...detail, userAddressObject: userAddressContent },
-          }),
-      });
-    }
-  };
 
   // 导出excel按钮
   const btnList = ({ get }) => [

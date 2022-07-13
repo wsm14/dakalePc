@@ -1,21 +1,19 @@
 import React, { useRef, useState } from 'react';
-import moment from 'moment';
 import { connect } from 'umi';
 import { ACTIVITY_STATUS } from '@/common/constant';
 import { checkCityName } from '@/utils/utils';
 import CITYJSON from '@/common/cityJson';
 import TableDataBlock from '@/components/TableDataBlock';
+import ModalDataList from './components/AddNewActivity/HelpModalDataList';
 import AddNewActivitySet from './components/AddNewActivity/AddNewActivitySet';
 
 // 拉新活动
 const AddNewActivity = (props) => {
   const { addNewList, loading, dispatch } = props;
 
-  // console.log('addNewList', addNewList);
-
   const childRef = useRef();
   const [visible, setVisible] = useState(false); // 新增+编辑
-  // const [state, setstate] = useState(0);
+  const [visibleData, setVisibleData] = useState(false); // 数据表格
 
   const changeTime = (row) => {
     let { activityBeginTime, activityEndTime } = row;
@@ -58,7 +56,7 @@ const AddNewActivity = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '活动id',
+      title: '活动ID',
       align: 'center',
       fixed: 'left',
       dataIndex: 'configFissionTemplateId',
@@ -71,17 +69,35 @@ const AddNewActivity = (props) => {
       ellipsis: true,
     },
     {
+      title: '邀请人数',
+      align: 'right',
+      dataIndex: 'inviteNum',
+    },
+    {
       title: '活动时间',
-      align: 'center',
+      align: 'right',
       dataIndex: 'activityBeginTime',
-      render: (val, row) => (val ? `${val}~${row?.activityEndTime}` : '--'),
+      render: (val, row) => (val ? `${val}\n~${row?.activityEndTime}` : '--'),
     },
     {
       title: '活动城市',
       align: 'center',
       dataIndex: 'cityCode',
       ellipsis: true,
-      render: (val) => checkCityName(val),
+      render: (val) => (val === 'all' ? '全国' : checkCityName(val)),
+    },
+    {
+      title: '奖品类型',
+      align: 'center',
+      dataIndex: 'prizeType',
+      render: (val) => ({ bean: '卡豆', commerce: '电商品', platformCoupon: '平台券' }[val]),
+    },
+    {
+      title: '奖品名称/ID',
+      align: 'center',
+      width: 180,
+      dataIndex: 'prizeName',
+      render: (val, row) => `${val || ''}\n${row.prizeId || ''}`,
     },
     {
       title: '活动状态',
@@ -98,23 +114,26 @@ const AddNewActivity = (props) => {
     {
       title: '创建时间/创建人',
       align: 'center',
-      // dataIndex: 'aaaaa',
-      render: (val, record) => `${record.createTime}\n${record.creator}`,
+      dataIndex: 'creator',
+      render: (val, record) => `${record.createTime}\n${val}`,
     },
     {
       type: 'handle',
       dataIndex: 'configFissionTemplateId',
-      render: (val, record, index) => [
+      render: (val, row, index) => [
         {
-          // 下架
-          type: 'down',
-          visible: changeTime(record) !== 2,
+          type: 'down', // 下架
+          visible: changeTime(row) !== 2,
           click: () => fetchMarketActivityCancel({ configFissionTemplateId: val }),
         },
         {
-          // 编辑
-          type: 'edit',
+          type: 'edit', // 编辑
           click: () => fetchAddNewDetail(index),
+        },
+        {
+          type: 'data', // 数据
+          visible: changeTime(row) > 0,
+          click: () => setVisibleData({ show: true, row }),
         },
       ],
     },
@@ -128,15 +147,7 @@ const AddNewActivity = (props) => {
       payload: {
         configFissionTemplateId,
       },
-      callback: (detail) =>
-        setVisible({
-          show: true,
-          type: 'edit',
-          detail: {
-            ...detail,
-            activityBeginTime: [moment(detail.activityBeginTime), moment(detail.activityEndTime)],
-          },
-        }),
+      callback: (detail) => setVisible({ show: true, mode: 'edit', detail }),
     });
   };
 
@@ -150,7 +161,7 @@ const AddNewActivity = (props) => {
   };
 
   // 设置新增活动
-  const handleSetActive = () => setVisible({ show: true, type: 'add' });
+  const handleSetActive = () => setVisible({ show: true, mode: 'add' });
 
   const btnExtra = [
     {
@@ -163,7 +174,6 @@ const AddNewActivity = (props) => {
   return (
     <>
       <TableDataBlock
-        pagination={false}
         cRef={childRef}
         loading={loading}
         btnExtra={btnExtra}
@@ -179,12 +189,14 @@ const AddNewActivity = (props) => {
         childRef={childRef}
         onClose={() => setVisible(false)}
       ></AddNewActivitySet>
+      {/* 数据表格 */}
+      <ModalDataList visible={visibleData} onClose={() => setVisibleData(false)}></ModalDataList>
     </>
   );
 };
 
 export default connect(({ addNewActivity, loading }) => ({
-  addNewList: addNewActivity,
+  addNewList: addNewActivity.list,
   loading:
     loading.effects['addNewActivity/fetchGetList'] ||
     loading.effects['addNewActivity/fetchMarketAddNewActivityDetail'],

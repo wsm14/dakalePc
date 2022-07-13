@@ -6,7 +6,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import BoxDrawer from './components/BoxLotteryBean/BoxDrawer';
 import excelProps from './components/BoxLotteryBean/ExcelProps';
 
-const BoxLotteryBean = ({ beanBoxList, loading, dispatch, tabkey }) => {
+const BoxLotteryBean = ({ beanBoxList, loading }) => {
   const tableRef = useRef();
   // 设置 发货 详情
   const [visible, setVisible] = useState(false);
@@ -97,55 +97,7 @@ const BoxLotteryBean = ({ beanBoxList, loading, dispatch, tabkey }) => {
       title: '奖品ID',
       dataIndex: 'awardId',
     },
-    // {
-    //   title: '发放状态',
-    //   // fixed: 'right',
-    //   dataIndex: 'logisticsStatus',
-    //   render: (val, row) => BOXLOTTERY_STATUS[val] || '--',
-    // },
-    // {
-    //   type: 'handle',
-    //   dataIndex: 'blindBoxRewardId',
-    //   render: (val, row) => [
-    //     {
-    //       type: 'goodsDeliver',
-    //       visible: row.logisticsStatus === '1',
-    //       click: () => fetchBoxDeatil(val, row, 'add'),
-    //     },
-    //     {
-    //       type: 'goodsView',
-    //       visible: row.logisticsStatus === '2',
-    //       click: () => fetchBoxDeatil(val, row, 'info'),
-    //     },
-    //   ],
-    // },
   ];
-
-  // 获取详情 type：info 查看
-  const fetchBoxDeatil = (id, row, type) => {
-    let contentParam = {};
-    if (row.contentParam) {
-      const contentObj = JSON.parse(row.contentParam);
-      contentParam = `${contentObj.addressName || '-'},${contentObj.mobile || '-'},${
-        checkCityName(contentObj.districtCode) || '-'
-      }${contentObj.address || '-'}`;
-    }
-
-    if (type === 'add') {
-      setVisible({ type: 'add', shwo: true, detail: { blindBoxRewardId: id, contentParam } });
-    } else {
-      dispatch({
-        type: 'boxLottery/fetchBoxPushDetail',
-        payload: { blindBoxRewardId: id, userId: row?.userId },
-        callback: (detail) =>
-          setVisible({
-            type,
-            shwo: true,
-            detail: { ...detail, contentParam },
-          }),
-      });
-    }
-  };
 
   // 导出excel按钮
   const btnList = ({ get }) => [
@@ -161,11 +113,12 @@ const BoxLotteryBean = ({ beanBoxList, loading, dispatch, tabkey }) => {
     <>
       <TableDataBlock
         order
-        btnExtra={btnList}
         cRef={tableRef}
         loading={loading}
+        btnExtra={btnList}
         columns={getColumns}
         searchItems={searchItems}
+        cardProps={{ bordered: false }}
         rowKey={(record) => `${record.blindBoxRewardId}`}
         dispatchType="boxLottery/fetchGetList"
         {...beanBoxList}

@@ -1,4 +1,4 @@
-import { fetchOrderSalesAnalysisReport } from '@/services/DataStatement';
+import { fetchOrderSalesAnalysisReport } from '@/services/DataStatementServices';
 
 export default {
   namespace: 'marketStatement',

@@ -89,6 +89,9 @@ export const platformCouponsDom = (item = {}, id = '', setSelectItem, onDel) => 
     activeDays, // 使用有效期-领取后-有效天数
     goodsId,
   } = item;
+
+  const pType = PLATFORM_TICKET_TYPE[useScenesType] || {};
+
   return (
     <div style={{ width: 350 }} className={'share_Coupon_box'} key={platformCouponId || goodsId}>
       <Badge.Ribbon text={'平台券'}>
@@ -104,7 +107,7 @@ export const platformCouponsDom = (item = {}, id = '', setSelectItem, onDel) => 
           </div>
           <div className="share_title">
             <div>
-              <span className="pCoupon_tit_type">{`${PLATFORM_TICKET_TYPE[useScenesType][classType]}`}</span>
+              <span className="pCoupon_tit_type">{`${pType[classType]}`}</span>
               <span className="titile">
                 <Ellipsis length={9} tooltip>
                   {couponName}
@@ -238,19 +241,12 @@ export const goodsDom = (item = {}, id, setSelectItem, onDel) => {
 // 电商商品样式
 export const commerceDom = (item = {}, id, setSelectItem, onDel) => {
   const {
+    goodsId,
     goodsImg,
     goodsName = '',
-    remain,
     specialGoodsId,
     activityGoodsId,
-    realPrice,
-    oriPrice,
-    goodsType = 'single',
     sellPriceRange = 0,
-    activityTimeRule = 'infinite',
-    activityStartTime,
-    activityEndTime,
-    goodsId,
   } = item;
 
   return (
