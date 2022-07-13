@@ -56,7 +56,7 @@ const AddNewActivity = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '活动id',
+      title: '活动ID',
       align: 'center',
       fixed: 'left',
       dataIndex: 'configFissionTemplateId',
@@ -114,8 +114,8 @@ const AddNewActivity = (props) => {
     {
       title: '创建时间/创建人',
       align: 'center',
-      // dataIndex: 'aaaaa',
-      render: (val, record) => `${record.createTime}\n${record.creator}`,
+      dataIndex: 'creator',
+      render: (val, record) => `${record.createTime}\n${val}`,
     },
     {
       type: 'handle',

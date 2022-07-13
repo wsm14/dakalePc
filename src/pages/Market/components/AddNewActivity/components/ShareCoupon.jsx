@@ -29,7 +29,7 @@ const ShareCoupon = (props) => {
         visible={visible}
         goodsValues={Object.keys(data).length ? [data] : []}
         selectType="radio"
-        searchParams={{ useScenesType: 'goodsBuy,virtual,commerce' }}
+        disabled={(row) => row.useScenesType === 'community'} // 平台券生效
         onSumbit={({ list }) => onOk(list[0])}
         onClose={() => setVisible(false)}
       ></GoodsSelectModal>

@@ -86,7 +86,6 @@ const HelpModalDataList = (props) => {
         params={{ configFissionTemplateId: row.configFissionTemplateId }}
         dispatchType="addNewActivity/fetchMarketAddNewActivityDataList"
         {...dataList}
-        list={[1]}
       ></TableDataBlock>
       {/* 助力详情 */}
       <HelpDetailDrawer
