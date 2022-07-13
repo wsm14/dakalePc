@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { notification } from 'antd';
 import {
   fetchMarketAddNewActivity,
@@ -5,9 +6,8 @@ import {
   fetchMarketAddNewActivityCancel,
   fetchMarketAddNewActivityAdd,
   fetchMarketAddNewActivityEdit,
-  fetchAddNewActivityDetailCheck,
 } from '@/services/MarketServices';
-import { fetchSpecialGoodsDetail } from '@/services/OperationServices';
+import { fetchGetPlatformCouponDetail, fetchGetGoodsForUpdate } from '@/services/OperationServices';
 
 export default {
   namespace: 'addNewActivity',
@@ -27,7 +27,7 @@ export default {
   },
 
   effects: {
-    // 获取裂变模板-列表
+    // 裂变拉新活动 -列表
     *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchMarketAddNewActivity, payload);
       if (!response) return;
@@ -35,7 +35,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: { list: content.configFissionTemplateDTOS },
+          list: { list: content.configFissionTemplateDetailList, total: content.total },
         },
       });
     },
@@ -74,36 +74,25 @@ export default {
       const response = yield call(fetchMarketAddNewActivityDetail, payload);
       if (!response) return;
       const { content } = response;
-      const {
-        prizeRightGoodsIds,
-        rightGoodsIds,
-        specialGoodsIds,
-      } = content.configFissionTemplateDTO;
-      let prizeRightGoodsDetail = {};
-      if (prizeRightGoodsIds) {
-        prizeRightGoodsDetail = yield call(fetchSpecialGoodsDetail, {
-          specialGoodsId: prizeRightGoodsIds,
-          ownerId: -1,
-        });
-      }
-      let rightGoodsDetail = '';
-      let specialGoodsDetail = '';
-      if (rightGoodsIds) {
-        rightGoodsDetail = yield call(fetchAddNewActivityDetailCheck, {
-          activityIds: rightGoodsIds,
-        });
-      }
-      if (specialGoodsIds) {
-        specialGoodsDetail = yield call(fetchAddNewActivityDetailCheck, {
-          activityIds: specialGoodsIds,
-        });
-      }
+      const { activityBeginTime, activityEndTime, prizeId, prizeType, cityCode, ...other } =
+        content.configFissionTemplateDetail || {};
 
+      let goodDetail = {};
+      if (prizeType === 'commerce') {
+        const data = yield call(fetchGetGoodsForUpdate, { goodsId: prizeId, ownerId: -1 });
+        goodDetail = data.content.onlineAllResp;
+      }
+      if (prizeType === 'platformCoupon') {
+        const data = yield call(fetchGetPlatformCouponDetail, { platformCouponId: prizeId });
+        const detail = data?.content?.platformCouponDetail || {};
+        goodDetail = { ...detail, goodsId: detail.platformCouponId };
+      }
       callback({
-        ...content.configFissionTemplateDTO,
-        goodsRightInfo: prizeRightGoodsDetail?.content?.specialGoodsInfo || {},
-        specialGoods: specialGoodsDetail?.content?.activityGoodsDTOS || [],
-        rightGoods: rightGoodsDetail?.content?.activityGoodsDTOS || [],
+        ...other,
+        prizeType,
+        areaType: cityCode != 'all' ? 'city' : cityCode,
+        activityBeginTime: [moment(activityBeginTime), moment(activityEndTime)],
+        goodDetail,
       });
     },
     // 裂变拉新数据列表
