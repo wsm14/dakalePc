@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { Form } from 'antd';
 import debounce from 'lodash/debounce';
 import { Input, Select } from '@/components/FormCondition/formModule';
+import UrlParamsSetModal from '../UrlParamsSetModal';
 
 const FormItem = Form.Item;
 
@@ -59,21 +60,24 @@ const JumpTypeBlock = ({
   return {
     无: null,
     h5: (
-      <FormItem
-        key={`jumpUrl`}
-        label="链接"
-        name={'jumpUrl'}
-        rules={[
-          { required: true, message: `请输入链接` },
-          {
-            type: 'url',
-            message: '请输入正确链接格式',
-          },
-        ]}
-        style={{ maxWidth: '100%' }}
-      >
-        <Input placeholder={'请输入链接'}></Input>
-      </FormItem>
+      <>
+        <FormItem
+          key={`jumpUrl`}
+          label="链接"
+          name={'jumpUrl'}
+          rules={[
+            { required: true, message: `请输入链接` },
+            {
+              type: 'url',
+              message: '请输入正确链接格式',
+            },
+          ]}
+          style={{ maxWidth: '100%' }}
+        >
+          <Input placeholder={'请输入链接'}></Input>
+        </FormItem>
+        <UrlParamsSetModal pForm={form}></UrlParamsSetModal>
+      </>
     ),
     // 原生页面
     native: (
