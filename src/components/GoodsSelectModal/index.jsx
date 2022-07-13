@@ -61,7 +61,7 @@ const GoodsSelectModal = (props) => {
       showTab.length && setTabKey(showTab[0].key);
       const newData = goodsValues.filter((i) => {
         if (typeof i === 'object') {
-          return !JSON.stringify(i) === '{}';
+          return !!Object.keys(i).length;
         } else return i;
       });
       // 数据还原

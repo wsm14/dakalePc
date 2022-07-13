@@ -2,14 +2,14 @@ import request from '@/utils/request';
 
 // get 营销活动 - 拉新活动列表
 export async function fetchMarketAddNewActivity(params) {
-  return request('/admin/configFissionTemplate/listConfigFissionTemplate', {
+  return request('/admin/configFissionTemplateNew/pageListConfigFissionTemplate', {
     params,
   });
 }
 
 // get 营销活动 - 拉新活动详情
 export async function fetchMarketAddNewActivityDetail(params) {
-  return request('/admin/configFissionTemplate/getConfigFissionTemplateById', {
+  return request('/admin/configFissionTemplateNew/getConfigFissionTemplateById', {
     params,
   });
 }
@@ -23,7 +23,7 @@ export async function fetchAddNewActivityDetailCheck(params) {
 
 // post 营销活动 - 拉新活动新增
 export function fetchMarketAddNewActivityAdd(data) {
-  return request('/admin/configFissionTemplate/saveConfigFissionTemplate', {
+  return request('/admin/configFissionTemplateNew/saveConfigFissionTemplate', {
     method: 'POST',
     data,
   });
@@ -31,7 +31,7 @@ export function fetchMarketAddNewActivityAdd(data) {
 
 // post 营销活动 - 拉新活动编辑
 export function fetchMarketAddNewActivityEdit(data) {
-  return request('/admin/configFissionTemplate/updateConfigFissionTemplate', {
+  return request('/admin/configFissionTemplateNew/updateConfigFissionTemplate', {
     method: 'POST',
     data,
   });
@@ -39,7 +39,7 @@ export function fetchMarketAddNewActivityEdit(data) {
 
 // post 营销活动 - 拉新活动下架
 export function fetchMarketAddNewActivityCancel(data) {
-  return request('/admin/configFissionTemplate/offShelfConfigFissionTemplate', {
+  return request('/admin/configFissionTemplateNew/offShelfConfigFissionTemplate', {
     method: 'POST',
     data,
   });

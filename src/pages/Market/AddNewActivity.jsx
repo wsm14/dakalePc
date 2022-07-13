@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react';
-import moment from 'moment';
 import { connect } from 'umi';
 import { ACTIVITY_STATUS } from '@/common/constant';
 import { checkCityName } from '@/utils/utils';
@@ -72,7 +71,7 @@ const AddNewActivity = (props) => {
     {
       title: '邀请人数',
       align: 'right',
-      dataIndex: 'activityBeginTimes',
+      dataIndex: 'invitedPeopleNum',
     },
     {
       title: '活动时间',
@@ -85,17 +84,20 @@ const AddNewActivity = (props) => {
       align: 'center',
       dataIndex: 'cityCode',
       ellipsis: true,
-      render: (val) => checkCityName(val),
+      render: (val) => (val === 'all' ? '全国' : checkCityName(val)),
     },
     {
       title: '奖品类型',
       align: 'center',
-      dataIndex: 'statdsus',
+      dataIndex: 'prizeType',
+      render: (val) => ({ bean: '卡豆', commerce: '电商品', platformCoupon: '平台券' }[val]),
     },
     {
       title: '奖品名称/ID',
       align: 'center',
-      dataIndex: 'stadssdtus',
+      width: 180,
+      dataIndex: 'prizeName',
+      render: (val, row) => `${val || ''}\n${row.prizeId || ''}`,
     },
     {
       title: '活动状态',
@@ -145,15 +147,7 @@ const AddNewActivity = (props) => {
       payload: {
         configFissionTemplateId,
       },
-      callback: (detail) =>
-        setVisible({
-          show: true,
-          type: 'edit',
-          detail: {
-            ...detail,
-            activityBeginTime: [moment(detail.activityBeginTime), moment(detail.activityEndTime)],
-          },
-        }),
+      callback: (detail) => setVisible({ show: true, mode: 'edit', detail }),
     });
   };
 
@@ -167,7 +161,7 @@ const AddNewActivity = (props) => {
   };
 
   // 设置新增活动
-  const handleSetActive = () => setVisible({ show: true, type: 'add' });
+  const handleSetActive = () => setVisible({ show: true, mode: 'add' });
 
   const btnExtra = [
     {
@@ -180,7 +174,6 @@ const AddNewActivity = (props) => {
   return (
     <>
       <TableDataBlock
-        pagination={false}
         cRef={childRef}
         loading={loading}
         btnExtra={btnExtra}

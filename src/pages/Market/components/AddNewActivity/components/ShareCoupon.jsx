@@ -27,7 +27,7 @@ const ShareCoupon = (props) => {
       <GoodsSelectModal
         showTag={[type]}
         visible={visible}
-        goodsValues={[data]}
+        goodsValues={Object.keys(data).length ? [data] : []}
         selectType="radio"
         searchParams={{ useScenesType: 'goodsBuy,virtual,commerce' }}
         onSumbit={({ list }) => onOk(list[0])}
