@@ -12,7 +12,7 @@ import {
   fetchListUserPackageManagementBean,
   fetchListUserPackageManagementBeanExport,
   fetchAllPrizeRecordExport,
-} from '@/services/ActiveServices';
+} from '@/services/DataStatementServices';
 
 export default {
   namespace: 'boxLottery',

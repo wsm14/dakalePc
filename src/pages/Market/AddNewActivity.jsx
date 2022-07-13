@@ -71,7 +71,7 @@ const AddNewActivity = (props) => {
     {
       title: '邀请人数',
       align: 'right',
-      dataIndex: 'invitedPeopleNum',
+      dataIndex: 'inviteNum',
     },
     {
       title: '活动时间',

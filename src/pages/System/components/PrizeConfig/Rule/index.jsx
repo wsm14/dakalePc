@@ -201,5 +201,5 @@ const Rule = (props) => {
 
 export default connect(({ prizeConfig, loading }) => ({
   blindBoxRule: prizeConfig.blindBoxRule,
-  loading: loading.models.assistanceList,
+  loading: loading.models.blindboxAssistance,
 }))(Rule);
