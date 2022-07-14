@@ -7,12 +7,12 @@ import DrawerCondition from '@/components/DrawerCondition';
 // 助力详情
 const HelpDetailDrawer = (props) => {
   const { visible, onClose, dataList, loading } = props;
-  const { show = false, row = {} } = visible;
+  const { show = false, data = {} } = visible;
 
   // 搜索参数
   const searchItems = [
     {
-      label: '用户信息',
+      label: '助力用户',
       name: 'helpUserId',
       type: 'user',
       span: 18,
@@ -23,7 +23,7 @@ const HelpDetailDrawer = (props) => {
     {
       title: '邀请用户',
       align: 'center',
-      dataIndex: 'helpUserMobile',
+      dataIndex: 'helpUserName',
       render: (val, row) => `${row?.helpUserMobile || ''}\n${val || ''}\n${row?.helpUserId || ''}`,
     },
     {
@@ -40,10 +40,10 @@ const HelpDetailDrawer = (props) => {
   ];
 
   const modalProps = {
-    title: `助力详情`,
+    title: `助力详情 - ${data.fissionName}`,
     visible: show,
     onClose,
-    width: 700,
+    width: 800,
     zIndex: 1001,
   };
 
@@ -51,13 +51,12 @@ const HelpDetailDrawer = (props) => {
     <DrawerCondition {...modalProps}>
       <TableDataBlock
         order
-        tableSize="midden"
         noCard={false}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(row) => `${row.userFissionHelpId}`}
-        params={{ userFissionId: row.userFissionId }}
+        params={{ userFissionId: data.userFissionId }}
         dispatchType="activicyAssistance/fetchActivicyAssistanceDetail"
         {...dataList}
       ></TableDataBlock>

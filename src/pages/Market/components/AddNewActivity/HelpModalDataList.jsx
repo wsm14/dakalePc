@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
 import { checkCityName } from '@/utils/utils';
+import { ACTIVICY_ASSISTANCE_PRIZESTATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
-import HelpDetailDrawer from './HelpDetailDrawer';
+import HelpDetailDrawer from '@/pages/DataStatement/components/Assistance/ActivicyAssistance/HelpDetailDrawer';
 
 // 助力活动数据列表
 const HelpModalDataList = (props) => {
@@ -32,7 +33,7 @@ const HelpModalDataList = (props) => {
       title: '用户所属地区',
       align: 'center',
       dataIndex: 'initiateUserDistrictCode',
-      render: (val) => checkCityName(val),
+      render: (val) => checkCityName(val) || '--',
     },
     {
       title: '当前进度',
@@ -51,7 +52,7 @@ const HelpModalDataList = (props) => {
     {
       title: '奖品领取状态',
       dataIndex: 'prizeCollectionStatus',
-      render: (val) => ['未领取', '已领取'][val],
+      render: (val) => ACTIVICY_ASSISTANCE_PRIZESTATUS[val],
     },
     {
       title: '领取奖品名称',
@@ -69,7 +70,7 @@ const HelpModalDataList = (props) => {
         {
           title: '助力详情',
           auth: true,
-          click: () => setVisibleDetail({ show: true, row }),
+          click: () => setVisibleDetail({ show: true, data: row }),
         },
       ],
     },
