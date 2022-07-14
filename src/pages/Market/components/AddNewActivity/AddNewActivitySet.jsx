@@ -155,6 +155,7 @@ const AddNewActivitySet = (props) => {
       imgRatio: 5 / 4,
       maxSize: 128,
       extra: '请上传比例为5*4，大小128kb以内的jpg图片（375*300以上）',
+      rules: [{ required: false }],
       maxFile: 1,
     },
     {
