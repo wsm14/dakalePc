@@ -161,7 +161,7 @@ ${source
       14,
     )};background: #EF476F;color: #FFFFFF;display: flex;align-items: center;justify-content: center;position: absolute;right: 0;bottom: 0;">
       ${
-        item.paymentModeType !== 'self' && shareC
+        item.paymentModeType == 'defaultMode' && shareC
           ? `分享赚￥${computedPrice(item.sellPrice - item.settlePrice, shareC)}`
           : '抢购'
       }</div></div></div></div>`;

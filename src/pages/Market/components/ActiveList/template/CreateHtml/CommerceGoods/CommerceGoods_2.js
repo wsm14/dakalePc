@@ -159,7 +159,7 @@ export default (function (list, id) {
          : ''
      }
      ${
-       shareC
+       item.paymentModeType == 'defaultMode' && shareC
          ? `<div
            style="height: ${vw(18)};
           margin-top: ${vw(6)};
