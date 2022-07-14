@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
+import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import DrawerCondition from '@/components/DrawerCondition';
 
@@ -12,7 +13,7 @@ const HelpDetailDrawer = (props) => {
   const searchItems = [
     {
       label: '用户信息',
-      name: 'name',
+      name: 'helpUserId',
       type: 'user',
       span: 18,
     },
@@ -22,17 +23,19 @@ const HelpDetailDrawer = (props) => {
     {
       title: '邀请用户',
       align: 'center',
-      dataIndex: 'scensesName',
+      dataIndex: 'helpUserMobile',
+      render: (val, row) => `${row?.helpUserMobile || ''}\n${val || ''}\n${row?.helpUserId || ''}`,
     },
     {
       title: '用户所属地区',
       align: 'center',
-      dataIndex: 'scenedsName',
+      dataIndex: 'helpUserDistrictCode',
+      render: (val) => checkCityName(val),
     },
     {
       title: '被邀请时间',
       align: 'center',
-      dataIndex: 'scenesasName',
+      dataIndex: 'createTime',
     },
   ];
 
@@ -53,18 +56,16 @@ const HelpDetailDrawer = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(row) => `${row.categoryScenesId}`}
-        params={{ configFissionTemplateId: row.configFissionTemplateId }}
-        dispatchType="addNewActivity/fetchMarketAddNewActivityDataList"
+        rowKey={(row) => `${row.userFissionHelpId}`}
+        params={{ userFissionId: row.userFissionId }}
+        dispatchType="activicyAssistance/fetchActivicyAssistanceDetail"
         {...dataList}
       ></TableDataBlock>
     </DrawerCondition>
   );
 };
 
-export default connect(({ addNewActivity, loading }) => ({
-  dataList: addNewActivity.dataList,
-  loading:
-    loading.effects['addNewActivity/fetchMarketAddNewActivityAdd'] ||
-    loading.effects['addNewActivity/fetchMarketAddNewActivityEdit'],
+export default connect(({ activicyAssistance, loading }) => ({
+  dataList: activicyAssistance.detailList,
+  loading: loading.effects['activicyAssistance/fetchActivicyAssistanceDetail'],
 }))(HelpDetailDrawer);

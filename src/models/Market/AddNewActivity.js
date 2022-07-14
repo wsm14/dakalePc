@@ -2,10 +2,10 @@ import moment from 'moment';
 import { notification } from 'antd';
 import {
   fetchMarketAddNewActivity,
-  fetchMarketAddNewActivityDetail,
-  fetchMarketAddNewActivityCancel,
   fetchMarketAddNewActivityAdd,
   fetchMarketAddNewActivityEdit,
+  fetchMarketAddNewActivityDetail,
+  fetchMarketAddNewActivityCancel,
 } from '@/services/MarketServices';
 import { fetchGetPlatformCouponDetail, fetchGetGoodsForUpdate } from '@/services/OperationServices';
 
@@ -14,7 +14,6 @@ export default {
 
   state: {
     list: { list: [] },
-    dataList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -93,18 +92,6 @@ export default {
         areaType: cityCode != 'all' ? 'city' : cityCode,
         activityBeginTime: [moment(activityBeginTime), moment(activityEndTime)],
         goodDetail,
-      });
-    },
-    // 裂变拉新数据列表
-    *fetchMarketAddNewActivityDataList({ payload }, { call, put }) {
-      const response = yield call(fetchMarketAddNewActivityDetail, payload);
-      if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          dataList: { list: content.configFissionTemplateDTOS },
-        },
       });
     },
   },
