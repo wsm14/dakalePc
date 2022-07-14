@@ -44,6 +44,13 @@ export const TAG_COLOR_TYPE = {
   },
 };
 
+// 全局 操作类型 枚举
+export const MODE_TYPE = {
+  add: '新增',
+  edit: '编辑',
+  auth: '审核',
+};
+
 // 排序纬度
 export const EXPERT_SORT_TYPE = {
   beanReward: '卡豆打赏额',

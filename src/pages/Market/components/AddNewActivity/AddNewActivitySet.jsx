@@ -3,6 +3,7 @@ import moment from 'moment';
 import { connect } from 'umi';
 import { Form, Button } from 'antd';
 import { ChromePicker } from 'react-color';
+import { MODE_TYPE } from '@/common/constant';
 import CITYJSON from '@/common/cityJson';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
@@ -256,7 +257,7 @@ const AddNewActivitySet = (props) => {
   ];
 
   const modalProps = {
-    title: `新增活动`,
+    title: `${MODE_TYPE[mode]}活动`,
     visible: show,
     onClose,
     width: 700,
