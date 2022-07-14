@@ -155,7 +155,7 @@ const GLobalSetDrawer = (props) => {
           >
             <InputNumber min={0} placeholder={'请输入数字'} />
           </Form.Item>
-          <span style={{ display: 'inline-block', marginTop: 5, marginRight: 15 }}>-</span>
+          <span style={{ display: 'inline-block', margin: '5px 15px 0 19px' }}>-</span>
           <Form.Item
             name="upperLimit"
             rules={[{ required: true, message: '请输入单个视频赚豆数' }]}
@@ -163,9 +163,52 @@ const GLobalSetDrawer = (props) => {
           >
             <InputNumber min={0} placeholder={'请输入数字'} />
           </Form.Item>
-          <span style={{ display: 'inline-block', marginTop: 5 }}>卡豆</span>
+          <span style={{ display: 'inline-block', margin: '5px 15px 0' }}>卡豆</span>
         </>
       ),
+    },
+  ];
+
+  const goldVideoItem = [
+    {
+      label: '每看',
+      type: 'number',
+      min: 0,
+      suffix: '秒视频',
+      name: 'totalLimit',
+    },
+    {
+      label: '获得',
+      type: 'formItem',
+      required: true,
+      rules: 'false',
+      formItem: (
+        <>
+          <Form.Item
+            name="lowerLimit"
+            rules={[{ required: true, message: '请输入获得金币数' }]}
+            style={{ display: 'inline-block', marginBottom: 0 }}
+          >
+            <InputNumber min={0} placeholder={'请输入数字'} />
+          </Form.Item>
+          <span style={{ display: 'inline-block', margin: '5px 15px 0 19px' }}>-</span>
+          <Form.Item
+            name="upperLimit"
+            rules={[{ required: true, message: '请输入获得金币数' }]}
+            style={{ display: 'inline-block', marginBottom: 0 }}
+          >
+            <InputNumber min={0} placeholder={'请输入数字'} />
+          </Form.Item>
+          <span style={{ display: 'inline-block', margin: '5px 15px 0' }}>金币</span>
+        </>
+      ),
+    },
+    {
+      label: '每日上限',
+      min: 0,
+      type: 'number',
+      suffix: '金币',
+      name: 'totalLismit',
     },
   ];
 
@@ -174,14 +217,13 @@ const GLobalSetDrawer = (props) => {
     UGCVideo: UCGItems,
     adVideo: videoAdItem,
     shareBean: beanItem,
-    // jigsawAd: videoAdItem,
+    goldVideo: goldVideoItem,
   }[tabKey];
 
   // 抽屉属性
   const modalProps = {
     title: '配置',
     visible: show,
-    width: 800,
     onClose,
     footer: (
       <>
