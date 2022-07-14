@@ -1569,3 +1569,12 @@ export const USER_PORT_TYPE = {
   markToken: '哒小卡',
   communityToken: '哒小团',
 };
+
+// 拉新裂变活动 奖品类型
+export const ACTIVICY_ASSISTANCE_PRIZETYPE = {
+  commerce: '电商品',
+  platformCoupon: '平台券',
+};
+
+// 拉新裂变活动 奖品领取状态
+export const ACTIVICY_ASSISTANCE_PRIZESTATUS = ['未领取', '已领取'];

@@ -1,17 +1,18 @@
 import { notification } from 'antd';
 import {
-  fetchBoxLotteryList,
-  fetchGetLuckDrawRecord, //天天抽奖
-  fetchBoxLotteryExport,
   fetchBoxDetail,
   fetchBoxAddAndPush,
-  fetchListUserPackageManagement,
-  fetchListUserPackageManagementExport,
+  fetchBoxLotteryList,
+  fetchGetHelpFreeList,
+  fetchBoxLotteryExport,
+  fetchGetLuckDrawRecord, //天天抽奖
   fetchGetUserPackageById,
   fetchDeliveryUserPackage,
-  fetchListUserPackageManagementBean,
-  fetchListUserPackageManagementBeanExport,
   fetchAllPrizeRecordExport,
+  fetchListUserPackageManagement,
+  fetchListUserPackageManagementBean,
+  fetchListUserPackageManagementExport,
+  fetchListUserPackageManagementBeanExport,
 } from '@/services/DataStatementServices';
 
 export default {
@@ -122,14 +123,14 @@ export default {
     },
     // get 盲盒中奖记录 - 助力免单 - 列表
     *fetchHelpFreeList({ payload }, { call, put }) {
-      const response = yield call(fetchListUserPackageManagementBean, payload);
+      const response = yield call(fetchGetHelpFreeList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
           helpFreeList: {
-            list: content.recordList,
+            list: content.userFissionRewardDetailList,
             total: content.total,
           },
         },

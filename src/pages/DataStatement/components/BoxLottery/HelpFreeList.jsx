@@ -10,7 +10,7 @@ const HelpFreeList = ({ helpFreeList, loading }) => {
   const searchItems = [
     {
       label: '中奖记录编号',
-      name: 'blindBoxRewardId',
+      name: 'userFissionRewardId',
     },
     {
       label: '中奖用户',
@@ -29,12 +29,13 @@ const HelpFreeList = ({ helpFreeList, loading }) => {
   const getColumns = [
     {
       title: '中奖记录编号',
-      dataIndex: 'blindBoxRewardId',
+      dataIndex: 'userFissionRewardId',
     },
     {
       title: '用户信息',
+      align: 'center',
       dataIndex: 'userName',
-      ellipsis: true,
+      render: (val, row) => `${row?.mobile || ''}\n${val || ''}\n${row?.userId || ''}`,
     },
     {
       title: '用户所属地区',
@@ -47,7 +48,8 @@ const HelpFreeList = ({ helpFreeList, loading }) => {
     },
     {
       title: '领取奖品名称/ID',
-      dataIndex: 'luckDrawType',
+      dataIndex: 'prizeId',
+      render: (val, row) => `${row?.prizeName || ''}\n${val || ''}`,
     },
   ];
 
@@ -59,7 +61,7 @@ const HelpFreeList = ({ helpFreeList, loading }) => {
       columns={getColumns}
       searchItems={searchItems}
       cardProps={{ bordered: false }}
-      rowKey={(record) => `${record.blindBoxRewardId}`}
+      rowKey={(record, index) => `${record.userFissionRewardId}${index}`}
       dispatchType="boxLottery/fetchHelpFreeList"
       {...helpFreeList}
     ></TableDataBlock>

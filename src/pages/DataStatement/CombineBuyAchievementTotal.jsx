@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { connect, Link } from 'umi';
+import { connect } from 'umi';
 import { DAREN_TEMP_FLAG } from '@/common/constant';
 import moment from 'moment';
 import debounce from 'lodash/debounce';

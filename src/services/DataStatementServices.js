@@ -93,19 +93,40 @@ export function fetchDeliveryUserPackage(data) {
   });
 }
 
+// get 盲盒中奖记录 - 助力免单 - 列表
+export function fetchGetHelpFreeList(params) {
+  return request('/admin/userFissionRewardAdmin/pageListUserFissionRewardAdmin', {
+    params,
+  });
+}
+
 // 中奖记录 end
 
 // 助力记录
-// get 助力列表 - 列表
+// get 盲盒助力列表 - 列表
 export async function fetchAssistanceList(params) {
   return request('/admin/config/blindBox/listUserBlindBoxHelp', {
     params,
   });
 }
 
-// get 助力列表 - 详情
+// get 盲盒助力列表 - 详情
 export async function fetchAssistanceDetail(params) {
   return request('/admin/config/blindBox/boostDetails', {
+    params,
+  });
+}
+
+// get 拉新裂变 - 发起记录 - 列表
+export function fetchActivicyAssistanceList(params) {
+  return request('/admin/userFissionAdmin/pageListUserFissionAdmin', {
+    params,
+  });
+}
+
+// get 拉新裂变 - 发起记录 - 详情
+export function fetchActivicyAssistanceDetail(params) {
+  return request('/admin/userFissionHelpAdmin/pageListUserFissionHelpAdmin', {
     params,
   });
 }

@@ -7,7 +7,6 @@ import BlindboxAssistanceModal from './BlindboxAssistanceModal';
 function BlindboxAssistance(props) {
   const { list, loading } = props;
 
-  const [info, setInfo] = useState(null);
   const [visible, setVisible] = useState(false);
 
   // 搜索参数
@@ -68,17 +67,11 @@ function BlindboxAssistance(props) {
       render: (val, row) => [
         {
           type: 'assistanceInfo',
-          click: () => handleAssistanceInfo({ userId: val, helpDate: row.helpDate }),
+          click: () => setVisible({ show: true, data: row }),
         },
       ],
     },
   ];
-
-  // 获取详情
-  const handleAssistanceInfo = (payload) => {
-    setVisible(true);
-    setInfo(payload);
-  };
 
   return (
     <>
@@ -94,9 +87,8 @@ function BlindboxAssistance(props) {
       ></TableDataBlock>
       {/* 助力详情 */}
       <BlindboxAssistanceModal
-        params={info}
         visible={visible}
-        onCancel={() => setVisible(false)}
+        onClose={() => setVisible(false)}
       ></BlindboxAssistanceModal>
     </>
   );
@@ -104,5 +96,5 @@ function BlindboxAssistance(props) {
 
 export default connect(({ blindboxAssistance, loading }) => ({
   list: blindboxAssistance.list,
-  loading: loading.models.blindboxAssistance,
+  loading: loading.effects['blindboxAssistance/fetchGetList'],
 }))(BlindboxAssistance);

@@ -1,16 +1,14 @@
-import { fetchAssistanceList, fetchAssistanceDetail } from '@/services/DataStatementServices';
+import {
+  fetchActivicyAssistanceList,
+  fetchActivicyAssistanceDetail,
+} from '@/services/DataStatementServices';
 
 export default {
   namespace: 'activicyAssistance',
 
   state: {
-    list: {
-      list: [],
-      total: 0,
-    },
-    info: {
-      list: [],
-    },
+    list: { list: [], total: 0 },
+    detailList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -24,28 +22,29 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchAssistanceList, payload);
+      const response = yield call(fetchActivicyAssistanceList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
           list: {
-            list: content.recordList,
+            list: content.userFissionDetailList,
             total: content.total,
           },
         },
       });
     },
-    *fetchAssistanceDetail({ payload }, { call, put }) {
-      const response = yield call(fetchAssistanceDetail, payload);
+    *fetchActivicyAssistanceDetail({ payload }, { call, put }) {
+      const response = yield call(fetchActivicyAssistanceDetail, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          info: {
-            list: content.userBlindBoxHelpDTOS,
+          detailList: {
+            list: content.userFissionHelpDetailList,
+            total: content.total,
           },
         },
       });

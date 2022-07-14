@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'umi';
-import { Modal } from 'antd';
 import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
+import DrawerCondition from '@/components/DrawerCondition';
 
 function AssistanceModal(props) {
-  const { infoList, visible, loading, params, onCancel } = props;
+  const { infoList, visible, loading, onClose } = props;
+  const { show = false, data = {} } = visible;
 
   // 搜索参数
   const searchItems = [
@@ -13,7 +14,7 @@ function AssistanceModal(props) {
       label: '助力用户',
       type: 'user',
       name: 'helpUserId',
-      span: 12,
+      span: 18,
     },
   ];
 
@@ -43,33 +44,32 @@ function AssistanceModal(props) {
     },
   ];
 
+  const modalProps = {
+    title: `助力详情 - ${data.userName}`,
+    visible: show,
+    onClose,
+    width: 800,
+    zIndex: 1001,
+  };
+
   return (
-    <Modal
-      title="助力详情"
-      destroyOnClose
-      footer={false}
-      width={950}
-      visible={visible}
-      onCancel={onCancel}
-    >
+    <DrawerCondition {...modalProps}>
       <TableDataBlock
         order
         noCard={false}
-        searchItems={searchItems}
         loading={loading}
         columns={getColumns}
-        params={params}
-        scrollY={500}
+        searchItems={searchItems}
         rowKey={(record) => `${record.blindBoxHelpId}`}
+        params={{ userId: data.userId, helpDate: data.helpDate }}
         dispatchType="blindboxAssistance/fetchAssistanceDetail"
-        pagination={false}
         {...infoList}
       ></TableDataBlock>
-    </Modal>
+    </DrawerCondition>
   );
 }
 
 export default connect(({ blindboxAssistance, loading }) => ({
   infoList: blindboxAssistance.info,
-  loading: loading.models.blindboxAssistance,
+  loading: loading.effects['blindboxAssistance/fetchAssistanceDetail'],
 }))(AssistanceModal);

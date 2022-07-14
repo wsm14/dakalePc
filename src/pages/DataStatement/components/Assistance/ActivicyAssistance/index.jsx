@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { checkCityName } from '@/utils/utils';
+import { ACTIVICY_ASSISTANCE_PRIZETYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
-import ActivicyAssistanceModal from './ActivicyAssistanceModal';
+import HelpDetailDrawer from './HelpDetailDrawer';
 
 function ActivicyAssistance(props) {
   const { list, loading } = props;
 
-  const [info, setInfo] = useState(null);
   const [visible, setVisible] = useState(false);
 
   // 搜索参数
@@ -15,35 +15,35 @@ function ActivicyAssistance(props) {
     {
       label: '发起用户',
       type: 'user',
-      name: 'userId',
+      name: 'initiateUserId',
     },
     {
       label: '活动名称',
-      name: 'userIds',
+      name: 'fissionName',
     },
     {
       label: '奖品类型',
-      name: 'usersIds',
+      name: 'fissionPrizeType',
       type: 'select',
-      select: [],
+      select: ACTIVICY_ASSISTANCE_PRIZETYPE,
     },
     {
       label: '发起日期',
       type: 'rangePicker',
-      name: 'helpStartTime',
-      end: 'helpEndTime',
+      name: 'createBeginTime',
+      end: 'createEndTime',
     },
     {
       label: '用户所属地区',
       type: 'cascader',
       name: 'city',
       changeOnSelect: true,
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+      valuesKey: ['initiateUserProvinceCode', 'initiateUserCityCode', 'initiateUserDistrictCode'],
       placeholder: '请选择',
     },
     {
       label: '奖品名称',
-      name: 'usesdrIds',
+      name: 'fissionPrizeName',
     },
   ];
 
@@ -51,61 +51,66 @@ function ActivicyAssistance(props) {
   const getColumns = [
     {
       title: '活动名称',
-      dataIndex: 'helpDate',
+      dataIndex: 'fissionName',
       ellipsis: true,
     },
     {
       title: '邀请人数',
       align: 'right',
-      dataIndex: 'userName',
+      dataIndex: 'fissionInviteNum',
+      render: (val) => `${val}人`,
     },
     {
       title: '奖品类型/标签',
       align: 'center',
-      dataIndex: 'mobile',
+      dataIndex: 'fissionPrizeType',
+      render: (val) => ACTIVICY_ASSISTANCE_PRIZETYPE[val],
     },
     {
       title: '奖品名称/ID',
-      dataIndex: 'beanCode',
+      dataIndex: 'fissionPrizeName',
+      width: 180,
+      render: (val, row) => `${val}\n${row.fissionPrizeId}`,
     },
     {
       title: '发起日期',
-      dataIndex: 'helpTsdimes',
+      dataIndex: 'createTime',
     },
     {
       title: '发起用户信息',
-      dataIndex: 'helpTsdsddimes',
+      dataIndex: 'initiateUserInfo',
+      render: (val) => `${val?.mobile || ''}\n${val?.username || ''}\n${val?.beanCode || ''}`,
     },
     {
       title: '用户所属地区',
-      dataIndex: 'districtCode',
+      align: 'center',
+      dataIndex: 'initiateUserDistrictCode',
       render: (val) => checkCityName(val) || '--',
     },
     {
       title: '当前进度',
-      dataIndex: 'helpTimes',
+      align: 'center',
+      dataIndex: 'invitedNum',
+      render: (val, row) =>
+        row.fissionInviteNum == val
+          ? `邀请${val}人`
+          : `邀请${val}人，还差${row.fissionInviteNum - val}人`,
     },
     {
       title: '完成时间',
-      dataIndex: 'helsdpTsdimes',
+      dataIndex: 'inviteCompletedTime',
     },
     {
       type: 'handle',
-      dataIndex: 'userId',
+      dataIndex: 'userFissionId',
       render: (val, row) => [
         {
           type: 'assistanceInfo',
-          click: () => handleAssistanceInfoModal({ userId: val, helpDate: row.helpDate }),
+          click: () => setVisible({ show: true, data: row }),
         },
       ],
     },
   ];
-
-  // 获取详情
-  const handleAssistanceInfoModal = (data) => {
-    setInfo(data);
-    setVisible(true);
-  };
 
   return (
     <>
@@ -115,21 +120,20 @@ function ActivicyAssistance(props) {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.userId}${record.helpDate}`}
+        rowKey={(record) => `${record.userFissionId}`}
         dispatchType="activicyAssistance/fetchGetList"
         {...list}
       ></TableDataBlock>
       {/* 助力详情 */}
-      <ActivicyAssistanceModal
-        params={info}
+      <HelpDetailDrawer
         visible={visible}
-        onCancel={() => setVisible(false)}
-      ></ActivicyAssistanceModal>
+        onClose={() => setVisible(false)}
+      ></HelpDetailDrawer>
     </>
   );
 }
 
 export default connect(({ activicyAssistance, loading }) => ({
   list: activicyAssistance.list,
-  loading: loading.models.activicyAssistance,
+  loading: loading.effects['activicyAssistance/fetchGetList'],
 }))(ActivicyAssistance);

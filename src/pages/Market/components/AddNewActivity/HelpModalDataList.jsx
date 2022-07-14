@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
+import { checkCityName } from '@/utils/utils';
+import { ACTIVICY_ASSISTANCE_PRIZESTATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
-import HelpDetailDrawer from './HelpDetailDrawer';
+import HelpDetailDrawer from '@/pages/DataStatement/components/Assistance/ActivicyAssistance/HelpDetailDrawer';
 
 // 助力活动数据列表
 const HelpModalDataList = (props) => {
@@ -15,7 +17,7 @@ const HelpModalDataList = (props) => {
   const searchItems = [
     {
       label: '用户信息',
-      name: 'name',
+      name: 'initiateUserId',
       type: 'user',
     },
   ];
@@ -24,43 +26,51 @@ const HelpModalDataList = (props) => {
     {
       title: '发起人',
       align: 'center',
-      dataIndex: 'scenesName',
+      dataIndex: 'initiateUserInfo',
+      render: (val) => `${val?.mobile || ''}\n${val?.username || ''}\n${val?.beanCode || ''}`,
     },
     {
       title: '用户所属地区',
       align: 'center',
-      dataIndex: 'scensesName',
+      dataIndex: 'initiateUserDistrictCode',
+      render: (val) => checkCityName(val) || '--',
     },
     {
       title: '当前进度',
       align: 'center',
-      dataIndex: 'scenedsName',
+      dataIndex: 'invitedNum',
+      render: (val, row) =>
+        row.fissionInviteNum == val
+          ? `邀请${val}人`
+          : `邀请${val}人，还差${row.fissionInviteNum - val}人`,
     },
     {
       title: '邀请完成时间',
       align: 'center',
-      dataIndex: 'scenesasName',
+      dataIndex: 'inviteCompletedTime',
     },
     {
       title: '奖品领取状态',
-      dataIndex: 'image',
+      dataIndex: 'prizeCollectionStatus',
+      render: (val) => ACTIVICY_ASSISTANCE_PRIZESTATUS[val],
     },
     {
       title: '领取奖品名称',
-      dataIndex: 'imsdage',
+      dataIndex: 'fissionPrizeName',
+      render: (val) => `${val}`,
     },
     {
       title: '领取时间',
-      dataIndex: 'imadage',
+      dataIndex: 'receiveTime',
     },
     {
       type: 'handle',
-      dataIndex: 'value',
+      dataIndex: 'userFissionId',
       render: (val, row) => [
         {
           title: '助力详情',
           auth: true,
-          click: () => setVisibleDetail({ show: true, row }),
+          click: () => setVisibleDetail({ show: true, data: row }),
         },
       ],
     },
@@ -68,7 +78,7 @@ const HelpModalDataList = (props) => {
 
   return (
     <Modal
-      title={`数据`}
+      title={`数据 - ${row.name}`}
       width={1150}
       destroyOnClose
       footer={null}
@@ -82,9 +92,9 @@ const HelpModalDataList = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(row) => `${row.categoryScenesId}`}
-        params={{ configFissionTemplateId: row.configFissionTemplateId }}
-        dispatchType="addNewActivity/fetchMarketAddNewActivityDataList"
+        rowKey={(row) => `${row.userFissionId}`}
+        params={{ fissionId: row.configFissionTemplateId }}
+        dispatchType="activicyAssistance/fetchGetList"
         {...dataList}
       ></TableDataBlock>
       {/* 助力详情 */}
@@ -95,7 +105,7 @@ const HelpModalDataList = (props) => {
     </Modal>
   );
 };
-export default connect(({ addNewActivity, loading }) => ({
-  dataList: addNewActivity.dataList,
-  loading: loading.effects['addNewActivity/fetchMarketAddNewActivityDataList'],
+export default connect(({ activicyAssistance, loading }) => ({
+  dataList: activicyAssistance.list,
+  loading: loading.effects['activicyAssistance/fetchGetList'],
 }))(HelpModalDataList);
