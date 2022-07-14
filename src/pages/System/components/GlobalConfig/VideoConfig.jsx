@@ -18,10 +18,10 @@ const tabList = [
     key: 'adVideo',
     tab: '广告视频',
   },
-  // {
-  //   key: 'jigsawAd',
-  //   tab: '拼图广告',
-  // },
+  {
+    key: 'goldVideo',
+    tab: '金币视频',
+  },
   {
     key: 'shareBean',
     tab: '分享赚豆',
@@ -74,7 +74,6 @@ const VideoConfig = (props) => {
       type: 'videoAdvert/fetchVideoGetDictionaryAdmin',
       payload: { parent: 'shareEarnBean', child: 'shareMoment' },
       callback: (data) => {
-        console.log(data);
         setDetail(data);
       },
     });
@@ -91,9 +90,6 @@ const VideoConfig = (props) => {
       case 'UGCVideo':
         fetchUCGGetData();
         break;
-      // case 'jigsawAd':
-      //   fetchAdRootDetail();
-      //   break;
       case 'shareBean':
         fetchVideoGetDictionaryAdmin();
         break;
@@ -107,7 +103,7 @@ const VideoConfig = (props) => {
     UGCVideo: <GLobalSetDetail {...listProps}></GLobalSetDetail>,
     adVideo: <GLobalSetDetail {...listProps}></GLobalSetDetail>,
     shareBean: <GLobalSetDetail {...listProps}></GLobalSetDetail>,
-    // jigsawAd: <GLobalSetDetail {...listProps}></GLobalSetDetail>,
+    goldVideo: <GLobalSetDetail {...listProps}></GLobalSetDetail>,
   };
 
   const handleUpdateSet = () => {

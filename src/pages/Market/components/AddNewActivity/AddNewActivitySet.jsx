@@ -205,6 +205,7 @@ const AddNewActivitySet = (props) => {
       label: '领奖成功跳转路径',
       type: 'select',
       name: 'successfulJumpUrl',
+      rules: [{ required: false }],
       select: {
         blindIndex: '卡豆盲盒',
         userNewArtist: '新手福利页',

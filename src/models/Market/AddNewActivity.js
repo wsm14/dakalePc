@@ -89,6 +89,7 @@ export default {
       callback({
         ...other,
         prizeType,
+        cityCode,
         areaType: cityCode != 'all' ? 'city' : cityCode,
         activityBeginTime: [moment(activityBeginTime), moment(activityEndTime)],
         goodDetail,
