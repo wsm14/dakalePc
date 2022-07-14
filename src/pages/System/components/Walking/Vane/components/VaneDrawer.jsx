@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import { VANE_URL_TYPE } from '@/common/constant';
+import { VANE_URL_TYPE, VANEDRAWER_SHOWTPYE } from '@/common/constant';
 import {
   VANE_ICON,
   VANE_BANNER,
@@ -121,6 +121,15 @@ const VaneDrawer = (props) => {
       maxLength: 6,
     },
     {
+      label: '显示类型',
+      name: 'showType',
+      type: 'select',
+      select: VANEDRAWER_SHOWTPYE,
+      visible: tabKey == 'fuliEarnGoldCoins',
+      show: tabKey == 'fuliEarnGoldCoins',
+      render: (val) => VANEDRAWER_SHOWTPYE[val],
+    },
+    {
       label: '显示图标',
       type: 'upload',
       name: 'image',
@@ -131,7 +140,10 @@ const VaneDrawer = (props) => {
         sixPalaceLattice: '请上传226*176尺寸png、jpeg格式图片',
         beanDeductionZone: '请上传202*250尺寸png、jpeg格式图片',
         fieldResource: '请上传298*208尺寸png、jpeg格式图片',
-        userParticipation:''
+        userParticipation: '',
+        fuliEarnGoldCoins: '',
+        fuliInvitationActivities: '',
+        fuliLifeService: '',
       }[tabKey],
       imgRatio: {
         windVane: VANE_ICON,
@@ -139,7 +151,10 @@ const VaneDrawer = (props) => {
         sixPalaceLattice: VANE_SIX_ICON,
         beanDeductionZone: VANE_BEANDEDUCTION_ICON,
         fieldResource: VANE_FIELD_ICON,
-        userParticipation:''
+        userParticipation: '',
+        fuliEarnGoldCoins: '',
+        fuliInvitationActivities: '',
+        fuliLifeService: '',
       }[tabKey],
     },
     {

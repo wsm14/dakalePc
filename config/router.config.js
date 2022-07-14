@@ -343,7 +343,7 @@ export default [
             path: '/user/list',
             name: '用户数据',
             component: './User/UserList',
-            buttons: ['info', 'status'],
+            buttons: ['info', 'status', 'couponInfo'],
           },
           {
             path: '/user/master',

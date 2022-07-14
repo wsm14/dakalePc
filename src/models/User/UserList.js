@@ -15,6 +15,7 @@ export default {
     list: { list: [], total: 0 },
     totalData: {},
     totalChartData: { city: [] },
+    couponList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -95,6 +96,18 @@ export default {
         description: '用户解封成功',
       });
       callback && callback();
+    },
+    // 券包详情列表
+    *fetchCouponInfoGetList({ payload }, { call, put }) {
+      // const response = yield call(fetchUserList, payload);
+      // if (!response) return;
+      // const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          couponList: { list: [], total: 0 },
+        },
+      });
     },
   },
 };
