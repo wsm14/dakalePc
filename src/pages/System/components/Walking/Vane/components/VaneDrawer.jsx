@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import { VANE_URL_TYPE } from '@/common/constant';
+import { VANE_URL_TYPE, VANEDRAWER_SHOWTPYE } from '@/common/constant';
 import {
   VANE_ICON,
   VANE_BANNER,
@@ -122,11 +122,12 @@ const VaneDrawer = (props) => {
     },
     {
       label: '显示类型',
-      name: 'aaaa',
+      name: 'showType',
       type: 'select',
-      select: [1, 2, 3],
+      select: VANEDRAWER_SHOWTPYE,
       visible: tabKey == 'fuliEarnGoldCoins',
       show: tabKey == 'fuliEarnGoldCoins',
+      render: (val) => VANEDRAWER_SHOWTPYE[val],
     },
     {
       label: '显示图标',

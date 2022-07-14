@@ -555,12 +555,21 @@ export const MASTER_TYPE = { user: '用户', merchant: '店铺' };
 // 商品类型
 export const GOODS_CLASS_TYPE = { single: '单品', package: '套餐' };
 
-// 风向标跳转类型
+// 风向标 - 跳转类型
 export const VANE_URL_TYPE = {
   h5: '跳转至URL',
   trade: '按行业显示',
   native: '原生页面',
   template: '跳转模板内容',
+};
+
+// 风向标 - 福利赚金币 - 显示类型
+export const VANEDRAWER_SHOWTPYE = {
+  leisureReading: '休闲阅读',
+  gameHall: '游戏大厅',
+  incentiveVideo: '激励视频',
+  rewardVideo: '奖励视频',
+  fortuneVideo: '财运视频',
 };
 
 // 分享设置 - 区域类型
