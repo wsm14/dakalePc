@@ -36,14 +36,14 @@ const GLobalSetDetail = (props) => {
       suffix: '秒视频',
       render: (val, row) => {
         const { beanRule = {} } = row;
-        return `${val}秒视频获得100~200金币`;
+        return `${val || 0}秒视频获得100~200金币`;
       },
     },
     {
       label: '每日金币上限',
       type: 'number',
       name: ['beanRule', 'upperLimit'],
-      render: (val) => val + '金币',
+      render: (val) => val || 0 + '金币',
     },
   ];
 
