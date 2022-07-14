@@ -1,23 +1,21 @@
-import React, { useState } from 'react';
-import { connect } from 'umi';
-import { Button } from 'antd';
+import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const GLobalSetDetail = (props) => {
-  const { dispatch, loading, tabKey, detail = {} } = props;
+  const { tabKey, detail = {} } = props;
 
   const merChantItems = [
-    {
-      label: '每日卡豆领取上限',
-      name: 'beanLimit',
-      suffix: '卡豆',
-      render: (val) => val + '卡豆',
-    },
     {
       label: '每看',
       name: 'preventSize',
       suffix: '个视频弹出广告',
       render: (val) => val + '个视频弹出拼图广告',
+    },
+    {
+      label: '每日卡豆领取上限',
+      name: 'beanLimit',
+      suffix: '卡豆',
+      render: (val) => val + '卡豆',
     },
   ];
 
@@ -27,6 +25,25 @@ const GLobalSetDetail = (props) => {
       name: 'count',
       suffix: '个视频弹出广告',
       render: (val) => val + '个视频弹出广告',
+    },
+  ];
+
+  const goldVideoItems = [
+    {
+      label: '每看',
+      type: 'number',
+      name: ['beanRule', 'second'],
+      suffix: '秒视频',
+      render: (val, row) => {
+        const { beanRule = {} } = row;
+        return `${val}秒视频获得100~200金币`;
+      },
+    },
+    {
+      label: '每日金币上限',
+      type: 'number',
+      name: ['beanRule', 'upperLimit'],
+      render: (val) => val + '金币',
     },
   ];
 
@@ -48,6 +65,7 @@ const GLobalSetDetail = (props) => {
       render: (val) => val + '卡豆',
     },
   ];
+
   const UGCItems2 = [
     {
       title: 'UGC视频打赏规则',
@@ -85,7 +103,7 @@ const GLobalSetDetail = (props) => {
     UGCVideo: UCGItems,
     adVideo: videoAdItem,
     shareBean: beanItem,
-    // jigsawAd: videoAdItem,
+    goldVideo: goldVideoItems,
   }[tabKey];
 
   return (
