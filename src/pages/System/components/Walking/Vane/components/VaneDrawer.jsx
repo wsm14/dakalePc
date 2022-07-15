@@ -183,6 +183,7 @@ const VaneDrawer = (props) => {
     {
       label: '跳转类型',
       name: 'jumpUrlType',
+      visible: !['fuliEarnGoldCoins', 'fuliLifeService'].includes(tabKey),
       type: 'noForm',
       formItem: (
         <NewNativeFormSet
@@ -194,12 +195,6 @@ const VaneDrawer = (props) => {
       ),
       render: (val) => VANE_URL_TYPE[val],
     },
-    // {
-    //   label: '链接',
-    //   name: 'jumpUrl',
-    //   visible: showUrl === 'h5',
-    //   show: showUrl === 'h5',
-    // },
     {
       label: '一级行业类目',
       name: 'topCategoryId',
