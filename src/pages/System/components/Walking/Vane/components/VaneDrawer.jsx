@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import { VANE_URL_TYPE, VANEDRAWER_SHOWTPYE } from '@/common/constant';
+import {
+  VANE_URL_TYPE,
+  VANEDRAWER_SHOWTPYE_GOLD,
+  VANEDRAWER_SHOWTPYE_LIFE,
+} from '@/common/constant';
 import {
   VANE_ICON,
   VANE_BANNER,
@@ -114,6 +118,12 @@ const VaneDrawer = (props) => {
     });
   };
 
+  // 显示类型的枚举
+  const showTypeConstant = {
+    fuliEarnGoldCoins: VANEDRAWER_SHOWTPYE_GOLD,
+    fuliLifeService: VANEDRAWER_SHOWTPYE_LIFE,
+  };
+
   const formItems = [
     {
       label: '显示名称',
@@ -124,10 +134,10 @@ const VaneDrawer = (props) => {
       label: '显示类型',
       name: 'showType',
       type: 'select',
-      select: VANEDRAWER_SHOWTPYE,
-      visible: tabKey == 'fuliEarnGoldCoins',
-      show: tabKey == 'fuliEarnGoldCoins',
-      render: (val) => VANEDRAWER_SHOWTPYE[val],
+      select: showTypeConstant[tabKey],
+      visible: ['fuliEarnGoldCoins', 'fuliLifeService'].includes(tabKey),
+      show: ['fuliEarnGoldCoins', 'fuliLifeService'].includes(tabKey),
+      render: (val) => showTypeConstant[tabKey][val],
     },
     {
       label: '显示图标',

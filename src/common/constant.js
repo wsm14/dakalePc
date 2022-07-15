@@ -571,12 +571,21 @@ export const VANE_URL_TYPE = {
 };
 
 // 风向标 - 福利赚金币 - 显示类型
-export const VANEDRAWER_SHOWTPYE = {
+export const VANEDRAWER_SHOWTPYE_GOLD = {
   leisureReading: '休闲阅读',
   gameHall: '游戏大厅',
   incentiveVideo: '激励视频',
   rewardVideo: '奖励视频',
   fortuneVideo: '财运视频',
+};
+
+// 风向标 - 福利生活服务 - 显示类型
+export const VANEDRAWER_SHOWTPYE_LIFE = {
+  phoneBill: '充话费',
+  member: '充会员',
+  taoBao: '淘宝',
+  JD: '京东',
+  tiktok: '抖音',
 };
 
 // 分享设置 - 区域类型
