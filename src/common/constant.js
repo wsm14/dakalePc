@@ -562,12 +562,30 @@ export const MASTER_TYPE = { user: '用户', merchant: '店铺' };
 // 商品类型
 export const GOODS_CLASS_TYPE = { single: '单品', package: '套餐' };
 
-// 风向标跳转类型
+// 风向标 - 跳转类型
 export const VANE_URL_TYPE = {
   h5: '跳转至URL',
   trade: '按行业显示',
   native: '原生页面',
   template: '跳转模板内容',
+};
+
+// 风向标 - 福利赚金币 - 显示类型
+export const VANEDRAWER_SHOWTPYE_GOLD = {
+  leisureReading: '休闲阅读',
+  gameHall: '游戏大厅',
+  incentiveVideo: '激励视频',
+  rewardVideo: '奖励视频',
+  fortuneVideo: '财运视频',
+};
+
+// 风向标 - 福利生活服务 - 显示类型
+export const VANEDRAWER_SHOWTPYE_LIFE = {
+  phoneBill: '充话费',
+  member: '充会员',
+  taoBao: '淘宝',
+  JD: '京东',
+  tiktok: '抖音',
 };
 
 // 分享设置 - 区域类型
@@ -1585,3 +1603,5 @@ export const ACTIVICY_ASSISTANCE_PRIZETYPE = {
 
 // 拉新裂变活动 奖品领取状态
 export const ACTIVICY_ASSISTANCE_PRIZESTATUS = ['未领取', '已领取'];
+// 用户数据 - 券包 - 券状态
+export const USER_COUPON_STATES = ['未使用', '已过期', '已使用'];

@@ -117,7 +117,7 @@ const AddSpecification = (props) => {
                 return (
                   <Input
                     key={`${val.name}${item}${idx}`}
-                    style={{ width: 80, marginRight: 10, marginBottom: 10 }}
+                    style={{ width: 200, marginRight: 10, marginBottom: 10 }}
                     defaultValue={item}
                     onBlur={(e) => updateSpecificationValue(e, index, idx)}
                     addonAfter={<div onClick={() => delSpecificationValue(index, idx)}>×</div>}

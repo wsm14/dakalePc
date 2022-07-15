@@ -6,6 +6,7 @@ import {
   fetchUserChartTotal,
   fetchSubPortBlockUser,
   fetchSubPortUnsealUser,
+  fetchPageListUserPlatformCouponAdmin,
 } from '@/services/UserServices';
 
 export default {
@@ -15,6 +16,7 @@ export default {
     list: { list: [], total: 0 },
     totalData: {},
     totalChartData: { city: [] },
+    couponList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -95,6 +97,19 @@ export default {
         description: '用户解封成功',
       });
       callback && callback();
+    },
+    // 券包详情列表
+    *fetchPageListUserPlatformCouponAdmin({ payload }, { call, put }) {
+      const response = yield call(fetchPageListUserPlatformCouponAdmin, payload);
+      if (!response) return;
+      const { content } = response;
+
+      yield put({
+        type: 'save',
+        payload: {
+          couponList: { list: content.userPlatformCouponDetailList, total: content.total },
+        },
+      });
     },
   },
 };

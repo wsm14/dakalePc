@@ -8,6 +8,7 @@ import SearchCard from './components/UserList/Search/SearchCard';
 import UserDetailShow from './components/UserList/UserDetailShow';
 import UserListTotalInfo from './components/UserList/UserTotalInfo';
 import UserTotalSpread from './components/UserList/UserTotalSpread';
+import VoucherPackage from './components/UserList/VoucherPackage';
 
 const UserListComponent = (props) => {
   const { list, loading, dispatch } = props;
@@ -15,8 +16,9 @@ const UserListComponent = (props) => {
   const childRef = useRef();
   // 城市参数
   const [cityData, setCityData] = useState({});
-  // 用户详情弹窗
-  const [visible, setVisible] = useState(false);
+
+  const [visible, setVisible] = useState(false); // 用户详情弹窗
+  const [visibleCoupon, setVisibleCoupon] = useState(false); // 券包详情弹窗
 
   // 搜索参数
   const searchItems = [
@@ -104,28 +106,19 @@ const UserListComponent = (props) => {
     },
     {
       type: 'handle',
-      dataIndex: 'parentUserIdString',
+      dataIndex: 'userIdString',
       render: (val, record, index) => [
         {
           type: 'info',
           click: () => fetchUserDetail(index),
         },
+        {
+          type: 'couponInfo',
+          click: () => setVisibleCoupon({ show: true, userId: val }),
+        },
       ],
     },
   ];
-
-  useEffect(() => {
-    fetchUserChartTotal();
-    childRef.current && childRef.current.fetchGetData(cityData);
-  }, [cityData]);
-
-  // 获取用户统计
-  const fetchUserChartTotal = () => {
-    dispatch({
-      type: 'userList/fetchUserChartTotal',
-      payload: cityData,
-    });
-  };
 
   // 获取用户详情
   const fetchUserDetail = (index) => {
@@ -150,12 +143,12 @@ const UserListComponent = (props) => {
         cRef={childRef}
         loading={loading}
         columns={getColumns}
-        params={cityData}
         searchItems={searchItems}
         rowKey={(record) => `${record.userIdString}`}
         dispatchType="userList/fetchGetList"
         {...list}
       ></TableDataBlock>
+      {/* 详情 */}
       <UserDetailShow
         total={list.list.length}
         childRef={childRef}
@@ -163,6 +156,11 @@ const UserListComponent = (props) => {
         getDetail={fetchUserDetail}
         onClose={() => setVisible(false)}
       ></UserDetailShow>
+      {/* 券包详情 */}
+      <VoucherPackage
+        visible={visibleCoupon}
+        onClose={() => setVisibleCoupon(false)}
+      ></VoucherPackage>
     </>
   );
 };

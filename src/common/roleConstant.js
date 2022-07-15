@@ -51,6 +51,7 @@ export const ROLE_BUTTON_TYPE = {
   configCondit: '条件配置',
   commerceSet: '带货设置',
   changeRemain: '调整库存',
+  couponInfo: '券包详情',
 
   del: '删除',
   data: '数据',

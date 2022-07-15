@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -6,18 +6,23 @@ import GameSignPushSet from './GameSignPushSet';
 import GameSignDetail from './GameSignDetail';
 
 const GameSignDrawer = (props) => {
-  const { dispatch, visible, childRef, onClose, loading } = props;
+  const { dispatch, visible, childRef, onClose, loading, loadings } = props;
 
   const { type = 'info', show = false, detail = {} } = visible;
   const [form] = Form.useForm();
 
+  useEffect(() => {
+    show && type == 'add' && dispatch({ type: 'baseData/fetchListExpressCompany' });
+  }, [show]);
+
   //提交发货
   const handleUpAudit = () => {
     form.validateFields().then((value) => {
-      const { logisticsCompany, logisticsNum } = value;
+      const { logisticsCompany, logisticsNum, companyCode } = value;
       dispatch({
         type: 'boxLottery/fetchDeliveryUserPackage',
         payload: {
+          companyCode,
           logisticsInfo: `${logisticsCompany} | ${logisticsNum}`,
           userPackageId: detail.userPackageId,
           userId: detail.userId,
@@ -58,6 +63,7 @@ const GameSignDrawer = (props) => {
   const modalProps = {
     title: `${drawerProps.title}`,
     visible: show,
+    loading: type == 'info' && loadings.effects['refundOrder/fetchGetExpressInfo'],
     onClose,
     footer: drawerProps.footer,
   };
@@ -67,4 +73,5 @@ const GameSignDrawer = (props) => {
 
 export default connect(({ loading }) => ({
   loading: loading.effects['boxlottery/fetchDeliveryUserPackage'],
+  loadings: loading,
 }))(GameSignDrawer);
