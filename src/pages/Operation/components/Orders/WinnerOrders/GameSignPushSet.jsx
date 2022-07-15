@@ -1,13 +1,28 @@
 import React from 'react';
+import { connect } from 'umi';
 import FormCondition from '@/components/FormCondition';
 
 const GameSignPushSet = (props) => {
-  const { form, initialValues } = props;
+  const { form, initialValues, companyList } = props;
 
   const formItems = [
     {
       label: '物流公司',
+      name: 'companyCode',
+      type: 'select',
+      select: companyList,
+      fieldNames: { label: 'companyName', value: 'companyCode' },
+      onSelect: (val, option) => {
+        option &&
+          form.setFieldsValue({
+            logisticsCompany: option.option.companyName,
+          });
+      },
+    },
+    {
+      label: '物流公司名称',
       name: 'logisticsCompany',
+      hidden: true,
     },
     {
       label: '物流单号',
@@ -33,4 +48,6 @@ const GameSignPushSet = (props) => {
   );
 };
 
-export default GameSignPushSet;
+export default connect(({ baseData }) => ({
+  companyList: baseData.companyList,
+}))(GameSignPushSet);

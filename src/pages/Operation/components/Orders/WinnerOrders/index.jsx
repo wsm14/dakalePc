@@ -111,12 +111,12 @@ const WinnerOrders = ({ gameSignList, loading, dispatch, tabkey }) => {
       dataIndex: 'userPackageId',
       render: (val, row) => [
         {
-          type: 'goodsDeliver',
+          type: 'goodsDeliver', // 发货
           visible: row.status === '1',
           click: () => fetchBoxDeatil(val, row, 'add'),
         },
         {
-          type: 'goodsView',
+          type: 'goodsView', // 查看物流
           visible: row.status === '2',
           click: () => fetchBoxDeatil(val, row, 'info'),
         },
@@ -126,7 +126,7 @@ const WinnerOrders = ({ gameSignList, loading, dispatch, tabkey }) => {
 
   // 获取详情 type：info 查看
   const fetchBoxDeatil = (id, row, type) => {
-    const { userAddressObject = {}, userId } = row;
+    const { userAddressObject = {}, userId, logisticsInfo = '', mobile, companyCode } = row;
     let userAddressContent = {};
     if (userAddressObject) {
       // const contentObj = JSON.parse(row.contentParam);
@@ -145,8 +145,12 @@ const WinnerOrders = ({ gameSignList, loading, dispatch, tabkey }) => {
       });
     } else {
       dispatch({
-        type: 'boxLottery/fetchGetUserPackageByIdDetail',
-        payload: { userPackageId: id },
+        type: 'refundOrder/fetchGetExpressInfo',
+        payload: {
+          expressCompany: companyCode,
+          expressNo: logisticsInfo.split('|')[1],
+          receiveUserMobile: mobile,
+        },
         callback: (detail) =>
           setVisible({
             type,

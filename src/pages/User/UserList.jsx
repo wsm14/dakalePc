@@ -106,7 +106,7 @@ const UserListComponent = (props) => {
     },
     {
       type: 'handle',
-      dataIndex: 'parentUserIdString',
+      dataIndex: 'userIdString',
       render: (val, record, index) => [
         {
           type: 'info',
@@ -114,24 +114,11 @@ const UserListComponent = (props) => {
         },
         {
           type: 'couponInfo',
-          click: () => setVisibleCoupon({ show: true, detail: record }),
+          click: () => setVisibleCoupon({ show: true, userId: val }),
         },
       ],
     },
   ];
-
-  useEffect(() => {
-    fetchUserChartTotal();
-    childRef.current && childRef.current.fetchGetData(cityData);
-  }, [cityData]);
-
-  // 获取用户统计
-  const fetchUserChartTotal = () => {
-    dispatch({
-      type: 'userList/fetchUserChartTotal',
-      payload: cityData,
-    });
-  };
 
   // 获取用户详情
   const fetchUserDetail = (index) => {
@@ -156,7 +143,6 @@ const UserListComponent = (props) => {
         cRef={childRef}
         loading={loading}
         columns={getColumns}
-        params={cityData}
         searchItems={searchItems}
         rowKey={(record) => `${record.userIdString}`}
         dispatchType="userList/fetchGetList"

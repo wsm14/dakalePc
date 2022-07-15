@@ -1578,3 +1578,6 @@ export const USER_PORT_TYPE = {
   markToken: '哒小卡',
   communityToken: '哒小团',
 };
+
+// 用户数据 - 券包 - 券状态
+export const USER_COUPON_STATES = ['未使用', '已过期', '已使用'];
