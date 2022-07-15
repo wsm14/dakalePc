@@ -37,6 +37,7 @@ const VideoConfig = (props) => {
   const [visibleSet, setVisibleSet] = useState(false);
 
   useEffect(() => {
+    setDetail({});
     fetchDetail(tabKey);
   }, [tabKey]);
 
@@ -79,6 +80,17 @@ const VideoConfig = (props) => {
     });
   };
 
+  // 获取金币视频
+  const fetchGoldVideoDetail = () => {
+    dispatch({
+      type: 'videoAdvert/fetchGoldVideoDetail',
+      payload: { parent: 'coinsMoment', child: 'platformRewardCoinsRule' },
+      callback: (data) => {
+        setDetail(data);
+      },
+    });
+  };
+
   const fetchDetail = (type) => {
     switch (type) {
       case 'merchantVideo':
@@ -89,6 +101,9 @@ const VideoConfig = (props) => {
         break;
       case 'UGCVideo':
         fetchUCGGetData();
+        break;
+      case 'goldVideo':
+        fetchGoldVideoDetail();
         break;
       case 'shareBean':
         fetchVideoGetDictionaryAdmin();

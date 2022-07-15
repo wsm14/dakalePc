@@ -263,6 +263,13 @@ export function fetchVideoGetDictionaryAdmin(params) {
   });
 }
 
+// get 视频广告 - 获取金币视频详情
+export function fetchGoldVideoDetail(params) {
+  return request('/admin/dictionary/admin/getDictionaryByParentAndChild', {
+    params,
+  });
+}
+
 // post 视频广告 - 分享赚豆 - 编辑
 export function fetchVideoSetShareEarnBeanRule(data) {
   return request('/admin/marketing/moment/new/setShareEarnBeanRule', {
@@ -274,6 +281,14 @@ export function fetchVideoSetShareEarnBeanRule(data) {
 // post 视频广告 - 分享赚  - 修改
 export function fetchVideoSetUpdatePlatfromMomentDirect(data) {
   return request('/admin/marketing/moment/platform/updatePlatfromMomentDirect', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 视频广告 - 金币视频  - 修改
+export function fetchVideoSetUpdateGoldVideoDirect(data) {
+  return request('/admin/dictionary/admin/updateDictionaryExtraParam', {
     method: 'POST',
     data,
   });
