@@ -44,6 +44,13 @@ export function fetchSubPortUnsealUser(data) {
   });
 }
 
+// get 用户列表 - 用户平台券包
+export function fetchPageListUserPlatformCouponAdmin(params) {
+  return request('/admin/userPlatformCouponAdmin/pageListUserPlatformCouponAdmin', {
+    params,
+  });
+}
+
 // 家主列表
 
 // get 家主列表 - 统计数据

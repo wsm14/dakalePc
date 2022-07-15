@@ -1594,3 +1594,5 @@ export const ACTIVICY_ASSISTANCE_PRIZETYPE = {
 
 // 拉新裂变活动 奖品领取状态
 export const ACTIVICY_ASSISTANCE_PRIZESTATUS = ['未领取', '已领取'];
+// 用户数据 - 券包 - 券状态
+export const USER_COUPON_STATES = ['未使用', '已过期', '已使用'];
