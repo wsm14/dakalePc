@@ -64,6 +64,20 @@ const GLobalSetDrawer = (props) => {
             getUpdate(tabKey);
           },
         });
+      } else if (tabKey === 'goldVideo') {
+        const { coins, lowerLimit } = values;
+        // 金币视频
+        dispatch({
+          type: 'videoAdvert/fetchVideoSetUpdateGoldVideoDirect',
+          payload: {
+            dictionaryId: detail.dictionaryId,
+            extraParam: JSON.stringify({ ...values, coins: `${lowerLimit}-${coins}` }),
+          },
+          callback: () => {
+            onClose();
+            getUpdate(tabKey);
+          },
+        });
       }
     });
   };
@@ -175,7 +189,7 @@ const GLobalSetDrawer = (props) => {
       type: 'number',
       min: 0,
       suffix: '秒视频',
-      name: 'totalLimit',
+      name: 'second',
     },
     {
       label: '获得',
@@ -193,7 +207,7 @@ const GLobalSetDrawer = (props) => {
           </Form.Item>
           <span style={{ display: 'inline-block', margin: '5px 15px 0 19px' }}>-</span>
           <Form.Item
-            name="upperLimit"
+            name="coins"
             rules={[{ required: true, message: '请输入获得金币数' }]}
             style={{ display: 'inline-block', marginBottom: 0 }}
           >
@@ -208,7 +222,7 @@ const GLobalSetDrawer = (props) => {
       min: 0,
       type: 'number',
       suffix: '金币',
-      name: 'totalLismit',
+      name: 'upperLimit',
     },
   ];
 
@@ -247,7 +261,7 @@ const GLobalSetDrawer = (props) => {
 
 export default connect(({ loading }) => ({
   loading:
-    loading.effects['videoAdvert/fetchVideoAdvertRootCountSet'] ||
+    loading.models.videoAdvert ||
     loading.effects['puzzleAd/fetchPuzzleAdRootSet'] ||
     loading.effects['videoPlatform/fetchUGCVideoBeanRulesSet'],
 }))(GLobalSetDrawer);

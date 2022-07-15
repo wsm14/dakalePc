@@ -11,6 +11,8 @@ import {
   fetchVideoGetDictionaryAdmin,
   fetchVideoSetShareEarnBeanRule,
   fetchVideoSetUpdatePlatfromMomentDirect,
+  fetchGoldVideoDetail,
+  fetchVideoSetUpdateGoldVideoDirect,
 } from '@/services/MarketServices';
 import { fetchNewShareStatisticsList } from '@/services/OperationServices';
 
@@ -121,6 +123,15 @@ export default {
       });
       callback(content);
     },
+    *fetchGoldVideoDetail({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGoldVideoDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      const { extraParam } = content;
+      const { coins } = extraParam;
+      const price = coins.split('-');
+      callback({ ...extraParam, lowerLimit: price[0], coins: price[1] });
+    },
     *fetchVideoAdvertRootCountSet({ payload, callback }, { call }) {
       const response = yield call(fetchVideoAdvertRootCountSet, payload);
       if (!response) return;
@@ -215,6 +226,15 @@ export default {
     },
     *fetchVideoSetShareEarnBeanRule({ payload, callback }, { call }) {
       const response = yield call(fetchVideoSetShareEarnBeanRule, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `修改成功`,
+      });
+      callback();
+    },
+    *fetchVideoSetUpdateGoldVideoDirect({ payload, callback }, { call }) {
+      const response = yield call(fetchVideoSetUpdateGoldVideoDirect, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
