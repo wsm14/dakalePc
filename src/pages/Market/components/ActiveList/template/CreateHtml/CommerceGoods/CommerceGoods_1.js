@@ -100,7 +100,7 @@ export default (function (list, id) {
   }
 
   // 默认50%
-  function showList(source, payC = 50, shareC) {
+  function showList(source, payC = 20, shareC) {
     document.getElementById(id).innerHTML = `<div style="padding: ${vw(12)} ${vw(
       12,
     )}; background-color: #FFFFFF">
