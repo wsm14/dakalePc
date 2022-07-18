@@ -806,6 +806,12 @@ export const TAG_TYPE = {
   show: '展示标签',
 };
 
+// 展示标签 - 商品类型
+export const SHOW_TAG_GOODSTYPE = {
+  commerceGoods: '电商品',
+  specialGoods: '特惠商品 ',
+};
+
 // 集合页配置集合页状态
 export const PAGE_STATUS = ['进行中', '已结束'];
 

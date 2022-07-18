@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
+import { SHOW_TAG_GOODSTYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const ShowTag = (props) => {
@@ -34,6 +35,12 @@ const ShowTag = (props) => {
       title: '唯一标识',
       align: 'center',
       dataIndex: 'identification',
+    },
+    {
+      title: '商品类型',
+      align: 'center',
+      dataIndex: 'identifisdcation',
+      render: (val) => SHOW_TAG_GOODSTYPE[val] || '--',
     },
     {
       title: '启用状态',
