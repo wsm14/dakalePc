@@ -100,7 +100,7 @@ export default (function (list, id) {
   }
 
   // 默认50%
-  function showList(source, payC = 50, shareC) {
+  function showList(source, payC = 20, shareC) {
     const domShow = (item) => {
       const cellDom = `<div class="handleGoNative"  data-key="goodsId,ownerId,activityType" data-goodsId=${
         item.goodsId

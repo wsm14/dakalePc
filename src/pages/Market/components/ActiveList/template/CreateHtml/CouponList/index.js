@@ -100,7 +100,7 @@ export default (function (list, id) {
   }
 
   // 默认50%
-  function showList(source, payC = 50, shareC) {
+  function showList(source, payC = 20, shareC) {
     document.getElementById(id).innerHTML = `<div style="padding: ${vw(4)} ${vw(12)} ${vw(16)}">
 ${source
   .map((item) => {
