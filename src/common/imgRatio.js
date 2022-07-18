@@ -23,6 +23,15 @@ export const BRAND_VIDEO_ADVERT = 640 / 360;
 // 风向标
 export const VANE_ICON = 80 / 80;
 
+// 风向标中应季主打
+export const VANE_SEASONAL_ICON = 112 / 52;
+
+// 风向标中二宫格
+export const VANE_TWO_ICON = 172 / 106;
+
+// 风向标中三宫格
+export const VANE_THREE_ICON = 172 / 220;
+
 // 风向标中四宫格
 export const VANE_BEAN_ICON = 335 / 160;
 
@@ -34,7 +43,6 @@ export const VANE_BEANDEDUCTION_ICON = 202 / 250;
 
 // 风向标中田字资源位
 export const VANE_FIELD_ICON = 298 / 208;
-
 
 // 商圈
 export const CIRCLE_ICON = 750 / 460;
