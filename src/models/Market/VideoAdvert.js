@@ -127,10 +127,10 @@ export default {
       const response = yield call(fetchGoldVideoDetail, payload);
       if (!response) return;
       const { content } = response;
-      const { extraParam } = content;
-      const { coins } = extraParam;
+      const { extraParam, ...other } = content.dictionaryDetail;
+      const { coins, ...others } = JSON.parse(extraParam);
       const price = coins.split('-');
-      callback({ ...extraParam, lowerLimit: price[0], coins: price[1] });
+      callback({ ...other, ...others, lowerLimit: price[0], coins: price[1] });
     },
     *fetchVideoAdvertRootCountSet({ payload, callback }, { call }) {
       const response = yield call(fetchVideoAdvertRootCountSet, payload);
