@@ -21,12 +21,20 @@ export default [
       // 'notify', // 通知位
       'signInModule',
       'beanBalance',
+      'strollAroundMainBannerBigpicture', // 主banner-大图
     ],
   },
   {
     header: '功能区',
     type: 'img',
-    children: ['windVane', 'resource', 'beanEducation', 'sixPalaceLattice'],
+    children: [
+      'windVane',
+      'resource',
+      'beanEducation',
+      'sixPalaceLattice',
+      'seasonalKeyAndBicuspidLattice', //  应季主打+二宫格
+      'trigonometry', // 三宫格
+    ],
   },
   {
     header: '商品推荐',
@@ -54,6 +62,7 @@ export default [
       'commerceGoods',
       'specialAndSelfTourAndCommerce',
       'selfTourAndCommerce',
+      'commerceAndSpecial', // 电商品+特惠品
     ],
   },
 ];
