@@ -330,12 +330,31 @@ export default {
       });
       callback();
     },
+    // 逛逛页面配置详情
     *fetchGetWanderAroundModuleById({ payload, callback }, { call }) {
       const response = yield call(fetchGetWanderAroundModuleById, payload);
       if (!response) return;
       const { content } = response;
-      const strollContent = content;
-      callback(content?.configWanderAroundModule);
+      const { configWanderAroundModule = {} } = content;
+      const { wanderAroundModuleObjects = [] } = configWanderAroundModule;
+
+      const data = {
+        ...configWanderAroundModule,
+        wanderAroundModuleObjects: wanderAroundModuleObjects
+          .filter((item) => item.moduleName != 'bicuspidLattice')
+          .map((item) => {
+            if (item.moduleName == 'seasonalKey') {
+              return {
+                ...item,
+                moduleName: 'seasonalKeyAndBicuspidLattice',
+              };
+            } else {
+              return item;
+            }
+          }),
+      };
+
+      callback && callback(data);
     },
     //逛逛模块化配置-风向标配置-版本列表
     *fetchGetWindVaneEditionList({ payload }, { call, put }) {
