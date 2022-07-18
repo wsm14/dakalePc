@@ -6,6 +6,9 @@ import SearchCondition from '@/components/SearchCondition';
 import HandleSetBtn from './HandleSetTable';
 import utils from './utils';
 
+// 表格操作按钮
+export const HandleSetTable = HandleSetBtn;
+
 /**
  * 搜索+表格信息回显
  * 2020年7月29日 14:48:02 Dong
@@ -37,9 +40,6 @@ import utils from './utils';
  * @tableSize 表格大小 small default middle
  * @children
  **/
-
-// 表格操作按钮
-export const HandleSetTable = HandleSetBtn;
 
 const TableBlockComponent = (props) => {
   const {

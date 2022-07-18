@@ -27,7 +27,10 @@ const HelpModalDataList = (props) => {
       title: '发起人',
       align: 'center',
       dataIndex: 'initiateUserInfo',
-      render: (val) => `${val?.mobile || ''}\n${val?.username || ''}\n${val?.beanCode || ''}`,
+      render: (val) => {
+        const userData = JSON.parse(val);
+        return `${userData?.mobile || ''}\n${userData?.username || ''}\n${userData?.id || ''}`;
+      },
     },
     {
       title: '用户所属地区',

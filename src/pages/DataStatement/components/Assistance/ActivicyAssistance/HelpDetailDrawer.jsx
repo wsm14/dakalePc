@@ -22,6 +22,7 @@ const HelpDetailDrawer = (props) => {
   const getColumns = [
     {
       title: '邀请用户',
+      width: 160,
       align: 'center',
       dataIndex: 'helpUserName',
       render: (val, row) => `${row?.helpUserMobile || ''}\n${val || ''}\n${row?.helpUserId || ''}`,
@@ -52,11 +53,12 @@ const HelpDetailDrawer = (props) => {
       <TableDataBlock
         order
         noCard={false}
+        scrollY={600}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(row) => `${row.userFissionHelpId}`}
-        params={{ userFissionId: data.userFissionId }}
+        params={{ userFissionId: data.fissionId }}
         dispatchType="activicyAssistance/fetchActivicyAssistanceDetail"
         {...dataList}
       ></TableDataBlock>
