@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
-import { TAG_TYPE } from '@/common/constant';
+import { TAG_TYPE, SHOW_TAG_GOODSTYPE } from '@/common/constant';
 import { SPACE_PATTERN, ONLY_ENGLISH_PATTERN } from '@/common/regExp';
 import { Button, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
@@ -69,6 +69,14 @@ const ClassifySet = (props) => {
       name: 'configGoodsTagCategoryList',
       visible: detail.tagType === 'platform',
       formItem: <BusinessCateFormList form={form} list={list}></BusinessCateFormList>,
+    },
+    {
+      label: '商品类型',
+      type: 'radio',
+      name: 'identificastion',
+      select: SHOW_TAG_GOODSTYPE,
+      visible: detail.tagType === 'show',
+      disabled: mode === 'edit',
     },
   ];
 

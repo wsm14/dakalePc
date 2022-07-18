@@ -79,7 +79,10 @@ function ActivicyAssistance(props) {
     {
       title: '发起用户信息',
       dataIndex: 'initiateUserInfo',
-      render: (val) => `${val?.mobile || ''}\n${val?.username || ''}\n${val?.beanCode || ''}`,
+      render: (val) => {
+        const userData = JSON.parse(val);
+        return `${userData?.mobile || ''}\n${userData?.username || ''}\n${userData?.id || ''}`;
+      },
     },
     {
       title: '用户所属地区',
@@ -102,7 +105,7 @@ function ActivicyAssistance(props) {
     },
     {
       type: 'handle',
-      dataIndex: 'userFissionId',
+      dataIndex: 'fissionId',
       render: (val, row) => [
         {
           type: 'assistanceInfo',
@@ -120,15 +123,12 @@ function ActivicyAssistance(props) {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.userFissionId}`}
+        rowKey={(record) => `${record.fissionId}`}
         dispatchType="activicyAssistance/fetchGetList"
         {...list}
       ></TableDataBlock>
       {/* 助力详情 */}
-      <HelpDetailDrawer
-        visible={visible}
-        onClose={() => setVisible(false)}
-      ></HelpDetailDrawer>
+      <HelpDetailDrawer visible={visible} onClose={() => setVisible(false)}></HelpDetailDrawer>
     </>
   );
 }
