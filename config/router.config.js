@@ -671,6 +671,7 @@ export default [
               'merchantVideo_edit',
               'UGCVideo_edit',
               'shareBean_edit',
+              'goldVideo_edit',
               'holidaySave',
               'holidayDown',
               'holidayEdit',

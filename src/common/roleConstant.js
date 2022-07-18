@@ -97,6 +97,7 @@ export const ROLE_BUTTON_TYPE = {
   globalAddCity: '全局弹框新增城市',
   groupGoodsConfigAdd: '拼团商品配置新增',
   groupGoodsConfigDel: '拼团商品配置删除',
+  goldVideo_edit: '金币视频编辑',
 
   handle: '处理',
   handleDeatil: '操作记录',
