@@ -8,6 +8,9 @@ import VaneDrawer from './components/VaneDrawer';
 
 const tabList = [
   { key: 'windVane', tab: '风向标' },
+  { key: 'seasonalKey', tab: '应季主打' },
+  { key: 'bicuspidLattice', tab: '二宫格' },
+  { key: 'trigonometry', tab: '三宫格' },
   { key: 'beanEducation', tab: '四宫格' },
   { key: 'sixPalaceLattice', tab: '六宫格' },
   { key: 'beanDeductionZone', tab: '卡豆抵扣专区' },
@@ -146,6 +149,12 @@ const VaneManage = (props) => {
         'fuliLifeService',
       ].includes(tabKey)
     ) {
+      return cardBtnList;
+    } else if (['seasonalKey'].includes(tabKey) && list.list.length < 6) {
+      return cardBtnList;
+    } else if (['bicuspidLattice'].includes(tabKey) && list.list.length < 3) {
+      return cardBtnList;
+    } else if (['trigonometry'].includes(tabKey) && list.list.length < 4) {
       return cardBtnList;
     } else if (['beanDeductionZone'].includes(tabKey) && list.list.length < 3) {
       return cardBtnList;

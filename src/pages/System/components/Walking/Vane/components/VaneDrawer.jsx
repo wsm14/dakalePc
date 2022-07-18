@@ -9,6 +9,9 @@ import {
 import {
   VANE_ICON,
   VANE_BANNER,
+  VANE_SEASONAL_ICON,
+  VANE_TWO_ICON,
+  VANE_THREE_ICON,
   VANE_BEAN_ICON,
   VANE_SIX_ICON,
   VANE_BEANDEDUCTION_ICON,
@@ -146,6 +149,9 @@ const VaneDrawer = (props) => {
       maxFile: 1,
       extra: {
         windVane: '请上传80*80尺寸png、jpeg格式图片',
+        seasonalKey: '请上传112*52尺寸png、jpeg、gif格式图片',
+        bicuspidLattice: '请上传172*106尺寸png、jpeg、gif格式图片',
+        trigonometry: '请上传172*220尺寸png、jpeg、gif格式图片',
         beanEducation: '请上传335*160尺寸png、jpeg、gif格式图片',
         sixPalaceLattice: '请上传226*176尺寸png、jpeg格式图片',
         beanDeductionZone: '请上传202*250尺寸png、jpeg格式图片',
@@ -157,6 +163,9 @@ const VaneDrawer = (props) => {
       }[tabKey],
       imgRatio: {
         windVane: VANE_ICON,
+        seasonalKey: VANE_SEASONAL_ICON,
+        bicuspidLattice: VANE_TWO_ICON,
+        trigonometry: VANE_THREE_ICON,
         beanEducation: VANE_BEAN_ICON,
         sixPalaceLattice: VANE_SIX_ICON,
         beanDeductionZone: VANE_BEANDEDUCTION_ICON,
