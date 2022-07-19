@@ -10,7 +10,7 @@ const HelpFreeList = ({ helpFreeList, loading }) => {
   const searchItems = [
     {
       label: '中奖记录编号',
-      name: 'userFissionRewardId',
+      name: 'userPackageId',
     },
     {
       label: '中奖用户',
@@ -29,7 +29,7 @@ const HelpFreeList = ({ helpFreeList, loading }) => {
   const getColumns = [
     {
       title: '中奖记录编号',
-      dataIndex: 'userFissionRewardId',
+      dataIndex: 'userPackageId',
     },
     {
       title: '用户信息',
@@ -61,7 +61,7 @@ const HelpFreeList = ({ helpFreeList, loading }) => {
       columns={getColumns}
       searchItems={searchItems}
       cardProps={{ bordered: false }}
-      rowKey={(record, index) => `${record.userFissionRewardId}${index}`}
+      rowKey={(record) => `${record.userPackageId}`}
       dispatchType="boxLottery/fetchHelpFreeList"
       {...helpFreeList}
     ></TableDataBlock>

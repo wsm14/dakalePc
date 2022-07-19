@@ -95,7 +95,7 @@ export function fetchDeliveryUserPackage(data) {
 
 // get 盲盒中奖记录 - 助力免单 - 列表
 export function fetchGetHelpFreeList(params) {
-  return request('/admin/userFissionRewardAdmin/pageListUserFissionRewardAdmin', {
+  return request('/admin/userPackageAdmin/pageListUserPackageAdmin', {
     params,
   });
 }
