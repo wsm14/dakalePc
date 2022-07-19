@@ -6,7 +6,7 @@ let target = 'https://devgateway.dakale.net';
 // target = 'http://192.168.0.103:6020';
 // target = 'http://47.114.164.224:6020';
 // target = 'http://192.168.0.62:6020';
-target = 'http://192.168.0.170:6020';
+// target = 'http://192.168.0.170:6020';
 // target = 'http://192.168.0.86:6020';
 // target = 'http://192.168.0.121:6020';
 
