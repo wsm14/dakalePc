@@ -130,7 +130,7 @@ export default {
         type: 'save',
         payload: {
           helpFreeList: {
-            list: content.userFissionRewardDetailList,
+            list: content.userPackageDetailList,
             total: content.total,
           },
         },
