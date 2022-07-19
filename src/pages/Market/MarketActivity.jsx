@@ -24,16 +24,14 @@ const RefundOrder = () => {
   };
 
   return (
-    <>
-      <Card
-        tabList={tabList}
-        bodyStyle={{ padding: "1px 0 0" }}
-        activeTabKey={tabKey}
-        onTabChange={(key) => setTabKey(key)}
-      >
-        {contentList[tabKey]}
-      </Card>
-    </>
+    <Card
+      tabList={tabList}
+      bodyStyle={{ padding: '1px 0 0' }}
+      activeTabKey={tabKey}
+      onTabChange={(key) => setTabKey(key)}
+    >
+      {contentList[tabKey]}
+    </Card>
   );
 };
 export default RefundOrder;
