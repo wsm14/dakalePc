@@ -31,8 +31,8 @@ const MarketActivityDrawer = (props) => {
             classifies: classifies.map((i) => ({ classifyId: i[i.length - 1] })), // 类目规则
           },
           useRuleObject: { ...useRuleObject, useRuleType: useRuleType.toString() },
-          startDate: activeDate[0].format('YYYY-MM-DD'),
-          endDate: activeDate[1].format('YYYY-MM-DD'),
+          startDate: activeDate[0].format('YYYY-MM-DD HH:mm:ss'),
+          endDate: activeDate[1].format('YYYY-MM-DD HH:mm:ss'),
           marketingActivityId: detail.id,
         },
         callback: () => {
