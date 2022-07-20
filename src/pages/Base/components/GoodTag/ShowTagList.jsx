@@ -60,7 +60,14 @@ const ShowTag = (props) => {
       render: (val, record) => [
         {
           type: 'connectedGoods',
-          click: () => setVisibleGoods({ show: true, id: val, name: record.tagName }),
+          click: () =>
+            setVisibleGoods({
+              show: true,
+              id: val,
+              tagType: tabkey,
+              name: record.tagName,
+              goodsType: record.goodsType,
+            }),
         },
         {
           type: 'edit',

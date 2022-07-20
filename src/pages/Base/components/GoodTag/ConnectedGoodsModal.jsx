@@ -22,14 +22,22 @@ const tabList = [
 
 const ConnectedGoodsModal = (props) => {
   const { listKey, visible, onClose, dispatch, configGoodsList, loading, loadingSort } = props;
-  const { show = false, id, name } = visible;
+  const { show = false, id, tagType, name, goodsType = 'specialGoods' } = visible;
 
   const childRef = useRef();
-  const [tabKey, setTabKey] = useState('specialGoods');
+  const [tabKey, setTabKey] = useState('');
   const [visibleDrawer, setVisibleDrawer] = useState(false);
 
   useEffect(() => {
-    childRef.current && childRef.current.fetchGetData({ goodsType: tabKey, page: 1 });
+    if (show) {
+      setTabKey(goodsType);
+    }
+  }, [show]);
+
+  useEffect(() => {
+    if (tabKey) {
+      childRef.current && childRef.current.fetchGetData({ goodsType: tabKey, page: 1 });
+    }
   }, [tabKey]);
 
   // 搜索参数
@@ -191,23 +199,28 @@ const ConnectedGoodsModal = (props) => {
     <>
       <Modal
         title={`关联商品 - ${name}`}
-        width={1150}
+        width={1200}
         destroyOnClose
         footer={null}
         visible={show}
         zIndex={100}
+        bodyStyle={{ padding: 0 }}
         onCancel={onClose}
+        afterClose={() => setTabKey('')}
       >
         <TableDataBlock
+          firstFetch={false}
           tableSize="small"
-          cardProps={{
-            bordered: false,
-            tabList: tabList,
-            activeTabKey: tabKey,
-            onTabChange: setTabKey,
-            bodyStyle: { paddingBottom: 0 },
-            tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
-          }}
+          cardProps={
+            listKey == 'platform' && {
+              bordered: false,
+              tabList: tabList,
+              activeTabKey: tabKey,
+              onTabChange: setTabKey,
+              tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
+            }
+          }
+          btnExtra={listKey == 'show' && btnList}
           scroll={{ y: 400 }}
           cRef={childRef}
           loading={loading}
