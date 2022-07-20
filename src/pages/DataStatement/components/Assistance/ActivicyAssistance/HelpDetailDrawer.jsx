@@ -58,7 +58,7 @@ const HelpDetailDrawer = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(row) => `${row.userFissionHelpId}`}
-        params={{ userFissionId: data.fissionId }}
+        params={{ userFissionId: data.userFissionId }}
         dispatchType="activicyAssistance/fetchActivicyAssistanceDetail"
         {...dataList}
       ></TableDataBlock>

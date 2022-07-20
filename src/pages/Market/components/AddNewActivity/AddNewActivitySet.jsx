@@ -16,12 +16,12 @@ const AddNewActivitySet = (props) => {
   const {
     show = false,
     mode,
-    detail = { rightGoods: [], prizeType: 'bean', areaType: 'all' },
+    detail = { rightGoods: [], prizeType: 'commerce', areaType: 'all' },
   } = visible;
   const { configFissionTemplateId } = detail;
 
   const [form] = Form.useForm();
-  const prizeTypes = Form.useWatch('prizeType', form) || 'bean'; // 奖品类型
+  const prizeTypes = Form.useWatch('prizeType', form) || 'commerce'; // 奖品类型
   const areaType = Form.useWatch('areaType', form) || 'all'; // 活动城市类型
 
   const [color, setColor] = useState(''); //  背景色状态
@@ -218,14 +218,8 @@ const AddNewActivitySet = (props) => {
       name: 'prizeType',
       type: 'radio',
       disabled: mode === 'edit',
-      select: { bean: '卡豆', commerce: '电商品', platformCoupon: '平台券' },
+      select: { commerce: '电商品', platformCoupon: '平台券' },
       onChange: () => setSelectGoodsData({}),
-    },
-    {
-      label: '卡豆',
-      name: 'prizeBean',
-      placeholder: '请输入奖励卡豆数',
-      visible: prizeTypes === 'bean',
     },
     {
       label: '商品',
