@@ -29,6 +29,7 @@ export default {
     floatConfigureList: { list: [] },
     newUserPopUpList: { list: [] },
     weeklyCardObj: {},
+    taskConfigList: { list: [] },
   },
 
   reducers: {
@@ -256,6 +257,59 @@ export default {
         description: '编辑成功',
       });
       callback && callback();
+    },
+
+    //新人福利弹窗 - 列表
+    *fetchListConfigTask({ payload }, { call, put }) {
+      // const response = yield call(fetchListConfigTask, payload);
+      // if (!response) return;
+      // const { content } = response;
+
+      const list = [
+        {
+          id: 1,
+          name: '任务名称',
+          jinbi: 1000,
+        },
+        {
+          id: 2,
+          name: '任务名称',
+          jinbi: 2000,
+        },
+        {
+          id: 3,
+          name: '任务名称',
+          jinbi: 3000,
+        },
+      ];
+      const everyList = [
+        {
+          id: 1,
+          name: 'aaaa',
+          jinbi: 1000,
+        },
+        {
+          id: 2,
+          name: 'bbbb',
+          jinbi: 2000,
+        },
+        {
+          id: 3,
+          name: 'cccc',
+          jinbi: 3000,
+        },
+      ];
+      yield put({
+        type: 'save',
+        payload: {
+          taskConfigList: {
+            list: {
+              newTask: list,
+              everyTask: everyList,
+            }[payload.userOs],
+          },
+        },
+      });
     },
   },
 };
