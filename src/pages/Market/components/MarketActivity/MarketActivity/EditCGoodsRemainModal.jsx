@@ -91,7 +91,7 @@ const EditCGoodsRemainModal = (props) => {
       align: 'right',
       dataIndex: 'activityRemain',
       render: (val, row, rowIndex) => (
-        <FormItemInput label="活动折扣" name={[rowIndex, 'activityRemain']}></FormItemInput>
+        <FormItemInput name={[rowIndex, 'activityRemain']}></FormItemInput>
       ),
     },
   ];

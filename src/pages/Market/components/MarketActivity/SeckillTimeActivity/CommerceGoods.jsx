@@ -2,11 +2,10 @@ import React, { useRef, useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { MARKETACTIVITY_STATUS } from '@/common/constant';
-import { handleCopyInfo } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const SeckillTimeActivity = (props) => {
-  const { loading, dispatch, marketActivity } = props;
+  const { loading, dispatch, list } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
@@ -14,107 +13,185 @@ const SeckillTimeActivity = (props) => {
 
   const searchItems = [
     {
-      label: '活动名称',
-      name: 'activityName',
+      label: '商品名称',
+      name: 'goodsName',
     },
     {
-      label: '活动编号',
-      name: 'marketingActivityId',
+      label: '商品ID',
+      name: 'goodsId',
     },
     {
-      label: '活动状态',
-      type: 'select',
-      name: 'status',
-      select: MARKETACTIVITY_STATUS,
+      label: '供应商名称',
+      name: 'relateName',
     },
   ];
 
   const getColumns = [
     {
-      title: '活动名称/编号',
-      fixed: 'left',
-      dataIndex: 'activityName',
-      width: 300,
-      render: (val, row) => `${val}\n${row.id}`,
+      title: '供应商名称',
+      dataIndex: 'relateName',
+      ellipsis: true,
     },
     {
-      title: '活动时间',
-      align: 'right',
-      dataIndex: 'startDate',
-      render: (val, row) => `${val}\n~${row.endDate}`,
+      title: '秒杀商品名称/ID',
+      dataIndex: 'goodsName',
+      render: (val, row) => `${val}\n${row.goodsId}`,
     },
     {
-      title: '报名商品数',
-      align: 'right',
-      dataIndex: 'offLineGoodsNum',
-      render: (val, row) =>
-        val == 0 && row.onLineGoodsNum == 0 ? '--' : `本地品 ${val}\n电商品 ${row.onLineGoodsNum}`,
+      title: '类目',
+      dataIndex: 'categoryName',
     },
     {
-      title: '状态',
+      title: '当前售价',
       align: 'center',
       dataIndex: 'status',
-      render: (val, row) =>
-        `${MARKETACTIVITY_STATUS[val]}\n${
-          val === '0'
-            ? { true: '（即将开始）', false: '（已开始）' }[moment().isBefore(row.startDate)]
-            : ''
-        }`,
+      render: (val, row) => tabPriceShow('sellPrice', row),
     },
     {
-      title: '最后修改',
+      title: '当前商家结算价',
       align: 'center',
       dataIndex: 'updateTime',
-      render: (val, row) => `${val}\n${row.updater}`,
+      render: (val, row) => tabPriceShow('settlePrice', row),
+    },
+    {
+      title: '秒杀价格',
+      align: 'center',
+      dataIndex: 'updasteTime',
+      render: (val, row) => tabPriceShow('activitySellPrice', row),
+    },
+    {
+      title: '秒杀时间',
+      align: 'center',
+      dataIndex: 'seckillTimeObjectList',
+      render: (val, row) => {
+        const { seckillBeginTime, seckillEndTime } = val[0];
+        return `${seckillBeginTime} ~ ${seckillEndTime}\n每天 10:00-12:00`;
+      },
+    },
+    {
+      title: '秒杀库存',
+      align: 'right',
+      dataIndex: 'updadsteTisme',
+      render: (val, row) => checkKeyMaxMin({ key: 'activityRemain', data: row.skuList }),
+    },
+    {
+      title: '限购规则',
+      align: 'center',
+      dataIndex: ['useRuleObject', 'limit'],
+      render: (val, row) => {
+        const { type = 'unlimited', limitNum = 0 } = val;
+        return { unlimited: '不限', personLimit: `每人限购${limitNum}件` }[type];
+      },
+    },
+    {
+      title: '秒杀状态',
+      align: 'center',
+      dataIndex: 'updadssteTime',
+      render: (val, row) => {
+        const { seckillBeginTime, seckillEndTime } = val[0];
+        let text = '';
+        if (!moment().isBefore(seckillEndTime)) {
+          text = '已结束';
+        } else if (moment().isBefore(seckillBeginTime)) {
+          text = '未开始';
+        } else {
+          text = '进行中';
+        }
+        return text;
+      },
     },
     {
       type: 'handle',
-      dataIndex: 'id',
-      width: 150,
-      tips: `1.活动【已开始】不可下架
-      2.活动【已有报名商品】不可下架
-      3.活动【即将开始】且【无报名商品】可编辑
-      4.活动下架后【无上架操作】，若仍要上架需重新发布`,
+      dataIndex: 'goodsId',
       render: (val, row) => {
-        const { url, activityName, offLineGoodsNum, onLineGoodsNum, startDate } = row;
+        const { offLineGoodsNum, onLineGoodsNum, startDate } = row;
         return [
           {
-            type: 'info',
+            type: 'changeRemain',
             click: () => fetchGetDetail(row, 'info'),
           },
           {
-            type: 'edit', // 即将开始 无报名商品
+            title: '设置规则',
+            type: 'batchEditRule', // 即将开始 无报名商品
             visible: offLineGoodsNum === 0 && onLineGoodsNum === 0 && moment().isBefore(startDate),
             click: () => fetchGetDetail(row, 'edit'),
-          },
-          {
-            type: 'down', // 即将开始 无报名商品
-            pop: true,
-            popText: '下架后无法重新上架，\n若仍要上架需重新发布',
-            visible: offLineGoodsNum === 0 && onLineGoodsNum === 0 && moment().isBefore(startDate),
-            click: () => fetchMarketActivityDown(val),
-          },
-          {
-            type: 'enrollGoods',
-            click: () => fetchGetDetail(row, 'enrollGoods'),
-          },
-          {
-            type: 'copyLink',
-            visible: !!url,
-            click: () => handleCopyInfo(url),
           },
         ];
       },
     },
   ];
 
-  // 下架活动
-  const fetchMarketActivityDown = (marketingActivityId) => {
-    dispatch({
-      type: 'marketActivity/fetchMarketActivityDown',
-      payload: { marketingActivityId },
-      callback: childRef.current.fetchGetData,
+  const tabPriceShow = (key, row) => (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
+      <div style={{ display: 'inline-block' }}>
+        {checkKeyMaxMin({ key, data: row.skuList, payType: row.payType })}
+      </div>
+      <Button type="link" onClick={() => hanldeOpenEdit(row)}>
+        查看
+      </Button>
+    </div>
+  );
+
+  const hanldeOpenEdit = (detail = {}) => {
+    setVisibleEdit({ show: true, detail: { marketingActivityId: id, ...detail } });
+  };
+
+  /**
+   * sku数据回显处理
+   * @param {String} key 处理的key
+   * @param {Array} data sku数据列表
+   * @param {String} payType 支付类型 self特殊处理
+   * @returns
+   */
+  const checkKeyMaxMin = ({ key, data = [], payType }) => {
+    if (!data.length) return '';
+    // 遍历值
+    const valueArr = data.map((item) => {
+      if (payType === 'self' && !['settlePrice', 'activitySettlePrice'].includes(key)) {
+        if (key == 'sellPrice') return item['sellBean'] + item['sellPrice'] * 100;
+        else return item['activitySellBean'] + item['activitySellPrice'] * 100;
+      }
+      if (item[key] === undefined) {
+        return '';
+      } else {
+        return Number(item[key]);
+      }
     });
+
+    // 最大值
+    const maxNum = Math.max.apply(Math, valueArr) || 0;
+    // 最小值
+    const minNum = Math.min.apply(Math, valueArr) || 0;
+
+    if (payType === 'self' && !['settlePrice', 'activitySettlePrice'].includes(key)) {
+      let beanKey = 'activitySellBean';
+      let priceKey = 'activitySellPrice';
+      if (key == 'sellPrice') {
+        beanKey = 'sellBean';
+        priceKey = 'sellPrice';
+      }
+      const maxIndex = valueArr.indexOf(maxNum); // 最大值下标
+      const minIndex = valueArr.indexOf(minNum); // 最小值下标
+      const maxObj = data[maxIndex] || {};
+      const minObj = data[maxIndex] || {};
+      const maxText = `${maxObj[beanKey] || 0}卡豆 + ￥${maxObj[priceKey] || 0}`;
+      const minText = `${minObj[beanKey] || 0}卡豆 + ￥${minObj[priceKey] || 0}`;
+      if (maxIndex === minIndex) {
+        return minText;
+      }
+      return `${minText}\n~${maxText}`;
+    }
+
+    // 显示区间
+    let num = `￥${minNum}~${maxNum}`;
+
+    // 最高最低相同只显示一个
+    if (minNum === maxNum) {
+      num = `￥${minNum}`;
+    }
+
+    // 显示价格
+    return num || 0;
   };
 
   // 详情
@@ -136,21 +213,22 @@ const SeckillTimeActivity = (props) => {
   return (
     <>
       <TableDataBlock
+        order
         noCard={false}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
         cardProps={{ bordered: false }}
-        rowKey={(record) => `${record.id}`}
-        dispatchType="marketActivity/fetchGetList"
-        {...marketActivity}
+        rowKey={(record) => `${record.goodsId}`}
+        dispatchType="seckillTimeActivity/fetchGetCommerceGoodsList"
+        {...list}
       ></TableDataBlock>
     </>
   );
 };
 
-export default connect(({ loading, marketActivity }) => ({
-  marketActivity: marketActivity.list,
-  loading: loading.models.marketActivity,
+export default connect(({ loading, seckillTimeActivity }) => ({
+  list: seckillTimeActivity.onlineGoods,
+  loading: loading.models.seckillTimeActivity,
 }))(SeckillTimeActivity);

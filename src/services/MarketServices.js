@@ -562,3 +562,14 @@ export function fetchMarketActivityDown(data) {
 }
 
 // 营销活动 end
+
+// 限时秒杀
+
+// get 营销活动 - 限时秒杀 - 电商品列表
+export function fetchSeckillTimeCommerceGoodsList(params) {
+  return request('/admin/marketing/seckill/admin/listSeckillOnlineGoodsByPage', {
+    params,
+  });
+}
+
+// 限时秒杀 end
