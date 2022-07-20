@@ -20,6 +20,7 @@ export const ROLE_BUTTON_TYPE = {
   BDSet: '关联BD',
   batchEdit: '批量修改',
   baseTrade: '基础设施',
+  batchEditRule: '批量设置规则',
   bussinessStatus: '营业状态',
   batchRouting: '批量分账',
   bannerEdit: 'banner编辑',

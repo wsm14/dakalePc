@@ -98,9 +98,12 @@ const EnrollGoodsModal = (props) => {
         footer={null}
         visible={show}
         zIndex={100}
+        bodyStyle={{ paddingTop: 0 }}
         onCancel={onClose}
       >
         <Card
+          bordered={false}
+          bodyStyle={{ paddingBottom: 0 }}
           tabList={tabList}
           activeTabKey={tabKey}
           onTabChange={setTabKey}

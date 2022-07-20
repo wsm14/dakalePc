@@ -107,9 +107,8 @@ const AddNewActivity = (props) => {
     },
     {
       title: '剩余库存',
-      align: 'center',
-      dataIndex: 'recipientsNum',
-      render: (val, row) => row.issuedQuantity - val,
+      align: 'right',
+      dataIndex: 'remain',
     },
     {
       title: '创建时间/创建人',
