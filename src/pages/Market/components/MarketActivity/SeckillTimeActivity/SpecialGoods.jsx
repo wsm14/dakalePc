@@ -6,7 +6,7 @@ import { handleCopyInfo } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const SeckillTimeActivity = (props) => {
-  const { loading, dispatch, marketActivity } = props;
+  const { loading, dispatch, list } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
@@ -143,14 +143,14 @@ const SeckillTimeActivity = (props) => {
         searchItems={searchItems}
         cardProps={{ bordered: false }}
         rowKey={(record) => `${record.id}`}
-        dispatchType="marketActivity/fetchGetList"
-        {...marketActivity}
+        dispatchType="seckillTimeActivity/fetchSeckillTimeSpecialGoodsList"
+        {...list}
       ></TableDataBlock>
     </>
   );
 };
 
-export default connect(({ loading, marketActivity }) => ({
-  marketActivity: marketActivity.list,
-  loading: loading.models.marketActivity,
+export default connect(({ loading, seckillTimeActivity }) => ({
+  list: seckillTimeActivity.offlineGoods,
+  loading: loading.models.seckillTimeActivity,
 }))(SeckillTimeActivity);

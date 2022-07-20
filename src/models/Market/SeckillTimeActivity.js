@@ -1,5 +1,6 @@
 import { notification } from 'antd';
 import {
+  fetchSeckillTimeSpecialGoodsList,
   fetchSeckillTimeCommerceGoodsList,
   fetchMarketActivityGoodsEditRemain,
 } from '@/services/MarketServices';
@@ -22,7 +23,7 @@ export default {
   },
 
   effects: {
-    *fetchGetCommerceGoodsList({ payload }, { call, put }) {
+    *fetchSeckillTimeCommerceGoodsList({ payload }, { call, put }) {
       const response = yield call(fetchSeckillTimeCommerceGoodsList, payload);
       if (!response) return;
       const { content } = response;
@@ -30,6 +31,17 @@ export default {
         type: 'save',
         payload: {
           onlineGoods: { list: content.activityOnlineGoods, total: content.total },
+        },
+      });
+    },
+    *fetchSeckillTimeSpecialGoodsList({ payload }, { call, put }) {
+      const response = yield call(fetchSeckillTimeSpecialGoodsList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          offlineGoods: { list: content.activityOfflineGoods, total: content.total },
         },
       });
     },

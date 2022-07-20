@@ -572,4 +572,11 @@ export function fetchSeckillTimeCommerceGoodsList(params) {
   });
 }
 
+// get 营销活动 - 限时秒杀 - 特惠商品列表
+export function fetchSeckillTimeSpecialGoodsList(params) {
+  return request('/admin/marketing/seckill/admin/listSeckillOfflineGoodsByPage', {
+    params,
+  });
+}
+
 // 限时秒杀 end

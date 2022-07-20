@@ -221,7 +221,7 @@ const SeckillTimeActivity = (props) => {
         searchItems={searchItems}
         cardProps={{ bordered: false }}
         rowKey={(record) => `${record.goodsId}`}
-        dispatchType="seckillTimeActivity/fetchGetCommerceGoodsList"
+        dispatchType="seckillTimeActivity/fetchSeckillTimeCommerceGoodsList"
         {...list}
       ></TableDataBlock>
     </>
