@@ -56,7 +56,7 @@ const ClassifySet = (props) => {
     },
     {
       label: '唯一标识',
-      name: 'goodsType',
+      name: 'identification',
       placeholder: '请输入英文',
       addRules: [{ pattern: ONLY_ENGLISH_PATTERN, message: '请输入英文' }],
       extra: '唯一标识只能输入英文，且不可修改',
@@ -73,7 +73,7 @@ const ClassifySet = (props) => {
     {
       label: '商品类型',
       type: 'radio',
-      name: 'identificastion',
+      name: 'goodsType',
       select: SHOW_TAG_GOODSTYPE,
       visible: detail.tagType === 'show',
       disabled: mode === 'edit',
