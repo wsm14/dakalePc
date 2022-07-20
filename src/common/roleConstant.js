@@ -208,6 +208,10 @@ export const ROLE_BUTTON_TYPE = {
   tabEditVersion: '首页tab配置-编辑版本',
   tabSaveVersion: '首页tab配置-新增版本',
   tabAddCity: '首页tab配置-新增城市',
+  taskOkConfig: '任务完成配置',
+  taskConfigLink: '任务配置关联链接',
+  taskConfigInfo: '任务配置详情',
+  taskConfigEdit: '任务配置编辑',
 
   up: '上架',
   user: '用户',

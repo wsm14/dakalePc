@@ -26,6 +26,10 @@ import limitedTimeHotMixing from './Img/limitedTimeHotMixing.png';
 import signInModule from './Img/signInModule.png';
 import beanRemaining from './Img/beanRemaining.png';
 import userParticipation from './Img/userParticipation.png';
+import strollAroundMainBannerBigpicture from './Img/strollAroundMainBannerBigpicture.png';
+import seasonalKeyAndBicuspidLattice from './Img/seasonalKeyAndBicuspidLattice.png';
+import trigonometry from './Img/trigonometry.png';
+import commerceAndSpecial from './Img/commerceAndSpecial.png';
 
 /**
  * 组件库
@@ -38,6 +42,30 @@ import userParticipation from './Img/userParticipation.png';
  * @param {Boolean} editFormFlag 是否存在编辑表单
  */
 export default {
+  commerceAndSpecial: {
+    name: '电商品+特惠品',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    drop: true,
+    defaultImg: commerceAndSpecial,
+  },
+  trigonometry: {
+    name: '三宫格',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    drop: true,
+    defaultImg: trigonometry,
+  },
+  seasonalKeyAndBicuspidLattice: {
+    name: '应季主打+二宫格',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    drop: true,
+    defaultImg: seasonalKeyAndBicuspidLattice,
+  },
+  strollAroundMainBannerBigpicture: {
+    name: '主banner-大图',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    drop: true,
+    defaultImg: strollAroundMainBannerBigpicture,
+  },
   topBackground: {
     name: '顶部背景',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
@@ -222,10 +250,10 @@ export default {
     defaultImg: limitedTimeHotMixing,
     editFormFlag: true,
   },
-  userParticipation:{
+  userParticipation: {
     name: '拼好货',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
     drop: true,
     defaultImg: userParticipation,
-  }
+  },
 };

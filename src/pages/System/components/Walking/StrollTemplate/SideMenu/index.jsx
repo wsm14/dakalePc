@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { Button, Space, Row, Col, Modal } from 'antd';
+import update from 'immutability-helper';
 
 /**
  * 顶部显示区域
@@ -13,7 +14,27 @@ const SideMenu = (props) => {
 
   // active 创建
   const fetchSaveModuleData = () => {
-    const newData = moduleData.dataList.filter((item) => item.moduleName); // 空数据不进入
+    const newData = moduleData.dataList
+      .filter((item) => item.moduleName) // 空数据不进入
+      .map((item) => {
+        // 应季主打+二宫格拆分为两个类型
+        if (item.moduleName == 'seasonalKeyAndBicuspidLattice') {
+          return [
+            {
+              ...item,
+              moduleName: 'seasonalKey',
+            },
+            {
+              ...item,
+              moduleName: 'bicuspidLattice',
+            },
+          ];
+        } else {
+          return item;
+        }
+      })
+      .flat(Infinity); // 多维数组化一维
+
     dispatch({
       type: 'walkingManage/fetchUpdateWanderAroundModule',
       payload: {

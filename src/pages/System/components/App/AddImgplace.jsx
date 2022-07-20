@@ -15,7 +15,7 @@ const AddImgplace = (props) => {
       title: '图片位置名称',
       label: '中文命名',
       name: 'desc',
-      maxLength: 10,
+      maxLength: 15,
       addRules: [
         {
           pattern: NO_BLOCK_PATTERN,
