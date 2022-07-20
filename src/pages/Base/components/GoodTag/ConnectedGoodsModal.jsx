@@ -67,17 +67,18 @@ const ConnectedGoodsModal = (props) => {
       title: '商品主图',
       align: 'center',
       dataIndex: 'goodsImg',
-      render: (val) => <PopImgShow url={val} />,
+      render: (val) => <PopImgShow url={val} width={60} />,
     },
     {
       title: '商品名称/ID',
+      width: 180,
       dataIndex: 'goodsName',
       render: (val, row) => (
         <div>
-          <Ellipsis length={13} tooltip>
+          <Ellipsis length={10} tooltip>
             {val}
           </Ellipsis>
-          <div style={{ marginTop: 5 }}>{row.goodsId}</div>
+          <div>{row.goodsId}</div>
         </div>
       ),
     },
@@ -87,7 +88,7 @@ const ConnectedGoodsModal = (props) => {
       dataIndex: 'relateName',
       render: (val, row) => (
         <div>
-          <div style={{ marginTop: 5 }}>{row.categoryName || '--'}</div>
+          <div>{row.categoryName || '--'}</div>
           <Ellipsis length={8} tooltip>
             {val || '--'}
           </Ellipsis>
@@ -200,9 +201,11 @@ const ConnectedGoodsModal = (props) => {
         <TableDataBlock
           tableSize="small"
           cardProps={{
+            bordered: false,
             tabList: tabList,
             activeTabKey: tabKey,
             onTabChange: setTabKey,
+            bodyStyle: { paddingBottom: 0 },
             tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
           }}
           scroll={{ y: 400 }}
