@@ -5,6 +5,7 @@ import { fetchPagePlatformCoupon } from '@/services/OperationServices';
 import { fetchGetSupplierManageList, fetchSupplierBrandList } from '@/services/SCMServices';
 import { fetchMerchantList, fetchMerchantGroup } from '@/services/BusinessServices';
 import { fetchGoodsTagList } from '@/services/BaseServices';
+import { fetchPageResourceTemplateContent } from '@/services/SystemServices';
 import {
   fetchGetMreTag,
   fetchImportExcel,
@@ -43,7 +44,6 @@ import {
   fetchGlobalListCity,
   fetchGlobalListPartner,
   fetchListHittingMain,
-  fetchPageResourceTemplateContent,
   fetchListExpressCompany,
 } from '@/services/PublicServices';
 

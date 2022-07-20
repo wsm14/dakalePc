@@ -39,7 +39,7 @@ const ShowTag = (props) => {
     {
       title: '商品类型',
       align: 'center',
-      dataIndex: 'identifisdcation',
+      dataIndex: 'goodsType',
       render: (val) => SHOW_TAG_GOODSTYPE[val] || '--',
     },
     {

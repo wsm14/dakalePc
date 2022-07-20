@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
+import { SHOW_MODAL_GOODSTYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import PreviewDrawer from './PreviewDrawer';
 
@@ -14,6 +15,12 @@ const ResourceTemplate = (props) => {
       title: '模板名称',
       align: 'center',
       dataIndex: 'templateName',
+    },
+    {
+      title: '商品类型',
+      align: 'center',
+      dataIndex: 'goodsType',
+      render: (val) => SHOW_MODAL_GOODSTYPE[val],
     },
     {
       title: '最低支持版本-iOS',

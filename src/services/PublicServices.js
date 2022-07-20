@@ -313,13 +313,6 @@ export function fetchGlobalListPartner(params) {
   });
 }
 
-//资源位内容配置-  分页列表
-export function fetchPageResourceTemplateContent(params) {
-  return request('/admin/resourceTemplateContent/pageResourceTemplateContent', {
-    params,
-  });
-}
-
 //查询快递公司列表
 export function fetchListExpressCompany(params) {
   return request('/common/express/listExpressCompany', {

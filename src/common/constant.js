@@ -812,6 +812,13 @@ export const SHOW_TAG_GOODSTYPE = {
   specialGoods: '特惠商品 ',
 };
 
+// 资源位模版 - 商品类型
+export const SHOW_MODAL_GOODSTYPE = {
+  commerceGoods: '电商品',
+  specialGoods: '特惠商品 ',
+  'specialGoods,commerceGoods': '特惠商品&电商品',
+};
+
 // 集合页配置集合页状态
 export const PAGE_STATUS = ['进行中', '已结束'];
 

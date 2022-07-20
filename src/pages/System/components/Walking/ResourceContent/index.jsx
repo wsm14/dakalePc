@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'umi';
+import { SHOW_MODAL_GOODSTYPE } from '@/common/constant';
 import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import ResourceContentDrawer from './ResourceContentDrawer';
@@ -51,6 +52,12 @@ const ResourceContent = (props) => {
       title: '关联模板名称',
       align: 'center',
       dataIndex: 'templateName',
+    },
+    {
+      title: '商品类型',
+      align: 'center',
+      dataIndex: 'goodsType',
+      render: (val) => SHOW_MODAL_GOODSTYPE[val],
     },
     {
       title: '创建人',

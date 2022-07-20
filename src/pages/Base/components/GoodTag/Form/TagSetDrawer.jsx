@@ -56,7 +56,7 @@ const ClassifySet = (props) => {
     },
     {
       label: '唯一标识',
-      name: 'identification',
+      name: 'goodsType',
       placeholder: '请输入英文',
       addRules: [{ pattern: ONLY_ENGLISH_PATTERN, message: '请输入英文' }],
       extra: '唯一标识只能输入英文，且不可修改',
