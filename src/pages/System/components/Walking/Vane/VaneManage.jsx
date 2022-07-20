@@ -150,11 +150,11 @@ const VaneManage = (props) => {
       ].includes(tabKey)
     ) {
       return cardBtnList;
-    } else if (['seasonalKey'].includes(tabKey) && list.list.length < 6) {
+    } else if (['seasonalKey'].includes(tabKey) && list.list.length < 5) {
       return cardBtnList;
-    } else if (['bicuspidLattice'].includes(tabKey) && list.list.length < 3) {
+    } else if (['bicuspidLattice'].includes(tabKey) && list.list.length < 2) {
       return cardBtnList;
-    } else if (['trigonometry'].includes(tabKey) && list.list.length < 4) {
+    } else if (['trigonometry'].includes(tabKey) && list.list.length < 3) {
       return cardBtnList;
     } else if (['beanDeductionZone'].includes(tabKey) && list.list.length < 3) {
       return cardBtnList;
