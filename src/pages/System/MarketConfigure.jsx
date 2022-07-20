@@ -10,7 +10,8 @@ import RuleManage from './components/PrizeConfig/Rule';
 import NoobJackPot from './components/PrizeConfig/NoobJackPot';
 import AppSetTabList from './components/App/AppSetTabList';
 import MaterialConfig from './components/MaterialConfig/MaterialConfig';
-import GroupGoodsConfig from './components/GroupGoodsConfig'
+import GroupGoodsConfig from './components/GroupGoodsConfig';
+import TaskConfig from './components/Configure/TaskConfig';
 import styles from './index.less';
 
 const MarkConfigure = () => {
@@ -100,6 +101,11 @@ const MarkConfigure = () => {
       type: 'groupGoodsConfig',
       menuName: '拼团商品配置',
       block: <GroupGoodsConfig></GroupGoodsConfig>,
+    },
+    {
+      type: 'taskConfig',
+      menuName: '任务配置',
+      block: <TaskConfig></TaskConfig>,
     },
   ];
 
