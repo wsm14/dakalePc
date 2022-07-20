@@ -1,109 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import moment from 'moment';
-import { Form, Button, InputNumber } from 'antd';
+import { Form, Button } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormComponents from '@/components/FormCondition';
-import { NewNativeFormSet } from '@/components/FormListCondition';
-import { NEW_POP_IMG } from '@/common/imgRatio';
-import aliOssUpload from '@/utils/aliOssUpload';
+import TaskConfigFormSet from './Form/TaskConfigFormSet';
+import TaskConfigDetail from './Detail/TaskConfigDetail';
 
 const TaskConfigDrawerSet = (props) => {
   const { visible, onClose, dispatch, loading, childRef } = props;
   const { show = false, type = 'add', detail = {} } = visible;
-  const { configNewUserPopUpId } = detail;
-
-  console.log(detail);
 
   const [form] = Form.useForm();
 
-  const [banType, setBanType] = useState('0'); //是否Banner展示
-
-  useEffect(() => {
-    if (type === 'edit') {
-      setBanType(detail.isShowBanner);
-    }
-  }, [type]);
-
   //保存
   const handleSave = () => {
-    form.validateFields().then(async (values) => {
-      console.log(values);
-
-      const { activityBeginTime: time, bannerImage, activityGoodsObjects, ...other } = values;
-
-      // 上传图片到oss -> 提交表单
-      const imgList = await aliOssUpload(bannerImage);
-      dispatch({
-        type: {
-          add: 'marketConfigure/fetchSaveConfigNewUserPopUp',
-          edit: 'marketConfigure/fetchUpdateConfigNewUserPopUp',
-        }[type],
-        payload: {
-          configNewUserPopUpId,
-          ...other,
-          userOs: detail.userOs,
-          activityBeginTime: time[0].format('YYYY-MM-DD HH:mm'),
-          activityEndTime: time[1].format('YYYY-MM-DD HH:mm'),
-          bannerImage: imgList.toString(),
-          goodsIds: activityGoodsObjects.map((item) => item.activityGoodsId).toString(),
-        },
-        callback: () => {
-          onClose();
-          childRef.current.fetchGetData();
-        },
-      });
-    });
+    form.validateFields().then(async (values) => {});
   };
 
-  const formItems = [
-    {
-      title: '弹窗配置',
-      label: '活动名称',
-      name: 'name',
-      maxLength: '15',
-    },
-    {
-      label: '活动时间',
-      type: 'rangePicker',
-      name: 'activityBeginTime',
-      end: 'activityEndTime',
-      showTime: true,
-      format: 'YYYY-MM-DD HH:mm',
-      disabledDate: (current) => current && current < moment().endOf('day').subtract(1, 'day'),
-    },
-    {
-      title: '福利页配置',
-      label: 'Banner展示',
-      type: 'radio',
-      name: 'isShowBanner',
-      select: ['关闭', '开启'],
-      onChange: (e) => {
-        setBanType(e.target.value);
-      },
-    },
-    {
-      label: '选择图片',
-      type: 'upload',
-      name: 'bannerImage',
-      maxFile: 1,
-      extra: '请上传560*760px png、jpeg、gif图片',
-      imgRatio: NEW_POP_IMG,
-      visible: banType === '1',
-    },
-    {
-      type: 'noForm',
-      visible: banType === '1',
-      formItem: <NewNativeFormSet form={form} detail={detail}></NewNativeFormSet>,
-    },
-  ];
+  // 统一处理弹窗
+  const drawerProps = {};
 
   const modalProps = {
     visible: show,
     title: '弹窗内容配置',
     onClose,
     zIndex: 1001,
-    footer: (
+    footer: !['info'].includes(type) && (
       <Button
         type="primary"
         onClick={handleSave}
@@ -118,7 +40,13 @@ const TaskConfigDrawerSet = (props) => {
   };
   return (
     <DrawerCondition {...modalProps}>
-      <FormComponents form={form} formItems={formItems} initialValues={detail}></FormComponents>
+      {['edit', 'taskLink', 'taskOk'].includes(type) ? (
+        <TaskConfigFormSet form={form} detail={detail}></TaskConfigFormSet>
+      ) : (
+        // info
+        <TaskConfigDetail detail={detail}></TaskConfigDetail>
+      )}
+      {/* <FormComponents form={form} formItems={formItems} initialValues={detail}></FormComponents> */}
     </DrawerCondition>
   );
 };

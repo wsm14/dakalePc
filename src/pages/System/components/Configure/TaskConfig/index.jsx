@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import { NEWUSER_STATUS_TYPE } from '@/common/constant';
+import TaskConfigDrawerSet from './components/TaskConfigDrawerSet';
 
 const tabList = [
   {
@@ -20,6 +21,7 @@ const TaskConfig = (props) => {
   const childRef = useRef();
   //tab切换
   const [tabKey, setTabKey] = useState('newTask');
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     childRef.current && childRef.current.fetchGetData({ userOs: tabKey });
@@ -52,32 +54,39 @@ const TaskConfig = (props) => {
           {
             title: '关联链接',
             type: 'taskConfigLink',
-            // click: () => handleEdit(val),
+            click: () => handleEdit(val, 'taskLink'),
           },
           {
             title: '详情',
             type: 'taskConfigInfo',
-            // click: () => handleEdit(val),
+            click: () => handleEdit(val, 'info'),
           },
           {
             title: '编辑',
             type: 'taskConfigEdit',
-            // click: () => handleEdit(val),
+            click: () => handleEdit(val, 'edit'),
           },
         ];
       },
     },
   ];
 
-  //  新增
-  const handleAdd = () => {};
+  // 编辑 ， 关联链接
+  const handleEdit = (val, type) => {
+    setVisible({ show: true, type });
+  };
+
+  // 任务完成配置
+  const handleTaskOkConfig = (type) => {
+    setVisible({ show: true, type });
+  };
 
   const extraBtn = [
     {
       auth: 'taskOkConfig',
       text: '任务完成配置',
       className: 'dkl_blue_btn',
-      // onClick: () => setVisible({ show: true, info: {} }),
+      onClick: () => handleTaskOkConfig('taskOk'),
     },
   ];
 
@@ -100,6 +109,11 @@ const TaskConfig = (props) => {
         params={{ userOs: tabKey }}
         {...taskConfigList}
       ></TableDataBlock>
+      <TaskConfigDrawerSet
+        childRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></TaskConfigDrawerSet>
     </>
   );
 };
