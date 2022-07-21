@@ -44,7 +44,7 @@ const CommerceGoods = (props) => {
       dataIndex: 'goodsName',
       render: (val, row) => (
         <>
-          <Ellipsis length={20} tooltip>
+          <Ellipsis length={10} tooltip>
             {val}
           </Ellipsis>
           <div>{row?.goodsId}</div>

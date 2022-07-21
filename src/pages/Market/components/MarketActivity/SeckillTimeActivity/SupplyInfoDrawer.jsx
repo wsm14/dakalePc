@@ -12,6 +12,7 @@ const SupplyInfoDrawer = (props) => {
   const {
     loading,
     visible,
+    ruleData,
     dispatch,
     goodsType,
     marketingSeckillId,
@@ -31,7 +32,7 @@ const SupplyInfoDrawer = (props) => {
         zIndex: 1002,
         onOk() {
           dispatch({
-            type: 'marketActivity/fetchMarketActivityGoodsSave',
+            type: 'seckillTimeActivity/fetchSeckillTimeActivityGoodsSave',
             payload: {
               activityType: goodsType,
               marketingSeckillId,
@@ -62,6 +63,7 @@ const SupplyInfoDrawer = (props) => {
                   activitySettlePrice,
                 }),
               ),
+              useRuleObject: ruleData,
             },
             callback: () => {
               onSumbitClose();
@@ -125,5 +127,5 @@ const SupplyInfoDrawer = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['marketActivity/fetchMarketActivityGoodsSave'],
+  loading: loading.effects['seckillTimeActivity/fetchSeckillTimeActivityGoodsSave'],
 }))(SupplyInfoDrawer);

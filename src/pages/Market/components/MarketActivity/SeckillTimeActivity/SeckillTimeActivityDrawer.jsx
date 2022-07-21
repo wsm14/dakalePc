@@ -13,39 +13,9 @@ const SeckillTimeActivityDrawer = (props) => {
   const { mode = 'add', show = false, detail = {} } = visible;
   const [form] = Form.useForm();
   const [ruleId, setRuleId] = useState(false); // 规则id
+  const [ruleData, setRuleData] = useState({}); // 规则数据
   const [visibleInfo, setVisibleInfo] = useState(false); // 补充信息
   const [visibleSelect, setVisibleSelect] = useState(false); // 选择弹窗
-
-  const handleUpData = () => {
-    form.validateFields().then((value) => {
-      const { activeDate, activityRuleObject = {}, useRuleObject = {}, ...other } = value;
-      // 活动规则
-      const { activityRuleType, classifies = [], categories = [] } = activityRuleObject;
-      // 使用规则
-      const { useRuleType } = useRuleObject;
-      dispatch({
-        type: 'marketActivity/fetchMarketActivitySet',
-        payload: {
-          ...other,
-          mode,
-          activityRuleObject: {
-            ...activityRuleObject,
-            activityRuleType: activityRuleType.toString(),
-            categories: categories.map((i) => ({ categoryId: i })), // 行业规则
-            classifies: classifies.map((i) => ({ classifyId: i[i.length - 1] })), // 类目规则
-          },
-          useRuleObject: { ...useRuleObject, useRuleType: useRuleType.toString() },
-          startDate: activeDate[0].format('YYYY-MM-DD HH:mm:00'),
-          endDate: activeDate[1].format('YYYY-MM-DD HH:mm:00'),
-          marketingActivityId: detail.id,
-        },
-        callback: () => {
-          onClose();
-          childRef.current.fetchGetData();
-        },
-      });
-    });
-  };
 
   // 下一步
   const handleActiveNaxt = () => {
@@ -54,8 +24,8 @@ const SeckillTimeActivityDrawer = (props) => {
       const data = {
         ...other,
         seckillTimeObjectList: seckillTimeObjectList.map(({ times }) => ({
-          seckillBeginTime: times[0].format('YYYY-MM-DD'),
-          seckillEndTime: times[1].format('YYYY-MM-DD'),
+          seckillBeginTime: times[0].format('YYYY-MM-DD HH:mm:00'),
+          seckillEndTime: times[1].format('YYYY-MM-DD HH:mm:00'),
         })),
       };
       // 新增校验逻辑
@@ -67,6 +37,7 @@ const SeckillTimeActivityDrawer = (props) => {
 
   // 设置规则 1.1
   const fetchActivityRuleSet = (value) => {
+    setRuleData(value);
     dispatch({
       type: 'seckillTimeActivity/fetchSeckillTimeActivityRuleSet',
       payload: value,
@@ -146,13 +117,22 @@ const SeckillTimeActivityDrawer = (props) => {
         closeSumbit={false}
         searchParams={{ isShowSkuList: 1 }} // 是否搜索展示规格
         onSumbit={({ list }) => {
-          console.log(list);
+          setVisibleInfo({
+            show: true,
+            detail: {
+              [tabKey]: list.map(({ discount, skuManagerResps = [], ...other }) => ({
+                ...other,
+                skuList: skuManagerResps,
+              })),
+            },
+          });
         }}
         onClose={() => setVisibleSelect(false)}
       ></GoodsSelectModal>
       {/* 设置秒杀价 */}
       <SupplyInfoDrawer
         goodsType={tabKey}
+        ruleData={ruleData}
         visible={visibleInfo}
         marketingSeckillId={ruleId}
         onClose={() => setVisibleInfo(false)}

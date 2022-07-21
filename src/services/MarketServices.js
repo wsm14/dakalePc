@@ -595,4 +595,12 @@ export function fetchSeckillTimeActivityCheckGoods(data) {
   });
 }
 
+// post 营销活动 - 限时秒杀 - 商品选择校验
+export function fetchSeckillTimeActivityGoodsSave(data) {
+  return request('/admin/marketing/seckill/admin/seckillRegisteredProducts', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 限时秒杀 end

@@ -9,27 +9,22 @@ const SpecialGoodsFormItem = (props) => {
   const { index, form, goodsType } = props;
 
   const data = form.getFieldValue([goodsType, index]) || {};
-  // 表单折扣
-  const formDiscount = Form.useWatch([goodsType, index, 'discount'], form) || 0;
-  // 表单卡豆
-  const formSellBean = Form.useWatch([goodsType, index, 'activitySellBean'], form) || 0;
 
   const {
     paymentModeType,
     sellPrice = 0,
     sellBean = 0,
+    settlePrice = 0,
     relateName,
     goodsImg,
     goodsName,
     activityTimeRule,
     activityStartDate,
     activityEndDate,
+    activitySellBean,
   } = data;
 
-  // 计算价格
-  const countPrice = (val) => {
-    return Number((val / 10 < 0.001 ? 0 : val / 10).toFixed(2));
-  };
+  const maxPrice = sellPrice * 100 + Number(sellBean);
 
   // 更新数据
   const updateData = (val) => {
@@ -39,19 +34,6 @@ const SpecialGoodsFormItem = (props) => {
         $splice: [[index, 1, { ...(listData[index] || {}), ...val }]],
       }),
     });
-  };
-
-  // 校验价格是否相等折扣
-  const checkPrice = (val) => {
-    // 当前折扣后价格
-    const newDisPrice =
-      countPrice(formDiscount * sellPrice) * 100 + Math.trunc((formDiscount * sellBean) / 10);
-    // 修改后折扣价格
-    const editDisPrice = val * 100 + formSellBean;
-    if (newDisPrice !== editDisPrice) {
-      return Promise.reject(new Error(`卡豆+现金活动售价需等于当前售价*${formDiscount}折`));
-    }
-    return Promise.resolve();
   };
 
   return (
@@ -88,64 +70,75 @@ const SpecialGoodsFormItem = (props) => {
                       }[paymentModeType]
                     }
                   </div>
+                  <div>结算价 ￥{settlePrice}</div>
                 </div>
               </div>
             </div>
           </div>
           {/* 表单  */}
           <div className="supplyInfoFormItem_form">
-            <Form.Item required label="活动售价(卡豆)" hidden={paymentModeType !== 'self'}>
+            {!['free', 'self'].includes(paymentModeType) && (
               <Form.Item
-                noStyle
-                name={[index, 'activitySellBean']}
-                rules={[{ required: true, message: '请输入活动售价(卡豆)' }]}
+                label="秒杀价"
+                name={[index, 'activitySellPrice']}
+                rules={[{ required: true, message: '请输入秒杀价' }]}
               >
                 <InputNumber
                   min={0}
-                  max={
-                    countPrice(formDiscount * sellPrice) * 100 +
-                    Math.trunc((formDiscount * sellBean) / 10)
-                  }
+                  precision={2}
+                  max={maxPrice / 100}
+                  placeholder="请输入秒杀价"
+                  style={{ width: 220 }}
+                ></InputNumber>
+              </Form.Item>
+            )}
+            <Form.Item required label="秒杀价(卡豆)" hidden={paymentModeType !== 'self'}>
+              <Form.Item
+                noStyle
+                name={[index, 'activitySellBean']}
+                rules={[{ required: true, message: '请输入秒杀价(卡豆)' }]}
+              >
+                <InputNumber
+                  min={0}
+                  max={Math.trunc(maxPrice)}
                   precision={0}
                   style={{ width: 100 }}
                   onChange={(e) => {
-                    const maxPrice =
-                      countPrice(formDiscount * sellPrice) * 100 +
-                      Math.trunc((formDiscount * sellBean) / 10);
-                    updateData({
-                      activitySellPrice: (maxPrice - e) / 100,
-                    });
+                    updateData({ activitySellPrice: (maxPrice - e) / 100 });
                   }}
                 ></InputNumber>
               </Form.Item>{' '}
-              活动零售价:{' '}
-              <Form.Item
-                noStyle
-                name={[index, 'activitySellPrice']}
-                rules={[
-                  { required: true, message: '请输入活动零售价' },
-                  {
-                    validator: (_, value) => checkPrice(value),
-                  },
-                ]}
-              >
-                <InputNumber min={0} precision={2} style={{ width: 100 }} />
-              </Form.Item>
+              秒杀价:{' '}
+              {paymentModeType == 'self' && (
+                <Form.Item
+                  noStyle
+                  name={[index, 'activitySellPrice']}
+                  rules={[{ required: true, message: '请输入秒杀价' }]}
+                >
+                  <InputNumber
+                    min={0}
+                    max={(maxPrice - activitySellBean) / 100}
+                    precision={2}
+                    addonAfter={`折扣`}
+                    style={{ width: 100 }}
+                  />
+                </Form.Item>
+              )}
               {/* 活动结算价 */}
-              <Form.Item noStyle hidden name={[index, 'activitySettlePrice']}>
+              <Form.Item noStyle hidden name={[index, 'settlePrice']}>
                 <InputNumber min={0} precision={2} style={{ width: 100 }} />
               </Form.Item>
             </Form.Item>
             <Form.Item
-              label="活动库存"
+              label="秒杀库存"
               name={[index, 'activityTotal']}
-              rules={[{ required: true, message: '请输入活动售卖库存' }]}
+              rules={[{ required: true, message: '请输入秒杀库存' }]}
             >
               <InputNumber
                 min={0}
                 precision={0}
                 style={{ width: 220 }}
-                placeholder="请输入活动售卖库存"
+                placeholder="请输入秒杀库存"
               ></InputNumber>
             </Form.Item>
           </div>

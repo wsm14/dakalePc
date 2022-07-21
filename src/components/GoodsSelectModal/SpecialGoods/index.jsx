@@ -45,15 +45,26 @@ const SpecialGoods = (props) => {
     },
     {
       title: '商品名称/ID',
+      width: 180,
       dataIndex: 'goodsName',
       render: (val, row) => (
         <div>
           <Ellipsis length={10} tooltip>
             {val}
           </Ellipsis>
-          <div style={{ display: 'flex' }}>{row?.goodsId}</div>
+          <div>{row?.goodsId}</div>
         </div>
       ),
+    },
+    {
+      title: '店铺/品牌名称',
+      dataIndex: 'relateName',
+      ellipsis: true,
+    },
+    {
+      title: '行业',
+      dataIndex: 'categoryName',
+      ellipsis: true,
     },
     {
       title: '活动时间',

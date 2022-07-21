@@ -2,6 +2,7 @@ import { notification } from 'antd';
 import {
   fetchSeckillTimeActivityRuleSet,
   fetchSeckillTimeSpecialGoodsList,
+  fetchSeckillTimeActivityGoodsSave,
   fetchSeckillTimeCommerceGoodsList,
   fetchMarketActivityGoodsEditRemain,
   fetchSeckillTimeActivityCheckGoods,
@@ -57,6 +58,12 @@ export default {
     // 商品校验
     *fetchSeckillTimeActivityCheckGoods({ payload, callback }, { call }) {
       const response = yield call(fetchSeckillTimeActivityCheckGoods, payload);
+      if (!response) return;
+      callback();
+    },
+    // 绑定商品
+    *fetchSeckillTimeActivityGoodsSave({ payload, callback }, { call }) {
+      const response = yield call(fetchSeckillTimeActivityGoodsSave, payload);
       if (!response) return;
       callback();
     },

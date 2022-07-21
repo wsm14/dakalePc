@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, InputNumber } from 'antd';
+import { Form, InputNumber, Tag } from 'antd';
 import update from 'immutability-helper';
 import TableDataBlock from '@/components/TableDataBlock';
 
@@ -14,7 +14,7 @@ const FormItemInput = ({ name, label = '', rules = [], inputProps = {} }) => {
       <InputNumber
         min={0}
         precision={0}
-        style={{ width: 100 }}
+        style={{ width: 90 }}
         placeholder="请输入"
         {...inputProps}
       ></InputNumber>
@@ -25,11 +25,6 @@ const FormItemInput = ({ name, label = '', rules = [], inputProps = {} }) => {
 // sku表单
 const SkuTableForm = (props) => {
   const { skuList, paymentModeType, pIndex, form, goodsType } = props;
-
-  // 计算价格
-  const countPrice = (val) => {
-    return Number((val / 10 < 0.001 ? 0 : val / 10).toFixed(2));
-  };
 
   // 更新数据
   const updateData = (val, index) => {
@@ -43,25 +38,6 @@ const SkuTableForm = (props) => {
         $splice: [[pIndex, 1, { ...(listData[pIndex] || {}), skuList: skuData }]],
       }),
     });
-  };
-
-  // 校验价格是否相等折扣
-  const checkPrice = (val, row, rowIndex) => {
-    // 表单价格
-    const formSellBean =
-      form.getFieldValue([goodsType, pIndex, 'skuList', rowIndex, 'activitySellBean']) || 0;
-    const { discount = 0, sellPrice, sellBean } = row;
-
-    // 当前折扣后价格
-    const newDisPrice =
-      countPrice(discount * sellPrice) * 100 + Math.trunc((discount * sellBean) / 10);
-    // 修改后折扣价格
-    const editDisPrice = formSellBean + val * 100;
-
-    if (newDisPrice !== editDisPrice) {
-      return Promise.reject(new Error(`售价需=当前售价*${discount}折`));
-    }
-    return Promise.resolve();
   };
 
   // table 表头
@@ -98,28 +74,20 @@ const SkuTableForm = (props) => {
       render: (val, row) => `￥${val}`,
     },
     {
-      title: '活动售价(卡豆)',
-      dataIndex: 'totalSellPrice',
+      title: '秒杀价(卡豆)',
+      dataIndex: 'sellBean',
       align: 'right',
       show: paymentModeType == 'self',
       render: (val, row, rowIndex) => {
-        const max =
-          countPrice(row.discount * row.sellPrice) * 100 +
-          Math.trunc((row.discount * row.sellBean) / 10);
+        const maxPrice = Math.trunc(row.sellPrice * 100 + row.sellBean);
         return (
           <FormItemInput
             label="活动卡豆"
             name={[rowIndex, 'activitySellBean']}
             inputProps={{
-              max,
-              onChange: (val) => {
-                updateData(
-                  {
-                    activitySellBean: val,
-                    activitySellPrice: (max - val) / 100,
-                  },
-                  rowIndex,
-                );
+              max: maxPrice,
+              onChange: (e) => {
+                updateData({ activitySellPrice: (maxPrice - e) / 100 }, rowIndex);
               },
             }}
           ></FormItemInput>
@@ -127,35 +95,31 @@ const SkuTableForm = (props) => {
       },
     },
     {
-      title: '活动零售价',
-      align: 'right',
+      title: '秒杀价',
+      align: 'center',
       dataIndex: 'activitySellPrice',
-      render: (val, row, rowIndex) =>
-        paymentModeType !== 'self' ? (
-          `￥${val || 0}`
-        ) : (
-          <FormItemInput
-            label="活动零售价"
-            name={[rowIndex, 'activitySellPrice']}
-            rules={[
-              {
-                validator: (_, value) => checkPrice(value, row, rowIndex),
-              },
-            ]}
-            inputProps={{
-              precision: 2,
-            }}
-          ></FormItemInput>
-        ),
+      render: (val, row, rowIndex) => {
+        const { activitySellBean = 0, sellBean = 0 } = row;
+        const maxPrice = Number(row.sellPrice) + (sellBean - activitySellBean) / 100;
+        return (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <FormItemInput
+              label="秒杀价"
+              name={[rowIndex, 'activitySellPrice']}
+              inputProps={{
+                precision: 2,
+                max: maxPrice,
+              }}
+            ></FormItemInput>
+            <Tag color={'green'} style={{ marginLeft: 10 }}>
+              折
+            </Tag>
+          </div>
+        );
+      },
     },
     {
-      title: '活动结算价',
-      align: 'right',
-      dataIndex: 'activitySettlePrice',
-      render: (val, row) => `￥${val || 0}`,
-    },
-    {
-      title: '活动库存',
+      title: '秒杀库存',
       align: 'right',
       dataIndex: 'skuId',
       render: (val, row, rowIndex) => (
