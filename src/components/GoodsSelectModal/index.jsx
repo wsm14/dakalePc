@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'umi';
 import { Modal, Tabs } from 'antd';
 import SearchCondition from '@/components/SearchCondition';
 import ReduceCoupon from './ReduceCoupon';
@@ -48,6 +49,8 @@ const GoodsSelectModal = (props) => {
     closeSumbit = true,
     rowSelection,
     loading,
+    dispatch,
+    classifyParentList,
   } = props;
 
   const [tabKey, setTabKey] = useState('reduceCoupon'); // tab类型
@@ -75,6 +78,15 @@ const GoodsSelectModal = (props) => {
       if (Object.keys(searchParams).length) setSearchValue({ ...searchParams, page: 1 });
     }
   }, [visible]);
+
+  useEffect(() => {
+    fetchGetGoodsClassify();
+  }, []);
+
+  // 获取电商品后台类目
+  const fetchGetGoodsClassify = () => {
+    dispatch({ type: 'baseData/fetchParentListClassify' });
+  };
 
   // 不包括 活动模版 相关接口 activeReduceCoupon
   const allTag = [
@@ -171,6 +183,14 @@ const GoodsSelectModal = (props) => {
       ].includes(tabKey),
     },
     {
+      label: '所属类目',
+      name: 'categoryId',
+      type: 'cascader',
+      select: classifyParentList,
+      fieldNames: { label: 'classifyName', value: 'classifyId', children: 'childList' },
+      show: ['commerceGoods'].includes(tabKey),
+    },
+    {
       label: '商品ID',
       name: 'goodsId', // 特惠商品 电商品
       show: ['specialGoods', 'commerceGoods'].includes(tabKey),
@@ -228,4 +248,6 @@ const GoodsSelectModal = (props) => {
   );
 };
 
-export default GoodsSelectModal;
+export default connect(({ baseData }) => ({
+  classifyParentList: baseData.classifyParentList,
+}))(GoodsSelectModal);

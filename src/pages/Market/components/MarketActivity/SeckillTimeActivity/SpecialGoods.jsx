@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { MARKETACTIVITY_STATUS } from '@/common/constant';
@@ -6,9 +6,8 @@ import { handleCopyInfo } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const SeckillTimeActivity = (props) => {
-  const { loading, dispatch, list } = props;
+  const { loading, dispatch, list, childRef } = props;
 
-  const childRef = useRef();
   const [visible, setVisible] = useState(false);
   const [visibleGoods, setVisibleGoods] = useState(false);
 
@@ -152,5 +151,5 @@ const SeckillTimeActivity = (props) => {
 
 export default connect(({ loading, seckillTimeActivity }) => ({
   list: seckillTimeActivity.offlineGoods,
-  loading: loading.models.seckillTimeActivity,
+  loading: loading.effects['seckillTimeActivity/fetchSeckillTimeSpecialGoodsList'],
 }))(SeckillTimeActivity);

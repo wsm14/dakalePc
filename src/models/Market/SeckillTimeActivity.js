@@ -1,8 +1,10 @@
 import { notification } from 'antd';
 import {
+  fetchSeckillTimeActivityRuleSet,
   fetchSeckillTimeSpecialGoodsList,
   fetchSeckillTimeCommerceGoodsList,
   fetchMarketActivityGoodsEditRemain,
+  fetchSeckillTimeActivityCheckGoods,
 } from '@/services/MarketServices';
 
 export default {
@@ -44,6 +46,19 @@ export default {
           offlineGoods: { list: content.activityOfflineGoods, total: content.total },
         },
       });
+    },
+    // 规则设置
+    *fetchSeckillTimeActivityRuleSet({ payload, callback }, { call }) {
+      const response = yield call(fetchSeckillTimeActivityRuleSet, payload);
+      if (!response) return;
+      const { marketingSeckillDetail } = response.content;
+      callback(marketingSeckillDetail.marketingSeckillId);
+    },
+    // 商品校验
+    *fetchSeckillTimeActivityCheckGoods({ payload, callback }, { call }) {
+      const response = yield call(fetchSeckillTimeActivityCheckGoods, payload);
+      if (!response) return;
+      callback();
     },
     *fetchMarketActivityGoodsEditRemain({ payload, callback }, { call }) {
       const response = yield call(fetchMarketActivityGoodsEditRemain, payload);

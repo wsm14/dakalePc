@@ -579,4 +579,20 @@ export function fetchSeckillTimeSpecialGoodsList(params) {
   });
 }
 
+// post 营销活动 - 限时秒杀 - 新增-设置秒杀规则
+export function fetchSeckillTimeActivityRuleSet(data) {
+  return request('/admin/marketing/seckill/admin/saveMarketingSeckill', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 营销活动 - 限时秒杀 - 商品选择校验
+export function fetchSeckillTimeActivityCheckGoods(data) {
+  return request('/admin/marketing/seckill/admin/seckillVerifyWhenSelectingGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 限时秒杀 end

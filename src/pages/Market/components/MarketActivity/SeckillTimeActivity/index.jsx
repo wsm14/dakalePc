@@ -1,8 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { Card } from 'antd';
 import ExtraButton from '@/components/ExtraButton';
-import CommerceGoods from './CommerceGoods';
 import SpecialGoods from './SpecialGoods';
+import CommerceGoods from './CommerceGoods';
+import SeckillTimeActivityDrawer from './SeckillTimeActivityDrawer';
 
 const tabList = [
   {
@@ -19,7 +20,6 @@ const SeckillTimeActivity = () => {
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
   const [tabKey, setTabKey] = useState('commerceGoods');
-  const [visibleGoods, setVisibleGoods] = useState(false);
 
   const btnList = [
     {
@@ -34,7 +34,7 @@ const SeckillTimeActivity = () => {
     },
   ];
 
-  const listProps = { tabKey: tabKey };
+  const listProps = { childRef, tabKey: tabKey };
 
   const contentList = {
     commerceGoods: <CommerceGoods {...listProps}></CommerceGoods>,
@@ -52,6 +52,11 @@ const SeckillTimeActivity = () => {
       >
         {contentList[tabKey]}
       </Card>
+      <SeckillTimeActivityDrawer
+        tabKey={tabKey}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></SeckillTimeActivityDrawer>
     </>
   );
 };

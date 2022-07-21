@@ -52,6 +52,24 @@ const CommerceGoods = (props) => {
       ),
     },
     {
+      title: '所属类目/供应商',
+      dataIndex: 'categoryName',
+      render: (val, row) => (
+        <div>
+          <div style={{ display: 'flex' }}>
+            <Ellipsis length={10} tooltip>
+              {val}
+            </Ellipsis>
+          </div>
+          <div style={{ display: 'flex', marginTop: 5 }}>
+            <Ellipsis length={10} tooltip>
+              {row?.relateName}
+            </Ellipsis>
+          </div>
+        </div>
+      ),
+    },
+    {
       title: '价格',
       align: 'right',
       dataIndex: 'sellPriceRange',

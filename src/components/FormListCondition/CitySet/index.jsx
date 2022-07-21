@@ -43,7 +43,7 @@ const CitySelect = ({ form, name, areaType, setCityData, maxLength, changeOnSele
               <div key={field.key} className={styles.app_city_select}>
                 <Form.Item
                   name={[field.name, 'city']}
-                  fieldKey={[field.fieldKey, 'city']}
+                  fieldKey={[field.key, 'city']}
                   style={{ flex: 1 }}
                   rules={[{ required: true, message: '请选择' }, { validator: checkCityData }]}
                 >
