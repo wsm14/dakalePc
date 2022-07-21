@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Modal, Badge } from 'antd';
-import { ELECTRICGOODS_STATUS } from '@/common/constant';
+import { ELECTRICGOODS_STATUS, SHOW_TAG_GOODSTYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import ExtraButton from '@/components/ExtraButton';
@@ -22,7 +22,7 @@ const tabList = [
 
 const ConnectedGoodsModal = (props) => {
   const { listKey, visible, onClose, dispatch, configGoodsList, loading, loadingSort } = props;
-  const { show = false, id, tagType, name, goodsType = 'specialGoods' } = visible;
+  const { show = false, id, name, goodsType = 'specialGoods' } = visible;
 
   const childRef = useRef();
   const [tabKey, setTabKey] = useState('');
@@ -198,7 +198,7 @@ const ConnectedGoodsModal = (props) => {
   return (
     <>
       <Modal
-        title={`关联商品 - ${name}`}
+        title={`关联商品 - ${name} ${listKey == 'show' && `- ${SHOW_TAG_GOODSTYPE[goodsType]}`}`}
         width={1200}
         destroyOnClose
         footer={null}
@@ -234,7 +234,7 @@ const ConnectedGoodsModal = (props) => {
       </Modal>
       <GoodsSelectModal
         visible={visibleDrawer}
-        showTag={['specialGoods', 'commerceGoods']}
+        showTag={listKey == 'show' ? [tabKey] : ['specialGoods', 'commerceGoods']}
         onSumbit={({ list }) => {
           fetchConfigGoodsSet(
             'add',

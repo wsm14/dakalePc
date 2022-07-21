@@ -64,7 +64,6 @@ const ShowTag = (props) => {
             setVisibleGoods({
               show: true,
               id: val,
-              tagType: tabkey,
               name: record.tagName,
               goodsType: record.goodsType,
             }),
