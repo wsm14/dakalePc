@@ -56,7 +56,7 @@ const MarketActivityBaseForm = (props) => {
       name: 'activeDate',
       type: 'rangePicker',
       showTime: true,
-      format: 'YYYY-MM-DD HH:mm:ss',
+      format: 'YYYY-MM-DD HH:mm',
     },
     {
       label: '活动规则',
