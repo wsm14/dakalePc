@@ -22,6 +22,24 @@ const FormItemInput = ({ name, label = '', rules = [], inputProps = {} }) => {
   );
 };
 
+const TagZhe = ({ goodsType, oPrice, pindex, form, index }) => {
+  // 活动秒杀
+  const aSellPrice =
+    Form.useWatch([goodsType, pindex, 'skuList', index, 'activitySellPrice'], form) || 0;
+  // 活动卡豆
+  const aSellBean =
+    Form.useWatch([goodsType, pindex, 'skuList', index, 'activitySellBean'], form) || 0;
+  // 秒杀（总卡豆）
+  const activePrice = aSellPrice * 100 + Number(aSellBean);
+  // 折扣
+  const zhe = `${(activePrice / oPrice) * 10}`.substring(0, 4);
+  return (
+    <Tag color={'green'} style={{ marginLeft: 10 }}>
+      {zhe}折
+    </Tag>
+  );
+};
+
 // sku表单
 const SkuTableForm = (props) => {
   const { skuList, paymentModeType, pIndex, form, goodsType } = props;
@@ -100,6 +118,7 @@ const SkuTableForm = (props) => {
       dataIndex: 'activitySellPrice',
       render: (val, row, rowIndex) => {
         const { activitySellBean = 0, sellBean = 0 } = row;
+        const orPrice = row.sellPrice * 100 + row.sellBean;
         const maxPrice = Number(row.sellPrice) + (sellBean - activitySellBean) / 100;
         return (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -111,9 +130,13 @@ const SkuTableForm = (props) => {
                 max: maxPrice,
               }}
             ></FormItemInput>
-            <Tag color={'green'} style={{ marginLeft: 10 }}>
-              折
-            </Tag>
+            <TagZhe
+              form={form}
+              pindex={pIndex}
+              oPrice={orPrice}
+              index={rowIndex}
+              goodsType={goodsType}
+            ></TagZhe>
           </div>
         );
       },
@@ -123,7 +146,15 @@ const SkuTableForm = (props) => {
       align: 'right',
       dataIndex: 'skuId',
       render: (val, row, rowIndex) => (
-        <FormItemInput label="活动库存" name={[rowIndex, 'activityTotal']}></FormItemInput>
+        <FormItemInput
+          label="活动库存"
+          name={[rowIndex, 'activityTotal']}
+          inputProps={{
+            onChange: (e) => {
+              updateData({ activitySettlePrice: row.settlePrice }, rowIndex);
+            },
+          }}
+        ></FormItemInput>
       ),
     },
   ];

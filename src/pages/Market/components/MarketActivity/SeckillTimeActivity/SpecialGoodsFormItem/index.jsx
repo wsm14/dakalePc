@@ -10,6 +10,11 @@ const SpecialGoodsFormItem = (props) => {
 
   const data = form.getFieldValue([goodsType, index]) || {};
 
+  // 活动秒杀
+  const aSellPrice = Form.useWatch([goodsType, index, 'activitySellPrice'], form) || 0;
+  // 活动卡豆
+  const aSellBean = Form.useWatch([goodsType, index, 'activitySellBean'], form) || 0;
+
   const {
     paymentModeType,
     sellPrice = 0,
@@ -24,7 +29,12 @@ const SpecialGoodsFormItem = (props) => {
     activitySellBean,
   } = data;
 
+  // 原价（总卡豆）
   const maxPrice = sellPrice * 100 + Number(sellBean);
+  // 秒杀（总卡豆）
+  const activePrice = aSellPrice * 100 + Number(aSellBean);
+  // 折扣
+  const zhe = `${(activePrice / maxPrice) * 10}`.substring(0, 4);
 
   // 更新数据
   const updateData = (val) => {
@@ -89,6 +99,7 @@ const SpecialGoodsFormItem = (props) => {
                   max={maxPrice / 100}
                   placeholder="请输入秒杀价"
                   style={{ width: 220 }}
+                  addonAfter={`${zhe}折`}
                 ></InputNumber>
               </Form.Item>
             )}
@@ -119,13 +130,13 @@ const SpecialGoodsFormItem = (props) => {
                     min={0}
                     max={(maxPrice - activitySellBean) / 100}
                     precision={2}
-                    addonAfter={`折扣`}
-                    style={{ width: 100 }}
+                    addonAfter={`${zhe}折`}
+                    style={{ width: 130 }}
                   />
                 </Form.Item>
               )}
               {/* 活动结算价 */}
-              <Form.Item noStyle hidden name={[index, 'settlePrice']}>
+              <Form.Item noStyle hidden name={[index, 'activitySettlePrice']}>
                 <InputNumber min={0} precision={2} style={{ width: 100 }} />
               </Form.Item>
             </Form.Item>
@@ -139,6 +150,9 @@ const SpecialGoodsFormItem = (props) => {
                 precision={0}
                 style={{ width: 220 }}
                 placeholder="请输入秒杀库存"
+                onChange={(e) => {
+                  updateData({ activitySettlePrice: settlePrice });
+                }}
               ></InputNumber>
             </Form.Item>
           </div>

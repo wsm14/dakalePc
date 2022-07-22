@@ -46,7 +46,6 @@ const SupplyInfoDrawer = (props) => {
                 ({
                   goodsId,
                   ownerId,
-                  discount,
                   ownerType,
                   activityTotal,
                   activitySellBean,
@@ -55,7 +54,6 @@ const SupplyInfoDrawer = (props) => {
                 }) => ({
                   goodsId,
                   ownerId,
-                  discount,
                   ownerType,
                   activityTotal,
                   activitySellBean,
