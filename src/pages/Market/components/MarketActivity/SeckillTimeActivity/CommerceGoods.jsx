@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const SeckillTimeActivity = (props) => {
-  const { loading, dispatch, list, childRef } = props;
-
-  const [visible, setVisible] = useState(false);
-  const [visibleGoods, setVisibleGoods] = useState(false);
+  const { loading, dispatch, list, childRef, setSelectItem } = props;
 
   const searchItems = [
     {
@@ -84,7 +81,7 @@ const SeckillTimeActivity = (props) => {
     {
       title: '秒杀状态',
       align: 'center',
-      dataIndex: 'updadssteTime',
+      dataIndex: 'seckillTimeObjectList',
       render: (val, row) => {
         const { seckillBeginTime, seckillEndTime } = val[0];
         let text = '';
@@ -102,7 +99,7 @@ const SeckillTimeActivity = (props) => {
       type: 'handle',
       dataIndex: 'goodsId',
       render: (val, row) => {
-        const { offLineGoodsNum, onLineGoodsNum, startDate } = row;
+        const { seckillEndTime } = row;
         return [
           {
             type: 'changeRemain',
@@ -111,7 +108,7 @@ const SeckillTimeActivity = (props) => {
           {
             title: '设置规则',
             type: 'batchEditRule', // 即将开始 无报名商品
-            visible: offLineGoodsNum === 0 && onLineGoodsNum === 0 && moment().isBefore(startDate),
+            visible: !moment().isBefore(seckillEndTime),
             click: () => fetchGetDetail(row, 'edit'),
           },
         ];
@@ -216,6 +213,16 @@ const SeckillTimeActivity = (props) => {
         cRef={childRef}
         loading={loading}
         columns={getColumns}
+        rowSelection={{
+          preserveSelectedRowKeys: true,
+          getCheckboxProps: (record) => {
+            const { seckillEndTime } = record.seckillTimeObjectList[0];
+            return {
+              disabled: !moment().isBefore(seckillEndTime), // 已结束可选
+            };
+          },
+          onChange: (selectedRowKeys, selectedRows) => setSelectItem(selectedRows),
+        }}
         searchItems={searchItems}
         cardProps={{ bordered: false }}
         rowKey={(record) => `${record.goodsId}`}

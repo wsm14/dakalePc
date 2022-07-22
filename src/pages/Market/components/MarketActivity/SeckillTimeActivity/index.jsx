@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Card } from 'antd';
 import ExtraButton from '@/components/ExtraButton';
 import SpecialGoods from './SpecialGoods';
@@ -20,6 +20,11 @@ const SeckillTimeActivity = () => {
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
   const [tabKey, setTabKey] = useState('commerceGoods');
+  const [selectItem, setSelectItem] = useState([]); // 当前选择项
+
+  useEffect(() => {
+    setSelectItem([]);
+  }, [tabKey]);
 
   const btnList = [
     {
@@ -30,11 +35,12 @@ const SeckillTimeActivity = () => {
     {
       auth: 'batchEditRule',
       text: '批量设置规则',
-      onClick: () => setVisible({ mode: 'add', show: true }),
+      disabled: !selectItem.length,
+      onClick: () => setVisible({ mode: 'set', show: true, dataList: selectItem }),
     },
   ];
 
-  const listProps = { childRef, tabKey: tabKey };
+  const listProps = { childRef, tabKey, setSelectItem };
 
   const contentList = {
     commerceGoods: <CommerceGoods {...listProps}></CommerceGoods>,

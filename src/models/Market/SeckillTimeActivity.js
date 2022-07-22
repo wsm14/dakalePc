@@ -6,6 +6,7 @@ import {
   fetchSeckillTimeCommerceGoodsList,
   fetchMarketActivityGoodsEditRemain,
   fetchSeckillTimeActivityCheckGoods,
+  fetchSeckillTimeActivityBatchRuleSet,
 } from '@/services/MarketServices';
 
 export default {
@@ -50,6 +51,12 @@ export default {
     },
     // 规则设置
     *fetchSeckillTimeActivityRuleSet({ payload, callback }, { call }) {
+      const response = yield call(fetchSeckillTimeActivityRuleSet, payload);
+      if (!response) return;
+      const { marketingSeckillDetail } = response.content;
+      callback(marketingSeckillDetail.marketingSeckillId);
+    },
+    *fetchSeckillTimeActivityBatchRuleSet({ payload, callback }, { call }) {
       const response = yield call(fetchSeckillTimeActivityRuleSet, payload);
       if (!response) return;
       const { marketingSeckillDetail } = response.content;

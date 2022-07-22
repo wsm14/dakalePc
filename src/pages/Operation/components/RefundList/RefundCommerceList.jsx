@@ -399,6 +399,7 @@ const RefundList = (props) => {
         params={{ isVerify: tabKey, orderType: 'commerceGoods' }}
         rowSelection={{
           selectedRowKeys: goodsRowKeys,
+          preserveSelectedRowKeys: true,
           onChange: (selectedRowKeys, selectedRows) => {
             setGoodsRowKeys(selectedRowKeys);
             setGoodsList([...selectedRows]);

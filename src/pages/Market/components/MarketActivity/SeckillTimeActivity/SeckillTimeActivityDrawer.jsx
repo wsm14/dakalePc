@@ -10,7 +10,7 @@ import SupplyInfoDrawer from './SupplyInfoDrawer';
 const SeckillTimeActivityDrawer = (props) => {
   const { dispatch, visible = {}, tabKey, childRef, onClose, loading } = props;
 
-  const { mode = 'add', show = false, detail = {} } = visible;
+  const { mode = 'add', show = false, dataList = [] } = visible;
   const [form] = Form.useForm();
   const [ruleId, setRuleId] = useState(false); // 规则id
   const [ruleData, setRuleData] = useState({}); // 规则数据
@@ -31,7 +31,7 @@ const SeckillTimeActivityDrawer = (props) => {
       // 新增校验逻辑
       if (mode == 'add') fetchActivityRuleSet(data);
       // 设置校验逻辑
-      if (mode == 'set') fetchActivityRuleSet(data);
+      if (mode == 'set') fetchBatchRuleSet(data);
     });
   };
 
@@ -44,6 +44,26 @@ const SeckillTimeActivityDrawer = (props) => {
       callback: (id) => {
         setRuleId(id);
         setVisibleSelect(true);
+      },
+    });
+  };
+
+  // 设置规则校验 2.1
+  const fetchBatchRuleSet = (value) => {
+    setRuleData(value);
+    dispatch({
+      type: 'seckillTimeActivity/fetchSeckillTimeActivityBatchRuleSet',
+      payload: {
+        goodsList: dataList.map(({ goodsId, ownerId }) => ({
+          goodsId,
+          ownerId,
+          goodsType: tabKey,
+        })),
+        ...value,
+      },
+      callback: (id) => {
+        setRuleId(id);
+        setVisibleInfo({ show: true, detail: { [tabKey]: dataList } });
       },
     });
   };
@@ -103,10 +123,7 @@ const SeckillTimeActivityDrawer = (props) => {
   return (
     <>
       <DrawerCondition {...modalProps}>
-        <SeckillTimeActivityBaseForm
-          form={form}
-          initialValues={detail}
-        ></SeckillTimeActivityBaseForm>
+        <SeckillTimeActivityBaseForm form={form}></SeckillTimeActivityBaseForm>
       </DrawerCondition>
       {/* 选择商品 */}
       <GoodsSelectModal

@@ -587,6 +587,14 @@ export function fetchSeckillTimeActivityRuleSet(data) {
   });
 }
 
+// post 营销活动 - 限时秒杀 - 修改 批量-设置秒杀规则
+export function fetchSeckillTimeActivityBatchRuleSet(data) {
+  return request('/admin/marketing/seckill/admin/batchSeckillVerifyWhenSelectingGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 营销活动 - 限时秒杀 - 商品选择校验
 export function fetchSeckillTimeActivityCheckGoods(data) {
   return request('/admin/marketing/seckill/admin/seckillVerifyWhenSelectingGoods', {
