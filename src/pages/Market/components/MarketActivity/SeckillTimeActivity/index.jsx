@@ -36,11 +36,13 @@ const SeckillTimeActivity = () => {
       auth: 'batchEditRule',
       text: '批量设置规则',
       disabled: !selectItem.length,
-      onClick: () => setVisible({ mode: 'set', show: true, dataList: selectItem }),
+      onClick: () => handleSetShow(selectItem),
     },
   ];
 
-  const listProps = { childRef, tabKey, setSelectItem };
+  const handleSetShow = (dataList) => setVisible({ mode: 'set', show: true, dataList });
+
+  const listProps = { childRef, tabKey, setSelectItem, handleSetShow };
 
   const contentList = {
     commerceGoods: <CommerceGoods {...listProps}></CommerceGoods>,

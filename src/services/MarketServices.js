@@ -611,4 +611,12 @@ export function fetchSeckillTimeActivityGoodsSave(data) {
   });
 }
 
+// post 营销活动 - 限时秒杀 - 商品选择校验
+export function fetchSeckillTimeActivityGoodsEditRemain(data) {
+  return request('/admin/marketing/seckill/admin/adjustSeckillActiveInventory', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 限时秒杀 end

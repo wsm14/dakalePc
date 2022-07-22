@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
+import SeckillTimeRemainModal from './SeckillTimeRemainModal';
 
 const SeckillTimeActivity = (props) => {
-  const { loading, dispatch, list, childRef, setSelectItem } = props;
+  const { loading, list, childRef, setSelectItem, handleSetShow } = props;
+
+  const [visible, setVisible] = useState(false); // 库存设置
 
   const searchItems = [
     {
@@ -103,13 +106,13 @@ const SeckillTimeActivity = (props) => {
         return [
           {
             type: 'changeRemain',
-            click: () => fetchGetDetail(row, 'info'),
+            click: () => setVisible({ show: true, detail: row }),
           },
           {
             title: '设置规则',
             type: 'batchEditRule', // 即将开始 无报名商品
             visible: !moment().isBefore(seckillEndTime),
-            click: () => fetchGetDetail(row, 'edit'),
+            click: () => handleSetShow([row]),
           },
         ];
       },
@@ -189,22 +192,6 @@ const SeckillTimeActivity = (props) => {
     return num || 0;
   };
 
-  // 详情
-  const fetchGetDetail = (row, mode) => {
-    const { marketingActivityId } = row;
-    dispatch({
-      type: 'marketActivity/fetchMarketActivityDetail',
-      payload: { marketingActivityId, mode },
-      callback: (detail) => {
-        if (mode === 'enrollGoods') {
-          setVisibleGoods({ show: true, detail });
-        } else {
-          setVisible({ show: true, detail, mode });
-        }
-      },
-    });
-  };
-
   return (
     <>
       <TableDataBlock
@@ -229,6 +216,11 @@ const SeckillTimeActivity = (props) => {
         dispatchType="seckillTimeActivity/fetchSeckillTimeCommerceGoodsList"
         {...list}
       ></TableDataBlock>
+      <SeckillTimeRemainModal
+        visible={visible}
+        tableRef={childRef}
+        onClose={() => setVisible(false)}
+      ></SeckillTimeRemainModal>
     </>
   );
 };

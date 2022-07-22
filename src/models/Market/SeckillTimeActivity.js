@@ -4,9 +4,9 @@ import {
   fetchSeckillTimeSpecialGoodsList,
   fetchSeckillTimeActivityGoodsSave,
   fetchSeckillTimeCommerceGoodsList,
-  fetchMarketActivityGoodsEditRemain,
   fetchSeckillTimeActivityCheckGoods,
   fetchSeckillTimeActivityBatchRuleSet,
+  fetchSeckillTimeActivityGoodsEditRemain,
 } from '@/services/MarketServices';
 
 export default {
@@ -56,8 +56,9 @@ export default {
       const { marketingSeckillDetail } = response.content;
       callback(marketingSeckillDetail.marketingSeckillId);
     },
+    // 批量规则设置
     *fetchSeckillTimeActivityBatchRuleSet({ payload, callback }, { call }) {
-      const response = yield call(fetchSeckillTimeActivityRuleSet, payload);
+      const response = yield call(fetchSeckillTimeActivityBatchRuleSet, payload);
       if (!response) return;
       const { marketingSeckillDetail } = response.content;
       callback(marketingSeckillDetail.marketingSeckillId);
@@ -78,8 +79,8 @@ export default {
       });
       callback();
     },
-    *fetchMarketActivityGoodsEditRemain({ payload, callback }, { call }) {
-      const response = yield call(fetchMarketActivityGoodsEditRemain, payload);
+    *fetchSeckillTimeActivityGoodsEditRemain({ payload, callback }, { call }) {
+      const response = yield call(fetchSeckillTimeActivityGoodsEditRemain, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
