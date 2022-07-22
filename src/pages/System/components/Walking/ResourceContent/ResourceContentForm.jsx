@@ -8,6 +8,7 @@ import ShareCoupon from './ShareCoupon/ShareCoupon';
 import BrandModuleList from './BrandModuleList';
 import PlatformCouponList from './PlatformCouponList';
 import PreviewDrawer from './PreviewDrawer';
+import SelectTag from './SelectTag';
 
 const { TabPane } = Tabs;
 
@@ -49,6 +50,7 @@ const ResourceContentForm = (props) => {
         setTypeList(obj.typeList);
         form.setFieldsValue({
           templateType: obj.templateType,
+          goodsType: obj.goodsType,
         });
       },
     });
@@ -127,6 +129,11 @@ const ResourceContentForm = (props) => {
     {
       label: `模板类型`,
       name: 'templateType',
+      hidden: true,
+    },
+    {
+      label: `模板商品类型`,
+      name: 'goodsType',
       hidden: true,
     },
     {
@@ -210,27 +217,7 @@ const ResourceContentForm = (props) => {
     {
       type: 'noForm',
       visible: typeList.includes('mixedList') || typeList.includes('classifiedListSelfTravel'),
-      formItem: (
-        <div style={{ display: 'flex', paddingLeft: 55 }}>
-          <div style={{ paddingTop: 5 }}>商品列表选择：</div>
-          <div>
-            {/* templateType
-             品模板-热兑模板 hotBlending 品模板-秒杀模板 flashSale 为电商品
-             品模板-列表模板 listTemplate 为特惠 */}
-            <ShareCoupon
-              form={form}
-              showTag={[
-                ['hotBlending', 'flashSale'].includes(form.getFieldValue('templateType'))
-                  ? 'commerceGoods'
-                  : 'specialGoods',
-              ]}
-              dataType={
-                typeList.includes('classifiedListSelfTravel') ? 'selfTourGoods' : 'mixedList'
-              }
-            ></ShareCoupon>
-          </div>
-        </div>
-      ),
+      formItem: <SelectTag></SelectTag>,
     },
     {
       type: 'noForm',
