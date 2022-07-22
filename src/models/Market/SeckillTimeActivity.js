@@ -65,6 +65,10 @@ export default {
     *fetchSeckillTimeActivityGoodsSave({ payload, callback }, { call }) {
       const response = yield call(fetchSeckillTimeActivityGoodsSave, payload);
       if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '设置成功',
+      });
       callback();
     },
     *fetchMarketActivityGoodsEditRemain({ payload, callback }, { call }) {

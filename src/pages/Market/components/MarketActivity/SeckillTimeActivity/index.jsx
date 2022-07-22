@@ -55,6 +55,7 @@ const SeckillTimeActivity = () => {
       <SeckillTimeActivityDrawer
         tabKey={tabKey}
         visible={visible}
+        childRef={childRef}
         onClose={() => setVisible(false)}
       ></SeckillTimeActivityDrawer>
     </>

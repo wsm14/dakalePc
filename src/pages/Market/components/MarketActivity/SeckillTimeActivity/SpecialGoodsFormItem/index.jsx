@@ -104,36 +104,38 @@ const SpecialGoodsFormItem = (props) => {
               </Form.Item>
             )}
             <Form.Item required label="秒杀价(卡豆)" hidden={paymentModeType !== 'self'}>
-              <Form.Item
-                noStyle
-                name={[index, 'activitySellBean']}
-                rules={[{ required: true, message: '请输入秒杀价(卡豆)' }]}
-              >
-                <InputNumber
-                  min={0}
-                  max={Math.trunc(maxPrice)}
-                  precision={0}
-                  style={{ width: 100 }}
-                  onChange={(e) => {
-                    updateData({ activitySellPrice: (maxPrice - e) / 100 });
-                  }}
-                ></InputNumber>
-              </Form.Item>{' '}
-              秒杀价:{' '}
               {paymentModeType == 'self' && (
-                <Form.Item
-                  noStyle
-                  name={[index, 'activitySellPrice']}
-                  rules={[{ required: true, message: '请输入秒杀价' }]}
-                >
-                  <InputNumber
-                    min={0}
-                    max={(maxPrice - activitySellBean) / 100}
-                    precision={2}
-                    addonAfter={`${zhe}折`}
-                    style={{ width: 130 }}
-                  />
-                </Form.Item>
+                <>
+                  <Form.Item
+                    noStyle
+                    name={[index, 'activitySellBean']}
+                    rules={[{ required: true, message: '请输入秒杀价(卡豆)' }]}
+                  >
+                    <InputNumber
+                      min={0}
+                      max={Math.trunc(maxPrice)}
+                      precision={0}
+                      style={{ width: 100 }}
+                      onChange={(e) => {
+                        updateData({ activitySellPrice: (maxPrice - e) / 100 });
+                      }}
+                    ></InputNumber>
+                  </Form.Item>{' '}
+                  秒杀价:{' '}
+                  <Form.Item
+                    noStyle
+                    name={[index, 'activitySellPrice']}
+                    rules={[{ required: true, message: '请输入秒杀价' }]}
+                  >
+                    <InputNumber
+                      min={0}
+                      max={(maxPrice - activitySellBean) / 100}
+                      precision={2}
+                      addonAfter={`${zhe}折`}
+                      style={{ width: 130 }}
+                    />
+                  </Form.Item>
+                </>
               )}
               {/* 活动结算价 */}
               <Form.Item noStyle hidden name={[index, 'activitySettlePrice']}>

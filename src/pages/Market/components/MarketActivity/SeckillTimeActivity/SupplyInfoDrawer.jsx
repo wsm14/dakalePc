@@ -29,7 +29,7 @@ const SupplyInfoDrawer = (props) => {
       const { specialGoods = [], commerceGoods = [] } = value;
       confirm({
         title: '提交后商品信息不可再修改，确定提交吗?',
-        zIndex: 1002,
+        zIndex: 1095,
         onOk() {
           dispatch({
             type: 'seckillTimeActivity/fetchSeckillTimeActivityGoodsSave',
