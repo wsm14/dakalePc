@@ -816,7 +816,7 @@ export const SHOW_TAG_GOODSTYPE = {
 export const SHOW_MODAL_GOODSTYPE = {
   commerceGoods: '电商品',
   specialGoods: '特惠商品 ',
-  'specialGoods,commerceGoods': '特惠商品&电商品',
+  'specialGoods,commerceGoods': '特惠商品/电商品',
 };
 
 // 集合页配置集合页状态
