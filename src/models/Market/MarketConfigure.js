@@ -15,6 +15,9 @@ import {
   fetchUpdateConfigNewUserPopUp,
   fetchGetWeeklyCard,
   fetchSetWeeklyCard,
+  fetchListSubjectTask,
+  fetchUpdateSubjectTaskRelation,
+  fetchUpdateSubjectPrize,
 } from '@/services/MarketServices';
 
 export default {
@@ -259,57 +262,43 @@ export default {
       callback && callback();
     },
 
-    //新人福利弹窗 - 列表
-    *fetchListConfigTask({ payload }, { call, put }) {
-      // const response = yield call(fetchListConfigTask, payload);
-      // if (!response) return;
-      // const { content } = response;
+    //任务配置 - 列表
+    *fetchListSubjectTask({ payload }, { call, put }) {
+      const response = yield call(fetchListSubjectTask, payload);
+      if (!response) return;
+      const { content } = response;
+      const { subjectTaskDetailList = [] } = content;
 
-      const list = [
-        {
-          id: 1,
-          name: '任务名称',
-          jinbi: 1000,
-        },
-        {
-          id: 2,
-          name: '任务名称',
-          jinbi: 2000,
-        },
-        {
-          id: 3,
-          name: '任务名称',
-          jinbi: 3000,
-        },
-      ];
-      const everyList = [
-        {
-          id: 1,
-          name: 'aaaa',
-          jinbi: 1000,
-        },
-        {
-          id: 2,
-          name: 'bbbb',
-          jinbi: 2000,
-        },
-        {
-          id: 3,
-          name: 'cccc',
-          jinbi: 3000,
-        },
-      ];
       yield put({
         type: 'save',
         payload: {
           taskConfigList: {
-            list: {
-              newTask: list,
-              everyTask: everyList,
-            }[payload.userOs],
+            list: subjectTaskDetailList,
           },
         },
       });
+    },
+
+    // 任务配置 - 编辑单个任务
+    *fetchUpdateSubjectTaskRelation({ payload, callback }, { call }) {
+      const response = yield call(fetchUpdateSubjectTaskRelation, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '编辑成功',
+      });
+      callback && callback();
+    },
+
+    // 任务配置 - 所有任务完成配置
+    *fetchUpdateSubjectPrize({ payload, callback }, { call }) {
+      const response = yield call(fetchUpdateSubjectPrize, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '编辑成功',
+      });
+      callback && callback();
     },
   },
 };

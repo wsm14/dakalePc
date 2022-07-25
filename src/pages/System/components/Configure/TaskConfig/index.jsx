@@ -7,11 +7,11 @@ import TaskConfigDrawerSet from './components/TaskConfigDrawerSet';
 
 const tabList = [
   {
-    key: 'newTask',
+    key: '1',
     tab: '新手任务',
   },
   {
-    key: 'everyTask',
+    key: '2',
     tab: '每日任务',
   },
 ];
@@ -20,11 +20,11 @@ const TaskConfig = (props) => {
   const { taskConfigList, loading, dispatch } = props;
   const childRef = useRef();
   //tab切换
-  const [tabKey, setTabKey] = useState('newTask');
+  const [tabKey, setTabKey] = useState('1');
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    childRef.current && childRef.current.fetchGetData({ userOs: tabKey });
+    childRef.current && childRef.current.fetchGetData({ subjectId: tabKey });
   }, [tabKey]);
 
   const getColumns = [
@@ -35,50 +35,62 @@ const TaskConfig = (props) => {
       render: (val, row) => (
         <div>
           <div>{val}</div>
-          <div style={{ color: '#999' }}>{row.id}</div>
+          <div style={{ color: '#999' }}>{row.subjectTaskRelationId}</div>
         </div>
       ),
     },
     {
       title: '获得金币数',
-      dataIndex: 'jinbi',
+      dataIndex: 'taskPrizeParamObjects',
       align: 'center',
-      render: (val, row) => val,
+      render: (val, row) => val[0].value || 0,
     },
     {
       type: 'handle',
-      dataIndex: 'configNewUserPopUpId',
+      dataIndex: 'subjectTaskRelationId',
       align: 'center',
       render: (val, row) => {
         return [
           {
-            title: '关联链接',
-            type: 'taskConfigLink',
-            click: () => handleEdit(val, 'taskLink'),
-          },
-          {
             title: '详情',
             type: 'taskConfigInfo',
-            click: () => handleEdit(val, 'info'),
+            click: () => handleEdit(row, 'info'),
           },
           {
             title: '编辑',
             type: 'taskConfigEdit',
-            click: () => handleEdit(val, 'edit'),
+            click: () => handleEdit(row, 'edit'),
           },
         ];
       },
     },
   ];
 
-  // 编辑 ， 关联链接
-  const handleEdit = (val, type) => {
-    setVisible({ show: true, type });
+  // 编辑
+  const handleEdit = (row, type) => {
+    const { subjectTaskRelationId, name, taskPrizeParamObjects } = row;
+    setVisible({
+      show: true,
+      type,
+      detail: {
+        subjectTaskRelationId,
+        name,
+        coins: taskPrizeParamObjects[0].value,
+      },
+    });
   };
 
   // 任务完成配置
   const handleTaskOkConfig = (type) => {
-    setVisible({ show: true, type });
+    setVisible({
+      show: true,
+      type,
+      detail: {
+        subjectId: tabKey,
+        kadou: 111,
+        jinbi: 222,
+      },
+    });
   };
 
   const extraBtn = [
@@ -99,14 +111,15 @@ const TaskConfig = (props) => {
           onTabChange: setTabKey,
           bordered: false,
         }}
+        firstFetch={false}
         btnExtra={extraBtn}
         pagination={false}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
-        rowKey={(record) => `${record.id}`}
-        dispatchType="marketConfigure/fetchListConfigTask"
-        params={{ userOs: tabKey }}
+        rowKey={(record) => `${record.subjectTaskRelationId}`}
+        dispatchType="marketConfigure/fetchListSubjectTask"
+        params={{ subjectId: tabKey }}
         {...taskConfigList}
       ></TableDataBlock>
       <TaskConfigDrawerSet
@@ -119,5 +132,5 @@ const TaskConfig = (props) => {
 };
 export default connect(({ loading, marketConfigure }) => ({
   taskConfigList: marketConfigure.taskConfigList,
-  loading: loading.effects['marketConfigure/fetchListConfigTask'],
+  loading: loading.effects['marketConfigure/fetchListSubjectTask'],
 }))(TaskConfig);

@@ -768,7 +768,6 @@ export default [
               'groupGoodsConfigDel',
               'groupGoodsConfigAdd',
               'taskOkConfig',
-              'taskConfigLink',
               'taskConfigInfo',
               'taskConfigEdit',
             ],

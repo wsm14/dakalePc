@@ -483,6 +483,31 @@ export function fetchSimulationStartGroup(data) {
   });
 }
 
+// 任务配置 - 列表
+export function fetchListSubjectTask(params) {
+  return request('/admin/subjectTask/listSubjectTask', {
+    params,
+  });
+}
+
+// 任务配置 - 编辑单个任务
+export function fetchUpdateSubjectTaskRelation(data) {
+  return request('/admin/subjectTask/updateSubjectTaskRelation', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 任务配置 - 所有任务完成配置
+export function fetchUpdateSubjectPrize(data) {
+  return request('/admin/subjectTask/updateSubjectPrize', {
+    method: 'POST',
+    data,
+  });
+}
+
+//营销功能配置  end
+
 // 营销活动 start
 
 // get 营销活动 - 列表
